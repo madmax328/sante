@@ -49,6 +49,9 @@ c'est ce champ que l'app mobile lira pour savoir si l'utilisateur est abonné.
 ### 3. Vercel
 1. *Add New → Project*, importer le dépôt GitHub.
 2. **Root Directory : `apps/web`** (Vercel détecte pnpm et le monorepo).
+   *Framework Preset* : **Next.js**. Laisser *Build Command* et *Output Directory* vides (valeurs par défaut).
+   Si l'erreur « No Output Directory named "public" » apparaît, c'est que le Root Directory
+   est resté à la racine du dépôt ou que le preset est sur « Other ».
 3. Renseigner les variables de `apps/web/.env.example` dans *Settings → Environment Variables*.
 4. Déployer. La région des fonctions est fixée à Paris (`cdg1`) dans `apps/web/vercel.json`.
 
