@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* Weeko brand tokens — see the brand board: basilic, abricot, miel, eau, riz, encre */
+:root {
+  --basilic: #1e6b52;
+  --basilic-strong: #155440;
+  --basilic-soft: #e3f0ea;
+  --abricot: #ff8a5b;
+  --abricot-strong: #e9703f;
+  --abricot-soft: #ffe9df;
+  --miel: #e9a92f;
+  --miel-soft: #fbf0d6;
+  --eau: #3b8ed0;
+  --eau-soft: #e2effa;
+  --riz: #f4f6f2;
+  --surface: #ffffff;
+  --surface-2: #fafbf9;
+  --encre: #17201c;
+  --muted: #5c6b64;
+  --line: #dce3de;
+  --danger: #c2413a;
+  --danger-soft: #fbe5e3;
+  --on-abricot: #2a1206;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --basilic: #4fbf95;
+    --basilic-strong: #6fd2ab;
+    --basilic-soft: #16302a;
+    --abricot: #ff9c74;
+    --abricot-strong: #ffb393;
+    --abricot-soft: #3a2219;
+    --miel: #f2ba4e;
+    --miel-soft: #352a12;
+    --eau: #62a8e3;
+    --eau-soft: #142b3d;
+    --riz: #0f1513;
+    --surface: #18201d;
+    --surface-2: #1d2622;
+    --encre: #eaf0ec;
+    --muted: #9aaaa2;
+    --line: #2a3531;
+    --danger: #f07a72;
+    --danger-soft: #3a1c1a;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-basilic: var(--basilic);
+  --color-basilic-strong: var(--basilic-strong);
+  --color-basilic-soft: var(--basilic-soft);
+  --color-abricot: var(--abricot);
+  --color-abricot-strong: var(--abricot-strong);
+  --color-abricot-soft: var(--abricot-soft);
+  --color-miel: var(--miel);
+  --color-miel-soft: var(--miel-soft);
+  --color-eau: var(--eau);
+  --color-eau-soft: var(--eau-soft);
+  --color-riz: var(--riz);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-encre: var(--encre);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-on-abricot: var(--on-abricot);
+  --font-display: var(--font-bricolage), "Trebuchet MS", system-ui, sans-serif;
+  --font-sans: var(--font-figtree), "Segoe UI", system-ui, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--riz);
+  color: var(--encre);
+  font-family: var(--font-sans);
+  font-feature-settings: "tnum" 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 3px solid var(--basilic);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

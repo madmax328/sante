@@ -1,0 +1,943 @@
+{
+  "meta": {
+    "title": "Weeko — ta semaine, organisée",
+    "description": "Menus de la semaine, recettes, liste de courses, budget et programme sportif : Weeko organise ta semaine et s'adapte quand la vraie vie s'en mêle."
+  },
+  "site": {
+    "pricing": "Tarifs",
+    "openApp": "Ouvrir l'app",
+    "login": "Connexion",
+    "start": "Commencer gratuitement",
+    "footerTagline": "Dis-nous ton objectif, ton budget, tes goûts et ton emploi du temps. On organise ta semaine.",
+    "product": "Produit",
+    "legal": "Légal",
+    "privacy": "Confidentialité",
+    "terms": "CGU / CGV",
+    "notice": "Mentions légales",
+    "disclaimer": "Weeko est une application de bien-être et d'organisation. Elle ne remplace pas un avis médical. Valeurs nutritionnelles : table CIQUAL (ANSES)."
+  },
+  "home": {
+    "eyebrow": "Repas, courses, budget et sport",
+    "title": "Ta semaine, organisée.",
+    "subtitle": "Dis-nous ton objectif, ton budget, tes goûts et ton emploi du temps. Weeko prépare tes 7 jours de repas, la liste de courses et ton programme sportif, puis s'adapte quand la vraie vie s'en mêle.",
+    "cta": "Créer ma semaine",
+    "seePricing": "Voir les tarifs",
+    "ctaNote": "Gratuit pour commencer. Sans carte bancaire.",
+    "compareOthers": "Une app de suivi classique",
+    "compareOthersQuote": "Dis-moi ce que tu as mangé et je vais le mesurer.",
+    "compareUsQuote": "Dis-moi ton objectif, ton budget, tes goûts et ton emploi du temps. Je vais organiser ta semaine.",
+    "loopTitle": "Une boucle complète, pas une app de plus",
+    "loopSubtitle": "De ton profil au bilan du dimanche, chaque étape nourrit la suivante.",
+    "loop": {
+      "profile": {
+        "title": "Profil",
+        "text": "Âge, taille, goûts, allergies, foyer, temps pour cuisiner."
+      },
+      "goal": {
+        "title": "Objectif",
+        "text": "Perdre, maintenir, prendre du muscle, mieux manger ou dépenser moins."
+      },
+      "budget": {
+        "title": "Budget",
+        "text": "« J'ai 70 € cette semaine » : le menu s'y adapte."
+      },
+      "week": {
+        "title": "Semaine",
+        "text": "7 jours de repas avec les bonnes quantités, en un clic."
+      },
+      "groceries": {
+        "title": "Courses",
+        "text": "Une seule liste, par rayon, sans ce que tu as déjà."
+      },
+      "sport": {
+        "title": "Sport",
+        "text": "Un programme réaliste selon ton niveau et tes disponibilités."
+      },
+      "adapt": {
+        "title": "Imprévus",
+        "text": "Resto, invités, plus de poulet : la semaine se réorganise."
+      },
+      "review": {
+        "title": "Bilan",
+        "text": "Chaque dimanche : progrès, budget, et une nouvelle semaine."
+      }
+    },
+    "features": {
+      "week": {
+        "title": "Menus automatiques",
+        "text": "Petit-déjeuner, déjeuner, dîner et collations, avec des portions calculées pour chacun."
+      },
+      "budget": {
+        "title": "Budget tenu",
+        "text": "Dépenses estimées et budget restant affichés en permanence. Mode petit budget en un geste."
+      },
+      "groceries": {
+        "title": "Courses intelligentes",
+        "text": "Quantités regroupées, paquets réels, garde-manger déduit et restes réutilisés."
+      },
+      "recipes": {
+        "title": "1 500+ recettes",
+        "text": "Étapes détaillées, durée, macros et coût par portion. Plus de 600 recettes végétariennes."
+      },
+      "sport": {
+        "title": "Programme sportif",
+        "text": "Séances guidées avec répétitions, récupération et consignes, sans matériel si besoin."
+      },
+      "coach": {
+        "title": "Coach IA",
+        "text": "Écris « je n'ai que 15 minutes ce soir » : il propose, tu valides."
+      }
+    },
+    "safetyTitle": "Des chiffres fiables, un ton bienveillant",
+    "safetyText": "Les calories, macros et quantités sont calculées par un moteur testé à partir de données officielles, jamais inventées par l'IA. Objectifs dangereux refusés, parcours adaptés pour les mineurs, la grossesse ou certaines situations médicales.",
+    "safety": {
+      "engine": "Calculs : formule de Mifflin-St Jeor et table CIQUAL de l'ANSES",
+      "kind": "Pas de culpabilisation : une pizza s'intègre, la semaine s'ajuste en douceur",
+      "privacy": "Données de santé chiffrées et séparées, export et suppression en un clic"
+    },
+    "faqTitle": "Questions fréquentes",
+    "faq": {
+      "what": {
+        "q": "En quoi Weeko est différent d'une app de comptage de calories ?",
+        "a": "Weeko ne se contente pas d'enregistrer : il organise. À partir de ton objectif, ton budget, tes goûts et ton temps, il construit la semaine complète (menus, recettes, courses, sport) et la réorganise quand ton programme change."
+      },
+      "budget": {
+        "q": "Comment le budget est-il calculé ?",
+        "a": "Chaque ingrédient a un prix moyen observé en France et des tailles de paquets réelles. Le moteur calcule ce que tu paieras en caisse, réutilise les restes de paquets et déduit ton garde-manger. Les prix réels varient selon les magasins."
+      },
+      "family": {
+        "q": "Est-ce adapté à une famille ?",
+        "a": "Oui. Le même dîner pour tout le monde, avec des portions adaptées à chacun. Les enfants ne sont jamais mis au régime."
+      },
+      "ai": {
+        "q": "Que fait l'IA exactement ?",
+        "a": "Elle comprend tes demandes en langage naturel et propose des modifications. Tous les chiffres sont recalculés par le moteur, et rien n'est modifié sans ton accord."
+      },
+      "data": {
+        "q": "Que deviennent mes données ?",
+        "a": "Elles sont hébergées en Europe, les données de santé sont chiffrées, et tu peux les exporter ou tout supprimer à tout moment depuis ton compte."
+      },
+      "price": {
+        "q": "Combien ça coûte ?",
+        "a": "L'offre gratuite couvre l'essentiel. Premium débloque le budget, le garde-manger, le coach IA, le sport et le mode famille."
+      }
+    },
+    "preview": {
+      "label": "Aperçu de l'écran d'accueil, chiffres d'exemple",
+      "date": "Mer. 2 oct.",
+      "dinnerLabel": "Que manger ce soir ?",
+      "dinner": "Poulet rôti, patates douces et haricots verts",
+      "dinnerMeta": "520 kcal · 38 g protéines · 25 min · 2,90 €",
+      "todoLabel": "Que faire aujourd'hui ?",
+      "todo": "Marche active 30 min",
+      "progressLabel": "Où j'en suis",
+      "budgetLabel": "Budget restant",
+      "cta": "Ce soir je mange au resto"
+    }
+  },
+  "pricing": {
+    "title": "Tarifs simples",
+    "subtitle": "Commence gratuitement. Passe à Premium quand tu veux que Weeko s'occupe de tout : budget, garde-manger, coach et sport.",
+    "free": "Gratuit",
+    "freeNote": "Pour découvrir et suivre l'essentiel",
+    "startFree": "Commencer gratuitement",
+    "popular": "Le plus complet",
+    "monthlyPrice": "6,99 €",
+    "month": "mois",
+    "yearlyOffer": "ou 49,99 € par an (soit 4,17 € / mois)",
+    "goPremium": "Passer à Premium",
+    "paymentNote": "Paiement sécurisé par Stripe sur notre site. Résiliable à tout moment.",
+    "freeItems": {
+      "profile": "Profil et objectifs personnalisés",
+      "targets": "Besoins caloriques et macros calculés",
+      "simpleWeek": "Menu de la semaine pour une personne",
+      "recipes": "Accès aux 1 500+ recettes",
+      "list": "Liste de courses par rayon",
+      "journal": "Journal alimentaire",
+      "water": "Suivi de l'hydratation",
+      "weight": "Courbe de poids"
+    },
+    "premiumItems": {
+      "everythingFree": "Tout ce qui est gratuit, plus :",
+      "budget": "Budget et mode petit budget",
+      "pantry": "Garde-manger et anti-gaspillage",
+      "unlimitedSwaps": "Remplacements de repas illimités",
+      "ai": "Adaptations en langage naturel",
+      "coach": "Coach IA qui connaît ton programme",
+      "sport": "Programme sportif personnalisé",
+      "family": "Mode famille, portions pour chacun",
+      "review": "Bilan hebdomadaire et analyses"
+    }
+  },
+  "auth": {
+    "loginTitle": "Bon retour !",
+    "loginCta": "Se connecter",
+    "signupTitle": "Créer mon compte",
+    "signupSubtitle": "2 minutes pour ton profil, puis ta première semaine.",
+    "signupCta": "Créer mon compte",
+    "name": "Prénom",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "passwordHint": "10 caractères minimum",
+    "newPassword": "Nouveau mot de passe",
+    "pending": "Un instant…",
+    "google": "Continuer avec Google",
+    "forgot": "Mot de passe oublié ?",
+    "noAccount": "Créer un compte",
+    "haveAccount": "J'ai déjà un compte",
+    "acceptTerms": "J'accepte les <terms>conditions d'utilisation</terms> et la <privacy>politique de confidentialité</privacy>.",
+    "forgotTitle": "Mot de passe oublié",
+    "sendLink": "Recevoir un lien",
+    "resetSent": "Si un compte existe avec cette adresse, un e-mail vient de partir. Pense à vérifier tes spams.",
+    "backToLogin": "Retour à la connexion",
+    "resetTitle": "Nouveau mot de passe",
+    "resetCta": "Enregistrer",
+    "errors": {
+      "invalid": "E-mail ou mot de passe incorrect.",
+      "generic": "Une erreur est survenue. Réessaie dans un instant.",
+      "exists": "Un compte existe déjà avec cette adresse. Connecte-toi plutôt.",
+      "short": "Le mot de passe doit contenir au moins 10 caractères.",
+      "terms": "Accepte les conditions pour continuer.",
+      "resetInvalid": "Ce lien n'est plus valide. Demande un nouveau lien."
+    }
+  },
+  "nav": {
+    "label": "Navigation principale",
+    "today": "Aujourd'hui",
+    "week": "Semaine",
+    "groceries": "Courses",
+    "recipes": "Recettes",
+    "pantry": "Garde-manger",
+    "journal": "Journal",
+    "sport": "Sport",
+    "progress": "Progrès",
+    "coach": "Coach",
+    "account": "Compte",
+    "upgrade": "Passer à Premium"
+  },
+  "onboarding": {
+    "metaTitle": "Bienvenue",
+    "progress": "Étape {step} sur {total}",
+    "back": "Retour",
+    "next": "Continuer",
+    "create": "Créer ma semaine",
+    "creating": "Préparation de ta semaine…",
+    "you": {
+      "title": "Faisons connaissance",
+      "subtitle": "Ces informations servent à calculer tes besoins. Elles restent chiffrées et privées.",
+      "name": "Prénom",
+      "sex": "Sexe",
+      "sexHint": "Utilisé uniquement pour le calcul des besoins énergétiques.",
+      "birthDate": "Date de naissance",
+      "height": "Taille",
+      "weight": "Poids"
+    },
+    "goal": {
+      "title": "Ton objectif",
+      "subtitle": "Tu pourras le changer à tout moment.",
+      "target": "Poids visé (facultatif)",
+      "pace": "Rythme",
+      "gentle": "Doux (recommandé)",
+      "moderate": "Modéré",
+      "activity": "Activité au quotidien (hors sport)",
+      "hints": {
+        "lose_weight": "Un déficit modéré, sans privation.",
+        "maintain": "Garder ton poids en mangeant équilibré.",
+        "gain_muscle": "Plus de protéines et un léger surplus.",
+        "eat_better": "Plus de légumes, de fibres et de fait-maison.",
+        "save_money": "Bien manger en dépensant moins.",
+        "family_meals": "Organiser les repas de toute la famille."
+      }
+    },
+    "health": {
+      "title": "Ta santé d'abord",
+      "subtitle": "Certaines situations demandent un suivi professionnel : on adapte le programme en conséquence.",
+      "pregnancy": "Grossesse ou allaitement",
+      "medical": "Situations particulières (facultatif)",
+      "medicalHint": "Si tu coches une situation, Weeko reste prudent et te recommande d'en parler à un professionnel de santé.",
+      "allergies": "Allergies et intolérances",
+      "consent": "J'accepte que Weeko traite mes données de santé (poids, taille, allergies, situations déclarées) pour personnaliser mes menus et mon programme. Ces données sont chiffrées, jamais vendues, et je peux retirer mon consentement ou les supprimer à tout moment."
+    },
+    "food": {
+      "title": "Tes habitudes",
+      "subtitle": "Pour des menus que tu as vraiment envie de cuisiner.",
+      "diet": "Régime",
+      "avoid": "À éviter",
+      "weekday": "Temps de cuisine en semaine",
+      "weekend": "Temps de cuisine le week-end",
+      "equipment": "Équipement",
+      "leftovers": "Cuisiner une fois, manger deux fois",
+      "leftoversHint": "le dîner du lundi, mercredi et vendredi sert aussi de déjeuner le lendemain.",
+      "snacks": "Prévoir des collations"
+    },
+    "household": {
+      "title": "Ton foyer",
+      "subtitle": "Le même repas pour tout le monde, avec des portions adaptées à chacun.",
+      "selfMeals": "Les repas que tu prends à la maison",
+      "member": "Membre {n}",
+      "add": "Ajouter une personne",
+      "remove": "Retirer",
+      "premiumNote": "La planification pour plusieurs personnes fait partie de Premium. Tu peux déjà renseigner ton foyer."
+    },
+    "budget": {
+      "title": "Ton budget courses",
+      "subtitle": "Facultatif, mais très utile : on construit la semaine pour qu'elle tienne dedans.",
+      "enable": "Fixer un budget par semaine",
+      "hint": "le moteur choisit des recettes qui respectent ce montant.",
+      "amount": "Budget par semaine",
+      "note": "Les prix sont des moyennes observées en France. Les prix réels varient selon les magasins."
+    },
+    "sport": {
+      "title": "Ton activité physique",
+      "subtitle": "Un programme réaliste, qui s'adapte à ton emploi du temps.",
+      "enable": "Je veux un programme sportif",
+      "days": "Jours disponibles",
+      "minutes": "Durée par séance",
+      "equipment": "Matériel à disposition (facultatif)",
+      "limitations": "Douleurs ou zones à ménager",
+      "levelHints": {
+        "beginner": "Je reprends ou je débute.",
+        "intermediate": "Je bouge 1 à 2 fois par semaine.",
+        "advanced": "Je m'entraîne régulièrement."
+      }
+    },
+    "summary": {
+      "title": "Ton programme",
+      "subtitle": "Voici tes besoins calculés. On peut créer ta première semaine.",
+      "computing": "Calcul en cours…",
+      "explain": "Calcul : métabolisme de base {bmr} kcal (formule de Mifflin-St Jeor), dépense estimée {tdee} kcal avec ton activité."
+    },
+    "errors": {
+      "invalid": "Certaines informations sont incomplètes. Vérifie les étapes précédentes.",
+      "too_young": "Weeko est réservé aux personnes de 15 ans et plus.",
+      "consent": "Le consentement au traitement des données de santé est nécessaire pour personnaliser ton programme.",
+      "server": "La sauvegarde a échoué. Réessaie dans un instant."
+    }
+  },
+  "enums": {
+    "sex": {
+      "female": "Femme",
+      "male": "Homme"
+    },
+    "goal": {
+      "lose_weight": "Perdre du poids",
+      "maintain": "Maintenir mon poids",
+      "gain_muscle": "Prendre du muscle",
+      "eat_better": "Mieux manger",
+      "save_money": "Petit budget",
+      "family_meals": "Repas de famille"
+    },
+    "activity": {
+      "sedentary": "Sédentaire (bureau, peu de marche)",
+      "light": "Légère (marche quotidienne)",
+      "moderate": "Modérée (debout une bonne partie de la journée)",
+      "active": "Active (métier physique)",
+      "very_active": "Très active (métier très physique)"
+    },
+    "pregnancy": {
+      "none": "Non concernée",
+      "pregnant_t1": "Enceinte, 1er trimestre",
+      "pregnant_t2": "Enceinte, 2e trimestre",
+      "pregnant_t3": "Enceinte, 3e trimestre",
+      "breastfeeding": "J'allaite"
+    },
+    "medical": {
+      "diabetes": "Diabète",
+      "kidney_disease": "Maladie rénale",
+      "heart_disease": "Maladie cardiovasculaire",
+      "eating_disorder_history": "Antécédents de trouble alimentaire",
+      "bariatric_surgery": "Chirurgie bariatrique",
+      "other": "Autre situation suivie"
+    },
+    "allergen": {
+      "gluten": "Gluten",
+      "dairy": "Lait / lactose",
+      "egg": "Œufs",
+      "peanut": "Arachides",
+      "nuts": "Fruits à coque",
+      "fish": "Poisson",
+      "seafood": "Crustacés et mollusques",
+      "soy": "Soja",
+      "sesame": "Sésame",
+      "celery": "Céleri",
+      "mustard": "Moutarde",
+      "sulphites": "Sulfites",
+      "lupin": "Lupin"
+    },
+    "diet": {
+      "omnivore": "Je mange de tout",
+      "pescatarian": "Pesco-végétarien",
+      "vegetarian": "Végétarien",
+      "vegan": "Végétalien"
+    },
+    "avoid": {
+      "pork": "Porc",
+      "beef": "Bœuf",
+      "lamb": "Agneau",
+      "alcohol": "Alcool",
+      "fish": "Poisson",
+      "seafood": "Fruits de mer"
+    },
+    "equipment": {
+      "oven": "Four",
+      "microwave": "Micro-ondes",
+      "blender": "Mixeur",
+      "airfryer": "Airfryer",
+      "slowcooker": "Mijoteuse"
+    },
+    "meal": {
+      "breakfast": "Petit-déjeuner",
+      "lunch": "Déjeuner",
+      "dinner": "Dîner",
+      "snack": "Collation"
+    },
+    "level": {
+      "beginner": "Débutant",
+      "intermediate": "Intermédiaire",
+      "advanced": "Confirmé"
+    },
+    "dayShort": {
+      "0": "Lun",
+      "1": "Mar",
+      "2": "Mer",
+      "3": "Jeu",
+      "4": "Ven",
+      "5": "Sam",
+      "6": "Dim"
+    },
+    "day": {
+      "0": "Lundi",
+      "1": "Mardi",
+      "2": "Mercredi",
+      "3": "Jeudi",
+      "4": "Vendredi",
+      "5": "Samedi",
+      "6": "Dimanche"
+    },
+    "sportEquipment": {
+      "dumbbells": "Haltères",
+      "band": "Élastique",
+      "kettlebell": "Kettlebell",
+      "pullup_bar": "Barre de traction",
+      "bike": "Vélo",
+      "pool": "Piscine"
+    },
+    "limitation": {
+      "knees": "Genoux",
+      "back": "Dos",
+      "shoulders": "Épaules",
+      "wrists": "Poignets"
+    },
+    "nutrient": {
+      "kcal": "Énergie",
+      "protein": "Protéines",
+      "carbs": "Glucides",
+      "fat": "Lipides",
+      "fiber": "Fibres",
+      "sugars": "Sucres",
+      "satFat": "AG saturés",
+      "salt": "Sel"
+    },
+    "aisle": {
+      "produce": "Fruits et légumes",
+      "meat": "Boucherie, volaille",
+      "fish": "Poissonnerie",
+      "dairy": "Crèmerie, œufs",
+      "bakery": "Boulangerie",
+      "grocery": "Épicerie salée",
+      "sweet": "Épicerie sucrée",
+      "frozen": "Surgelés",
+      "spices": "Huiles, épices, condiments",
+      "drinks": "Boissons",
+      "plant": "Produits végétaux"
+    },
+    "safety": {
+      "under_min_age": {
+        "title": "Réservé aux 15 ans et plus",
+        "text": "Weeko n'est pas adapté avant 15 ans. Parle de ton alimentation avec tes parents et ton médecin."
+      },
+      "minor_no_deficit": {
+        "title": "Pas de régime avant 18 ans",
+        "text": "Ton corps est encore en croissance : on te propose une alimentation équilibrée, sans restriction. Pour une question de poids, parles-en à ton médecin."
+      },
+      "pregnancy_no_deficit": {
+        "title": "Grossesse : pas de perte de poids",
+        "text": "Pendant la grossesse, on adapte les apports à tes besoins, sans restriction, et on écarte les aliments déconseillés (poisson cru, fromages au lait cru…). Ta sage-femme ou ton médecin reste ta référence."
+      },
+      "breastfeeding_mild_deficit_only": {
+        "title": "Allaitement : rythme très doux",
+        "text": "Pendant l'allaitement, la perte de poids est limitée à 0,5 kg par semaine maximum pour préserver la lactation."
+      },
+      "underweight_no_loss": {
+        "title": "Perte de poids déconseillée",
+        "text": "Ton IMC est déjà bas : on ne propose pas de perte de poids. Objectif : bien manger et garder de l'énergie."
+      },
+      "target_weight_too_low": {
+        "title": "Objectif de poids trop bas",
+        "text": "Ce poids correspond à un IMC inférieur à 18,5. On garde un rythme sûr, mais nous t'invitons à revoir cet objectif avec un professionnel."
+      },
+      "pace_too_fast": {
+        "title": "Rythme ajusté",
+        "text": "Perdre plus de 1 % de son poids par semaine expose à une fonte musculaire et à la reprise. On limite le rythme."
+      },
+      "gain_too_fast": {
+        "title": "Rythme ajusté",
+        "text": "Au-delà de 0,5 % par semaine, la prise de poids est surtout de la masse grasse. On reste raisonnable."
+      },
+      "medical_supervision": {
+        "title": "Situation médicale déclarée",
+        "text": "Weeko reste prudent (rythme limité, protéines ajustées si besoin). Fais valider ton programme par ton médecin ou un·e diététicien·ne."
+      },
+      "eating_disorder_history": {
+        "title": "Un programme sans chiffres",
+        "text": "Les calories et le poids sont masqués et il n'y a pas de restriction. Si tu traverses une période difficile, la ligne Anorexie Boulimie Info Écoute (0 810 037 037) ou ton médecin peuvent t'aider."
+      },
+      "kcal_floor": {
+        "title": "Apport minimum",
+        "text": "Ton objectif calorique ne descend jamais sous un seuil de sécurité."
+      }
+    }
+  },
+  "errors": {
+    "premium": "Cette fonction fait partie de Premium.",
+    "quota": "Tu as utilisé tes 3 remplacements gratuits cette semaine.",
+    "invalid": "Cette demande n'est pas valide.",
+    "no_plan": "Crée d'abord ta semaine.",
+    "server": "Une erreur est survenue. Réessaie dans un instant.",
+    "seePremium": "Découvrir Premium"
+  },
+  "today": {
+    "hello": "Bonjour {name} !",
+    "noPlanTitle": "Ta semaine n'est pas encore prête",
+    "noPlanText": "En un clic, Weeko prépare tes repas des 7 prochains jours, ta liste de courses et ton programme sportif.",
+    "createWeek": "Créer ma semaine",
+    "whatToEat": "Que manger aujourd'hui ?",
+    "seeWeek": "Toute la semaine",
+    "leftover": "Restes",
+    "nothingPlanned": "Rien de prévu",
+    "portion": "{n} portion",
+    "markEaten": "Marquer comme mangé",
+    "eaten": "Mangé",
+    "adjustTitle": "Un imprévu ?",
+    "whatToDo": "Que faire aujourd'hui ?",
+    "sportDisabled": "Le programme sportif est désactivé. Tu peux l'activer dans l'onglet Sport.",
+    "sportPremium": "Un programme sportif personnalisé t'attend avec Premium : séances guidées selon ton niveau et ton emploi du temps.",
+    "discoverPremium": "Découvrir Premium",
+    "sessionMeta": "{minutes} min · environ {kcal} kcal",
+    "done": "Fait",
+    "restDay": "Jour de repos. Une petite marche reste une bonne idée !",
+    "stepsGoal": "Objectif de pas : {steps}",
+    "whereAmI": "Où en suis-je ?",
+    "logHint": "Coche tes repas ou ajoute ce que tu as mangé.",
+    "remaining": "Il te reste environ {kcal} kcal aujourd'hui.",
+    "openJournal": "Ouvrir le journal",
+    "noNumbers": "Ici, pas de chiffres : concentre-toi sur des repas variés, à ta faim, et sur ce que tu ressens.",
+    "water": "Hydratation",
+    "waterLess": "Retirer un verre",
+    "waterMore": "Ajouter un verre",
+    "glass": "Un verre",
+    "glasses": "{count, plural, =0 {Aucun verre pour l'instant} one {# verre bu} other {# verres bus}}",
+    "seeGroceries": "Liste de courses",
+    "budgetTitle": "Combien me reste-t-il ?",
+    "budgetOf": "{cost} sur {budget}",
+    "budgetOver": "Le budget est dépassé : jette un œil aux suggestions de la page Semaine.",
+    "estimated": "Courses estimées cette semaine : {cost}.",
+    "setBudget": "Fixer un budget",
+    "budgetPremium": "Fixer un budget (Premium)"
+  },
+  "adjust": {
+    "label": "Décris ton imprévu",
+    "placeholder": "Ex. : ce soir je mange au restaurant",
+    "submit": "Adapter",
+    "suggestions": {
+      "restaurant": "Ce soir je mange au restaurant",
+      "guests": "Nous serons 5 à dîner ce soir",
+      "quick": "Je n'ai que 15 minutes ce soir",
+      "missing": "Je n'ai plus de poulet"
+    },
+    "premiumNote": "Les adaptations automatiques font partie de Premium.",
+    "apply": "Appliquer",
+    "dismiss": "Ignorer"
+  },
+  "week": {
+    "title": "Ma semaine",
+    "previous": "Semaine précédente",
+    "next": "Semaine suivante",
+    "thisWeek": "Cette semaine",
+    "emptyTitle": "Pas encore de menu pour cette semaine",
+    "emptyText": "Weeko construit les 7 jours de repas selon ton objectif, ton budget, tes goûts et ton temps.",
+    "create": "Créer ma semaine",
+    "groceriesCost": "Courses estimées",
+    "leftoverValue": "dont {value} de produits qui resteront pour la suite",
+    "avgPerDay": "Moyenne par jour",
+    "regenerate": "Nouveau menu",
+    "regenerateConfirm": "Tout le menu sera recréé (les repas à l'extérieur sont conservés).",
+    "confirmRegenerate": "Recréer",
+    "cancel": "Annuler",
+    "budget": "Budget",
+    "budgetLine": "Budget {budget} · reste {left}",
+    "budgetOverTitle": "Budget difficile à tenir",
+    "budgetOverText": "Avec tes contraintes, le menu le plus économique trouvé revient à {min}. Tu peux assouplir tes préférences (temps, aliments à éviter) ou augmenter un peu le budget.",
+    "budgetTitle": "Budget de la semaine",
+    "budgetPremium": "Fixe un budget et laisse Weeko construire une semaine qui le respecte.",
+    "discover": "Découvrir Premium",
+    "budgetEnable": "Respecter un budget",
+    "budgetAmount": "Montant",
+    "perWeek": "semaine",
+    "budgetRebuild": "Reconstruire le menu avec ce budget",
+    "budgetSaveOnly": "Enregistrer sans changer le menu",
+    "freeNote": "Version gratuite : menu pour toi seul·e, sans budget ni garde-manger, 3 remplacements par semaine.",
+    "today": "Aujourd'hui",
+    "replace": "Remplacer",
+    "replaceTitle": "Remplacer ce repas",
+    "close": "Fermer",
+    "search": "Rechercher",
+    "searchPlaceholder": "Chercher une recette (ex. curry)",
+    "surprise": "Surprends-moi",
+    "loading": "Recherche des meilleures options…",
+    "noAlternative": "Aucune alternative compatible trouvée.",
+    "sameCost": "même coût",
+    "usesLeftovers": "utilise tes restes",
+    "more": "Plus d'options",
+    "eatOut": "Je mange à l'extérieur",
+    "guests": "Il y aura des invités",
+    "lessTime": "J'ai moins de temps",
+    "skip": "Je saute ce repas",
+    "eatOutLabel": "Qu'est-ce que tu manges ?",
+    "eatOutDefault": "Repas à l'extérieur",
+    "guestsLabel": "Combien de personnes en tout ?",
+    "timeLabel": "Combien de minutes pour cuisiner ?",
+    "validate": "Valider",
+    "nothing": "Rien de prévu",
+    "leftoverOf": "Restes de {day}",
+    "cookDouble": "Cuisiner en double",
+    "outside": "À l'extérieur",
+    "someOutside": "Une partie du foyer dehors",
+    "withGuests": "+{n} invités",
+    "serving": "portion"
+  },
+  "recipes": {
+    "title": "Recettes",
+    "subtitle": "{count} recettes",
+    "search": "Rechercher une recette ou un ingrédient",
+    "meal": "Repas",
+    "allMeals": "Tous les repas",
+    "diet": "Régime",
+    "time": "Temps",
+    "anyTime": "Tous temps",
+    "maxTime": "≤ {m} min",
+    "filter": "Filtrer",
+    "filteredMine": "Recettes compatibles avec tes allergies et préférences.",
+    "showingAll": "Toutes les recettes du régime choisi.",
+    "showAll": "Tout afficher",
+    "showMine": "Seulement les miennes",
+    "none": "Aucune recette trouvée",
+    "noneText": "Essaie un autre mot ou retire un filtre.",
+    "batch": "Batch cooking",
+    "protein": "Riche en protéines",
+    "pagination": "Pages",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "page": "Page {page} sur {pages}"
+  },
+  "recipe": {
+    "back": "Toutes les recettes",
+    "photoBy": "Photo :",
+    "batch": "Se prépare à l'avance",
+    "time": "Temps total",
+    "difficulty": "Difficulté",
+    "level1": "Facile",
+    "level2": "Moyen",
+    "level3": "Élaboré",
+    "cost": "Coût / portion",
+    "energy": "Énergie / portion",
+    "prepCook": "Préparation {prep} min · cuisson {cook} min",
+    "keeps": "Se conserve {days} j au frais",
+    "like": "J'aime",
+    "dislike": "Pas pour moi",
+    "meal": "Repas",
+    "addToJournal": "Ajouter au journal",
+    "added": "Ajouté",
+    "warningTitle": "Attention",
+    "warningText": "Cette recette contient : {list}. Elle ne sera pas proposée dans tes menus.",
+    "ingredients": "Ingrédients",
+    "servings": "Portions",
+    "less": "Moins",
+    "more": "Plus",
+    "staples": "Placard",
+    "allergens": "Allergènes",
+    "steps": "Préparation",
+    "nutrition": "Valeurs nutritionnelles par portion",
+    "nutritionNote": "Calculées à partir de la table CIQUAL (ANSES) pour les ingrédients crus."
+  },
+  "groceries": {
+    "title": "Liste de courses",
+    "subtitle": "{count} produits · {total}",
+    "emptyTitle": "Pas encore de liste",
+    "emptyText": "Crée ta semaine : la liste de courses se fait toute seule.",
+    "create": "Créer ma semaine",
+    "copy": "Copier la liste",
+    "copied": "Copiée !",
+    "print": "Imprimer",
+    "estimated": "Total estimé",
+    "budget": "Budget : {budget}",
+    "actualSpent": "Montant réel (facultatif)",
+    "shopped": "Courses faites",
+    "shoppedDone": "Courses faites, bravo !",
+    "priceNote": "Prix moyens observés en France, par paquets réels. Les prix varient selon les magasins.",
+    "pantryTitle": "Ce que tu as déjà",
+    "pantryPremium": "Avec Premium, indique ton garde-manger : il est déduit de la liste et les restes sont réutilisés.",
+    "discover": "Découvrir",
+    "fromPantry": "Déjà dans ton garde-manger",
+    "staples": "À vérifier dans le placard",
+    "staplesText": "Sel, huile, épices… supposés déjà chez toi.",
+    "leftoversTitle": "Il te restera",
+    "leftoversText": "Des restes de paquets frais : pense à les utiliser (omelette, salade, soupe) ou à les congeler."
+  },
+  "pantry": {
+    "title": "Garde-manger",
+    "subtitle": "Ce que tu as déjà : déduit des courses et utilisé en priorité dans les menus.",
+    "premiumTitle": "Le garde-manger fait partie de Premium",
+    "premiumText": "Indique ce que tu as chez toi : Weeko le retire de ta liste de courses et le cuisine en priorité, pour dépenser moins et moins gaspiller.",
+    "discover": "Découvrir Premium",
+    "addTitle": "Ajouter un produit",
+    "ingredient": "Produit (ex. riz long)",
+    "quantity": "Quantité",
+    "add": "Ajouter",
+    "unknown": "Choisis un produit dans la liste proposée.",
+    "premium": "Fonction Premium.",
+    "remove": "Retirer",
+    "hint": "Quantités en grammes, millilitres ou pièces. Quand tu valides tes courses, les produits secs restants sont ajoutés automatiquement.",
+    "emptyTitle": "Ton garde-manger est vide",
+    "emptyText": "Ajoute ce qu'il te reste (pâtes, riz, conserves…) pour économiser sur les prochaines courses."
+  },
+  "journal": {
+    "title": "Journal",
+    "previous": "Jour précédent",
+    "next": "Jour suivant",
+    "today": "Aujourd'hui",
+    "addTitle": "Ajouter un aliment",
+    "meal": "Repas",
+    "tabs": {
+      "search": "Rechercher",
+      "custom": "Saisie libre",
+      "barcode": "Code-barres"
+    },
+    "searchPlaceholder": "Ex. pomme, yaourt, poulet…",
+    "perServing": "portion",
+    "servings": "Portions",
+    "pieces": "Pièces",
+    "grams": "Grammes",
+    "add": "Ajouter",
+    "cancel": "Annuler",
+    "added": "Ajouté au journal.",
+    "customName": "Nom (ex. sandwich boulangerie)",
+    "proteinShort": "Prot. (g)",
+    "carbsShort": "Gluc. (g)",
+    "fatShort": "Lip. (g)",
+    "barcodePlaceholder": "Code-barres (8 à 14 chiffres)",
+    "lookup": "Chercher",
+    "scan": "Scanner",
+    "stopCamera": "Arrêter",
+    "notFound": "Produit introuvable. Utilise la saisie libre.",
+    "offCredit": "Données produits : Open Food Facts, base ouverte et collaborative.",
+    "nothing": "Rien pour l'instant.",
+    "remove": "Supprimer",
+    "fromPlan": "Menu",
+    "servingsCount": "{n} portion(s)",
+    "water": "Hydratation"
+  },
+  "sport": {
+    "title": "Sport",
+    "subtitle": "Semaine {week} du programme · {done}/{total} séances faites",
+    "premiumTitle": "Ton programme sportif personnalisé",
+    "premiumText": "Avec Premium, Weeko crée tes séances selon ton niveau, ton objectif, ton matériel et tes disponibilités, avec des exercices guidés.",
+    "discover": "Découvrir Premium",
+    "today": "Aujourd'hui",
+    "meta": "{minutes} min · environ {kcal} kcal",
+    "open": "Commencer",
+    "done": "Fait",
+    "markDone": "Marquer fait",
+    "stepsTitle": "Pas du jour",
+    "stepsText": "Objectif de la semaine : {goal} pas par jour.",
+    "stepsToday": "Pas aujourd'hui",
+    "save": "Enregistrer",
+    "saved": "Enregistré",
+    "devicesSoon": "Bientôt : synchronisation automatique avec Apple Santé, Health Connect, Fitbit et Withings dans l'app mobile.",
+    "disabledTitle": "Programme désactivé",
+    "disabledText": "Active-le ci-dessous pour recevoir tes séances.",
+    "settings": "Réglages du programme",
+    "back": "Programme de la semaine",
+    "sessionSubtitle": "{minutes} min · {rounds} tours",
+    "safety": "Échauffe-toi, respire, et arrête-toi en cas de douleur. Une version plus facile est proposée pour chaque exercice.",
+    "warmup": "Échauffement",
+    "reps": "{n} répétitions",
+    "restShort": "repos {s} s",
+    "tip": "Conseil",
+    "easier": "Trop difficile ? Essaie : {name}.",
+    "start": "Démarrer la séance",
+    "rest": "Récupération",
+    "roundOf": "Tour {round}/{rounds}",
+    "breathe": "Respire",
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "next": "Suivant",
+    "skipRest": "Passer",
+    "upNext": "Ensuite : {name}",
+    "bravo": "Séance terminée, bravo !",
+    "bravoText": "Elle est notée dans ton programme."
+  },
+  "progress": {
+    "title": "Progrès",
+    "subtitle": "Ton évolution, sans pression.",
+    "weightTitle": "Poids",
+    "chartLabel": "Évolution du poids et tendance lissée",
+    "goal": "Objectif",
+    "weighIn": "Pesée du",
+    "needTwo": "Ajoute au moins deux pesées pour voir ta courbe.",
+    "trendNote": "La ligne montre la tendance lissée : les variations d'un jour à l'autre (eau, sel) comptent peu.",
+    "date": "Date",
+    "weight": "Poids (kg)",
+    "waist": "Tour de taille (cm)",
+    "add": "Enregistrer",
+    "invalid": "Indique au moins un poids ou un tour de taille valide.",
+    "history": "Historique",
+    "delete": "Supprimer"
+  },
+  "review": {
+    "lastWeek": "Bilan de la semaine dernière",
+    "thisWeek": "Cette semaine (en cours)",
+    "weightTrend": "Tendance du poids",
+    "adherence": "Repas suivis",
+    "sessions": "Séances",
+    "budget": "Courses réelles / prévues",
+    "avgKcal": "Moyenne journalière",
+    "daysLogged": "Jours renseignés",
+    "nextTitle": "Et la semaine prochaine ?",
+    "nextText": "Weeko tient compte de tes goûts (recettes aimées, remplacées) pour te proposer une nouvelle semaine.",
+    "seeNext": "Voir la semaine prochaine",
+    "createNext": "Préparer la semaine prochaine",
+    "premiumTitle": "Bilan hebdomadaire",
+    "premiumText": "Avec Premium, chaque fin de semaine : évolution, séances, adhérence, budget prévu et réel, et des recommandations concrètes.",
+    "discover": "Découvrir Premium",
+    "recs": {
+      "keep_going": {
+        "title": "Continue comme ça",
+        "text": "Ta semaine est équilibrée, ton programme reste le même."
+      },
+      "simplify_meals": {
+        "title": "Simplifions",
+        "text": "Moins de la moitié des repas prévus ont été suivis. La semaine prochaine, on privilégie des recettes plus rapides et des restes."
+      },
+      "plateau_adjust": {
+        "title": "Petit ajustement",
+        "text": "Ton poids est stable depuis deux semaines malgré un bon suivi : on retire environ {value} kcal par jour, sans toucher aux protéines."
+      },
+      "slow_down_loss": {
+        "title": "On ralentit",
+        "text": "Tu perds plus de 1 % de ton poids par semaine : on ajoute environ {value} kcal par jour pour préserver ton énergie et tes muscles."
+      },
+      "more_protein": {
+        "title": "Plus de protéines",
+        "text": "Il te manque environ {value} g de protéines par jour : œufs, skyr, légumineuses ou poisson peuvent aider."
+      },
+      "lighter_training": {
+        "title": "Programme allégé",
+        "text": "Moins de la moitié des séances ont été faites : on passe à des séances plus courtes. Mieux vaut 15 minutes faites que 45 prévues."
+      },
+      "more_training": {
+        "title": "Prêt·e pour la suite ?",
+        "text": "Toutes les séances sont faites, bravo ! Tu peux ajouter un jour d'entraînement dans les réglages."
+      },
+      "budget_check": {
+        "title": "Budget dépassé",
+        "text": "Les courses ont coûté {value} € de plus que prévu. Active le garde-manger et vérifie les prix de ton magasin."
+      },
+      "log_more": {
+        "title": "Plus de données",
+        "text": "Renseigne tes repas au moins 3 jours par semaine (une coche suffit) pour un bilan plus précis."
+      },
+      "hydrate": {
+        "title": "Pense à boire",
+        "text": "Ton hydratation est en dessous de l'objectif : garde une bouteille à portée de main."
+      }
+    }
+  },
+  "coach": {
+    "title": "Coach",
+    "subtitle": "Pose une question ou décris un imprévu : il connaît ton programme.",
+    "premiumTitle": "Ton coach personnel",
+    "premiumText": "Avec Premium, le coach répond à tes questions et propose des modifications de tes menus, courses et séances. Tu valides avant chaque changement.",
+    "discover": "Découvrir Premium",
+    "noAi": "L'assistant IA n'est pas encore configuré : seules les demandes simples (restaurant, invités, temps, ingrédient manquant) sont comprises.",
+    "intro": "Bonjour ! Je connais ta semaine. Par exemple :",
+    "examples": {
+      "q1": "Je mange une pizza ce soir",
+      "q2": "Je n'ai plus de poulet",
+      "q3": "Comment avoir plus de protéines le matin ?",
+      "q4": "Nous serons 6 à dîner samedi"
+    },
+    "apply": "Appliquer ces changements",
+    "applied": "Changements appliqués ✓",
+    "thinking": "Le coach réfléchit…",
+    "placeholder": "Écris ton message…",
+    "send": "Envoyer",
+    "clear": "Effacer la conversation",
+    "disclaimer": "Le coach ne remplace pas un avis médical. Les chiffres sont toujours recalculés par le moteur Weeko.",
+    "actions": {
+      "eat_out": "{day}, {meal} à l'extérieur : « {label} ». Les jours suivants sont un peu allégés.",
+      "guests": "{day}, {meal} : {total} personnes à table.",
+      "time_limit": "{day}, {meal} : une recette prête en {minutes} min maximum.",
+      "missing_ingredient": "Remplacer les repas avec {ingredient} à partir de {day}.",
+      "replace_meal": "{day} : nouveau {meal}.",
+      "skip_meal": "{day} : pas de {meal}.",
+      "regenerate": "Recréer les menus à partir de {day}."
+    }
+  },
+  "account": {
+    "title": "Mon compte",
+    "thanksTitle": "Bienvenue dans Premium !",
+    "thanksText": "Merci pour ta confiance. Toutes les fonctions sont débloquées.",
+    "cancelled": "Le paiement a été annulé. Rien n'a été prélevé.",
+    "subscription": "Abonnement",
+    "endsOn": "Premium jusqu'au {date}, sans renouvellement.",
+    "renewsOn": "Prochain renouvellement le {date}.",
+    "upgradeText": "Passe à Premium pour {monthly} par mois ou {yearly} par an.",
+    "monthly": "Mensuel — 6,99 €/mois",
+    "yearly": "Annuel — 49,99 €/an",
+    "manage": "Gérer mon abonnement",
+    "stripeErrors": {
+      "not_configured": "Le paiement n'est pas encore configuré.",
+      "no_customer": "Aucun abonnement à gérer.",
+      "server": "Le paiement n'a pas pu démarrer. Réessaie.",
+      "auth": "Reconnecte-toi.",
+      "invalid": "Offre invalide."
+    },
+    "body": "Mon corps et mon objectif",
+    "goal": "Objectif",
+    "food": "Préférences alimentaires",
+    "household": "Mon foyer",
+    "you": "toi",
+    "redoProfile": "Refaire mon profil complet",
+    "privacy": "Données et confidentialité",
+    "privacyText": "Tes données de santé sont chiffrées et séparées des autres données. Tu peux les exporter ou tout supprimer à tout moment.",
+    "export": "Exporter mes données (JSON)",
+    "logout": "Me déconnecter",
+    "withdrawTitle": "Retirer mon consentement santé",
+    "withdrawText": "Tes données de santé (poids, mesures, allergies, situations déclarées) seront supprimées. Sans elles, Weeko ne peut plus personnaliser tes menus.",
+    "withdraw": "Retirer mon consentement",
+    "withdrawConfirm": "Supprimer mes données de santé",
+    "cancel": "Annuler",
+    "deleteTitle": "Supprimer mon compte",
+    "deleteText": "Toutes tes données seront définitivement supprimées et ton abonnement résilié. Cette action est irréversible.",
+    "delete": "Supprimer mon compte",
+    "deletePlaceholder": "Tape SUPPRIMER",
+    "deleteWord": "SUPPRIMER",
+    "deleteConfirm": "Supprimer définitivement",
+    "saved": "Enregistré",
+    "saveError": "Échec de l'enregistrement",
+    "save": "Enregistrer",
+    "saveAndRebuild": "Enregistrer et refaire le programme",
+    "prefsNote": "Les nouvelles préférences s'appliquent à la prochaine génération de menu."
+  }
+}

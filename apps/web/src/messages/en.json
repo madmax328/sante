@@ -1,0 +1,943 @@
+{
+  "meta": {
+    "title": "Weeko — your week, sorted",
+    "description": "Weekly meal plans, recipes, grocery list, budget and workouts: Weeko organises your week and adapts when real life gets in the way."
+  },
+  "site": {
+    "pricing": "Pricing",
+    "openApp": "Open the app",
+    "login": "Log in",
+    "start": "Start for free",
+    "footerTagline": "Tell us your goal, budget, tastes and schedule. We organise your week.",
+    "product": "Product",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "notice": "Legal notice",
+    "disclaimer": "Weeko is a wellness and organisation app. It does not replace medical advice. Nutrition data: CIQUAL table (ANSES)."
+  },
+  "home": {
+    "eyebrow": "Meals, groceries, budget and workouts",
+    "title": "Your week, sorted.",
+    "subtitle": "Tell us your goal, budget, tastes and schedule. Weeko prepares 7 days of meals, the grocery list and your workout plan, then adapts when real life gets in the way.",
+    "cta": "Plan my week",
+    "seePricing": "See pricing",
+    "ctaNote": "Free to start. No credit card.",
+    "compareOthers": "A classic tracking app",
+    "compareOthersQuote": "Tell me what you ate and I'll measure it.",
+    "compareUsQuote": "Tell me your goal, budget, tastes and schedule. I'll organise your week.",
+    "loopTitle": "A complete loop, not just another app",
+    "loopSubtitle": "From your profile to the Sunday review, each step feeds the next.",
+    "loop": {
+      "profile": {
+        "title": "Profile",
+        "text": "Age, height, tastes, allergies, household, cooking time."
+      },
+      "goal": {
+        "title": "Goal",
+        "text": "Lose, maintain, build muscle, eat better or spend less."
+      },
+      "budget": {
+        "title": "Budget",
+        "text": "\"I have €70 this week\": the menu fits."
+      },
+      "week": {
+        "title": "Week",
+        "text": "7 days of meals with the right quantities, in one click."
+      },
+      "groceries": {
+        "title": "Groceries",
+        "text": "One list, by aisle, minus what you already have."
+      },
+      "sport": {
+        "title": "Workouts",
+        "text": "A realistic plan for your level and availability."
+      },
+      "adapt": {
+        "title": "Changes",
+        "text": "Restaurant, guests, out of chicken: the week reorganises."
+      },
+      "review": {
+        "title": "Review",
+        "text": "Every Sunday: progress, budget, and a new week."
+      }
+    },
+    "features": {
+      "week": {
+        "title": "Automatic menus",
+        "text": "Breakfast, lunch, dinner and snacks, with portions calculated for everyone."
+      },
+      "budget": {
+        "title": "Budget kept",
+        "text": "Estimated spend and remaining budget always visible. Tight-budget mode in one tap."
+      },
+      "groceries": {
+        "title": "Smart groceries",
+        "text": "Grouped quantities, real pack sizes, pantry deducted and leftovers reused."
+      },
+      "recipes": {
+        "title": "1,500+ recipes",
+        "text": "Detailed steps, time, macros and cost per serving. Over 600 vegetarian recipes."
+      },
+      "sport": {
+        "title": "Workout plan",
+        "text": "Guided sessions with reps, rest and cues, no equipment needed."
+      },
+      "coach": {
+        "title": "AI coach",
+        "text": "Write \"I only have 15 minutes tonight\": it suggests, you approve."
+      }
+    },
+    "safetyTitle": "Reliable numbers, a kind tone",
+    "safetyText": "Calories, macros and quantities are computed by a tested engine from official data, never invented by AI. Dangerous goals are refused, with dedicated paths for minors, pregnancy and some medical situations.",
+    "safety": {
+      "engine": "Calculations: Mifflin-St Jeor formula and the ANSES CIQUAL table",
+      "kind": "No guilt: a pizza fits in, the week adjusts gently",
+      "privacy": "Health data encrypted and kept separate, one-click export and deletion"
+    },
+    "faqTitle": "Frequently asked questions",
+    "faq": {
+      "what": {
+        "q": "How is Weeko different from a calorie counter?",
+        "a": "Weeko doesn't just record: it organises. From your goal, budget, tastes and time, it builds the whole week (menus, recipes, groceries, workouts) and reorganises it when your plans change."
+      },
+      "budget": {
+        "q": "How is the budget calculated?",
+        "a": "Each ingredient has an average observed price and real pack sizes. The engine computes what you'll pay at the till, reuses leftover packs and deducts your pantry. Actual prices vary by shop."
+      },
+      "family": {
+        "q": "Does it work for families?",
+        "a": "Yes. The same dinner for everyone, with portions adapted to each person. Children are never put on a diet."
+      },
+      "ai": {
+        "q": "What does the AI actually do?",
+        "a": "It understands your requests in plain language and suggests changes. Every number is recalculated by the engine, and nothing changes without your approval."
+      },
+      "data": {
+        "q": "What happens to my data?",
+        "a": "It is hosted in Europe, health data is encrypted, and you can export or delete everything at any time from your account."
+      },
+      "price": {
+        "q": "How much does it cost?",
+        "a": "The free plan covers the essentials. Premium unlocks budget, pantry, AI coach, workouts and family mode."
+      }
+    },
+    "preview": {
+      "label": "Home screen preview, example figures",
+      "date": "Wed 2 Oct",
+      "dinnerLabel": "What's for dinner?",
+      "dinner": "Roast chicken, sweet potatoes and green beans",
+      "dinnerMeta": "520 kcal · 38 g protein · 25 min · €2.90",
+      "todoLabel": "What to do today?",
+      "todo": "Brisk walk 30 min",
+      "progressLabel": "Where I am",
+      "budgetLabel": "Budget left",
+      "cta": "Eating out tonight"
+    }
+  },
+  "pricing": {
+    "title": "Simple pricing",
+    "subtitle": "Start for free. Go Premium when you want Weeko to handle everything: budget, pantry, coach and workouts.",
+    "free": "Free",
+    "freeNote": "To discover and track the essentials",
+    "startFree": "Start for free",
+    "popular": "Most complete",
+    "monthlyPrice": "€6.99",
+    "month": "month",
+    "yearlyOffer": "or €49.99 per year (€4.17 / month)",
+    "goPremium": "Go Premium",
+    "paymentNote": "Secure payment by Stripe on our website. Cancel anytime.",
+    "freeItems": {
+      "profile": "Personalised profile and goals",
+      "targets": "Calorie and macro needs calculated",
+      "simpleWeek": "Weekly menu for one person",
+      "recipes": "Access to 1,500+ recipes",
+      "list": "Grocery list by aisle",
+      "journal": "Food diary",
+      "water": "Water tracking",
+      "weight": "Weight chart"
+    },
+    "premiumItems": {
+      "everythingFree": "Everything in Free, plus:",
+      "budget": "Budget and tight-budget mode",
+      "pantry": "Pantry and anti-waste",
+      "unlimitedSwaps": "Unlimited meal swaps",
+      "ai": "Plain-language adjustments",
+      "coach": "AI coach that knows your plan",
+      "sport": "Personalised workout plan",
+      "family": "Family mode, portions for everyone",
+      "review": "Weekly review and insights"
+    }
+  },
+  "auth": {
+    "loginTitle": "Welcome back!",
+    "loginCta": "Log in",
+    "signupTitle": "Create my account",
+    "signupSubtitle": "2 minutes for your profile, then your first week.",
+    "signupCta": "Create my account",
+    "name": "First name",
+    "email": "Email address",
+    "password": "Password",
+    "passwordHint": "At least 10 characters",
+    "newPassword": "New password",
+    "pending": "One moment…",
+    "google": "Continue with Google",
+    "forgot": "Forgot password?",
+    "noAccount": "Create an account",
+    "haveAccount": "I already have an account",
+    "acceptTerms": "I accept the <terms>terms of use</terms> and the <privacy>privacy policy</privacy>.",
+    "forgotTitle": "Forgot password",
+    "sendLink": "Send me a link",
+    "resetSent": "If an account exists for this address, an email is on its way. Check your spam folder.",
+    "backToLogin": "Back to log in",
+    "resetTitle": "New password",
+    "resetCta": "Save",
+    "errors": {
+      "invalid": "Wrong email or password.",
+      "generic": "Something went wrong. Please try again.",
+      "exists": "An account already exists with this address. Log in instead.",
+      "short": "The password must be at least 10 characters.",
+      "terms": "Please accept the terms to continue.",
+      "resetInvalid": "This link is no longer valid. Request a new one."
+    }
+  },
+  "nav": {
+    "label": "Main navigation",
+    "today": "Today",
+    "week": "Week",
+    "groceries": "Groceries",
+    "recipes": "Recipes",
+    "pantry": "Pantry",
+    "journal": "Diary",
+    "sport": "Workouts",
+    "progress": "Progress",
+    "coach": "Coach",
+    "account": "Account",
+    "upgrade": "Go Premium"
+  },
+  "onboarding": {
+    "metaTitle": "Welcome",
+    "progress": "Step {step} of {total}",
+    "back": "Back",
+    "next": "Continue",
+    "create": "Plan my week",
+    "creating": "Preparing your week…",
+    "you": {
+      "title": "Let's get to know you",
+      "subtitle": "This information is used to calculate your needs. It stays encrypted and private.",
+      "name": "First name",
+      "sex": "Sex",
+      "sexHint": "Used only to calculate energy needs.",
+      "birthDate": "Date of birth",
+      "height": "Height",
+      "weight": "Weight"
+    },
+    "goal": {
+      "title": "Your goal",
+      "subtitle": "You can change it at any time.",
+      "target": "Target weight (optional)",
+      "pace": "Pace",
+      "gentle": "Gentle (recommended)",
+      "moderate": "Moderate",
+      "activity": "Daily activity (outside workouts)",
+      "hints": {
+        "lose_weight": "A moderate deficit, without deprivation.",
+        "maintain": "Keep your weight while eating balanced.",
+        "gain_muscle": "More protein and a slight surplus.",
+        "eat_better": "More vegetables, fibre and home cooking.",
+        "save_money": "Eat well while spending less.",
+        "family_meals": "Organise meals for the whole family."
+      }
+    },
+    "health": {
+      "title": "Your health first",
+      "subtitle": "Some situations need professional follow-up: we adapt the plan accordingly.",
+      "pregnancy": "Pregnancy or breastfeeding",
+      "medical": "Specific situations (optional)",
+      "medicalHint": "If you tick a situation, Weeko stays cautious and recommends talking to a health professional.",
+      "allergies": "Allergies and intolerances",
+      "consent": "I agree that Weeko processes my health data (weight, height, allergies, declared situations) to personalise my menus and plan. This data is encrypted, never sold, and I can withdraw consent or delete it at any time."
+    },
+    "food": {
+      "title": "Your habits",
+      "subtitle": "For menus you actually want to cook.",
+      "diet": "Diet",
+      "avoid": "Avoid",
+      "weekday": "Cooking time on weekdays",
+      "weekend": "Cooking time at weekends",
+      "equipment": "Equipment",
+      "leftovers": "Cook once, eat twice",
+      "leftoversHint": "Monday, Wednesday and Friday dinners also make the next day's lunch.",
+      "snacks": "Include snacks"
+    },
+    "household": {
+      "title": "Your household",
+      "subtitle": "The same meal for everyone, with portions suited to each person.",
+      "selfMeals": "The meals you eat at home",
+      "member": "Member {n}",
+      "add": "Add a person",
+      "remove": "Remove",
+      "premiumNote": "Planning for several people is part of Premium. You can already fill in your household."
+    },
+    "budget": {
+      "title": "Your grocery budget",
+      "subtitle": "Optional but very useful: we build the week to fit in it.",
+      "enable": "Set a weekly budget",
+      "hint": "the engine picks recipes that respect this amount.",
+      "amount": "Budget per week",
+      "note": "Prices are averages observed in France. Actual prices vary by shop."
+    },
+    "sport": {
+      "title": "Your physical activity",
+      "subtitle": "A realistic plan that adapts to your schedule.",
+      "enable": "I want a workout plan",
+      "days": "Available days",
+      "minutes": "Session length",
+      "equipment": "Equipment available (optional)",
+      "limitations": "Pain or areas to protect",
+      "levelHints": {
+        "beginner": "I'm starting or getting back into it.",
+        "intermediate": "I exercise 1-2 times a week.",
+        "advanced": "I train regularly."
+      }
+    },
+    "summary": {
+      "title": "Your plan",
+      "subtitle": "Here are your calculated needs. We can create your first week.",
+      "computing": "Calculating…",
+      "explain": "Calculation: basal metabolic rate {bmr} kcal (Mifflin-St Jeor formula), estimated expenditure {tdee} kcal with your activity."
+    },
+    "errors": {
+      "invalid": "Some information is missing. Check the previous steps.",
+      "too_young": "Weeko is for people aged 15 and over.",
+      "consent": "Consent to health data processing is needed to personalise your plan.",
+      "server": "Saving failed. Please try again."
+    }
+  },
+  "enums": {
+    "sex": {
+      "female": "Female",
+      "male": "Male"
+    },
+    "goal": {
+      "lose_weight": "Lose weight",
+      "maintain": "Maintain my weight",
+      "gain_muscle": "Build muscle",
+      "eat_better": "Eat better",
+      "save_money": "Tight budget",
+      "family_meals": "Family meals"
+    },
+    "activity": {
+      "sedentary": "Sedentary (desk job, little walking)",
+      "light": "Light (daily walking)",
+      "moderate": "Moderate (on your feet much of the day)",
+      "active": "Active (physical job)",
+      "very_active": "Very active (very physical job)"
+    },
+    "pregnancy": {
+      "none": "Not applicable",
+      "pregnant_t1": "Pregnant, 1st trimester",
+      "pregnant_t2": "Pregnant, 2nd trimester",
+      "pregnant_t3": "Pregnant, 3rd trimester",
+      "breastfeeding": "Breastfeeding"
+    },
+    "medical": {
+      "diabetes": "Diabetes",
+      "kidney_disease": "Kidney disease",
+      "heart_disease": "Heart disease",
+      "eating_disorder_history": "History of eating disorder",
+      "bariatric_surgery": "Bariatric surgery",
+      "other": "Other monitored condition"
+    },
+    "allergen": {
+      "gluten": "Gluten",
+      "dairy": "Milk / lactose",
+      "egg": "Eggs",
+      "peanut": "Peanuts",
+      "nuts": "Tree nuts",
+      "fish": "Fish",
+      "seafood": "Shellfish",
+      "soy": "Soy",
+      "sesame": "Sesame",
+      "celery": "Celery",
+      "mustard": "Mustard",
+      "sulphites": "Sulphites",
+      "lupin": "Lupin"
+    },
+    "diet": {
+      "omnivore": "I eat everything",
+      "pescatarian": "Pescatarian",
+      "vegetarian": "Vegetarian",
+      "vegan": "Vegan"
+    },
+    "avoid": {
+      "pork": "Pork",
+      "beef": "Beef",
+      "lamb": "Lamb",
+      "alcohol": "Alcohol",
+      "fish": "Fish",
+      "seafood": "Seafood"
+    },
+    "equipment": {
+      "oven": "Oven",
+      "microwave": "Microwave",
+      "blender": "Blender",
+      "airfryer": "Air fryer",
+      "slowcooker": "Slow cooker"
+    },
+    "meal": {
+      "breakfast": "Breakfast",
+      "lunch": "Lunch",
+      "dinner": "Dinner",
+      "snack": "Snack"
+    },
+    "level": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "dayShort": {
+      "0": "Mon",
+      "1": "Tue",
+      "2": "Wed",
+      "3": "Thu",
+      "4": "Fri",
+      "5": "Sat",
+      "6": "Sun"
+    },
+    "day": {
+      "0": "Monday",
+      "1": "Tuesday",
+      "2": "Wednesday",
+      "3": "Thursday",
+      "4": "Friday",
+      "5": "Saturday",
+      "6": "Sunday"
+    },
+    "sportEquipment": {
+      "dumbbells": "Dumbbells",
+      "band": "Resistance band",
+      "kettlebell": "Kettlebell",
+      "pullup_bar": "Pull-up bar",
+      "bike": "Bike",
+      "pool": "Pool"
+    },
+    "limitation": {
+      "knees": "Knees",
+      "back": "Back",
+      "shoulders": "Shoulders",
+      "wrists": "Wrists"
+    },
+    "nutrient": {
+      "kcal": "Energy",
+      "protein": "Protein",
+      "carbs": "Carbs",
+      "fat": "Fat",
+      "fiber": "Fibre",
+      "sugars": "Sugars",
+      "satFat": "Saturated fat",
+      "salt": "Salt"
+    },
+    "aisle": {
+      "produce": "Fruit and vegetables",
+      "meat": "Meat and poultry",
+      "fish": "Fish counter",
+      "dairy": "Dairy and eggs",
+      "bakery": "Bakery",
+      "grocery": "Pantry staples",
+      "sweet": "Sweet aisle",
+      "frozen": "Frozen",
+      "spices": "Oils, spices, condiments",
+      "drinks": "Drinks",
+      "plant": "Plant-based"
+    },
+    "safety": {
+      "under_min_age": {
+        "title": "For ages 15 and over",
+        "text": "Weeko isn't suitable under 15. Talk about your diet with your parents and your doctor."
+      },
+      "minor_no_deficit": {
+        "title": "No dieting under 18",
+        "text": "Your body is still growing: we offer balanced eating, without restriction. For any weight concern, talk to your doctor."
+      },
+      "pregnancy_no_deficit": {
+        "title": "Pregnancy: no weight loss",
+        "text": "During pregnancy we adapt intake to your needs, without restriction, and avoid foods that aren't recommended (raw fish, raw-milk cheese…). Your midwife or doctor remains your reference."
+      },
+      "breastfeeding_mild_deficit_only": {
+        "title": "Breastfeeding: very gentle pace",
+        "text": "While breastfeeding, weight loss is limited to 0.5 kg per week at most to protect lactation."
+      },
+      "underweight_no_loss": {
+        "title": "Weight loss not recommended",
+        "text": "Your BMI is already low: we don't offer weight loss. Goal: eat well and keep your energy."
+      },
+      "target_weight_too_low": {
+        "title": "Target weight too low",
+        "text": "This weight corresponds to a BMI under 18.5. We keep a safe pace, but please review this goal with a professional."
+      },
+      "pace_too_fast": {
+        "title": "Pace adjusted",
+        "text": "Losing more than 1% of body weight per week leads to muscle loss and regain. We limit the pace."
+      },
+      "gain_too_fast": {
+        "title": "Pace adjusted",
+        "text": "Beyond 0.5% per week, weight gain is mostly fat. We keep it reasonable."
+      },
+      "medical_supervision": {
+        "title": "Medical situation declared",
+        "text": "Weeko stays cautious (limited pace, adjusted protein if needed). Have your plan checked by your doctor or a dietitian."
+      },
+      "eating_disorder_history": {
+        "title": "A plan without numbers",
+        "text": "Calories and weight are hidden and there is no restriction. If you're going through a hard time, your doctor or a local eating disorder helpline can help."
+      },
+      "kcal_floor": {
+        "title": "Minimum intake",
+        "text": "Your calorie target never goes below a safety threshold."
+      }
+    }
+  },
+  "errors": {
+    "premium": "This feature is part of Premium.",
+    "quota": "You've used your 3 free swaps this week.",
+    "invalid": "This request isn't valid.",
+    "no_plan": "Create your week first.",
+    "server": "Something went wrong. Please try again.",
+    "seePremium": "Discover Premium"
+  },
+  "today": {
+    "hello": "Hi {name}!",
+    "noPlanTitle": "Your week isn't ready yet",
+    "noPlanText": "In one click, Weeko prepares your meals for the next 7 days, your grocery list and your workout plan.",
+    "createWeek": "Plan my week",
+    "whatToEat": "What to eat today?",
+    "seeWeek": "Whole week",
+    "leftover": "Leftovers",
+    "nothingPlanned": "Nothing planned",
+    "portion": "{n} serving",
+    "markEaten": "Mark as eaten",
+    "eaten": "Eaten",
+    "adjustTitle": "Change of plans?",
+    "whatToDo": "What to do today?",
+    "sportDisabled": "The workout plan is turned off. You can turn it on in the Workouts tab.",
+    "sportPremium": "A personalised workout plan awaits with Premium: guided sessions for your level and schedule.",
+    "discoverPremium": "Discover Premium",
+    "sessionMeta": "{minutes} min · about {kcal} kcal",
+    "done": "Done",
+    "restDay": "Rest day. A short walk is still a good idea!",
+    "stepsGoal": "Step goal: {steps}",
+    "whereAmI": "Where am I?",
+    "logHint": "Tick your meals or add what you ate.",
+    "remaining": "About {kcal} kcal left today.",
+    "openJournal": "Open the diary",
+    "noNumbers": "No numbers here: focus on varied meals, eating to hunger, and how you feel.",
+    "water": "Hydration",
+    "waterLess": "Remove a glass",
+    "waterMore": "Add a glass",
+    "glass": "A glass",
+    "glasses": "{count, plural, =0 {No glass yet} one {# glass} other {# glasses}}",
+    "seeGroceries": "Grocery list",
+    "budgetTitle": "How much is left?",
+    "budgetOf": "{cost} of {budget}",
+    "budgetOver": "Budget exceeded: check the suggestions on the Week page.",
+    "estimated": "Estimated groceries this week: {cost}.",
+    "setBudget": "Set a budget",
+    "budgetPremium": "Set a budget (Premium)"
+  },
+  "adjust": {
+    "label": "Describe the change",
+    "placeholder": "E.g. eating out tonight",
+    "submit": "Adapt",
+    "suggestions": {
+      "restaurant": "Eating out at a restaurant tonight",
+      "guests": "There will be 5 of us for dinner tonight",
+      "quick": "I only have 15 minutes tonight",
+      "missing": "I'm out of chicken"
+    },
+    "premiumNote": "Automatic adjustments are part of Premium.",
+    "apply": "Apply",
+    "dismiss": "Dismiss"
+  },
+  "week": {
+    "title": "My week",
+    "previous": "Previous week",
+    "next": "Next week",
+    "thisWeek": "This week",
+    "emptyTitle": "No menu for this week yet",
+    "emptyText": "Weeko builds 7 days of meals around your goal, budget, tastes and time.",
+    "create": "Plan my week",
+    "groceriesCost": "Estimated groceries",
+    "leftoverValue": "including {value} of products left for later",
+    "avgPerDay": "Average per day",
+    "regenerate": "New menu",
+    "regenerateConfirm": "The whole menu will be recreated (meals eaten out are kept).",
+    "confirmRegenerate": "Recreate",
+    "cancel": "Cancel",
+    "budget": "Budget",
+    "budgetLine": "Budget {budget} · {left} left",
+    "budgetOverTitle": "Budget hard to meet",
+    "budgetOverText": "With your constraints, the cheapest menu found costs {min}. You can relax your preferences (time, foods to avoid) or raise the budget a little.",
+    "budgetTitle": "Weekly budget",
+    "budgetPremium": "Set a budget and let Weeko build a week that respects it.",
+    "discover": "Discover Premium",
+    "budgetEnable": "Stick to a budget",
+    "budgetAmount": "Amount",
+    "perWeek": "week",
+    "budgetRebuild": "Rebuild the menu with this budget",
+    "budgetSaveOnly": "Save without changing the menu",
+    "freeNote": "Free version: menu for you only, without budget or pantry, 3 swaps per week.",
+    "today": "Today",
+    "replace": "Swap",
+    "replaceTitle": "Swap this meal",
+    "close": "Close",
+    "search": "Search",
+    "searchPlaceholder": "Search a recipe (e.g. curry)",
+    "surprise": "Surprise me",
+    "loading": "Finding the best options…",
+    "noAlternative": "No compatible alternative found.",
+    "sameCost": "same cost",
+    "usesLeftovers": "uses your leftovers",
+    "more": "More options",
+    "eatOut": "I'm eating out",
+    "guests": "There will be guests",
+    "lessTime": "I have less time",
+    "skip": "I'm skipping this meal",
+    "eatOutLabel": "What are you eating?",
+    "eatOutDefault": "Meal out",
+    "guestsLabel": "How many people in total?",
+    "timeLabel": "How many minutes to cook?",
+    "validate": "Confirm",
+    "nothing": "Nothing planned",
+    "leftoverOf": "Leftovers from {day}",
+    "cookDouble": "Cook a double batch",
+    "outside": "Eating out",
+    "someOutside": "Part of the household out",
+    "withGuests": "+{n} guests",
+    "serving": "serving"
+  },
+  "recipes": {
+    "title": "Recipes",
+    "subtitle": "{count} recipes",
+    "search": "Search a recipe or an ingredient",
+    "meal": "Meal",
+    "allMeals": "All meals",
+    "diet": "Diet",
+    "time": "Time",
+    "anyTime": "Any time",
+    "maxTime": "≤ {m} min",
+    "filter": "Filter",
+    "filteredMine": "Recipes compatible with your allergies and preferences.",
+    "showingAll": "All recipes for the selected diet.",
+    "showAll": "Show all",
+    "showMine": "Only mine",
+    "none": "No recipe found",
+    "noneText": "Try another word or remove a filter.",
+    "batch": "Batch cooking",
+    "protein": "High protein",
+    "pagination": "Pages",
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page {page} of {pages}"
+  },
+  "recipe": {
+    "back": "All recipes",
+    "photoBy": "Photo:",
+    "batch": "Make ahead",
+    "time": "Total time",
+    "difficulty": "Difficulty",
+    "level1": "Easy",
+    "level2": "Medium",
+    "level3": "Elaborate",
+    "cost": "Cost / serving",
+    "energy": "Energy / serving",
+    "prepCook": "Prep {prep} min · cook {cook} min",
+    "keeps": "Keeps {days} days in the fridge",
+    "like": "I like it",
+    "dislike": "Not for me",
+    "meal": "Meal",
+    "addToJournal": "Add to diary",
+    "added": "Added",
+    "warningTitle": "Warning",
+    "warningText": "This recipe contains: {list}. It won't be suggested in your menus.",
+    "ingredients": "Ingredients",
+    "servings": "Servings",
+    "less": "Fewer",
+    "more": "More",
+    "staples": "Cupboard",
+    "allergens": "Allergens",
+    "steps": "Method",
+    "nutrition": "Nutrition per serving",
+    "nutritionNote": "Calculated from the CIQUAL table (ANSES) for raw ingredients."
+  },
+  "groceries": {
+    "title": "Grocery list",
+    "subtitle": "{count} items · {total}",
+    "emptyTitle": "No list yet",
+    "emptyText": "Create your week: the grocery list builds itself.",
+    "create": "Plan my week",
+    "copy": "Copy the list",
+    "copied": "Copied!",
+    "print": "Print",
+    "estimated": "Estimated total",
+    "budget": "Budget: {budget}",
+    "actualSpent": "Actual amount (optional)",
+    "shopped": "Shopping done",
+    "shoppedDone": "Shopping done, well done!",
+    "priceNote": "Average prices observed in France, by real pack sizes. Prices vary by shop.",
+    "pantryTitle": "What you already have",
+    "pantryPremium": "With Premium, enter your pantry: it's deducted from the list and leftovers are reused.",
+    "discover": "Discover",
+    "fromPantry": "Already in your pantry",
+    "staples": "Check your cupboard",
+    "staplesText": "Salt, oil, spices… assumed to be at home.",
+    "leftoversTitle": "You'll have left",
+    "leftoversText": "Leftover fresh products: use them (omelette, salad, soup) or freeze them."
+  },
+  "pantry": {
+    "title": "Pantry",
+    "subtitle": "What you already have: deducted from groceries and used first in menus.",
+    "premiumTitle": "The pantry is part of Premium",
+    "premiumText": "Enter what you have at home: Weeko removes it from your grocery list and cooks it first, so you spend and waste less.",
+    "discover": "Discover Premium",
+    "addTitle": "Add a product",
+    "ingredient": "Product (e.g. long grain rice)",
+    "quantity": "Quantity",
+    "add": "Add",
+    "unknown": "Pick a product from the suggestions.",
+    "premium": "Premium feature.",
+    "remove": "Remove",
+    "hint": "Quantities in grams, millilitres or pieces. When you confirm your shopping, remaining dry goods are added automatically.",
+    "emptyTitle": "Your pantry is empty",
+    "emptyText": "Add what you have left (pasta, rice, tins…) to save on your next shop."
+  },
+  "journal": {
+    "title": "Diary",
+    "previous": "Previous day",
+    "next": "Next day",
+    "today": "Today",
+    "addTitle": "Add a food",
+    "meal": "Meal",
+    "tabs": {
+      "search": "Search",
+      "custom": "Manual entry",
+      "barcode": "Barcode"
+    },
+    "searchPlaceholder": "E.g. apple, yogurt, chicken…",
+    "perServing": "serving",
+    "servings": "Servings",
+    "pieces": "Pieces",
+    "grams": "Grams",
+    "add": "Add",
+    "cancel": "Cancel",
+    "added": "Added to the diary.",
+    "customName": "Name (e.g. bakery sandwich)",
+    "proteinShort": "Prot. (g)",
+    "carbsShort": "Carbs (g)",
+    "fatShort": "Fat (g)",
+    "barcodePlaceholder": "Barcode (8 to 14 digits)",
+    "lookup": "Look up",
+    "scan": "Scan",
+    "stopCamera": "Stop",
+    "notFound": "Product not found. Use manual entry.",
+    "offCredit": "Product data: Open Food Facts, an open collaborative database.",
+    "nothing": "Nothing yet.",
+    "remove": "Remove",
+    "fromPlan": "Menu",
+    "servingsCount": "{n} serving(s)",
+    "water": "Hydration"
+  },
+  "sport": {
+    "title": "Workouts",
+    "subtitle": "Week {week} of the plan · {done}/{total} sessions done",
+    "premiumTitle": "Your personalised workout plan",
+    "premiumText": "With Premium, Weeko creates sessions for your level, goal, equipment and availability, with guided exercises.",
+    "discover": "Discover Premium",
+    "today": "Today",
+    "meta": "{minutes} min · about {kcal} kcal",
+    "open": "Start",
+    "done": "Done",
+    "markDone": "Mark done",
+    "stepsTitle": "Today's steps",
+    "stepsText": "This week's goal: {goal} steps a day.",
+    "stepsToday": "Steps today",
+    "save": "Save",
+    "saved": "Saved",
+    "devicesSoon": "Coming soon: automatic sync with Apple Health, Health Connect, Fitbit and Withings in the mobile app.",
+    "disabledTitle": "Plan turned off",
+    "disabledText": "Turn it on below to get your sessions.",
+    "settings": "Plan settings",
+    "back": "This week's plan",
+    "sessionSubtitle": "{minutes} min · {rounds} rounds",
+    "safety": "Warm up, breathe, and stop if anything hurts. An easier version is offered for each exercise.",
+    "warmup": "Warm-up",
+    "reps": "{n} reps",
+    "restShort": "rest {s} s",
+    "tip": "Tip",
+    "easier": "Too hard? Try: {name}.",
+    "start": "Start the session",
+    "rest": "Rest",
+    "roundOf": "Round {round}/{rounds}",
+    "breathe": "Breathe",
+    "pause": "Pause",
+    "resume": "Resume",
+    "next": "Next",
+    "skipRest": "Skip",
+    "upNext": "Next: {name}",
+    "bravo": "Session complete, well done!",
+    "bravoText": "It's recorded in your plan."
+  },
+  "progress": {
+    "title": "Progress",
+    "subtitle": "Your progress, without pressure.",
+    "weightTitle": "Weight",
+    "chartLabel": "Weight and smoothed trend",
+    "goal": "Goal",
+    "weighIn": "Weigh-in on",
+    "needTwo": "Add at least two weigh-ins to see your chart.",
+    "trendNote": "The line shows the smoothed trend: day-to-day swings (water, salt) matter little.",
+    "date": "Date",
+    "weight": "Weight (kg)",
+    "waist": "Waist (cm)",
+    "add": "Save",
+    "invalid": "Enter at least a valid weight or waist measurement.",
+    "history": "History",
+    "delete": "Delete"
+  },
+  "review": {
+    "lastWeek": "Last week's review",
+    "thisWeek": "This week (in progress)",
+    "weightTrend": "Weight trend",
+    "adherence": "Meals followed",
+    "sessions": "Sessions",
+    "budget": "Actual / planned groceries",
+    "avgKcal": "Daily average",
+    "daysLogged": "Days logged",
+    "nextTitle": "And next week?",
+    "nextText": "Weeko takes your tastes (liked and swapped recipes) into account to suggest a new week.",
+    "seeNext": "See next week",
+    "createNext": "Prepare next week",
+    "premiumTitle": "Weekly review",
+    "premiumText": "With Premium, every weekend: progress, sessions, adherence, planned and actual budget, and concrete recommendations.",
+    "discover": "Discover Premium",
+    "recs": {
+      "keep_going": {
+        "title": "Keep it up",
+        "text": "Your week is balanced, your plan stays the same."
+      },
+      "simplify_meals": {
+        "title": "Let's simplify",
+        "text": "Less than half of the planned meals were followed. Next week we'll favour quicker recipes and leftovers."
+      },
+      "plateau_adjust": {
+        "title": "Small adjustment",
+        "text": "Your weight has been stable for two weeks despite good adherence: we remove about {value} kcal per day, without touching protein."
+      },
+      "slow_down_loss": {
+        "title": "Slowing down",
+        "text": "You're losing more than 1% of your weight per week: we add about {value} kcal per day to protect your energy and muscles."
+      },
+      "more_protein": {
+        "title": "More protein",
+        "text": "You're about {value} g of protein short per day: eggs, skyr, pulses or fish can help."
+      },
+      "lighter_training": {
+        "title": "Lighter plan",
+        "text": "Less than half the sessions were done: we switch to shorter sessions. 15 minutes done beats 45 planned."
+      },
+      "more_training": {
+        "title": "Ready for more?",
+        "text": "All sessions done, well done! You can add a training day in the settings."
+      },
+      "budget_check": {
+        "title": "Budget exceeded",
+        "text": "Groceries cost €{value} more than planned. Turn on the pantry and check your shop's prices."
+      },
+      "log_more": {
+        "title": "More data",
+        "text": "Log your meals at least 3 days a week (a tick is enough) for a more accurate review."
+      },
+      "hydrate": {
+        "title": "Remember to drink",
+        "text": "Your hydration is below target: keep a bottle within reach."
+      }
+    }
+  },
+  "coach": {
+    "title": "Coach",
+    "subtitle": "Ask a question or describe a change: it knows your plan.",
+    "premiumTitle": "Your personal coach",
+    "premiumText": "With Premium, the coach answers your questions and suggests changes to your menus, groceries and sessions. You approve every change.",
+    "discover": "Discover Premium",
+    "noAi": "The AI assistant isn't configured yet: only simple requests (restaurant, guests, time, missing ingredient) are understood.",
+    "intro": "Hi! I know your week. For example:",
+    "examples": {
+      "q1": "I'm having pizza tonight",
+      "q2": "I'm out of chicken",
+      "q3": "How can I get more protein at breakfast?",
+      "q4": "There will be 6 of us for dinner on Saturday"
+    },
+    "apply": "Apply these changes",
+    "applied": "Changes applied ✓",
+    "thinking": "The coach is thinking…",
+    "placeholder": "Write your message…",
+    "send": "Send",
+    "clear": "Clear the conversation",
+    "disclaimer": "The coach doesn't replace medical advice. Numbers are always recalculated by the Weeko engine.",
+    "actions": {
+      "eat_out": "{day}, {meal} out: \"{label}\". The following days are slightly lighter.",
+      "guests": "{day}, {meal}: {total} people at the table.",
+      "time_limit": "{day}, {meal}: a recipe ready in {minutes} min max.",
+      "missing_ingredient": "Replace meals with {ingredient} from {day}.",
+      "replace_meal": "{day}: new {meal}.",
+      "skip_meal": "{day}: no {meal}.",
+      "regenerate": "Recreate menus from {day}."
+    }
+  },
+  "account": {
+    "title": "My account",
+    "thanksTitle": "Welcome to Premium!",
+    "thanksText": "Thank you for your trust. All features are unlocked.",
+    "cancelled": "Payment was cancelled. Nothing was charged.",
+    "subscription": "Subscription",
+    "endsOn": "Premium until {date}, without renewal.",
+    "renewsOn": "Next renewal on {date}.",
+    "upgradeText": "Go Premium for {monthly} per month or {yearly} per year.",
+    "monthly": "Monthly — €6.99/month",
+    "yearly": "Yearly — €49.99/year",
+    "manage": "Manage my subscription",
+    "stripeErrors": {
+      "not_configured": "Payment isn't configured yet.",
+      "no_customer": "No subscription to manage.",
+      "server": "Payment couldn't start. Please retry.",
+      "auth": "Please log in again.",
+      "invalid": "Invalid plan."
+    },
+    "body": "My body and goal",
+    "goal": "Goal",
+    "food": "Food preferences",
+    "household": "My household",
+    "you": "you",
+    "redoProfile": "Redo my full profile",
+    "privacy": "Data and privacy",
+    "privacyText": "Your health data is encrypted and kept separate from other data. You can export it or delete everything at any time.",
+    "export": "Export my data (JSON)",
+    "logout": "Log out",
+    "withdrawTitle": "Withdraw my health consent",
+    "withdrawText": "Your health data (weight, measurements, allergies, declared situations) will be deleted. Without it, Weeko can no longer personalise your menus.",
+    "withdraw": "Withdraw my consent",
+    "withdrawConfirm": "Delete my health data",
+    "cancel": "Cancel",
+    "deleteTitle": "Delete my account",
+    "deleteText": "All your data will be permanently deleted and your subscription cancelled. This cannot be undone.",
+    "delete": "Delete my account",
+    "deletePlaceholder": "Type DELETE",
+    "deleteWord": "DELETE",
+    "deleteConfirm": "Delete permanently",
+    "saved": "Saved",
+    "saveError": "Saving failed",
+    "save": "Save",
+    "saveAndRebuild": "Save and rebuild the plan",
+    "prefsNote": "New preferences apply to the next menu generation."
+  }
+}

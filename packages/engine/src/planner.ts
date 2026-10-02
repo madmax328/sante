@@ -343,7 +343,9 @@ function scoreRecipe(
     const ratio = cost / Math.max(0.3, slotBudget);
     costPenalty = ratio <= 1 ? ratio * 0.4 : 0.4 + (ratio - 1) * 2.5;
   } else {
-    costPenalty = (r.cost / 3) * 0.15;
+    // No budget: still prefer what is sensible to buy (whole packs, reuse),
+    // around 3 € per adult serving as a reference.
+    costPenalty = (cost / Math.max(1, servings * 3)) * 0.9;
   }
 
   // 4. Variety and preferences.
