@@ -9,6 +9,7 @@ import { panMains } from "./recipes/mains-pan";
 import { classicMains } from "./recipes/mains-classics";
 
 export { ingredients };
+export { exercises } from "./exercises";
 
 export const recipes: Recipe[] = [
   ...breakfasts,
