@@ -29,6 +29,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
     <div className="grid gap-6">
       <PageHeader title={t("title")} subtitle={user.email} />
       {sp.checkout === "success" && <Notice tone="basilic" title={t("thanksTitle")}>{t("thanksText")}</Notice>}
+      {sp.checkout === "pending" && !premium && <Notice tone="miel">{t("pending")}</Notice>}
       {sp.checkout === "cancel" && <Notice tone="miel">{t("cancelled")}</Notice>}
 
       <Card className="grid gap-4">

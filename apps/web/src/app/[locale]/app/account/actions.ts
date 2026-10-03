@@ -23,8 +23,10 @@ export async function prepareCheckoutAction(plan: Plan): Promise<{ data?: Prepar
   try {
     return { data: await prepareCheckout(session.user.id, session.user.email, plan) };
   } catch (e) {
-    console.error(e);
-    return { error: "server" };
+    console.error("prepareCheckout failed", e);
+    // Stripe's own error code helps diagnose a misconfiguration (prices, payment methods…).
+    const code = e && typeof e === "object" && "code" in e && typeof e.code === "string" ? e.code : "server";
+    return { error: code };
   }
 }
 
@@ -38,7 +40,7 @@ export async function completeCheckoutAction(ref: { subscriptionId?: string; set
     revalidatePath("/[locale]/app", "layout");
     return { active };
   } catch (e) {
-    console.error(e);
+    console.error("completeCheckout failed", e);
     return { active: false };
   }
 }

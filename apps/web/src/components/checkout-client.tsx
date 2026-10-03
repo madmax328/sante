@@ -64,8 +64,10 @@ export function SubscribeForm(props: Props) {
       stripe={stripePromise}
       options={{
         ...(props.trialDays > 0
-          ? { mode: "setup" as const, currency, setupFutureUsage: "off_session" as const }
+          ? { mode: "setup" as const, currency }
           : { mode: "subscription" as const, amount: props.amountMinor, currency }),
+        // Must match the server side exactly (card, incl. Apple Pay / Google Pay).
+        allowedPaymentMethodTypes: ["card"],
         appearance: weekoAppearance(dark),
         locale: locale === "en" ? "en" : "fr",
         fonts: [{ cssSrc: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&display=swap" }],
@@ -85,9 +87,11 @@ function PayForm({ plan, amountMinor, currency, trialDays, completeUrl }: Props)
   const [ready, setReady] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string>();
+  const [ref, setRef] = useState<string>();
 
-  function fail(message?: string) {
+  function fail(message?: string, ref?: string) {
     setError(message ?? t("genericError"));
+    setRef(ref);
     setPending(false);
   }
 
@@ -105,20 +109,21 @@ function PayForm({ plan, amountMinor, currency, trialDays, completeUrl }: Props)
       router.push("/app/account");
       return;
     }
-    if (!prepared.data) return fail();
+    if (!prepared.data) return fail(undefined, prepared.error);
     const data = prepared.data;
     // 3. Stripe charges or verifies the card (with 3-D Secure if the bank asks for it).
-    const ref = data.kind === "payment" ? { subscriptionId: data.subscriptionId } : { setupIntentId: data.setupIntentId };
+    const done = data.kind === "payment" ? { subscriptionId: data.subscriptionId } : { setupIntentId: data.setupIntentId };
     const returnUrl = data.kind === "payment" ? `${completeUrl}?sub=${data.subscriptionId}` : completeUrl;
     const params = { elements, clientSecret: data.clientSecret, confirmParams: { return_url: returnUrl }, redirect: "if_required" as const };
     const result = data.kind === "payment" ? await stripe.confirmPayment(params) : await stripe.confirmSetup(params);
     if (result.error) {
-      return fail(result.error.type === "card_error" || result.error.type === "validation_error" ? result.error.message : undefined);
+      const userFacing = result.error.type === "card_error" || result.error.type === "validation_error";
+      return fail(userFacing ? result.error.message : undefined, userFacing ? undefined : result.error.code ?? result.error.type);
     }
     // 4. Premium is granted by the server, which re-reads the result from Stripe.
-    const done = await completeCheckoutAction(ref);
-    if (!done.active) return fail();
-    router.push("/app/account?checkout=success");
+    // The card was accepted at this point: if activation lags, the webhook finishes it.
+    const completed = await completeCheckoutAction(done);
+    router.push(completed.active ? "/app/account?checkout=success" : "/app/account?checkout=pending");
     router.refresh();
   }
 
@@ -127,7 +132,12 @@ function PayForm({ plan, amountMinor, currency, trialDays, completeUrl }: Props)
     <form onSubmit={onSubmit} className="grid gap-5">
       <PaymentElement onReady={() => setReady(true)} options={{ layout: "tabs", business: { name: "Weeko" } }} />
       {!ready && <p className="flex items-center gap-2 text-sm text-muted"><Loader2 className="size-4 animate-spin" />{t("loading")}</p>}
-      {error && <p role="alert" className="rounded-xl bg-danger-soft px-3 py-2 text-sm text-danger">{error}</p>}
+      {error && (
+        <p role="alert" className="rounded-xl bg-danger-soft px-3 py-2 text-sm text-danger">
+          {error}
+          {ref && <span className="mt-1 block text-xs opacity-80">{t("errorRef", { ref })}</span>}
+        </p>
+      )}
       <Button type="submit" variant="accent" size="lg" disabled={!stripe || !ready || pending}>
         {pending ? <Loader2 className="size-4 animate-spin" /> : <Lock className="size-4" />}
         {pending ? t("processing") : trialDays > 0 ? t("startTrial", { days: trialDays }) : t("pay", { price })}

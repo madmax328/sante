@@ -88,7 +88,7 @@ export async function prepareCheckout(userId: string, email: string, plan: Plan)
     const setup = await stripe().setupIntents.create({
       customer,
       usage: "off_session",
-      automatic_payment_methods: { enabled: true },
+      allowed_payment_method_types: ["card"],
       metadata: { userId, plan },
     });
     return { kind: "setup", clientSecret: setup.client_secret!, setupIntentId: setup.id };
@@ -98,7 +98,8 @@ export async function prepareCheckout(userId: string, email: string, plan: Plan)
     customer,
     items: [{ price: priceId }],
     payment_behavior: "default_incomplete",
-    payment_settings: { save_default_payment_method: "on_subscription" },
+    // Same payment methods as the form on our page, otherwise Stripe rejects the confirmation.
+    payment_settings: { save_default_payment_method: "on_subscription", payment_method_types: ["card"] },
     metadata: { userId },
     expand: ["latest_invoice.confirmation_secret"],
   });
@@ -140,7 +141,12 @@ export async function startTrial(userId: string, setupIntentId: string): Promise
 
 /** Called right after the payment form succeeds, without waiting for the webhook. */
 export async function refreshSubscription(userId: string, subscriptionId: string): Promise<boolean> {
-  const sub = await stripe().subscriptions.retrieve(subscriptionId);
+  // Stripe marks the invoice paid a moment after the card is charged: wait for it briefly.
+  let sub = await stripe().subscriptions.retrieve(subscriptionId);
+  for (let i = 0; i < 8 && sub.status === "incomplete"; i++) {
+    await new Promise((r) => setTimeout(r, 1000));
+    sub = await stripe().subscriptions.retrieve(subscriptionId);
+  }
   const profile = await getProfile(userId);
   const customer = typeof sub.customer === "string" ? sub.customer : sub.customer.id;
   if (!profile?.subscription?.customerId || profile.subscription.customerId !== customer) return false;

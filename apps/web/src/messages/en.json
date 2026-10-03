@@ -938,7 +938,8 @@
     "saveError": "Saving failed",
     "save": "Save",
     "saveAndRebuild": "Save and rebuild the plan",
-    "prefsNote": "New preferences apply to the next menu generation."
+    "prefsNote": "New preferences apply to the next menu generation.",
+    "pending": "Payment received: Premium will be active in a moment. Reload the page in a minute."
   },
   "checkout": {
     "title": "Go Premium",
@@ -960,6 +961,7 @@
     "genericError": "The payment didn't go through. Check your details or try another card.",
     "notConfigured": "Payment isn't configured yet.",
     "startError": "We couldn't prepare the payment right now. Please try again shortly.",
-    "legal": "By confirming, you accept the <terms>terms of sale</terms> and request immediate access to Premium, waiving your right of withdrawal for the current period. The subscription renews automatically."
+    "legal": "By confirming, you accept the <terms>terms of sale</terms> and request immediate access to Premium, waiving your right of withdrawal for the current period. The subscription renews automatically.",
+    "errorRef": "Error reference: {ref}"
   }
 }

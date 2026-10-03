@@ -21,5 +21,6 @@ export default async function CheckoutCompletePage({ searchParams }: PageProps<"
       console.error(e);
     }
   }
-  redirect({ href: active ? "/app/account?checkout=success" : "/app/account?checkout=cancel", locale });
+  const status = active ? "success" : sp.redirect_status === "succeeded" ? "pending" : "cancel";
+  redirect({ href: `/app/account?checkout=${status}`, locale });
 }
