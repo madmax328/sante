@@ -11,11 +11,25 @@ export function stripe(): Stripe {
   return client;
 }
 
+/** The stored customer, if it still exists in this Stripe account (it may have been deleted, or come from another mode). */
+async function existingCustomer(id: string | undefined): Promise<string | undefined> {
+  if (!id) return undefined;
+  try {
+    const c = await stripe().customers.retrieve(id);
+    return c.deleted ? undefined : c.id;
+  } catch (e) {
+    if (e instanceof Stripe.errors.StripeInvalidRequestError && e.code === "resource_missing") return undefined;
+    throw e;
+  }
+}
+
 async function customerFor(userId: string, email: string): Promise<string> {
   const profile = await getProfile(userId);
-  if (profile?.subscription?.customerId) return profile.subscription.customerId;
+  const known = await existingCustomer(profile?.subscription?.customerId);
+  if (known) return known;
   const customer = await stripe().customers.create({ email, metadata: { userId } });
-  await updateProfile(userId, { subscription: { ...(profile?.subscription ?? {}), customerId: customer.id } });
+  // Start clean: the previous subscription data belonged to a customer that no longer exists.
+  await updateProfile(userId, { subscription: { customerId: customer.id } });
   return customer.id;
 }
 
@@ -56,7 +70,7 @@ export async function checkoutOffer(userId: string, plan: Plan): Promise<Checkou
     amount: unit / 100,
     amountMinor: unit,
     currency: price.currency,
-    trialDays: await trialDaysFor(profile?.subscription?.customerId),
+    trialDays: await trialDaysFor(await existingCustomer(profile?.subscription?.customerId)),
   };
 }
 

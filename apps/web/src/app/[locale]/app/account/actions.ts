@@ -25,8 +25,8 @@ export async function prepareCheckoutAction(plan: Plan): Promise<{ data?: Prepar
   } catch (e) {
     console.error("prepareCheckout failed", e);
     // Stripe's own error code helps diagnose a misconfiguration (prices, payment methods…).
-    const code = e && typeof e === "object" && "code" in e && typeof e.code === "string" ? e.code : "server";
-    return { error: code };
+    const code = e && typeof e === "object" && "code" in e && typeof e.code === "string" ? e.code : "error";
+    return { error: `server:${code}` };
   }
 }
 

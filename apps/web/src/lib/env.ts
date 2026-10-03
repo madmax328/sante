@@ -22,9 +22,17 @@ export const env = {
 };
 
 export const features = {
-  stripe: () => !!env.stripeSecret && !!env.stripePriceMonthly && !!env.stripePublishableKey,
+  stripe: () => !!env.stripeSecret && !!env.stripePriceMonthly && !!env.stripePublishableKey && stripeModesMatch(),
   ai: () => !!env.anthropicKey,
   photos: () => !!env.pexelsKey,
   email: () => !!env.resendKey,
   google: () => !!env.googleClientId && !!env.googleClientSecret,
 };
+
+/** Secret and publishable keys must both be test keys or both live keys. */
+function stripeModesMatch(): boolean {
+  const live = (k: string | undefined) => !!k && /^(sk|rk|pk)_live_/.test(k);
+  const ok = live(env.stripeSecret) === live(env.stripePublishableKey);
+  if (!ok) console.error("Stripe keys mismatch: STRIPE_SECRET_KEY and STRIPE_PUBLISHABLE_KEY must both be test or both be live keys");
+  return ok;
+}

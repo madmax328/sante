@@ -118,7 +118,7 @@ function PayForm({ plan, amountMinor, currency, trialDays, completeUrl }: Props)
     const result = data.kind === "payment" ? await stripe.confirmPayment(params) : await stripe.confirmSetup(params);
     if (result.error) {
       const userFacing = result.error.type === "card_error" || result.error.type === "validation_error";
-      return fail(userFacing ? result.error.message : undefined, userFacing ? undefined : result.error.code ?? result.error.type);
+      return fail(userFacing ? result.error.message : undefined, userFacing ? undefined : `stripe:${result.error.code ?? result.error.type}`);
     }
     // 4. Premium is granted by the server, which re-reads the result from Stripe.
     // The card was accepted at this point: if activation lags, the webhook finishes it.
