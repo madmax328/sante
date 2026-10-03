@@ -2,11 +2,10 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Loader2, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { authClient } from "@/lib/auth-client";
 import {
-  checkoutAction,
   deleteAccountAction,
   portalAction,
   saveBodyAction,
@@ -16,7 +15,7 @@ import {
 import { saveSportSettingsAction } from "@/app/[locale]/app/sport/actions";
 import type { SportSettings } from "@/lib/types";
 import type { FoodPreferences, Goal, ActivityLevel } from "@weeko/engine";
-import { Button, Field, Input, Select, cx } from "./ui";
+import { Button, Field, Input, LinkButton, Select, cx } from "./ui";
 
 function toggle<T>(list: T[], v: T): T[] {
   return list.includes(v) ? list.filter((x) => x !== v) : [...list, v];
@@ -190,8 +189,8 @@ export function SubscriptionButtons({ premium, hasCustomer, configured }: { prem
       <div className="flex flex-wrap gap-2">
         {!premium && (
           <>
-            <Button variant="accent" disabled={pending} onClick={() => go(() => checkoutAction("monthly"))}>{pending && <Loader2 className="size-4 animate-spin" />}{t("monthly")}</Button>
-            <Button variant="primary" disabled={pending} onClick={() => go(() => checkoutAction("yearly"))}>{t("yearly")}</Button>
+            <LinkButton href="/app/account/checkout?plan=monthly" variant="accent">{t("monthly")}</LinkButton>
+            <LinkButton href="/app/account/checkout?plan=yearly" variant="primary">{t("yearly")}</LinkButton>
           </>
         )}
         {hasCustomer && <Button variant="secondary" disabled={pending} onClick={() => go(portalAction)}>{t("manage")}</Button>}

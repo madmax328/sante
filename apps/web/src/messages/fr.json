@@ -939,5 +939,27 @@
     "save": "Enregistrer",
     "saveAndRebuild": "Enregistrer et refaire le programme",
     "prefsNote": "Les nouvelles préférences s'appliquent à la prochaine génération de menu."
+  },
+  "checkout": {
+    "title": "Passer à Premium",
+    "subtitle": "Paiement sécurisé, sans quitter Weeko.",
+    "back": "Mon compte",
+    "month": "mois",
+    "year": "an",
+    "yearlyNote": "Soit 4,17 € par mois : 2 mois offerts par rapport au mensuel.",
+    "trialNote": "{days} jours d'essai gratuit, puis prélèvement automatique.",
+    "cancelAnytime": "Sans engagement : résiliable à tout moment depuis ton compte, Premium reste actif jusqu'à la fin de la période payée.",
+    "planLabel": "Formule",
+    "monthly": "Mensuel",
+    "yearly": "Annuel · -40 %",
+    "loading": "Chargement du formulaire sécurisé…",
+    "processing": "Paiement en cours…",
+    "pay": "Payer {price}",
+    "startTrial": "Démarrer mes {days} jours gratuits",
+    "secure": "Paiement chiffré et traité par Stripe. Weeko ne voit jamais ton numéro de carte.",
+    "genericError": "Le paiement n'a pas abouti. Vérifie tes informations ou essaie une autre carte.",
+    "notConfigured": "Le paiement n'est pas encore configuré.",
+    "startError": "Impossible de préparer le paiement pour le moment. Réessaie dans un instant.",
+    "legal": "En confirmant, tu acceptes les <terms>conditions générales de vente</terms> et demandes l'accès immédiat à Premium : tu renonces ainsi au droit de rétractation pour la période en cours. L'abonnement se renouvelle automatiquement."
   }
 }

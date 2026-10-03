@@ -46,7 +46,7 @@ export default async function PricingPage({ params }: PageProps<"/[locale]/prici
               <li key={k} className="flex gap-2"><Check className="mt-0.5 size-4 shrink-0 text-basilic" aria-hidden />{t(`premiumItems.${k}`)}</li>
             ))}
           </ul>
-          <LinkButton href="/app/account" variant="accent">{t("goPremium")}</LinkButton>
+          <LinkButton href="/app/account/checkout?plan=monthly" variant="accent">{t("goPremium")}</LinkButton>
           <p className="text-xs text-muted">{t("paymentNote")}</p>
         </Card>
       </div>

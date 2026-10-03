@@ -37,11 +37,15 @@ Les collections et index sont créés automatiquement au premier lancement.
 ### 2. Stripe
 1. Créer un produit **Weeko Premium** avec deux prix récurrents : 6,99 € / mois et 49,99 € / an.
    Copier leurs identifiants (`price_…`) dans `STRIPE_PRICE_MONTHLY` et `STRIPE_PRICE_YEARLY`.
-2. *Développeurs → Webhooks* : ajouter l'URL `https://VOTRE-DOMAINE/api/stripe/webhook`
-   avec les événements `checkout.session.completed`, `customer.subscription.created`,
+2. *Développeurs → Clés API* : copier la clé secrète dans `STRIPE_SECRET_KEY` et la clé publiable
+   dans `STRIPE_PUBLISHABLE_KEY` (le formulaire de carte s'affiche directement sur le site,
+   aux couleurs de Weeko, sans redirection vers une page Stripe).
+3. *Développeurs → Webhooks* : ajouter l'URL `https://VOTRE-DOMAINE/api/stripe/webhook`
+   avec les événements `customer.subscription.created`,
    `customer.subscription.updated`, `customer.subscription.deleted`.
    Copier le secret de signature dans `STRIPE_WEBHOOK_SECRET`.
-3. *Paramètres → Portail client* : activer l'annulation et le changement de formule.
+4. *Paramètres → Portail client* : activer l'annulation et le changement de formule.
+5. Facultatif : pour Apple Pay, enregistrer le domaine du site dans *Paramètres → Moyens de paiement → Domaines*.
 
 Le statut Premium est enregistré dans la base (collection `profiles`, champ `subscription`) :
 c'est ce champ que l'app mobile lira pour savoir si l'utilisateur est abonné.

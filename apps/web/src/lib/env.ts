@@ -6,6 +6,7 @@ export const env = {
   authSecret: process.env.BETTER_AUTH_SECRET,
   healthKey: process.env.HEALTH_DATA_KEY,
   stripeSecret: process.env.STRIPE_SECRET_KEY,
+  stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
   stripePriceMonthly: process.env.STRIPE_PRICE_MONTHLY,
   stripePriceYearly: process.env.STRIPE_PRICE_YEARLY,
@@ -21,7 +22,7 @@ export const env = {
 };
 
 export const features = {
-  stripe: () => !!env.stripeSecret && !!env.stripePriceMonthly,
+  stripe: () => !!env.stripeSecret && !!env.stripePriceMonthly && !!env.stripePublishableKey,
   ai: () => !!env.anthropicKey,
   photos: () => !!env.pexelsKey,
   email: () => !!env.resendKey,

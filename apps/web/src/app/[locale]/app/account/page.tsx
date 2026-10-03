@@ -5,6 +5,7 @@ import { Badge, Card, LinkButton, Notice, PageHeader } from "@/components/ui";
 import { requireAppUser } from "@/lib/app-user";
 import { features } from "@/lib/env";
 import { isPremium } from "@/lib/premium";
+import { refreshSubscription } from "@/lib/stripe";
 import { getHealth } from "@/lib/repo";
 
 export async function generateMetadata() {
@@ -15,8 +16,17 @@ export async function generateMetadata() {
 const PREMIUM = ["budget", "pantry", "unlimitedSwaps", "ai", "coach", "sport", "family", "review"] as const;
 
 export default async function AccountPage({ searchParams }: PageProps<"/[locale]/app/account">) {
-  const user = await requireAppUser();
+  let user = await requireAppUser();
   const sp = await searchParams;
+  // Back from a payment that needed a redirect (3-D Secure…): sync the subscription now.
+  if (sp.checkout === "success" && typeof sp.sub === "string" && /^sub_[A-Za-z0-9]+$/.test(sp.sub) && !isPremium(user.profile)) {
+    try {
+      await refreshSubscription(user.userId, sp.sub);
+      user = await requireAppUser();
+    } catch (e) {
+      console.error(e);
+    }
+  }
   const t = await getTranslations("account");
   const p = await getTranslations("pricing");
   const format = await getFormatter();

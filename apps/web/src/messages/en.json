@@ -939,5 +939,27 @@
     "save": "Save",
     "saveAndRebuild": "Save and rebuild the plan",
     "prefsNote": "New preferences apply to the next menu generation."
+  },
+  "checkout": {
+    "title": "Go Premium",
+    "subtitle": "Secure payment, without leaving Weeko.",
+    "back": "My account",
+    "month": "month",
+    "year": "year",
+    "yearlyNote": "That's €4.17 per month: 2 months free compared with monthly.",
+    "trialNote": "{days}-day free trial, then automatic billing.",
+    "cancelAnytime": "No commitment: cancel anytime from your account, Premium stays active until the end of the paid period.",
+    "planLabel": "Plan",
+    "monthly": "Monthly",
+    "yearly": "Yearly · -40%",
+    "loading": "Loading the secure form…",
+    "processing": "Processing payment…",
+    "pay": "Pay {price}",
+    "startTrial": "Start my {days} free days",
+    "secure": "Payment encrypted and processed by Stripe. Weeko never sees your card number.",
+    "genericError": "The payment didn't go through. Check your details or try another card.",
+    "notConfigured": "Payment isn't configured yet.",
+    "startError": "We couldn't prepare the payment right now. Please try again shortly.",
+    "legal": "By confirming, you accept the <terms>terms of sale</terms> and request immediate access to Premium, waiving your right of withdrawal for the current period. The subscription renews automatically."
   }
 }

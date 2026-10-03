@@ -19,29 +19,69 @@ async function customerFor(userId: string, email: string): Promise<string> {
   return customer.id;
 }
 
-export async function createCheckout(userId: string, email: string, plan: "monthly" | "yearly", locale: string): Promise<string> {
-  const price = plan === "yearly" ? env.stripePriceYearly : env.stripePriceMonthly;
-  if (!price) throw new Error("Stripe price missing");
+export interface StartedSubscription {
+  subscriptionId: string;
+  clientSecret: string;
+  /** "payment" for an invoice to pay now, "setup" when a free trial starts first */
+  intent: "payment" | "setup";
+  amount: number;
+  currency: string;
+  interval: "month" | "year";
+  trialDays: number;
+}
+
+/**
+ * Prepares a subscription that waits for the card entered on our own payment
+ * page (Payment Element). It only becomes active once the payment succeeds.
+ */
+export async function startSubscription(userId: string, email: string, plan: "monthly" | "yearly"): Promise<StartedSubscription> {
+  const priceId = plan === "yearly" ? env.stripePriceYearly : env.stripePriceMonthly;
+  if (!priceId) throw new Error("Stripe price missing");
   const customer = await customerFor(userId, email);
-  const prefix = locale === "fr" ? "" : `/${locale}`;
-  const session = await stripe().checkout.sessions.create({
-    mode: "subscription",
+  const price = await stripe().prices.retrieve(priceId);
+  const expand = ["latest_invoice.confirmation_secret", "pending_setup_intent"];
+
+  // Reuse a pending subscription for the same price; drop pending ones for the other plan.
+  const pending = await stripe().subscriptions.list({ customer, status: "incomplete", limit: 10 });
+  let sub: Stripe.Subscription | undefined;
+  for (const p of pending.data) {
+    if (!sub && p.items.data[0]?.price.id === priceId) sub = await stripe().subscriptions.retrieve(p.id, { expand });
+    else await stripe().subscriptions.cancel(p.id).catch(() => undefined);
+  }
+  sub ??= await stripe().subscriptions.create({
     customer,
-    client_reference_id: userId,
-    line_items: [{ price, quantity: 1 }],
-    allow_promotion_codes: true,
-    billing_address_collection: "auto",
-    automatic_tax: { enabled: false },
-    locale: locale === "en" ? "en" : "fr",
-    subscription_data: {
-      metadata: { userId },
-      ...(env.stripeTrialDays > 0 ? { trial_period_days: env.stripeTrialDays } : {}),
-    },
-    success_url: `${env.appUrl}${prefix}/app/account?checkout=success`,
-    cancel_url: `${env.appUrl}${prefix}/app/account?checkout=cancel`,
+    items: [{ price: priceId }],
+    payment_behavior: "default_incomplete",
+    payment_settings: { save_default_payment_method: "on_subscription" },
+    metadata: { userId },
+    ...(env.stripeTrialDays > 0 ? { trial_period_days: env.stripeTrialDays } : {}),
+    expand,
   });
-  if (!session.url) throw new Error("No checkout URL");
-  return session.url;
+
+  const invoice = typeof sub.latest_invoice === "object" ? sub.latest_invoice : null;
+  const setup = typeof sub.pending_setup_intent === "object" ? sub.pending_setup_intent : null;
+  const paymentSecret = invoice?.confirmation_secret?.client_secret;
+  const clientSecret = paymentSecret ?? setup?.client_secret;
+  if (!clientSecret) throw new Error("No client secret for subscription " + sub.id);
+  return {
+    subscriptionId: sub.id,
+    clientSecret,
+    intent: paymentSecret ? "payment" : "setup",
+    amount: (price.unit_amount ?? 0) / 100,
+    currency: price.currency.toUpperCase(),
+    interval: price.recurring?.interval === "year" ? "year" : "month",
+    trialDays: env.stripeTrialDays,
+  };
+}
+
+/** Called right after the payment form succeeds, without waiting for the webhook. */
+export async function refreshSubscription(userId: string, subscriptionId: string): Promise<boolean> {
+  const sub = await stripe().subscriptions.retrieve(subscriptionId);
+  const profile = await getProfile(userId);
+  const customer = typeof sub.customer === "string" ? sub.customer : sub.customer.id;
+  if (!profile?.subscription?.customerId || profile.subscription.customerId !== customer) return false;
+  await syncSubscription(sub);
+  return sub.status === "active" || sub.status === "trialing";
 }
 
 export async function createPortal(userId: string, locale: string): Promise<string | null> {
