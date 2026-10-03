@@ -6,7 +6,7 @@ import { Lock, Loader2 } from "lucide-react";
 import { loadStripe, type Appearance } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useRouter } from "@/i18n/navigation";
-import { confirmSubscriptionAction } from "@/app/[locale]/app/account/actions";
+import { completeCheckoutAction, prepareCheckoutAction } from "@/app/[locale]/app/account/actions";
 import { Button } from "./ui";
 
 /** Stripe's card form, dressed in the Weeko brand (colors, font, radius). */
@@ -40,24 +40,32 @@ function weekoAppearance(dark: boolean): Appearance {
 
 interface Props {
   publishableKey: string;
-  clientSecret: string;
-  intent: "payment" | "setup";
-  subscriptionId: string;
-  amount: number;
+  plan: "monthly" | "yearly";
+  /** Minor units (699 for 6,99 €) */
+  amountMinor: number;
   currency: string;
   trialDays: number;
-  returnUrl: string;
+  /** Where Stripe sends the user back after a bank check (3-D Secure) */
+  completeUrl: string;
 }
 
+/**
+ * The card form is shown before anything exists in Stripe ("deferred intent"):
+ * the subscription, or the card setup for a trial, is only created when the
+ * user submits valid card details. Viewing or switching plans creates nothing.
+ */
 export function SubscribeForm(props: Props) {
   const stripePromise = useMemo(() => loadStripe(props.publishableKey), [props.publishableKey]);
   const locale = useLocale();
   const [dark] = useState(() => typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const currency = props.currency.toLowerCase();
   return (
     <Elements
       stripe={stripePromise}
       options={{
-        clientSecret: props.clientSecret,
+        ...(props.trialDays > 0
+          ? { mode: "setup" as const, currency, setupFutureUsage: "off_session" as const }
+          : { mode: "subscription" as const, amount: props.amountMinor, currency }),
         appearance: weekoAppearance(dark),
         locale: locale === "en" ? "en" : "fr",
         fonts: [{ cssSrc: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&display=swap" }],
@@ -68,7 +76,7 @@ export function SubscribeForm(props: Props) {
   );
 }
 
-function PayForm({ intent, subscriptionId, amount, currency, trialDays, returnUrl }: Props) {
+function PayForm({ plan, amountMinor, currency, trialDays, completeUrl }: Props) {
   const t = useTranslations("checkout");
   const format = useFormatter();
   const stripe = useStripe();
@@ -78,30 +86,43 @@ function PayForm({ intent, subscriptionId, amount, currency, trialDays, returnUr
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string>();
 
+  function fail(message?: string) {
+    setError(message ?? t("genericError"));
+    setPending(false);
+  }
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!stripe || !elements) return;
     setPending(true);
     setError(undefined);
+    // 1. Card details are checked first: nothing is created if they are incomplete.
     const { error: submitError } = await elements.submit();
-    if (submitError) {
-      setError(submitError.message);
-      setPending(false);
+    if (submitError) return fail(submitError.message);
+    // 2. Only now does the server create the subscription (or the trial card setup).
+    const prepared = await prepareCheckoutAction(plan);
+    if (prepared.error === "already") {
+      router.push("/app/account");
       return;
     }
-    const params = { elements, confirmParams: { return_url: returnUrl }, redirect: "if_required" as const };
-    const result = intent === "payment" ? await stripe.confirmPayment(params) : await stripe.confirmSetup(params);
+    if (!prepared.data) return fail();
+    const data = prepared.data;
+    // 3. Stripe charges or verifies the card (with 3-D Secure if the bank asks for it).
+    const ref = data.kind === "payment" ? { subscriptionId: data.subscriptionId } : { setupIntentId: data.setupIntentId };
+    const returnUrl = data.kind === "payment" ? `${completeUrl}?sub=${data.subscriptionId}` : completeUrl;
+    const params = { elements, clientSecret: data.clientSecret, confirmParams: { return_url: returnUrl }, redirect: "if_required" as const };
+    const result = data.kind === "payment" ? await stripe.confirmPayment(params) : await stripe.confirmSetup(params);
     if (result.error) {
-      setError(result.error.type === "card_error" || result.error.type === "validation_error" ? result.error.message : t("genericError"));
-      setPending(false);
-      return;
+      return fail(result.error.type === "card_error" || result.error.type === "validation_error" ? result.error.message : undefined);
     }
-    await confirmSubscriptionAction(subscriptionId);
+    // 4. Premium is granted by the server, which re-reads the result from Stripe.
+    const done = await completeCheckoutAction(ref);
+    if (!done.active) return fail();
     router.push("/app/account?checkout=success");
     router.refresh();
   }
 
-  const price = format.number(amount, { style: "currency", currency });
+  const price = format.number(amountMinor / 100, { style: "currency", currency: currency.toUpperCase() });
   return (
     <form onSubmit={onSubmit} className="grid gap-5">
       <PaymentElement onReady={() => setReady(true)} options={{ layout: "tabs", business: { name: "Weeko" } }} />

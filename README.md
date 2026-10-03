@@ -49,6 +49,13 @@ Les collections et index sont créés automatiquement au premier lancement.
 
 Le statut Premium est enregistré dans la base (collection `profiles`, champ `subscription`) :
 c'est ce champ que l'app mobile lira pour savoir si l'utilisateur est abonné.
+Règle (identique à `apps/web/src/lib/premium.ts`) : Premium si `status` vaut `active` ou `past_due`,
+ou `trialing` **avec** `hasPaymentMethod: true`, et si `currentPeriodEnd` n'est pas dépassé de plus de 3 jours.
+
+L'abonnement Stripe n'est créé qu'au moment où l'utilisateur valide le formulaire avec une carte valide :
+afficher la page de paiement ou changer de formule ne crée rien. Avec un essai gratuit
+(`STRIPE_TRIAL_DAYS` > 0), la carte est d'abord enregistrée et vérifiée, puis l'essai démarre ;
+l'essai n'est proposé qu'une fois par client.
 
 ### 3. Vercel
 1. *Add New → Project*, importer le dépôt GitHub.

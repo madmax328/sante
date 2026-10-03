@@ -6,7 +6,7 @@ import { Link, redirect } from "@/i18n/navigation";
 import { requireAppUser } from "@/lib/app-user";
 import { env, features } from "@/lib/env";
 import { isPremium } from "@/lib/premium";
-import { startSubscription, type StartedSubscription } from "@/lib/stripe";
+import { checkoutOffer, type CheckoutOffer } from "@/lib/stripe";
 
 export async function generateMetadata() {
   const t = await getTranslations("checkout");
@@ -34,15 +34,16 @@ export default async function CheckoutPage({ searchParams }: PageProps<"/[locale
     );
   }
 
-  let started: StartedSubscription | undefined;
+  // Read-only: the subscription is only created when the card form is submitted.
+  let started: CheckoutOffer | undefined;
   try {
-    started = await startSubscription(user.userId, user.email, plan);
+    started = await checkoutOffer(user.userId, plan);
   } catch (e) {
     console.error(e);
   }
   const prefix = locale === "fr" ? "" : `/${locale}`;
-  const returnUrl = started ? `${env.appUrl}${prefix}/app/account?checkout=success&sub=${started.subscriptionId}` : "";
-  const price = started ? format.number(started.amount, { style: "currency", currency: started.currency }) : "";
+  const completeUrl = `${env.appUrl}${prefix}/app/account/checkout/complete`;
+  const price = started ? format.number(started.amount, { style: "currency", currency: started.currency.toUpperCase() }) : "";
 
   return (
     <div className="mx-auto grid w-full max-w-5xl gap-6">
@@ -84,15 +85,13 @@ export default async function CheckoutPage({ searchParams }: PageProps<"/[locale
           </div>
           {started ? (
             <SubscribeForm
-              key={started.clientSecret}
+              key={plan}
               publishableKey={env.stripePublishableKey!}
-              clientSecret={started.clientSecret}
-              intent={started.intent}
-              subscriptionId={started.subscriptionId}
-              amount={started.amount}
+              plan={plan}
+              amountMinor={started.amountMinor}
               currency={started.currency}
               trialDays={started.trialDays}
-              returnUrl={returnUrl}
+              completeUrl={completeUrl}
             />
           ) : (
             <Notice tone="danger">{t("startError")}</Notice>

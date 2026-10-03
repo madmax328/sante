@@ -56,6 +56,8 @@ export interface Subscription {
   priceId?: string;
   currentPeriodEnd?: Date;
   cancelAtPeriodEnd?: boolean;
+  /** A card is saved on the subscription; a trial without one never counts as Premium */
+  hasPaymentMethod?: boolean;
 }
 
 export interface Profile {

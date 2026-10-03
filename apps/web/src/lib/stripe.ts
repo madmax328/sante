@@ -19,59 +19,123 @@ async function customerFor(userId: string, email: string): Promise<string> {
   return customer.id;
 }
 
-export interface StartedSubscription {
-  subscriptionId: string;
-  clientSecret: string;
-  /** "payment" for an invoice to pay now, "setup" when a free trial starts first */
-  intent: "payment" | "setup";
+export type Plan = "monthly" | "yearly";
+
+function priceFor(plan: Plan): string {
+  const priceId = plan === "yearly" ? env.stripePriceYearly : env.stripePriceMonthly;
+  if (!priceId) throw new Error("Stripe price missing");
+  return priceId;
+}
+
+/** A free trial is offered once per customer, never to someone who already had one. */
+async function trialDaysFor(customer: string | undefined): Promise<number> {
+  if (env.stripeTrialDays <= 0) return 0;
+  if (!customer) return env.stripeTrialDays;
+  const previous = await stripe().subscriptions.list({ customer, status: "all", limit: 20 });
+  return previous.data.some((s) => s.trial_start || s.status === "active" || s.status === "past_due" || s.status === "canceled")
+    ? 0
+    : env.stripeTrialDays;
+}
+
+export interface CheckoutOffer {
+  plan: Plan;
+  /** Amount in major units (6.99) and in minor units for Stripe Elements (699) */
   amount: number;
+  amountMinor: number;
   currency: string;
-  interval: "month" | "year";
   trialDays: number;
 }
 
-/**
- * Prepares a subscription that waits for the card entered on our own payment
- * page (Payment Element). It only becomes active once the payment succeeds.
- */
-export async function startSubscription(userId: string, email: string, plan: "monthly" | "yearly"): Promise<StartedSubscription> {
-  const priceId = plan === "yearly" ? env.stripePriceYearly : env.stripePriceMonthly;
-  if (!priceId) throw new Error("Stripe price missing");
-  const customer = await customerFor(userId, email);
-  const price = await stripe().prices.retrieve(priceId);
-  const expand = ["latest_invoice.confirmation_secret", "pending_setup_intent"];
+/** What the payment page shows. Read-only: nothing is created in Stripe here. */
+export async function checkoutOffer(userId: string, plan: Plan): Promise<CheckoutOffer> {
+  const price = await stripe().prices.retrieve(priceFor(plan));
+  const profile = await getProfile(userId);
+  const unit = price.unit_amount ?? 0;
+  return {
+    plan,
+    amount: unit / 100,
+    amountMinor: unit,
+    currency: price.currency,
+    trialDays: await trialDaysFor(profile?.subscription?.customerId),
+  };
+}
 
-  // Reuse a pending subscription for the same price; drop pending ones for the other plan.
-  const pending = await stripe().subscriptions.list({ customer, status: "incomplete", limit: 10 });
-  let sub: Stripe.Subscription | undefined;
-  for (const p of pending.data) {
-    if (!sub && p.items.data[0]?.price.id === priceId) sub = await stripe().subscriptions.retrieve(p.id, { expand });
-    else await stripe().subscriptions.cancel(p.id).catch(() => undefined);
+export type PreparedPayment =
+  | { kind: "payment"; clientSecret: string; subscriptionId: string }
+  | { kind: "setup"; clientSecret: string; setupIntentId: string };
+
+/** Subscriptions that never got a card: left over from an abandoned or older checkout. */
+async function dropUnpaid(customer: string): Promise<void> {
+  const subs = await stripe().subscriptions.list({ customer, status: "all", limit: 20 });
+  for (const s of subs.data) {
+    const unpaidTrial = s.status === "trialing" && !s.default_payment_method;
+    if (s.status === "incomplete" || unpaidTrial) await stripe().subscriptions.cancel(s.id).catch(() => undefined);
   }
-  sub ??= await stripe().subscriptions.create({
+}
+
+/**
+ * Called only when the user submits the payment form, after the card details
+ * passed Stripe's validation. Nothing grants Premium until Stripe confirms
+ * the card: either the first invoice is paid, or (free trial) the card is
+ * saved through a SetupIntent before the trial subscription is created.
+ */
+export async function prepareCheckout(userId: string, email: string, plan: Plan): Promise<PreparedPayment> {
+  const priceId = priceFor(plan);
+  const customer = await customerFor(userId, email);
+  await dropUnpaid(customer);
+
+  if ((await trialDaysFor(customer)) > 0) {
+    const setup = await stripe().setupIntents.create({
+      customer,
+      usage: "off_session",
+      automatic_payment_methods: { enabled: true },
+      metadata: { userId, plan },
+    });
+    return { kind: "setup", clientSecret: setup.client_secret!, setupIntentId: setup.id };
+  }
+
+  const sub = await stripe().subscriptions.create({
     customer,
     items: [{ price: priceId }],
     payment_behavior: "default_incomplete",
     payment_settings: { save_default_payment_method: "on_subscription" },
     metadata: { userId },
-    ...(env.stripeTrialDays > 0 ? { trial_period_days: env.stripeTrialDays } : {}),
-    expand,
+    expand: ["latest_invoice.confirmation_secret"],
   });
-
   const invoice = typeof sub.latest_invoice === "object" ? sub.latest_invoice : null;
-  const setup = typeof sub.pending_setup_intent === "object" ? sub.pending_setup_intent : null;
-  const paymentSecret = invoice?.confirmation_secret?.client_secret;
-  const clientSecret = paymentSecret ?? setup?.client_secret;
-  if (!clientSecret) throw new Error("No client secret for subscription " + sub.id);
-  return {
-    subscriptionId: sub.id,
-    clientSecret,
-    intent: paymentSecret ? "payment" : "setup",
-    amount: (price.unit_amount ?? 0) / 100,
-    currency: price.currency.toUpperCase(),
-    interval: price.recurring?.interval === "year" ? "year" : "month",
-    trialDays: env.stripeTrialDays,
-  };
+  const clientSecret = invoice?.confirmation_secret?.client_secret;
+  if (!clientSecret) {
+    // A zero-amount invoice (coupon, misconfigured price) must not unlock Premium silently.
+    await stripe().subscriptions.cancel(sub.id).catch(() => undefined);
+    throw new Error("No payment required for subscription " + sub.id + ": check the Stripe price");
+  }
+  return { kind: "payment", clientSecret, subscriptionId: sub.id };
+}
+
+/** Free trial: the card is saved and verified, now the trial subscription can start. */
+export async function startTrial(userId: string, setupIntentId: string): Promise<boolean> {
+  const setup = await stripe().setupIntents.retrieve(setupIntentId);
+  const profile = await getProfile(userId);
+  const customer = typeof setup.customer === "string" ? setup.customer : setup.customer?.id;
+  const paymentMethod = typeof setup.payment_method === "string" ? setup.payment_method : setup.payment_method?.id;
+  if (setup.status !== "succeeded" || !paymentMethod || !customer || customer !== profile?.subscription?.customerId) return false;
+  if (setup.metadata?.userId !== userId) return false;
+  const plan: Plan = setup.metadata?.plan === "yearly" ? "yearly" : "monthly";
+  const trialDays = await trialDaysFor(customer);
+
+  await stripe().customers.update(customer, { invoice_settings: { default_payment_method: paymentMethod } });
+  const sub = await stripe().subscriptions.create(
+    {
+      customer,
+      items: [{ price: priceFor(plan) }],
+      default_payment_method: paymentMethod,
+      metadata: { userId },
+      ...(trialDays > 0 ? { trial_period_days: trialDays } : { payment_behavior: "error_if_incomplete" as const }),
+    },
+    { idempotencyKey: `weeko-trial-${setupIntentId}` },
+  );
+  await syncSubscription(sub);
+  return sub.status === "active" || (sub.status === "trialing" && !!sub.default_payment_method);
 }
 
 /** Called right after the payment form succeeds, without waiting for the webhook. */
@@ -81,7 +145,7 @@ export async function refreshSubscription(userId: string, subscriptionId: string
   const customer = typeof sub.customer === "string" ? sub.customer : sub.customer.id;
   if (!profile?.subscription?.customerId || profile.subscription.customerId !== customer) return false;
   await syncSubscription(sub);
-  return sub.status === "active" || sub.status === "trialing";
+  return sub.status === "active" || (sub.status === "trialing" && !!sub.default_payment_method);
 }
 
 export async function createPortal(userId: string, locale: string): Promise<string | null> {
@@ -102,6 +166,7 @@ function toSubscription(sub: Stripe.Subscription): Subscription {
     priceId: item?.price.id,
     currentPeriodEnd: item ? new Date(item.current_period_end * 1000) : undefined,
     cancelAtPeriodEnd: sub.cancel_at_period_end,
+    hasPaymentMethod: !!sub.default_payment_method,
   };
 }
 
@@ -114,6 +179,11 @@ export async function syncSubscription(sub: Stripe.Subscription): Promise<void> 
     console.warn("Stripe subscription without matching profile", sub.id);
     return;
   }
+  // Events can arrive out of order: an abandoned checkout being cancelled must
+  // not overwrite the subscription the user actually paid for.
+  const current = profile.subscription;
+  const live = ["active", "trialing", "past_due"];
+  if (current?.subscriptionId && current.subscriptionId !== sub.id && live.includes(current.status ?? "") && !live.includes(sub.status)) return;
   await updateProfile(profile._id, { subscription: data });
 }
 

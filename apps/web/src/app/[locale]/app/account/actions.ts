@@ -10,29 +10,31 @@ import { todayIn } from "@/lib/dates";
 import { features } from "@/lib/env";
 import { deleteAllData, getHealth, getProfile, saveHealth, saveMeasurement, updateProfile } from "@/lib/repo";
 import { getSession, requireUserId } from "@/lib/session";
-import { cancelSubscriptionNow, createPortal, refreshSubscription, startSubscription, type StartedSubscription } from "@/lib/stripe";
+import { cancelSubscriptionNow, createPortal, prepareCheckout, refreshSubscription, startTrial, type Plan, type PreparedPayment } from "@/lib/stripe";
 import { isPremium } from "@/lib/premium";
 import { db } from "@/lib/db";
 
-export async function startSubscriptionAction(plan: "monthly" | "yearly"): Promise<{ data?: StartedSubscription; error?: string }> {
+export async function prepareCheckoutAction(plan: Plan): Promise<{ data?: PreparedPayment; error?: string }> {
   const session = await getSession();
   if (!session) return { error: "auth" };
   if (!features.stripe()) return { error: "not_configured" };
   if (plan !== "monthly" && plan !== "yearly") return { error: "invalid" };
   if (isPremium(await getProfile(session.user.id))) return { error: "already" };
   try {
-    return { data: await startSubscription(session.user.id, session.user.email, plan) };
+    return { data: await prepareCheckout(session.user.id, session.user.email, plan) };
   } catch (e) {
     console.error(e);
     return { error: "server" };
   }
 }
 
-export async function confirmSubscriptionAction(subscriptionId: string): Promise<{ active: boolean }> {
+/** After Stripe confirmed the card: activate (paid invoice) or start the trial (saved card). */
+export async function completeCheckoutAction(ref: { subscriptionId?: string; setupIntentId?: string }): Promise<{ active: boolean }> {
   const userId = await requireUserId();
-  if (!/^sub_[A-Za-z0-9]+$/.test(subscriptionId)) return { active: false };
   try {
-    const active = await refreshSubscription(userId, subscriptionId);
+    let active = false;
+    if (ref.subscriptionId && /^sub_[A-Za-z0-9]+$/.test(ref.subscriptionId)) active = await refreshSubscription(userId, ref.subscriptionId);
+    else if (ref.setupIntentId && /^seti_[A-Za-z0-9]+$/.test(ref.setupIntentId)) active = await startTrial(userId, ref.setupIntentId);
     revalidatePath("/[locale]/app", "layout");
     return { active };
   } catch (e) {

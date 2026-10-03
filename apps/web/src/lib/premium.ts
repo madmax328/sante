@@ -21,6 +21,8 @@ export function isPremium(profile: Pick<Profile, "subscription"> | null | undefi
   const s = profile?.subscription;
   if (!s?.status) return false;
   if (!["active", "trialing", "past_due"].includes(s.status)) return false;
+  // A trial only counts once a card has been saved: no card, no Premium.
+  if (s.status === "trialing" && !s.hasPaymentMethod) return false;
   return !s.currentPeriodEnd || new Date(s.currentPeriodEnd).getTime() > Date.now() - 3 * 86400000;
 }
 
