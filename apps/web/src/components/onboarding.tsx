@@ -1,5 +1,8 @@
 "use client";
 
+import { DislikePicker } from "./dislike-picker";
+import type { DislikeOptions } from "@/lib/dislikes";
+
 import { useEffect, useState, useTransition } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { Minus, Plus, Trash2 } from "lucide-react";
@@ -85,7 +88,7 @@ function NumberField({ id, label, value, onChange, min, max, step = 1, suffix }:
   );
 }
 
-export function Onboarding({ defaultName }: { defaultName: string }) {
+export function Onboarding({ defaultName, dislikeOptions }: { defaultName: string; dislikeOptions: DislikeOptions }) {
   const t = useTranslations("onboarding");
   const format = useFormatter();
   const e = useTranslations("enums");
@@ -310,6 +313,7 @@ export function Onboarding({ defaultName }: { defaultName: string }) {
                 ))}
               </div>
             </div>
+            <DislikePicker value={prefs.dislikedIngredients} onChange={(ids) => setPrefs({ ...prefs, dislikedIngredients: ids })} options={dislikeOptions} />
             <div className="grid grid-cols-2 gap-4">
               <NumberField id="wd" label={t("food.weekday")} value={prefs.maxMinutesWeekday} onChange={(v) => setPrefs({ ...prefs, maxMinutesWeekday: v ?? 30 })} min={10} max={120} step={5} suffix="min" />
               <NumberField id="we" label={t("food.weekend")} value={prefs.maxMinutesWeekend} onChange={(v) => setPrefs({ ...prefs, maxMinutesWeekend: v ?? 60 })} min={10} max={180} step={5} suffix="min" />

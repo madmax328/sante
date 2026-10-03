@@ -117,6 +117,12 @@ export interface Ingredient {
   shelfLifeDays: number;
   /** Salt, pepper, oil, spices: assumed in the kitchen, not costed per week. */
   staple?: boolean;
+  /**
+   * Seasoning or garnish (garlic, herbs, spices): left out of a recipe for someone
+   * who doesn't eat it, instead of excluding the recipe — unless the recipe name
+   * contains one of these words ("poulet au curry").
+   */
+  omittable?: string[];
   /** Months (1-12) when the product is in season, for fresh produce. */
   season?: number[];
   /** Short English search keywords for photo search and food search. */
@@ -183,6 +189,8 @@ export interface RecipeInfo extends Recipe {
   totalMin: number;
   tagsAvoid: FoodTag[];
   diets: Diet[];
+  /** Ingredients taken out for this user (see Catalog.withoutIngredients) */
+  omitted?: string[];
 }
 
 // ---------------------------------------------------------------- People

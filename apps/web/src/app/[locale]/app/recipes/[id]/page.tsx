@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { ChefHat, Clock, Flame, Snowflake, Wallet } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
-import { getCatalog } from "@weeko/catalog";
+import { DISLIKE_GROUPS, getCatalog } from "@weeko/catalog";
 import { ALLERGENS } from "@weeko/engine";
 import { RateRecipe } from "@/components/app-client";
 import { AddRecipeToJournal, IngredientScaler, type IngredientLine } from "@/components/recipe-client";
@@ -35,6 +35,11 @@ export default async function RecipePage({ params }: PageProps<"/[locale]/app/re
     return { id: ri.id, name: ing.name.fr, plural: ing.plural?.fr, qty: ri.qty / recipe.servings, unit: ing.unit, staple: !!ing.staple };
   });
   const n = recipe.nutrition;
+  // "Ail" reads better than "Gousse d'ail": use the picker's label when it names this one food.
+  const nameOf = (ids: string[]) =>
+    ids.map((x) => (DISLIKE_GROUPS.find((g) => g.ingredients.length === 1 && g.ingredients[0] === x)?.name.fr ?? uc.ctx.catalog.ingredient(x).name.fr).toLowerCase()).join(", ");
+  const omitted = recipe.omitted ?? [];
+  const disliked = recipe.ingredients.map((i) => i.id).filter((x) => uc.ctx.prefs.dislikedIngredients?.includes(x));
 
   return (
     <article className="grid gap-6">
@@ -71,6 +76,8 @@ export default async function RecipePage({ params }: PageProps<"/[locale]/app/re
       <div className="grid gap-6 lg:grid-cols-[1fr_1.4fr]">
         <Card className="grid content-start gap-4">
           <h2 className="text-xl font-bold">{t("ingredients")}</h2>
+          {disliked.length > 0 && <Notice tone="miel">{t("containsDisliked", { list: nameOf(disliked) })}</Notice>}
+          {omitted.length > 0 && <p className="rounded-xl bg-basilic-soft px-3 py-2 text-sm">{t("omitted", { list: nameOf(omitted) })}</p>}
           <IngredientScaler lines={lines} defaultServings={Math.max(1, uc.members.length)} />
           {allergens.length > 0 && (
             <p className="text-sm"><strong>{t("allergens")} :</strong> {allergens.map((a) => e(`allergen.${a}`)).join(", ")}</p>

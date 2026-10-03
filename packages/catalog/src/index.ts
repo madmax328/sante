@@ -20,14 +20,26 @@ export const recipes: Recipe[] = [
   ...classicMains,
 ].map(toRecipe);
 
-const cache = new Map<Market, Catalog>();
+const cache = new Map<string, Catalog>();
 
-/** Shared, lazily built catalog (recipes enriched with nutrition and cost). */
-export function getCatalog(market: Market = "FR"): Catalog {
-  let c = cache.get(market);
+/**
+ * Shared, lazily built catalog (recipes enriched with nutrition and cost).
+ * `dislikes` takes seasonings the user doesn't eat (garlic, coriander…) out
+ * of the recipes; other disliked ingredients exclude recipes in the planner.
+ */
+export function getCatalog(market: Market = "FR", dislikes: string[] = []): Catalog {
+  const base = cache.get(market) ?? new Catalog(ingredients, recipes, market);
+  cache.set(market, base);
+  const omit = [...new Set(dislikes.filter((id) => base.ingredients.get(id)?.omittable))].sort();
+  if (omit.length === 0) return base;
+  const key = `${market}:${omit.join(",")}`;
+  let c = cache.get(key);
   if (!c) {
-    c = new Catalog(ingredients, recipes, market);
-    cache.set(market, c);
+    if (cache.size > 200) cache.clear();
+    c = base.withoutIngredients(omit);
+    cache.set(key, c);
   }
   return c;
 }
+
+export { DISLIKE_GROUPS, type DislikeGroup } from "./dislikes";

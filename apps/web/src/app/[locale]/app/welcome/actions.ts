@@ -8,6 +8,7 @@ import { ensureProfile, saveHealth, updateProfile } from "@/lib/repo";
 import { requireUserId } from "@/lib/session";
 import { CONSENT_VERSION, type MemberHealth } from "@/lib/types";
 import { generateForUser } from "@/lib/week-service";
+import { cleanDislikes } from "@/lib/dislikes";
 
 const sex = z.enum(["female", "male"]);
 const activity = z.enum(["sedentary", "light", "moderate", "active", "very_active"]);
@@ -39,7 +40,7 @@ const schema = z.object({
   prefs: z.object({
     diet: z.enum(["omnivore", "pescatarian", "vegetarian", "vegan"]),
     avoid: z.array(z.enum(["pork", "beef", "lamb", "alcohol", "seafood", "fish", "dairy", "egg", "gluten"])),
-    dislikedIngredients: z.array(z.string().max(40)).max(50),
+    dislikedIngredients: z.array(z.string().max(40)).max(150),
     maxMinutesWeekday: z.number().min(10).max(120),
     maxMinutesWeekend: z.number().min(10).max(180),
     equipment: z.array(z.enum(["oven", "microwave", "blender", "airfryer", "slowcooker"])),
@@ -114,6 +115,7 @@ export async function completeOnboarding(input: OnboardingInput): Promise<Onboar
       prefs: {
         ...data.prefs,
         avoid,
+        dislikedIngredients: cleanDislikes(data.prefs.dislikedIngredients),
         likedRecipes: [],
         dislikedRecipes: [],
       },

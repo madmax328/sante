@@ -167,3 +167,24 @@ describe("adjustments", () => {
     expect(alts).toHaveLength(5);
   });
 });
+
+describe("foods the user doesn't eat", () => {
+  const disliked = ["onion", "red_onion", "shallot", "spring_onion", "tomato", "cherry_tomato", "canned_tomato", "passata", "tomato_paste", "mushroom", "garlic", "coriander"];
+  const c = getCatalog("FR", disliked);
+  const week = generateWeek({ catalog: c, members: [me], prefs: { ...prefs, dislikedIngredients: disliked } }, { startDate: START, seed: 7 });
+
+  it("still fills the week", () => {
+    expect(week.plan.meals).toHaveLength(28);
+  });
+
+  it("never plans or buys them", () => {
+    for (const m of week.plan.meals) {
+      if (!m.recipeId) continue;
+      const ids = c.recipe(m.recipeId).ingredients.map((i) => i.id);
+      expect(ids.filter((id) => disliked.includes(id)), m.recipeId).toEqual([]);
+    }
+    const list = buildShoppingList(c, week.stock);
+    const bought = list.aisles.flatMap((a) => a.items.map((i) => i.ingredientId));
+    expect(bought.filter((id) => disliked.includes(id))).toEqual([]);
+  });
+});

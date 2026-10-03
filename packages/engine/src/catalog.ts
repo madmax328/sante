@@ -20,7 +20,7 @@ export class Catalog {
 
   constructor(
     ingredients: Ingredient[],
-    recipes: Recipe[],
+    recipes: (Recipe & { omitted?: string[] })[],
     readonly market: Market = "FR",
   ) {
     for (const i of ingredients) {
@@ -43,6 +43,28 @@ export class Catalog {
     const r = this.recipes.get(id);
     if (!r) throw new Error(`Unknown recipe ${id}`);
     return r;
+  }
+
+  /**
+   * The same catalog with some seasonings or garnishes taken out of every
+   * recipe (nutrition and cost recomputed). Non-omittable ingredients are
+   * ignored here: recipes containing them are excluded by the planner.
+   */
+  withoutIngredients(ids: string[]): Catalog {
+    const omit = new Map(ids.flatMap((id) => {
+      const words = this.ingredients.get(id)?.omittable;
+      return words ? [[id, words.map(normalizeWord)] as const] : [];
+    }));
+    if (omit.size === 0) return this;
+    const recipes = [...this.recipes.values()].map((r) => {
+      const title = ` ${normalizeWord(r.name.fr)} ${normalizeWord(r.name.en ?? "")} `;
+      // Named after the ingredient: keep it, so the planner excludes the recipe.
+      const removable = (id: string) => omit.get(id)?.every((w) => !new RegExp(`[^a-z]${w}[^a-z]`).test(title));
+      const dropped = r.ingredients.filter((i) => removable(i.id));
+      if (dropped.length === 0) return r;
+      return { ...r, ingredients: r.ingredients.filter((i) => !removable(i.id)), omitted: dropped.map((i) => i.id) };
+    });
+    return new Catalog([...this.ingredients.values()], recipes, this.market);
   }
 
   allRecipes(): RecipeInfo[] {
@@ -129,4 +151,14 @@ export function isCompatible(r: RecipeInfo, o: CompatibilityOptions): boolean {
   }
   if (r.equipment.some((e) => !o.prefs.equipment.includes(e))) return false;
   return true;
+}
+
+/** Lowercase, accents removed, punctuation as spaces: "Poulet à l'ail" → "poulet a l ail". */
+function normalizeWord(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z]+/g, " ")
+    .trim();
 }

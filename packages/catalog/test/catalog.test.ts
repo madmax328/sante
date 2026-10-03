@@ -65,3 +65,25 @@ describe("recipes", () => {
       }
   });
 });
+
+describe("dislikes", () => {
+  it("groups only reference known ingredients", async () => {
+    const { DISLIKE_GROUPS } = await import("../src/dislikes");
+    const c = getCatalog();
+    for (const g of DISLIKE_GROUPS) for (const id of g.ingredients) expect(c.ingredients.has(id), `${g.id}: ${id}`).toBe(true);
+  });
+
+  it("removes seasonings instead of excluding recipes, unless the recipe is named after them", () => {
+    const base = getCatalog();
+    const noGarlic = getCatalog("FR", ["garlic", "coriander"]);
+    const withGarlic = base.allRecipes().filter((r) => r.ingredients.some((i) => i.id === "garlic"));
+    const stillGarlic = noGarlic.allRecipes().filter((r) => r.ingredients.some((i) => i.id === "garlic"));
+    expect(withGarlic.length).toBeGreaterThan(300);
+    expect(stillGarlic.length).toBeLessThan(withGarlic.length / 10);
+    for (const r of stillGarlic) expect(`${r.name.fr} ${r.name.en}`.toLowerCase()).toMatch(/ail|garlic|aïoli/);
+    const changed = noGarlic.allRecipes().find((r) => r.omitted?.includes("garlic"));
+    expect(changed).toBeDefined();
+    expect(getCatalog("FR", ["coriander", "garlic"])).toBe(noGarlic);
+    expect(getCatalog("FR", ["tomato"])).toBe(base);
+  });
+});

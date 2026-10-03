@@ -268,7 +268,13 @@
       "equipment": "Equipment",
       "leftovers": "Cook once, eat twice",
       "leftoversHint": "Monday, Wednesday and Friday dinners also make the next day's lunch.",
-      "snacks": "Include snacks"
+      "snacks": "Include snacks",
+      "dislikes": "Foods I don't eat",
+      "dislikesHint": "No recipe containing them will be suggested. Garlic, herbs and spices are simply left out of the recipe.",
+      "dislikesSearch": "Another food… (e.g. fennel)",
+      "dislikesNone": "No food found.",
+      "dislikesOthers": "Other excluded foods",
+      "dislikesRemove": "Remove {name} from the list"
     },
     "household": {
       "title": "Your household",
@@ -668,7 +674,9 @@
     "allergens": "Allergens",
     "steps": "Method",
     "nutrition": "Nutrition per serving",
-    "nutritionNote": "Calculated from the CIQUAL table (ANSES) for raw ingredients."
+    "nutritionNote": "Calculated from the CIQUAL table (ANSES) for raw ingredients.",
+    "omitted": "Adapted for you: without {list}. Just skip the steps that mention it.",
+    "containsDisliked": "Contains a food you don't eat: {list}. It won't be suggested in your menus."
   },
   "groceries": {
     "title": "Grocery list",

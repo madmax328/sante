@@ -268,7 +268,13 @@
       "equipment": "Équipement",
       "leftovers": "Cuisiner une fois, manger deux fois",
       "leftoversHint": "le dîner du lundi, mercredi et vendredi sert aussi de déjeuner le lendemain.",
-      "snacks": "Prévoir des collations"
+      "snacks": "Prévoir des collations",
+      "dislikes": "Aliments que je ne mange pas",
+      "dislikesHint": "Aucune recette qui en contient ne te sera proposée. L'ail, les herbes et les épices sont simplement retirés de la recette.",
+      "dislikesSearch": "Un autre aliment… (ex. fenouil)",
+      "dislikesNone": "Aucun aliment trouvé.",
+      "dislikesOthers": "Autres aliments exclus",
+      "dislikesRemove": "Retirer {name} de la liste"
     },
     "household": {
       "title": "Ton foyer",
@@ -668,7 +674,9 @@
     "allergens": "Allergènes",
     "steps": "Préparation",
     "nutrition": "Valeurs nutritionnelles par portion",
-    "nutritionNote": "Calculées à partir de la table CIQUAL (ANSES) pour les ingrédients crus."
+    "nutritionNote": "Calculées à partir de la table CIQUAL (ANSES) pour les ingrédients crus.",
+    "omitted": "Adaptée pour toi : sans {list}. Passe simplement les étapes qui en parlent.",
+    "containsDisliked": "Contient un aliment que tu ne manges pas : {list}. Elle ne te sera pas proposée dans tes menus."
   },
   "groceries": {
     "title": "Liste de courses",

@@ -16,6 +16,8 @@ import { saveSportSettingsAction } from "@/app/[locale]/app/sport/actions";
 import type { SportSettings } from "@/lib/types";
 import type { FoodPreferences, Goal, ActivityLevel } from "@weeko/engine";
 import { Button, Field, Input, LinkButton, Select, cx } from "./ui";
+import { DislikePicker } from "./dislike-picker";
+import type { DislikeOptions } from "@/lib/dislikes";
 
 function toggle<T>(list: T[], v: T): T[] {
   return list.includes(v) ? list.filter((x) => x !== v) : [...list, v];
@@ -85,7 +87,7 @@ export function SportSettingsForm({ initial }: { initial: SportSettings }) {
   );
 }
 
-export function FoodPrefsForm({ initial }: { initial: FoodPreferences }) {
+export function FoodPrefsForm({ initial, dislikeOptions }: { initial: FoodPreferences; dislikeOptions: DislikeOptions }) {
   const t = useTranslations("onboarding.food");
   const e = useTranslations("enums");
   const a = useTranslations("account");
@@ -104,6 +106,7 @@ export function FoodPrefsForm({ initial }: { initial: FoodPreferences }) {
           {avoidOptions.map((x) => <Chip key={x} active={p.avoid.includes(x)} onClick={() => setP({ ...p, avoid: toggle(p.avoid, x) })}>{e(`avoid.${x}`)}</Chip>)}
         </div>
       </div>
+      <DislikePicker value={p.dislikedIngredients ?? []} onChange={(ids) => setP({ ...p, dislikedIngredients: ids })} options={dislikeOptions} />
       <div className="grid grid-cols-2 gap-3 sm:max-w-md">
         <Field label={t("weekday")} htmlFor="pwd"><Input id="pwd" type="number" min={10} max={120} step={5} value={p.maxMinutesWeekday} onChange={(ev) => setP({ ...p, maxMinutesWeekday: Number(ev.target.value) })} /></Field>
         <Field label={t("weekend")} htmlFor="pwe"><Input id="pwe" type="number" min={10} max={180} step={5} value={p.maxMinutesWeekend} onChange={(ev) => setP({ ...p, maxMinutesWeekend: Number(ev.target.value) })} /></Field>
@@ -118,7 +121,7 @@ export function FoodPrefsForm({ initial }: { initial: FoodPreferences }) {
           disabled={pending}
           onClick={() =>
             start(async () => {
-              const res = await saveFoodPrefsAction({ diet: p.diet, avoid: p.avoid as never, maxMinutesWeekday: p.maxMinutesWeekday, maxMinutesWeekend: p.maxMinutesWeekend, equipment: p.equipment, leftovers: p.leftovers, snacks: p.snacks });
+              const res = await saveFoodPrefsAction({ diet: p.diet, avoid: p.avoid as never, maxMinutesWeekday: p.maxMinutesWeekday, maxMinutesWeekend: p.maxMinutesWeekend, equipment: p.equipment, leftovers: p.leftovers, snacks: p.snacks, dislikedIngredients: p.dislikedIngredients ?? [] });
               setState(res.ok ? "saved" : "error");
             })
           }

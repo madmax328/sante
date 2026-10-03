@@ -13,6 +13,7 @@ import { getSession, requireUserId } from "@/lib/session";
 import { cancelSubscriptionNow, prepareCheckout, refreshSubscription, setCancelAtPeriodEnd, startTrial, type Plan, type PreparedPayment } from "@/lib/stripe";
 import { isPremium } from "@/lib/premium";
 import { db } from "@/lib/db";
+import { cleanDislikes } from "@/lib/dislikes";
 
 export async function prepareCheckoutAction(plan: Plan): Promise<{ data?: PreparedPayment; error?: string }> {
   const session = await getSession();
@@ -66,6 +67,7 @@ const prefsSchema = z.object({
   equipment: z.array(z.enum(["oven", "microwave", "blender", "airfryer", "slowcooker"])),
   leftovers: z.boolean(),
   snacks: z.boolean(),
+  dislikedIngredients: z.array(z.string().max(40)).max(150),
 });
 
 export async function saveFoodPrefsAction(input: z.input<typeof prefsSchema>): Promise<{ ok: boolean }> {
@@ -73,7 +75,7 @@ export async function saveFoodPrefsAction(input: z.input<typeof prefsSchema>): P
   const parsed = prefsSchema.safeParse(input);
   const profile = await getProfile(userId);
   if (!parsed.success || !profile) return { ok: false };
-  await updateProfile(userId, { prefs: { ...profile.prefs, ...parsed.data } });
+  await updateProfile(userId, { prefs: { ...profile.prefs, ...parsed.data, dislikedIngredients: cleanDislikes(parsed.data.dislikedIngredients) } });
   revalidatePath("/[locale]/app", "layout");
   return { ok: true };
 }

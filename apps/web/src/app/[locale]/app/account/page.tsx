@@ -1,11 +1,12 @@
 import { Check } from "lucide-react";
-import { getFormatter, getTranslations } from "next-intl/server";
+import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { BodyForm, DangerZone, FoodPrefsForm, SubscriptionButtons } from "@/components/settings-client";
 import { Badge, Card, LinkButton, Notice, PageHeader } from "@/components/ui";
 import { requireAppUser } from "@/lib/app-user";
 import { features } from "@/lib/env";
 import { isPremium } from "@/lib/premium";
 import { getHealth } from "@/lib/repo";
+import { dislikeOptions } from "@/lib/dislikes";
 
 export async function generateMetadata() {
   const t = await getTranslations("nav");
@@ -68,7 +69,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
 
       <Card className="grid gap-4">
         <h2 className="text-xl font-bold">{t("food")}</h2>
-        <FoodPrefsForm initial={user.profile.prefs} />
+        <FoodPrefsForm initial={user.profile.prefs} dislikeOptions={dislikeOptions(await getLocale())} />
       </Card>
 
       <Card className="grid gap-3">

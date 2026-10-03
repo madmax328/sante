@@ -94,7 +94,8 @@ export async function loadUserContext(userId: string): Promise<UserContext | nul
   }));
 
   const ctx: PlanContext = {
-    catalog: getCatalog(profile.market),
+    // Seasonings the user doesn't eat are taken out of recipes; other dislikes exclude recipes.
+    catalog: getCatalog(profile.market, profile.prefs.dislikedIngredients ?? []),
     members,
     prefs: profile.prefs,
     budget: profile.budget.enabled && can(profile, "budget") ? profile.budget.weekly : undefined,

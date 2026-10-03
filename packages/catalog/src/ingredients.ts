@@ -33,6 +33,39 @@ interface Def {
   ciqual?: string;
 }
 
+/**
+ * Seasonings and garnishes: removed from the recipe rather than excluding it,
+ * unless the recipe is named after them (words below, FR and EN).
+ */
+const OMITTABLE: Record<string, string[]> = {
+  garlic: ["ail", "aïoli", "garlic"],
+  ginger: ["gingembre", "ginger"],
+  shallot: ["échalote", "shallot"],
+  spring_onion: ["oignon nouveau", "spring onion"],
+  parsley: ["persil", "parsley", "gremolata", "taboulé", "tabbouleh"],
+  basil: ["basilic", "basil", "pesto"],
+  coriander: ["coriandre", "coriander", "cilantro"],
+  chives: ["ciboulette", "chives"],
+  mint: ["menthe", "mint"],
+  sesame: ["sésame", "sesame"],
+  chili_flakes: ["piment", "chili", "pimenté", "spicy", "épicé"],
+  chili_powder: ["piment", "chili", "pimenté", "spicy", "épicé"],
+  cumin: ["cumin"],
+  curry: ["curry"],
+  garam_masala: ["masala"],
+  turmeric: ["curcuma", "turmeric"],
+  cinnamon: ["cannelle", "cinnamon"],
+  nutmeg: ["muscade", "nutmeg"],
+  ras_el_hanout: ["ras el hanout"],
+  five_spice: ["cinq-épices", "five-spice", "five spice"],
+  paprika: ["paprika"],
+  smoked_paprika: ["paprika"],
+  herbes_provence: ["herbes"],
+  oregano: ["origan", "oregano"],
+  thyme: ["thym", "thyme"],
+  bay_leaf: ["laurier", "bay"],
+};
+
 function nutrients(n: N): Nutrients {
   const [kcal, protein, carbs, sugars, fat, satFat, fiber, salt] = n;
   return { kcal, protein, carbs, sugars, fat, satFat, fiber, salt };
@@ -53,6 +86,7 @@ function make(d: Def): Ingredient {
     packs: d.packs,
     shelfLifeDays: d.shelf,
     staple: d.staple,
+    omittable: OMITTABLE[d.id],
     season: d.season,
     keywords: d.kw ?? [d.en.toLowerCase()],
     source: d.ciqual ? `CIQUAL ${d.ciqual}` : "CIQUAL (approx.)",
