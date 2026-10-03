@@ -44,8 +44,7 @@ Les collections et index sont créés automatiquement au premier lancement.
    avec les événements `customer.subscription.created`,
    `customer.subscription.updated`, `customer.subscription.deleted`.
    Copier le secret de signature dans `STRIPE_WEBHOOK_SECRET`.
-4. *Paramètres → Portail client* : activer l'annulation et le changement de formule.
-5. Facultatif : pour Apple Pay, enregistrer le domaine du site dans *Paramètres → Moyens de paiement → Domaines*.
+4. Facultatif : pour Apple Pay, enregistrer le domaine du site dans *Paramètres → Moyens de paiement → Domaines*.
 
 Le statut Premium est enregistré dans la base (collection `profiles`, champ `subscription`) :
 c'est ce champ que l'app mobile lira pour savoir si l'utilisateur est abonné.
@@ -56,6 +55,10 @@ L'abonnement Stripe n'est créé qu'au moment où l'utilisateur valide le formul
 afficher la page de paiement ou changer de formule ne crée rien. Avec un essai gratuit
 (`STRIPE_TRIAL_DAYS` > 0), la carte est d'abord enregistrée et vérifiée, puis l'essai démarre ;
 l'essai n'est proposé qu'une fois par client.
+
+La résiliation se fait sur le site (*Mon compte → Résilier mon abonnement*) : l'abonnement n'est
+pas renouvelé, Premium reste actif jusqu'à la fin de la période payée, et l'utilisateur peut le
+réactiver avant cette date. Le portail client Stripe n'est pas utilisé.
 
 ### 3. Vercel
 1. *Add New → Project*, importer le dépôt GitHub.

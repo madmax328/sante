@@ -10,7 +10,7 @@ import { todayIn } from "@/lib/dates";
 import { features } from "@/lib/env";
 import { deleteAllData, getHealth, getProfile, saveHealth, saveMeasurement, updateProfile } from "@/lib/repo";
 import { getSession, requireUserId } from "@/lib/session";
-import { cancelSubscriptionNow, createPortal, prepareCheckout, refreshSubscription, startTrial, type Plan, type PreparedPayment } from "@/lib/stripe";
+import { cancelSubscriptionNow, prepareCheckout, refreshSubscription, setCancelAtPeriodEnd, startTrial, type Plan, type PreparedPayment } from "@/lib/stripe";
 import { isPremium } from "@/lib/premium";
 import { db } from "@/lib/db";
 
@@ -45,11 +45,17 @@ export async function completeCheckoutAction(ref: { subscriptionId?: string; set
   }
 }
 
-export async function portalAction(): Promise<{ url?: string; error?: string }> {
+export async function setCancelAction(cancel: boolean): Promise<{ ok: boolean }> {
   const userId = await requireUserId();
-  if (!features.stripe()) return { error: "not_configured" };
-  const url = await createPortal(userId, await getLocale());
-  return url ? { url } : { error: "no_customer" };
+  if (!features.stripe() || typeof cancel !== "boolean") return { ok: false };
+  try {
+    const ok = await setCancelAtPeriodEnd(userId, cancel);
+    revalidatePath("/[locale]/app", "layout");
+    return { ok };
+  } catch (e) {
+    console.error("setCancelAtPeriodEnd failed", e);
+    return { ok: false };
+  }
 }
 
 const prefsSchema = z.object({

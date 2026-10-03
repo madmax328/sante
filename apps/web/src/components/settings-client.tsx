@@ -7,7 +7,7 @@ import { useRouter } from "@/i18n/navigation";
 import { authClient } from "@/lib/auth-client";
 import {
   deleteAccountAction,
-  portalAction,
+  setCancelAction,
   saveBodyAction,
   saveFoodPrefsAction,
   withdrawHealthConsentAction,
@@ -173,29 +173,45 @@ export function BodyForm({ initial }: { initial: { weightKg: number; heightCm: n
   );
 }
 
-export function SubscriptionButtons({ premium, hasCustomer, configured }: { premium: boolean; hasCustomer: boolean; configured: boolean }) {
+export function SubscriptionButtons({ premium, cancelling, endDate, configured }: { premium: boolean; cancelling: boolean; endDate?: string; configured: boolean }) {
   const t = useTranslations("account");
+  const router = useRouter();
+  const [confirming, setConfirming] = useState(false);
   const [pending, start] = useTransition();
   const [error, setError] = useState<string>();
-  const go = (fn: () => Promise<{ url?: string; error?: string }>) =>
+  const run = (cancel: boolean) =>
     start(async () => {
-      const res = await fn();
-      if (res.url) window.location.href = res.url;
-      else setError(t(`stripeErrors.${res.error ?? "server"}`));
+      setError(undefined);
+      const res = await setCancelAction(cancel);
+      if (!res.ok) return setError(t("cancelError"));
+      setConfirming(false);
+      router.refresh();
     });
   if (!configured) return <p className="text-sm text-muted">{t("stripeErrors.not_configured")}</p>;
   return (
     <div className="grid gap-2">
-      <div className="flex flex-wrap gap-2">
-        {!premium && (
-          <>
-            <LinkButton href="/app/account/checkout?plan=monthly" variant="accent">{t("monthly")}</LinkButton>
-            <LinkButton href="/app/account/checkout?plan=yearly" variant="primary">{t("yearly")}</LinkButton>
-          </>
-        )}
-        {hasCustomer && <Button variant="secondary" disabled={pending} onClick={() => go(portalAction)}>{t("manage")}</Button>}
-      </div>
-      {error && <p className="text-sm text-danger">{error}</p>}
+      {!premium && (
+        <div className="flex flex-wrap gap-2">
+          <LinkButton href="/app/account/checkout?plan=monthly" variant="accent">{t("monthly")}</LinkButton>
+          <LinkButton href="/app/account/checkout?plan=yearly" variant="primary">{t("yearly")}</LinkButton>
+        </div>
+      )}
+      {premium && cancelling && (
+        <Button variant="secondary" className="justify-self-start" disabled={pending} onClick={() => run(false)}>{t("resume")}</Button>
+      )}
+      {premium && !cancelling && !confirming && (
+        <Button variant="secondary" className="justify-self-start" onClick={() => setConfirming(true)}>{t("cancelSub")}</Button>
+      )}
+      {premium && !cancelling && confirming && (
+        <div className="grid gap-3 rounded-2xl border border-line bg-riz p-4">
+          <p className="text-sm">{endDate ? t("cancelConfirm", { date: endDate }) : t("cancelConfirmNoDate")}</p>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="danger" disabled={pending} onClick={() => run(true)}>{t("cancelYes")}</Button>
+            <Button variant="ghost" disabled={pending} onClick={() => setConfirming(false)}>{t("cancelNo")}</Button>
+          </div>
+        </div>
+      )}
+      {error && <p className="text-sm text-danger" role="alert">{error}</p>}
     </div>
   );
 }

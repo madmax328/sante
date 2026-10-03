@@ -905,10 +905,8 @@
     "upgradeText": "Passe à Premium pour {monthly} par mois ou {yearly} par an.",
     "monthly": "Mensuel — 6,99 €/mois",
     "yearly": "Annuel — 49,99 €/an",
-    "manage": "Gérer mon abonnement",
     "stripeErrors": {
       "not_configured": "Le paiement n'est pas encore configuré.",
-      "no_customer": "Aucun abonnement à gérer.",
       "server": "Le paiement n'a pas pu démarrer. Réessaie.",
       "auth": "Reconnecte-toi.",
       "invalid": "Offre invalide."
@@ -939,7 +937,14 @@
     "save": "Enregistrer",
     "saveAndRebuild": "Enregistrer et refaire le programme",
     "prefsNote": "Les nouvelles préférences s'appliquent à la prochaine génération de menu.",
-    "pending": "Paiement reçu : ton accès Premium s'active dans quelques instants. Recharge la page dans une minute."
+    "pending": "Paiement reçu : ton accès Premium s'active dans quelques instants. Recharge la page dans une minute.",
+    "cancelSub": "Résilier mon abonnement",
+    "cancelConfirm": "Ton abonnement ne sera pas renouvelé : tu gardes Premium jusqu'au {date}, puis tu repasses en gratuit. Aucun autre prélèvement.",
+    "cancelConfirmNoDate": "Ton abonnement ne sera pas renouvelé : tu gardes Premium jusqu'à la fin de la période payée. Aucun autre prélèvement.",
+    "cancelYes": "Confirmer la résiliation",
+    "cancelNo": "Garder Premium",
+    "resume": "Réactiver mon abonnement",
+    "cancelError": "L'opération n'a pas abouti. Réessaie dans un instant."
   },
   "checkout": {
     "title": "Passer à Premium",

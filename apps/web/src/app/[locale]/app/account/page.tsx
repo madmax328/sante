@@ -50,7 +50,12 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
             </ul>
           </>
         )}
-        <SubscriptionButtons premium={premium} hasCustomer={!!sub?.customerId} configured={features.stripe()} />
+        <SubscriptionButtons
+          premium={premium}
+          cancelling={!!sub?.cancelAtPeriodEnd}
+          endDate={sub?.currentPeriodEnd ? format.dateTime(new Date(sub.currentPeriodEnd), { dateStyle: "long" }) : undefined}
+          configured={features.stripe()}
+        />
         <p className="text-xs text-muted">{p("paymentNote")}</p>
       </Card>
 

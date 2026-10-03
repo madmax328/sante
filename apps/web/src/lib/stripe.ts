@@ -168,13 +168,19 @@ export async function refreshSubscription(userId: string, subscriptionId: string
   return sub.status === "active" || (sub.status === "trialing" && !!sub.default_payment_method);
 }
 
-export async function createPortal(userId: string, locale: string): Promise<string | null> {
+/**
+ * Résiliation : the subscription stops at the end of the paid period (Premium
+ * stays until then, nothing more is charged). `false` undoes it before that date.
+ */
+export async function setCancelAtPeriodEnd(userId: string, cancel: boolean): Promise<boolean> {
   const profile = await getProfile(userId);
-  const customer = profile?.subscription?.customerId;
-  if (!customer) return null;
-  const prefix = locale === "fr" ? "" : `/${locale}`;
-  const session = await stripe().billingPortal.sessions.create({ customer, return_url: `${env.appUrl}${prefix}/app/account` });
-  return session.url;
+  const id = profile?.subscription?.subscriptionId;
+  if (!id) return false;
+  const current = await stripe().subscriptions.retrieve(id);
+  const customer = typeof current.customer === "string" ? current.customer : current.customer.id;
+  if (customer !== profile.subscription?.customerId || !["active", "trialing", "past_due"].includes(current.status)) return false;
+  await syncSubscription(await stripe().subscriptions.update(id, { cancel_at_period_end: cancel }));
+  return true;
 }
 
 function toSubscription(sub: Stripe.Subscription): Subscription {

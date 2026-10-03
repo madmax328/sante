@@ -905,10 +905,8 @@
     "upgradeText": "Go Premium for {monthly} per month or {yearly} per year.",
     "monthly": "Monthly — €6.99/month",
     "yearly": "Yearly — €49.99/year",
-    "manage": "Manage my subscription",
     "stripeErrors": {
       "not_configured": "Payment isn't configured yet.",
-      "no_customer": "No subscription to manage.",
       "server": "Payment couldn't start. Please retry.",
       "auth": "Please log in again.",
       "invalid": "Invalid plan."
@@ -939,7 +937,14 @@
     "save": "Save",
     "saveAndRebuild": "Save and rebuild the plan",
     "prefsNote": "New preferences apply to the next menu generation.",
-    "pending": "Payment received: Premium will be active in a moment. Reload the page in a minute."
+    "pending": "Payment received: Premium will be active in a moment. Reload the page in a minute.",
+    "cancelSub": "Cancel my subscription",
+    "cancelConfirm": "Your subscription won't renew: you keep Premium until {date}, then switch back to free. No further charges.",
+    "cancelConfirmNoDate": "Your subscription won't renew: you keep Premium until the end of the paid period. No further charges.",
+    "cancelYes": "Confirm cancellation",
+    "cancelNo": "Keep Premium",
+    "resume": "Reactivate my subscription",
+    "cancelError": "That didn't work. Please try again in a moment."
   },
   "checkout": {
     "title": "Go Premium",
