@@ -32,7 +32,7 @@ export function LoginForm({ google }: { google: boolean }) {
     });
     setPending(false);
     if (error) {
-      setError(error.status === 401 ? t("errors.invalid") : t("errors.generic"));
+      setError(error.status === 401 ? t("errors.invalid") : `${t("errors.generic")} (${error.code ?? error.status})`);
       return;
     }
     router.push("/app");
@@ -81,7 +81,7 @@ export function SignupForm({ google }: { google: boolean }) {
     });
     setPending(false);
     if (error) {
-      setError(error.code === "USER_ALREADY_EXISTS" || error.status === 422 ? t("errors.exists") : error.code === "PASSWORD_TOO_SHORT" ? t("errors.short") : t("errors.generic"));
+      setError(error.code === "USER_ALREADY_EXISTS" || error.status === 422 ? t("errors.exists") : error.code === "PASSWORD_TOO_SHORT" ? t("errors.short") : `${t("errors.generic")} (${error.code ?? error.status})`);
       return;
     }
     router.push("/app/welcome");
