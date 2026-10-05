@@ -3,7 +3,6 @@ import { Link } from "@/i18n/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { LinkButton, Logo } from "./ui";
-import { CONTACT } from "@/lib/contact";
 
 export async function SiteHeader() {
   const t = await getTranslations("site");
@@ -23,6 +22,9 @@ export async function SiteHeader() {
         <nav className="flex items-center gap-2 sm:gap-4">
           <Link href="/pricing" className="hidden text-sm font-semibold text-muted hover:text-encre sm:inline">
             {t("pricing")}
+          </Link>
+          <Link href="/contact" className="hidden text-sm font-semibold text-muted hover:text-encre sm:inline">
+            {t("contact")}
           </Link>
           {session ? (
             <LinkButton href="/app" size="sm">
@@ -63,7 +65,7 @@ export async function SiteFooter() {
           <Link href="/legal/privacy" className="text-muted hover:text-encre">{t("privacy")}</Link>
           <Link href="/legal/terms" className="text-muted hover:text-encre">{t("terms")}</Link>
           <Link href="/legal/notice" className="text-muted hover:text-encre">{t("notice")}</Link>
-          <a href={`mailto:${CONTACT.general}`} className="text-muted hover:text-encre">{CONTACT.general}</a>
+          <Link href="/contact" className="text-muted hover:text-encre">{t("contact")}</Link>
         </div>
       </div>
       <p className="mx-auto max-w-6xl px-4 pb-8 text-xs text-muted">{t("disclaimer")}</p>

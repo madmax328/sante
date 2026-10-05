@@ -14,7 +14,8 @@
     "privacy": "Confidentialité",
     "terms": "CGU / CGV",
     "notice": "Mentions légales",
-    "disclaimer": "Weeko est une application de bien-être et d'organisation. Elle ne remplace pas un avis médical. Valeurs nutritionnelles : table CIQUAL (ANSES)."
+    "disclaimer": "Weeko est une application de bien-être et d'organisation. Elle ne remplace pas un avis médical. Valeurs nutritionnelles : table CIQUAL (ANSES).",
+    "contact": "Contact"
   },
   "home": {
     "eyebrow": "Repas, courses, budget et sport",
@@ -953,7 +954,7 @@
     "cancelNo": "Garder Premium",
     "resume": "Réactiver mon abonnement",
     "cancelError": "L'opération n'a pas abouti. Réessaie dans un instant.",
-    "supportNote": "Une question sur ton abonnement ? Écris-nous à <link>{email}</link>."
+    "supportNote": "Une question sur ton abonnement ? <link>Écris-nous</link>."
   },
   "checkout": {
     "title": "Passer à Premium",
@@ -977,5 +978,31 @@
     "startError": "Impossible de préparer le paiement pour le moment. Réessaie dans un instant.",
     "legal": "En confirmant, tu acceptes les <terms>conditions générales de vente</terms> et demandes l'accès immédiat à Premium : tu renonces ainsi au droit de rétractation pour la période en cours. L'abonnement se renouvelle automatiquement.",
     "errorRef": "Référence de l'erreur : {ref}"
+  },
+  "contact": {
+    "title": "Nous contacter",
+    "subtitle": "Une question, un souci, une idée ? Écris-nous, on te répond par e-mail sous 48 h (jours ouvrés).",
+    "accountSubtitle": "Une question, un souci avec ton compte ou ton abonnement ? On te répond par e-mail sous 48 h.",
+    "name": "Ton prénom",
+    "email": "Ton e-mail",
+    "topic": "Sujet",
+    "message": "Message",
+    "messageHint": "Donne-nous un maximum de détails, on pourra t'aider plus vite.",
+    "send": "Envoyer",
+    "sentTitle": "Message envoyé !",
+    "sentText": "Merci. On te répond à {email} au plus vite.",
+    "another": "Envoyer un autre message",
+    "topics": {
+      "question": "Question générale",
+      "subscription": "Abonnement ou paiement",
+      "technical": "Problème technique",
+      "privacy": "Mes données personnelles (RGPD)",
+      "idea": "Suggestion"
+    },
+    "errors": {
+      "invalid": "Vérifie les champs : ton message doit faire au moins 10 caractères.",
+      "rate": "Trop de messages envoyés. Réessaie dans une heure.",
+      "server": "Le message n'a pas pu être envoyé. Réessaie dans un instant."
+    }
   }
 }

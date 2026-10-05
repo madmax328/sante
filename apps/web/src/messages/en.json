@@ -14,7 +14,8 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "notice": "Legal notice",
-    "disclaimer": "Weeko is a wellness and organisation app. It does not replace medical advice. Nutrition data: CIQUAL table (ANSES)."
+    "disclaimer": "Weeko is a wellness and organisation app. It does not replace medical advice. Nutrition data: CIQUAL table (ANSES).",
+    "contact": "Contact"
   },
   "home": {
     "eyebrow": "Meals, groceries, budget and workouts",
@@ -953,7 +954,7 @@
     "cancelNo": "Keep Premium",
     "resume": "Reactivate my subscription",
     "cancelError": "That didn't work. Please try again in a moment.",
-    "supportNote": "A question about your subscription? Email us at <link>{email}</link>."
+    "supportNote": "A question about your subscription? <link>Write to us</link>."
   },
   "checkout": {
     "title": "Go Premium",
@@ -977,5 +978,31 @@
     "startError": "We couldn't prepare the payment right now. Please try again shortly.",
     "legal": "By confirming, you accept the <terms>terms of sale</terms> and request immediate access to Premium, waiving your right of withdrawal for the current period. The subscription renews automatically.",
     "errorRef": "Error reference: {ref}"
+  },
+  "contact": {
+    "title": "Contact us",
+    "subtitle": "A question, a problem, an idea? Write to us, we reply by email within 48 hours (business days).",
+    "accountSubtitle": "A question or a problem with your account or subscription? We reply by email within 48 hours.",
+    "name": "Your first name",
+    "email": "Your email",
+    "topic": "Subject",
+    "message": "Message",
+    "messageHint": "Give us as many details as you can so we can help faster.",
+    "send": "Send",
+    "sentTitle": "Message sent!",
+    "sentText": "Thank you. We'll reply to {email} as soon as possible.",
+    "another": "Send another message",
+    "topics": {
+      "question": "General question",
+      "subscription": "Subscription or payment",
+      "technical": "Technical problem",
+      "privacy": "My personal data (GDPR)",
+      "idea": "Suggestion"
+    },
+    "errors": {
+      "invalid": "Check the fields: your message must be at least 10 characters.",
+      "rate": "Too many messages sent. Try again in an hour.",
+      "server": "The message couldn't be sent. Please try again shortly."
+    }
   }
 }

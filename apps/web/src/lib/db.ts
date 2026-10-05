@@ -34,6 +34,8 @@ export function ensureIndexes(): Promise<void> {
       db.collection("coach_messages").createIndex({ userId: 1, at: -1 }),
       db.collection("recipe_photos").createIndex({ recipeId: 1 }, { unique: true }),
       db.collection("profiles").createIndex({ "subscription.customerId": 1 }, { sparse: true }),
+      // Anti-spam counters for the contact form, deleted automatically after a day.
+      db.collection("contact_attempts").createIndex({ at: 1 }, { expireAfterSeconds: 86400 }),
     ]);
   })().catch((e) => {
     indexesReady = undefined;

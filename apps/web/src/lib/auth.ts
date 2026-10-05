@@ -56,7 +56,7 @@ export const auth = betterAuth({
       await sendSafely(
         user.email,
         "Réinitialiser ton mot de passe Weeko",
-        `<p>Bonjour,</p><p>Pour choisir un nouveau mot de passe, ouvrez ce lien (valable 1 heure) :</p><p><a href="${url}">${url}</a></p><p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail.</p>`,
+        `<p>Bonjour,</p><p>Pour choisir un nouveau mot de passe, ouvre ce lien (valable 1 heure) :</p><p><a href="${url}">${url}</a></p><p>Si tu n'es pas à l'origine de cette demande, ignore cet e-mail.</p>`,
       );
     },
   },
@@ -66,8 +66,8 @@ export const auth = betterAuth({
     sendVerificationEmail: async ({ user, url }) => {
       await sendSafely(
         user.email,
-        "Confirmez votre adresse e-mail",
-        `<p>Bienvenue sur Weeko !</p><p>Confirmez votre adresse en ouvrant ce lien :</p><p><a href="${url}">${url}</a></p>`,
+        "Confirme ton adresse e-mail",
+        `<p>Bienvenue sur Weeko !</p><p>Confirme ton adresse en ouvrant ce lien :</p><p><a href="${url}">${url}</a></p>`,
       );
     },
   },

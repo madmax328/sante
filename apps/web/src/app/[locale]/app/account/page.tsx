@@ -7,7 +7,7 @@ import { features } from "@/lib/env";
 import { isPremium } from "@/lib/premium";
 import { getHealth } from "@/lib/repo";
 import { dislikeOptions } from "@/lib/dislikes";
-import { CONTACT } from "@/lib/contact";
+import { ContactForm } from "@/components/contact-form";
 
 export async function generateMetadata() {
   const t = await getTranslations("nav");
@@ -21,6 +21,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
   const sp = await searchParams;
   const t = await getTranslations("account");
   const p = await getTranslations("pricing");
+  const c = await getTranslations("contact");
   const format = await getFormatter();
   const premium = isPremium(user.profile);
   const sub = user.profile.subscription;
@@ -60,7 +61,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
         />
         <p className="text-xs text-muted">{p("paymentNote")}</p>
         <p className="text-xs text-muted">
-          {t.rich("supportNote", { email: CONTACT.support, link: (c) => <a href={`mailto:${CONTACT.support}`} className="underline">{c}</a> })}
+          {t.rich("supportNote", { link: (c) => <a href="#contact" className="font-semibold underline">{c}</a> })}
         </p>
       </Card>
 
@@ -82,6 +83,14 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
           {health?.members.map((m) => <li key={m.id}>{m.name}{m.self ? ` (${t("you")})` : ""}</li>)}
         </ul>
         <LinkButton href="/app/welcome" variant="secondary" size="sm" className="justify-self-start">{t("redoProfile")}</LinkButton>
+      </Card>
+
+      <Card id="contact" className="grid scroll-mt-24 gap-4">
+        <div>
+          <h2 className="text-xl font-bold">{c("title")}</h2>
+          <p className="text-sm text-muted">{c("accountSubtitle")}</p>
+        </div>
+        <ContactForm defaultName={user.name} defaultEmail={user.email} defaultTopic={premium ? "subscription" : "question"} />
       </Card>
 
       <Card className="grid gap-4">
