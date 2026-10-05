@@ -80,8 +80,9 @@ sur Pexels par lots de 150 recherches. Pour aller plus vite, on peut l'appeler �
 ### 4. E-mails (getweeko.com)
 Boîte : `contact@getweeko.com`, avec les alias `bonjour@`, `support@`, `rgpd@` et `noreply@`
 (adresses publiques dans `apps/web/src/lib/contact.ts`).
-- Envoi automatique (réinitialisation du mot de passe) : dans Resend, *Domains → Add domain* →
-  `getweeko.com`, ajouter les enregistrements DNS indiqués, puis `EMAIL_FROM=Weeko <noreply@getweeko.com>`.
+- Envoi automatique (mot de passe oublié) par la boîte Hostinger : `SMTP_HOST=smtp.hostinger.com`,
+  `SMTP_PORT=465`, `SMTP_USER=contact@getweeko.com`, `SMTP_PASSWORD` (mot de passe de la boîte).
+  Limite Hostinger : 1 000 e-mails / 24 h. Au-delà, passer à Resend (`RESEND_API_KEY`, utilisé si SMTP est vide).
 - Stripe : *Paramètres → Informations publiques* → e-mail de support `support@getweeko.com`.
 
 ### 5. Clés à générer

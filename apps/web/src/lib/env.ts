@@ -16,7 +16,11 @@ export const env = {
   pexelsKey: process.env.PEXELS_API_KEY,
   cronSecret: process.env.CRON_SECRET,
   resendKey: process.env.RESEND_API_KEY,
-  emailFrom: process.env.EMAIL_FROM ?? "Weeko <noreply@getweeko.com>",
+  smtpHost: process.env.SMTP_HOST,
+  smtpPort: Number(process.env.SMTP_PORT ?? 465),
+  smtpUser: process.env.SMTP_USER,
+  smtpPassword: process.env.SMTP_PASSWORD,
+  emailFrom: process.env.EMAIL_FROM ?? (process.env.SMTP_USER ? `Weeko <${process.env.SMTP_USER}>` : "Weeko <noreply@getweeko.com>"),
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
 };
@@ -25,7 +29,8 @@ export const features = {
   stripe: () => !!env.stripeSecret && !!env.stripePriceMonthly && !!env.stripePublishableKey && stripeModesMatch(),
   ai: () => !!env.anthropicKey,
   photos: () => !!env.pexelsKey,
-  email: () => !!env.resendKey,
+  smtp: () => !!env.smtpHost && !!env.smtpUser && !!env.smtpPassword,
+  email: () => features.smtp() || !!env.resendKey,
   google: () => !!env.googleClientId && !!env.googleClientSecret,
 };
 
