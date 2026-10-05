@@ -16,7 +16,7 @@ export const env = {
   pexelsKey: process.env.PEXELS_API_KEY,
   cronSecret: process.env.CRON_SECRET,
   resendKey: process.env.RESEND_API_KEY,
-  emailFrom: process.env.EMAIL_FROM ?? "Weeko <bonjour@weeko.app>",
+  emailFrom: process.env.EMAIL_FROM ?? "Weeko <noreply@getweeko.com>",
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
 };

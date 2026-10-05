@@ -952,7 +952,8 @@
     "cancelYes": "Confirm cancellation",
     "cancelNo": "Keep Premium",
     "resume": "Reactivate my subscription",
-    "cancelError": "That didn't work. Please try again in a moment."
+    "cancelError": "That didn't work. Please try again in a moment.",
+    "supportNote": "A question about your subscription? Email us at <link>{email}</link>."
   },
   "checkout": {
     "title": "Go Premium",

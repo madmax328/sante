@@ -952,7 +952,8 @@
     "cancelYes": "Confirmer la résiliation",
     "cancelNo": "Garder Premium",
     "resume": "Réactiver mon abonnement",
-    "cancelError": "L'opération n'a pas abouti. Réessaie dans un instant."
+    "cancelError": "L'opération n'a pas abouti. Réessaie dans un instant.",
+    "supportNote": "Une question sur ton abonnement ? Écris-nous à <link>{email}</link>."
   },
   "checkout": {
     "title": "Passer à Premium",

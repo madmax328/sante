@@ -118,7 +118,7 @@ export async function lookupBarcodeAction(code: string): Promise<BarcodeProduct 
   if (!/^\d{8,14}$/.test(code)) return null;
   try {
     const res = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,product_name_fr,brands,nutriments,nutriscore_grade`, {
-      headers: { "User-Agent": "Weeko/1.0 (contact: bonjour@weeko.app)" },
+      headers: { "User-Agent": "Weeko/1.0 (contact: contact@getweeko.com)" },
       next: { revalidate: 86400 },
     });
     if (!res.ok) return null;

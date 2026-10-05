@@ -40,7 +40,7 @@ Les collections et index sont créés automatiquement au premier lancement.
 2. *Développeurs → Clés API* : copier la clé secrète dans `STRIPE_SECRET_KEY` et la clé publiable
    dans `STRIPE_PUBLISHABLE_KEY` (le formulaire de carte s'affiche directement sur le site,
    aux couleurs de Weeko, sans redirection vers une page Stripe).
-3. *Développeurs → Webhooks* : ajouter l'URL `https://VOTRE-DOMAINE/api/stripe/webhook`
+3. *Développeurs → Webhooks* : ajouter l'URL `https://getweeko.com/api/stripe/webhook`
    avec les événements `customer.subscription.created`,
    `customer.subscription.updated`, `customer.subscription.deleted`.
    Copier le secret de signature dans `STRIPE_WEBHOOK_SECRET`.
@@ -71,13 +71,20 @@ réactiver avant cette date. Le portail client Stripe n'est pas utilisé.
 
 La tâche planifiée `/api/cron/photos` (une fois par jour) récupère les photos des recettes
 sur Pexels par lots de 150 recherches. Pour aller plus vite, on peut l'appeler à la main :
-`curl -H "Authorization: Bearer $CRON_SECRET" https://VOTRE-DOMAINE/api/cron/photos`
+`curl -H "Authorization: Bearer $CRON_SECRET" https://getweeko.com/api/cron/photos`
 (Pexels autorise 200 requêtes par heure).
 
 > Le plan gratuit Vercel (Hobby) est réservé aux projets non commerciaux : pour un lancement
 > payant, il faut le plan Pro.
 
-### 4. Clés à générer
+### 4. E-mails (getweeko.com)
+Boîte : `contact@getweeko.com`, avec les alias `bonjour@`, `support@`, `rgpd@` et `noreply@`
+(adresses publiques dans `apps/web/src/lib/contact.ts`).
+- Envoi automatique (réinitialisation du mot de passe) : dans Resend, *Domains → Add domain* →
+  `getweeko.com`, ajouter les enregistrements DNS indiqués, puis `EMAIL_FROM=Weeko <noreply@getweeko.com>`.
+- Stripe : *Paramètres → Informations publiques* → e-mail de support `support@getweeko.com`.
+
+### 5. Clés à générer
 - `BETTER_AUTH_SECRET` : `openssl rand -base64 32`
 - `HEALTH_DATA_KEY` : `openssl rand -base64 32` — **à sauvegarder** : sans cette clé, les données de santé chiffrées sont illisibles.
 - `CRON_SECRET` : `openssl rand -hex 24`

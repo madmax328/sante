@@ -7,6 +7,7 @@ import { features } from "@/lib/env";
 import { isPremium } from "@/lib/premium";
 import { getHealth } from "@/lib/repo";
 import { dislikeOptions } from "@/lib/dislikes";
+import { CONTACT } from "@/lib/contact";
 
 export async function generateMetadata() {
   const t = await getTranslations("nav");
@@ -58,6 +59,9 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
           configured={features.stripe()}
         />
         <p className="text-xs text-muted">{p("paymentNote")}</p>
+        <p className="text-xs text-muted">
+          {t.rich("supportNote", { email: CONTACT.support, link: (c) => <a href={`mailto:${CONTACT.support}`} className="underline">{c}</a> })}
+        </p>
       </Card>
 
       {self && (

@@ -24,7 +24,7 @@ const fr: Record<LegalDoc, Doc> = {
     sections: [
       {
         h: "Responsable du traitement",
-        p: ["[Raison sociale], [adresse], immatriculée sous le numéro [SIREN]. Contact pour toute question relative à vos données : [email de contact RGPD]."],
+        p: ["[Raison sociale], [adresse], immatriculée sous le numéro [SIREN]. Contact pour toute question relative à vos données : rgpd@getweeko.com."],
       },
       {
         h: "Données traitées",
@@ -68,7 +68,7 @@ const fr: Record<LegalDoc, Doc> = {
         h: "Vos droits",
         p: [
           "Vous pouvez à tout moment accéder à vos données, les rectifier, les exporter (fichier JSON téléchargeable depuis votre compte), retirer votre consentement ou supprimer votre compte et toutes vos données en un clic.",
-          "Vous pouvez aussi nous contacter à [email de contact RGPD] et introduire une réclamation auprès de la CNIL (www.cnil.fr).",
+          "Vous pouvez aussi nous contacter à rgpd@getweeko.com et introduire une réclamation auprès de la CNIL (www.cnil.fr).",
         ],
       },
       {
@@ -106,7 +106,7 @@ const fr: Record<LegalDoc, Doc> = {
     title: "Mentions légales",
     updated: "Dernière mise à jour : octobre 2026",
     sections: [
-      { h: "Éditeur", p: ["[Raison sociale], [forme juridique] au capital de [montant], [adresse], RCS [ville] [numéro]. Directeur de la publication : [nom]. Contact : [email]."] },
+      { h: "Éditeur", p: ["[Raison sociale], [forme juridique] au capital de [montant], [adresse], RCS [ville] [numéro]. Directeur de la publication : [nom]. Contact : contact@getweeko.com."] },
       { h: "Hébergement", p: ["Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis — application servie depuis la région Europe.", "MongoDB Atlas (MongoDB, Inc.) — base de données hébergée en Europe."] },
       { h: "Crédits", p: ["Données nutritionnelles : table de composition nutritionnelle CIQUAL, ANSES. Photos de recettes : Pexels et leurs auteurs, crédités sur chaque recette."] },
     ],
@@ -119,13 +119,13 @@ const en: Record<LegalDoc, Doc> = {
     updated: "Last updated: October 2026",
     intro: "Weeko helps you organise meals, groceries and exercise. To do so we process personal data, some of which is health data. This page explains what we collect, why, and your rights.",
     sections: [
-      { h: "Controller", p: ["[Company name], [address], registration [number]. Data protection contact: [GDPR contact email]."] },
+      { h: "Controller", p: ["[Company name], [address], registration [number]. Data protection contact: rgpd@getweeko.com."] },
       { h: "Data we process", p: ["Account data (name, email, hashed password); profile data (food preferences, budget, time, equipment, availability); health data (age, sex, height, weight, measurements, goal, allergies, pregnancy, declared medical situations, household members you add); usage data (plans, logged meals, water, workouts, assistant conversations). Payment data is handled by Stripe only."] },
       { h: "Legal basis", p: ["Health data is processed only with your explicit consent (GDPR art. 9.2.a), which you can withdraw at any time from your account. Other data is processed to provide the service and to meet legal obligations."] },
       { h: "Security", p: ["Health data is stored separately and encrypted with AES-256-GCM using a key that never leaves our servers. All traffic uses HTTPS."] },
       { h: "Processors", p: ["Vercel (hosting, EU region), MongoDB Atlas (database, EU region), Stripe (payments), Anthropic (AI assistant, only the data needed for each request, without your name or email), Resend (emails), Pexels (recipe photos, no personal data). Transfers outside the EU rely on standard contractual clauses."] },
       { h: "Retention", p: ["Data is kept while your account is active; inactive accounts are deleted after 3 years with prior notice. Billing records are kept 10 years."] },
-      { h: "Your rights", p: ["Access, rectification, export (JSON download from your account), consent withdrawal and one-click deletion of your account and data. Contact [GDPR contact email]; you may also complain to your data protection authority."] },
+      { h: "Your rights", p: ["Access, rectification, export (JSON download from your account), consent withdrawal and one-click deletion of your account and data. Contact rgpd@getweeko.com; you may also complain to your data protection authority."] },
       { h: "Disclaimer", p: ["Weeko is a wellness and organisation app, not medical advice."] },
     ],
   },
@@ -143,7 +143,7 @@ const en: Record<LegalDoc, Doc> = {
     title: "Legal notice",
     updated: "Last updated: October 2026",
     sections: [
-      { h: "Publisher", p: ["[Company name], [address], [registration]. Contact: [email]."] },
+      { h: "Publisher", p: ["[Company name], [address], [registration]. Contact: contact@getweeko.com."] },
       { h: "Hosting", p: ["Vercel Inc. (EU region) and MongoDB Atlas (EU region)."] },
       { h: "Credits", p: ["Nutrition data: ANSES CIQUAL table. Recipe photos: Pexels and their authors."] },
     ],
