@@ -14,6 +14,7 @@ export const env = {
   anthropicKey: process.env.ANTHROPIC_API_KEY,
   anthropicModel: process.env.ANTHROPIC_MODEL ?? "claude-opus-5-5",
   pexelsKey: process.env.PEXELS_API_KEY,
+  unsplashKey: process.env.UNSPLASH_ACCESS_KEY,
   cronSecret: process.env.CRON_SECRET,
   resendKey: process.env.RESEND_API_KEY,
   smtpHost: process.env.SMTP_HOST,
@@ -28,7 +29,7 @@ export const env = {
 export const features = {
   stripe: () => !!env.stripeSecret && !!env.stripePriceMonthly && !!env.stripePublishableKey && stripeModesMatch(),
   ai: () => !!env.anthropicKey,
-  photos: () => !!env.pexelsKey,
+  photos: () => !!env.pexelsKey || !!env.unsplashKey,
   smtp: () => !!env.smtpHost && !!env.smtpUser && !!env.smtpPassword,
   email: () => features.smtp() || !!env.resendKey,
   google: () => !!env.googleClientId && !!env.googleClientSecret,

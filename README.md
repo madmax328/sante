@@ -69,10 +69,11 @@ réactiver avant cette date. Le portail client Stripe n'est pas utilisé.
 3. Renseigner les variables de `apps/web/.env.example` dans *Settings → Environment Variables*.
 4. Déployer. La région des fonctions est fixée à Paris (`cdg1`) dans `apps/web/vercel.json`.
 
-La tâche planifiée `/api/cron/photos` (une fois par jour) récupère les photos des recettes
-sur Pexels par lots de 150 recherches. Pour aller plus vite, on peut l'appeler à la main :
-`curl -H "Authorization: Bearer $CRON_SECRET" https://getweeko.com/api/cron/photos`
-(Pexels autorise 200 requêtes par heure).
+Photos des recettes : Unsplash (`UNSPLASH_ACCESS_KEY`), ou Pexels (`PEXELS_API_KEY`) si une clé est disponible.
+La tâche planifiée `/api/cron/photos` (une fois par jour) en récupère par lots. Pour aller plus vite,
+ouvrir dans le navigateur `https://getweeko.com/api/cron/photos?key=CRON_SECRET` (une fois par heure :
+Unsplash limite à 50 requêtes/heure en mode démo ; après validation « Production » par Unsplash, 5 000/heure,
+et on peut ajouter `&max=150`). La réponse indique combien de recettes restent sans photo (`remaining`).
 
 > Le plan gratuit Vercel (Hobby) est réservé aux projets non commerciaux : pour un lancement
 > payant, il faut le plan Pro.

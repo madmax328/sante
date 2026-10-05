@@ -30,7 +30,8 @@ export function RecipeImage({
   if (photo) {
     return (
       <div className={cx("relative overflow-hidden bg-line", className)}>
-        <Image src={thumb ? photo.thumb : photo.url} alt={photo.alt} fill sizes={sizes} className="object-cover" priority={priority} />
+        {/* Unsplash photos are served straight from their CDN, as their API terms require. */}
+        <Image src={thumb ? photo.thumb : photo.url} alt={photo.alt} fill sizes={sizes} className="object-cover" priority={priority} unoptimized={photo.source === "unsplash"} />
       </div>
     );
   }
@@ -47,7 +48,7 @@ export function PhotoCredit({ photo, label }: { photo?: RecipePhoto; label: stri
     <p className="text-xs text-muted">
       {label}{" "}
       <a href={photo.photographerUrl} target="_blank" rel="noreferrer" className="underline">{photo.photographer}</a>{" "}
-      · <a href={photo.sourceUrl} target="_blank" rel="noreferrer" className="underline">Pexels</a>
+      · <a href={photo.sourceUrl} target="_blank" rel="noreferrer" className="underline">{photo.source === "unsplash" ? "Unsplash" : "Pexels"}</a>
     </p>
   );
 }

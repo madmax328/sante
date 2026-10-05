@@ -53,7 +53,7 @@ const fr: Record<LegalDoc, Doc> = {
       {
         h: "Sous-traitants",
         p: [
-          "Vercel (hébergement de l'application, région Europe), MongoDB Atlas (base de données, région Europe), Stripe (paiements), Anthropic (assistant IA : seules les informations nécessaires à la demande sont transmises, sans votre nom ni votre e-mail), Resend (e-mails transactionnels), Pexels (photos de recettes, aucune donnée personnelle transmise).",
+          "Vercel (hébergement de l'application, région Europe), MongoDB Atlas (base de données, région Europe), Stripe (paiements), Anthropic (assistant IA : seules les informations nécessaires à la demande sont transmises, sans votre nom ni votre e-mail), Hostinger (e-mails transactionnels), Unsplash et Pexels (photos de recettes, aucune donnée personnelle transmise ; les photos Unsplash sont chargées depuis leurs serveurs).",
           "Certains sous-traitants peuvent traiter des données hors de l'Union européenne ; ces transferts sont encadrés par les clauses contractuelles types de la Commission européenne.",
         ],
       },
@@ -108,7 +108,7 @@ const fr: Record<LegalDoc, Doc> = {
     sections: [
       { h: "Éditeur", p: ["[Raison sociale], [forme juridique] au capital de [montant], [adresse], RCS [ville] [numéro]. Directeur de la publication : [nom]. Contact : contact@getweeko.com."] },
       { h: "Hébergement", p: ["Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis — application servie depuis la région Europe.", "MongoDB Atlas (MongoDB, Inc.) — base de données hébergée en Europe."] },
-      { h: "Crédits", p: ["Données nutritionnelles : table de composition nutritionnelle CIQUAL, ANSES. Photos de recettes : Pexels et leurs auteurs, crédités sur chaque recette."] },
+      { h: "Crédits", p: ["Données nutritionnelles : table de composition nutritionnelle CIQUAL, ANSES. Photos de recettes : Unsplash, Pexels et leurs auteurs, crédités sur chaque recette."] },
     ],
   },
 };
@@ -123,7 +123,7 @@ const en: Record<LegalDoc, Doc> = {
       { h: "Data we process", p: ["Account data (name, email, hashed password); profile data (food preferences, budget, time, equipment, availability); health data (age, sex, height, weight, measurements, goal, allergies, pregnancy, declared medical situations, household members you add); usage data (plans, logged meals, water, workouts, assistant conversations). Payment data is handled by Stripe only."] },
       { h: "Legal basis", p: ["Health data is processed only with your explicit consent (GDPR art. 9.2.a), which you can withdraw at any time from your account. Other data is processed to provide the service and to meet legal obligations."] },
       { h: "Security", p: ["Health data is stored separately and encrypted with AES-256-GCM using a key that never leaves our servers. All traffic uses HTTPS."] },
-      { h: "Processors", p: ["Vercel (hosting, EU region), MongoDB Atlas (database, EU region), Stripe (payments), Anthropic (AI assistant, only the data needed for each request, without your name or email), Resend (emails), Pexels (recipe photos, no personal data). Transfers outside the EU rely on standard contractual clauses."] },
+      { h: "Processors", p: ["Vercel (hosting, EU region), MongoDB Atlas (database, EU region), Stripe (payments), Anthropic (AI assistant, only the data needed for each request, without your name or email), Hostinger (emails), Unsplash and Pexels (recipe photos, no personal data; Unsplash photos load from their servers). Transfers outside the EU rely on standard contractual clauses."] },
       { h: "Retention", p: ["Data is kept while your account is active; inactive accounts are deleted after 3 years with prior notice. Billing records are kept 10 years."] },
       { h: "Your rights", p: ["Access, rectification, export (JSON download from your account), consent withdrawal and one-click deletion of your account and data. Contact rgpd@getweeko.com; you may also complain to your data protection authority."] },
       { h: "Disclaimer", p: ["Weeko is a wellness and organisation app, not medical advice."] },
@@ -145,7 +145,7 @@ const en: Record<LegalDoc, Doc> = {
     sections: [
       { h: "Publisher", p: ["[Company name], [address], [registration]. Contact: contact@getweeko.com."] },
       { h: "Hosting", p: ["Vercel Inc. (EU region) and MongoDB Atlas (EU region)."] },
-      { h: "Credits", p: ["Nutrition data: ANSES CIQUAL table. Recipe photos: Pexels and their authors."] },
+      { h: "Credits", p: ["Nutrition data: ANSES CIQUAL table. Recipe photos: Unsplash, Pexels and their authors."] },
     ],
   },
 };

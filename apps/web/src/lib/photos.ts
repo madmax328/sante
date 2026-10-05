@@ -5,6 +5,8 @@ import { env } from "./env";
 
 export interface RecipePhoto {
   recipeId: string;
+  /** Where the photo comes from (credit link); older entries are Pexels */
+  source?: "pexels" | "unsplash";
   url: string;
   thumb: string;
   alt: string;
@@ -27,6 +29,9 @@ export async function getPhotoMap(recipeIds: string[]): Promise<Map<string, Reci
   }
 }
 
+/** A photo found by a provider, before it is saved for recipes. */
+type Found = Omit<RecipePhoto, "recipeId" | "query"> & { source: "pexels" | "unsplash"; downloadLocation?: string };
+
 interface PexelsPhoto {
   id: number;
   url: string;
@@ -36,22 +41,67 @@ interface PexelsPhoto {
   src: { large: string; medium: string; landscape: string };
 }
 
-async function searchPexels(query: string): Promise<PexelsPhoto | undefined> {
+async function searchPexels(query: string): Promise<Found | undefined> {
   const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=5&orientation=landscape`;
   const res = await fetch(url, { headers: { Authorization: env.pexelsKey! }, cache: "no-store" });
   if (res.status === 429) throw new Error("rate_limited");
   if (!res.ok) return undefined;
-  const json = (await res.json()) as { photos: PexelsPhoto[] };
-  return json.photos[0];
+  const p = ((await res.json()) as { photos: PexelsPhoto[] }).photos[0];
+  if (!p) return undefined;
+  return { source: "pexels", url: p.src.large, thumb: p.src.medium, alt: p.alt, photographer: p.photographer, photographerUrl: p.photographer_url, sourceUrl: p.url };
 }
 
+interface UnsplashPhoto {
+  alt_description: string | null;
+  urls: { regular: string; small: string };
+  links: { html: string; download_location: string };
+  user: { name: string; links: { html: string } };
+}
+
+// Unsplash asks for these parameters on every link back to them.
+const UTM = "utm_source=weeko&utm_medium=referral";
+
+async function searchUnsplash(query: string): Promise<Found | undefined> {
+  const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=5&orientation=landscape&content_filter=high`;
+  const res = await fetch(url, { headers: { Authorization: `Client-ID ${env.unsplashKey}`, "Accept-Version": "v1" }, cache: "no-store" });
+  if (res.status === 429 || res.status === 403) throw new Error("rate_limited");
+  if (!res.ok) return undefined;
+  const p = ((await res.json()) as { results: UnsplashPhoto[] }).results[0];
+  if (!p) return undefined;
+  return {
+    source: "unsplash",
+    // Hotlinked as Unsplash requires; their CDN resizes on the fly.
+    url: p.urls.regular,
+    thumb: p.urls.small,
+    alt: p.alt_description ?? query,
+    photographer: p.user.name,
+    photographerUrl: `${p.user.links.html}?${UTM}`,
+    sourceUrl: `${p.links.html}?${UTM}`,
+    downloadLocation: p.links.download_location,
+  };
+}
+
+/** Unsplash counts a "download" each time a photo is used in the app (API guideline). */
+async function trackUnsplashUse(downloadLocation: string): Promise<void> {
+  await fetch(downloadLocation, { headers: { Authorization: `Client-ID ${env.unsplashKey}` }, cache: "no-store" }).catch(() => undefined);
+}
+
+const search = (query: string) => (env.pexelsKey ? searchPexels(query) : searchUnsplash(query));
+
 /**
- * Finds a photo for recipes that have none, one Pexels search per distinct
- * query (variants of a dish share their photo). Pexels allows 200 requests
- * per hour, so the work is done in batches by a cron job.
+ * Searches per run: Pexels allows 200 requests per hour, Unsplash 50 until the
+ * app is approved for production (up to 3 requests per dish: 2 searches + use tracking).
  */
-export async function syncPhotos(maxQueries = 40): Promise<{ queries: number; saved: number; remaining: number }> {
-  if (!env.pexelsKey) return { queries: 0, saved: 0, remaining: -1 };
+export const PHOTO_BATCH = () => (env.pexelsKey ? 150 : 15);
+
+/**
+ * Finds a photo for recipes that have none, one search per distinct query
+ * (variants of a dish share their photo). Providers limit requests per hour,
+ * so the work is done in batches (cron job, or the URL called by hand).
+ */
+export async function syncPhotos(maxQueries = 40): Promise<{ provider: string; queries: number; saved: number; remaining: number }> {
+  const provider = env.pexelsKey ? "pexels" : env.unsplashKey ? "unsplash" : "none";
+  if (provider === "none") return { provider, queries: 0, saved: 0, remaining: -1 };
   const catalog = getCatalog();
   const have = new Set((await photos().find({}, { projection: { recipeId: 1 } }).toArray()).map((d) => d.recipeId));
   const missing = catalog.allRecipes().filter((r) => !have.has(r.id));
@@ -71,24 +121,18 @@ export async function syncPhotos(maxQueries = 40): Promise<{ queries: number; sa
     if (!photo) {
       if (queries >= maxQueries) continue;
       queries++;
-      let found: PexelsPhoto | undefined;
+      let found: Found | undefined;
       try {
-        found = await searchPexels(query);
-        if (!found) found = await searchPexels(query.split(" ").slice(0, 2).join(" ") + " dish");
+        found = await search(query);
+        if (!found) found = await search(query.split(" ").slice(0, 2).join(" ") + " dish");
       } catch {
         break;
       }
       if (!found) continue;
-      const created: RecipePhoto = {
-        recipeId: "",
-        url: found.src.large,
-        thumb: found.src.medium,
-        alt: found.alt || query,
-        photographer: found.photographer,
-        photographerUrl: found.photographer_url,
-        sourceUrl: found.url,
-        query,
-      };
+      if (found.downloadLocation) await trackUnsplashUse(found.downloadLocation);
+      const { downloadLocation: _d, ...rest } = found;
+      void _d;
+      const created: RecipePhoto = { ...rest, recipeId: "", alt: found.alt || query, query };
       known.set(query, created);
       photo = created;
     }
@@ -98,5 +142,5 @@ export async function syncPhotos(maxQueries = 40): Promise<{ queries: number; sa
     }
   }
   const remaining = missing.length - saved;
-  return { queries, saved, remaining };
+  return { provider, queries, saved, remaining };
 }
