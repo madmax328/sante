@@ -55,7 +55,7 @@ export const auth = betterAuth({
     sendResetPassword: async ({ user, url }) => {
       await sendSafely(
         user.email,
-        "Réinitialiser votre mot de passe Weeko",
+        "Réinitialiser ton mot de passe Weeko",
         `<p>Bonjour,</p><p>Pour choisir un nouveau mot de passe, ouvrez ce lien (valable 1 heure) :</p><p><a href="${url}">${url}</a></p><p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail.</p>`,
       );
     },
