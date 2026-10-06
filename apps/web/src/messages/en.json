@@ -559,7 +559,8 @@
     "budgetOver": "Budget exceeded: check the suggestions on the Week page.",
     "estimated": "Estimated groceries this week: {cost}.",
     "setBudget": "Set a budget",
-    "budgetPremium": "Set a budget (Premium)"
+    "budgetPremium": "Set a budget (Premium)",
+    "estimatedWithLeftovers": "Estimated groceries this week: {cost}, of which {eaten} eaten this week and {kept} of products you'll keep (opened packs, pantry items)."
   },
   "adjust": {
     "label": "Describe the change",

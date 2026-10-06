@@ -1,3 +1,4 @@
+import { tutoie } from "./tutoie";
 import type { Exercise, ExerciseKind, Limitation, MuscleGroup, SportEquipment } from "@weeko/engine";
 
 interface Def {
@@ -89,7 +90,7 @@ export const exercises: Exercise[] = defs.map((d) => ({
   met: d.met,
   lowImpact: d.low ?? false,
   stresses: d.stresses ?? [],
-  steps: d.steps.map((fr) => ({ fr })),
-  tips: d.tips.map((fr) => ({ fr })),
+  steps: d.steps.map((fr) => ({ fr: tutoie(fr) })),
+  tips: d.tips.map((fr) => ({ fr: tutoie(fr) })),
   easier: d.easier,
 }));

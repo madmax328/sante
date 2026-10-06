@@ -65,7 +65,7 @@ export default async function RecipePage({ params }: PageProps<"/[locale]/app/re
           </dl>
           <p className="text-sm text-muted">{t("prepCook", { prep: recipe.prepMin, cook: recipe.cookMin })}{recipe.keepsDays > 0 && <> · <Snowflake className="inline size-3.5" /> {t("keeps", { days: recipe.keepsDays })}</>}</p>
           <RateRecipe recipeId={recipe.id} initial={rating} />
-          <AddRecipeToJournal recipeId={recipe.id} />
+          <AddRecipeToJournal recipeId={recipe.id} defaultMeal={recipe.meals[0] ?? "lunch"} />
         </div>
       </div>
 

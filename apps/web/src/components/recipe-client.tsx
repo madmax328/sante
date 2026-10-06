@@ -58,10 +58,10 @@ export function IngredientScaler({ lines, defaultServings }: { lines: Ingredient
   );
 }
 
-export function AddRecipeToJournal({ recipeId }: { recipeId: string }) {
+export function AddRecipeToJournal({ recipeId, defaultMeal }: { recipeId: string; defaultMeal: MealType }) {
   const t = useTranslations("recipe");
   const e = useTranslations("enums");
-  const [meal, setMeal] = useState<MealType>("dinner");
+  const [meal, setMeal] = useState<MealType>(defaultMeal);
   const [done, setDone] = useState(false);
   const [pending, start] = useTransition();
   return (

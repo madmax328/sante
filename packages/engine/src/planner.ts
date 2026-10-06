@@ -261,6 +261,10 @@ interface ScoreState {
   dayMains: Map<number, Set<string>>;
   /** Meals with meat planned so far (flexitarian cap) */
   meatMeals: number;
+  /** Meals so far per signature ingredient (lentils, pasta, apples…), main and light meals apart */
+  sigMain: Map<string, number>;
+  sigLight: Map<string, number>;
+  signatures: (r: RecipeInfo) => string[];
   /** 1 = full variety rules; lower values let the budget win */
   varietyScale: number;
 }
@@ -367,6 +371,21 @@ function scoreRecipe(
   const kids = allEaters.some((e) => e.isChild) && r.tags.includes("kid-friendly") ? 0.25 : 0;
   const cuisine = prefs.cuisines?.includes(r.cuisine) ? 0.15 : 0;
 
+  // 5. Signature ingredients: the dish's main components (the lentils of
+  // "steak, lentilles aux carottes", the pasta of a gratin, the fruit of a
+  // breakfast). Anti-waste likes finishing an opened pack, but the same base
+  // at every meal feels monotonous: gentle penalty, then a weekly cap.
+  const sigs = state.signatures(r);
+  const sigCounts = light ? state.sigLight : state.sigMain;
+  const sigCap = light ? MAX_SIGNATURE_LIGHT : MAX_SIGNATURE_MAIN;
+  const eaten = 1 + (req.leftoverEaters?.length ? 1 : 0);
+  let repeat = 0;
+  for (const id of sigs) {
+    const c = sigCounts.get(id) ?? 0;
+    repeat += c * (light ? 0.15 : 0.35);
+    if (c + eaten > sigCap) repeat += 5;
+  }
+
   // Taste for vegetables (main meals): "less" prefers dishes where they stay
   // discreet, without removing them; "more" favours generous portions.
   let veggies = 0;
@@ -394,7 +413,8 @@ function scoreRecipe(
     kids -
     cuisine +
     veggies +
-    meat;
+    meat +
+    repeat * state.varietyScale;
   return { score, cost };
 }
 
@@ -407,6 +427,27 @@ const MAX_USES: Record<MealType, number> = { breakfast: 3, snack: 3, lunch: 1, d
 
 /** Breakfasts and snacks: at most 3 variations of the same dish per week. */
 const MAX_FAMILY_LIGHT = 3;
+
+/** Meals per week sharing the same base ingredient (lentils, rice, apples…). */
+const MAX_SIGNATURE_MAIN = 4;
+const MAX_SIGNATURE_LIGHT = 5;
+
+/** Basics that flavour many dishes without defining them. */
+const NOT_SIGNATURE = new Set(["onion", "red_onion", "lemon", "lime", "milk", "light_cream", "cream", "butter", "egg", "flour"]);
+
+/** The 1-2 ingredients that define a dish (largest share of its mass). */
+export function signatureIngredients(catalog: Catalog, r: RecipeInfo): string[] {
+  const parts = r.ingredients
+    .map((i) => ({ id: i.id, g: catalog.grams(i.id, i.qty), ing: catalog.ingredient(i.id) }))
+    .filter((p) => !p.ing.staple && !p.ing.omittable && !NOT_SIGNATURE.has(p.id));
+  const total = parts.reduce((s, p) => s + p.g, 0);
+  if (total <= 0) return [];
+  return parts
+    .filter((p) => p.g / total >= 0.18)
+    .sort((a, b) => b.g - a.g)
+    .slice(0, 2)
+    .map((p) => p.id);
+}
 
 function candidatesFor(
   ctx: PlanContext,
@@ -561,11 +602,25 @@ export function fillSlots(
   kept.forEach(markUsed);
   const isMeat = (m: PlannedMeal) => (m.kind === "recipe" || m.kind === "leftover") && !!m.recipeId && ctx.catalog.recipe(m.recipeId).hasMeat;
   const meatMeals = kept.filter(isMeat).length;
+  const sigCache = new Map<string, string[]>();
+  const signatures = (r: RecipeInfo) => {
+    let s = sigCache.get(r.id);
+    if (!s) sigCache.set(r.id, (s = signatureIngredients(ctx.catalog, r)));
+    return s;
+  };
+  const sigMain = new Map<string, number>();
+  const sigLight = new Map<string, number>();
+  const countSignatures = (m: PlannedMeal) => {
+    if ((m.kind !== "recipe" && m.kind !== "leftover") || !m.recipeId) return;
+    const target = m.meal === "breakfast" || m.meal === "snack" ? sigLight : sigMain;
+    for (const id of signatures(ctx.catalog.recipe(m.recipeId))) target.set(id, (target.get(id) ?? 0) + 1);
+  };
+  kept.forEach(countSignatures);
 
   let remainingWeight = 0;
   for (const k of open) remainingWeight += COST_WEIGHT[byKey.get(k)!.meal];
 
-  const state: ScoreState = { stock, used, families, mains, spent: stock.totalCost, remainingWeight, dayMains, meatMeals, varietyScale };
+  const state: ScoreState = { stock, used, families, mains, spent: stock.totalCost, remainingWeight, dayMains, meatMeals, sigMain, sigLight, signatures, varietyScale };
 
   for (const m of sortMeals(plan.meals)) {
     const k = key(m.day, m.meal);
@@ -591,6 +646,7 @@ export function fillSlots(
         for (const [id, q] of mealRequirements(ctx.catalog, m)) stock.consume(id, q);
         state.spent = stock.totalCost;
         if (isMeat(m)) state.meatMeals++;
+        countSignatures(m);
         continue;
       }
     }
@@ -621,6 +677,7 @@ export function fillSlots(
     state.spent = stock.totalCost;
     markUsed(m);
     if (isMeat(m)) state.meatMeals++;
+    countSignatures(m);
   }
 
   balanceDays(ctx, plan, open);

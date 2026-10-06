@@ -39,7 +39,13 @@ export default async function GroceriesPage() {
   const text = list.aisles
     .map((a) => `${e(`aisle.${a.aisle}`)}\n${a.items.map((i) => `- ${name(i.ingredientId)} : ${formatQty(c, i.ingredientId, i.toBuy)}`).join("\n")}`)
     .join("\n\n");
-  const leftovers = list.aisles.flatMap((a) => a.items).filter((i) => i.leftover > 0 && c.ingredient(i.ingredientId).shelfLifeDays <= 14);
+  // Only leftovers worth planning for: no "3 g of pear" crumbs.
+  const worthKeeping = (id: string, qty: number) =>
+    c.ingredient(id).unit === "pc" ? qty >= 1 : c.grams(id, qty) >= 40 && c.price(id, qty) >= 0.15;
+  const leftovers = list.aisles
+    .flatMap((a) => a.items)
+    .filter((i) => i.leftover > 0 && c.ingredient(i.ingredientId).shelfLifeDays <= 14 && worthKeeping(i.ingredientId, i.leftover))
+    .sort((a, b) => c.price(b.ingredientId, b.leftover) - c.price(a.ingredientId, a.leftover));
   const pantryOn = can(uc.profile, "pantry");
 
   return (

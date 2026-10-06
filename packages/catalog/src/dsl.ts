@@ -1,3 +1,4 @@
+import { tutoie } from "./tutoie";
 import type { Equipment, MealType, Recipe, RecipeTag } from "@weeko/engine";
 
 /**
@@ -34,11 +35,11 @@ export function toRecipe(r: R): Recipe {
   return {
     id: r.id,
     name: { fr: r.name },
-    description: r.desc ? { fr: r.desc } : undefined,
+    description: r.desc ? { fr: tutoie(r.desc) } : undefined,
     meals: r.meals,
     servings: 1,
     ingredients: [...merged].map(([id, qty]) => ({ id, qty })),
-    steps: r.steps.map((s) => ({ fr: s })),
+    steps: r.steps.map((s) => ({ fr: tutoie(s) })),
     prepMin: r.prep,
     cookMin: r.cook,
     difficulty: r.diff ?? 1,

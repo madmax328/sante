@@ -179,7 +179,7 @@ export default async function TodayPage() {
             </>
           ) : (
             <p className="text-muted">
-              {t("estimated", { cost: money(result.summary.cost) })}{" "}
+              {result.summary.leftoverValue >= 5 ? t("estimatedWithLeftovers", { cost: money(result.summary.cost), eaten: money(result.summary.consumedValue), kept: money(result.summary.leftoverValue) }) : t("estimated", { cost: money(result.summary.cost) })}{" "}
               {premium ? (
                 <Link href="/app/week" className="font-semibold text-basilic">{t("setBudget")}</Link>
               ) : (

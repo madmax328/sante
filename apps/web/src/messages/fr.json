@@ -559,7 +559,8 @@
     "budgetOver": "Le budget est dépassé : jette un œil aux suggestions de la page Semaine.",
     "estimated": "Courses estimées cette semaine : {cost}.",
     "setBudget": "Fixer un budget",
-    "budgetPremium": "Fixer un budget (Premium)"
+    "budgetPremium": "Fixer un budget (Premium)",
+    "estimatedWithLeftovers": "Courses estimées cette semaine : {cost}, dont {eaten} consommés cette semaine et {kept} de produits qui te resteront (paquets entamés, épicerie)."
   },
   "adjust": {
     "label": "Décris ton imprévu",

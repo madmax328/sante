@@ -45,7 +45,7 @@ describe("recipes", () => {
     for (const r of recipes) {
       expect(r.steps.length, r.id).toBeGreaterThanOrEqual(1);
       for (const i of r.ingredients) expect(i.qty, `${r.id}/${i.id}`).toBeGreaterThan(0);
-      expect(r.steps.every((s) => s.fr.trim().length > 5), r.id).toBe(true);
+      expect(r.steps.every((s) => s.fr.trim().length > 3), r.id).toBe(true);
       expect(r.name.fr, r.id).not.toMatch(/\s{2,}|undefined|NaN/);
     }
   });

@@ -111,7 +111,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/[locale]/ap
           const meals = stored.plan.meals.filter((m) => m.day === day).sort((a, b) => MEAL_ORDER.indexOf(a.meal) - MEAL_ORDER.indexOf(b.meal));
           const totals = selfDaily[day];
           return (
-            <section key={day} id={`day-${day}`} className={`grid gap-3 rounded-3xl border p-4 ${day === todayIdx ? "border-abricot bg-surface" : "border-line bg-surface/60"}`}>
+            <section key={day} id={`day-${day}`} className={`grid gap-3 rounded-3xl border p-3 sm:p-4 ${day === todayIdx ? "border-abricot bg-surface" : "border-line bg-surface/60"}`}>
               <header className="flex flex-wrap items-baseline justify-between gap-2">
                 <h2 className="text-lg font-bold">
                   {e(`day.${day}`)}{" "}
@@ -124,8 +124,9 @@ export default async function WeekPage({ searchParams }: PageProps<"/[locale]/ap
                 {meals.map((m) => {
                   const recipe = m.recipeId ? uc.ctx.catalog.recipe(m.recipeId) : undefined;
                   return (
-                    <li key={m.meal} className="grid min-w-0 content-start gap-2 rounded-2xl border border-line bg-surface p-3">
-                      <div className="flex items-center justify-between gap-1">
+                    // Phone: compact row (small photo on the left). Larger screens: card.
+                    <li key={m.meal} className="grid min-w-0 grid-cols-[4rem_minmax(0,1fr)] content-start gap-x-3 gap-y-1 rounded-2xl border border-line bg-surface p-2.5 md:grid-cols-1 md:gap-2 md:p-3">
+                      <div className="col-start-2 flex items-center justify-between gap-1 md:col-start-auto">
                         <span className="min-w-0 truncate text-xs font-semibold uppercase tracking-wider text-muted">{e(`meal.${m.meal}`)}</span>
                         <div className="flex shrink-0 items-center">
                           {m.kind === "recipe" && <ReplaceMeal day={day} meal={m.meal} weekStart={requested} hidden={hidden} />}
@@ -133,14 +134,16 @@ export default async function WeekPage({ searchParams }: PageProps<"/[locale]/ap
                         </div>
                       </div>
                       {recipe ? (
-                        <Link href={`/app/recipes/${recipe.id}`} className="grid gap-2">
-                          <RecipeImage photo={photos.get(recipe.id)} meal={m.meal} thumb className="aspect-[16/9] w-full rounded-xl" sizes="(max-width: 768px) 100vw, 25vw" />
-                          <span className="line-clamp-2 font-semibold hover:text-basilic">{recipe.name.fr}</span>
-                        </Link>
+                        <>
+                          <Link href={`/app/recipes/${recipe.id}`} tabIndex={-1} aria-hidden className="col-start-1 row-span-4 row-start-1 md:col-start-auto md:row-span-1 md:row-start-auto">
+                            <RecipeImage photo={photos.get(recipe.id)} meal={m.meal} thumb className="aspect-square w-full rounded-xl md:aspect-[16/9]" sizes="(max-width: 768px) 64px, 25vw" />
+                          </Link>
+                          <Link href={`/app/recipes/${recipe.id}`} className="col-start-2 line-clamp-2 font-semibold leading-snug hover:text-basilic md:col-start-auto">{recipe.name.fr}</Link>
+                        </>
                       ) : (
-                        <p className="font-semibold">{m.kind === "external" ? m.external?.label : t("nothing")}</p>
+                        <p className="col-start-2 font-semibold md:col-start-auto">{m.kind === "external" ? m.external?.label : t("nothing")}</p>
                       )}
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="col-start-2 flex flex-wrap gap-1.5 empty:hidden md:col-start-auto">
                         {m.kind === "leftover" && <Badge tone="miel">{t("leftoverOf", { day: e(`day.${m.leftoverOf?.day ?? 0}`) })}</Badge>}
                         {stored.plan.meals.some((c) => c.leftoverOf?.day === m.day && c.leftoverOf.meal === m.meal) && <Badge tone="basilic">{t("cookDouble")}</Badge>}
                         {m.kind === "external" && <Badge tone="eau">{t("outside")}</Badge>}
@@ -148,14 +151,14 @@ export default async function WeekPage({ searchParams }: PageProps<"/[locale]/ap
                         {m.guests ? <Badge tone="abricot">{t("withGuests", { n: m.guests })}</Badge> : null}
                       </div>
                       {recipe && (
-                        <p className="flex flex-wrap gap-x-3 text-xs text-muted num">
+                        <p className="col-start-2 flex flex-wrap gap-x-3 text-xs text-muted num md:col-start-auto">
                           <span className="inline-flex items-center gap-1"><Clock className="size-3" aria-hidden />{recipe.totalMin} min</span>
                           {!hidden && <span>{recipe.nutrition.kcal} kcal / {t("serving")}</span>}
                           <span>{money(recipe.cost)} / {t("serving")}</span>
                         </p>
                       )}
                       {recipe && multi && (
-                        <p className="text-xs text-muted">
+                        <p className="col-start-2 text-xs text-muted md:col-start-auto">
                           {m.portions.map((p) => `${memberName.get(p.memberId) ?? ""} ${format.number(p.servings, { maximumFractionDigits: 1 })}`).join(" · ")}
                         </p>
                       )}
