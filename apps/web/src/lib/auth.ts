@@ -2,6 +2,7 @@ import "server-only";
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { nextCookies } from "better-auth/next-js";
+import { expo } from "@better-auth/expo";
 import { db, mongo } from "./db";
 import { sendEmail } from "./email";
 import { env, features } from "./env";
@@ -29,6 +30,9 @@ function trustedOrigins(): string[] {
   add(process.env.VERCEL_URL);
   add(process.env.VERCEL_BRANCH_URL);
   add(process.env.VERCEL_PROJECT_PRODUCTION_URL);
+  // iOS / Android app (deep-link scheme), and the Expo dev client while developing.
+  origins.add("weeko://");
+  if (process.env.NODE_ENV !== "production") origins.add("exp://");
   return [...origins];
 }
 
@@ -81,7 +85,7 @@ export const auth = betterAuth({
   },
   rateLimit: { enabled: true, storage: "database", window: 60, max: 60 },
   advanced: { useSecureCookies: env.appUrl.startsWith("https://") },
-  plugins: [nextCookies()],
+  plugins: [expo(), nextCookies()],
 });
 
 export type Session = typeof auth.$Infer.Session;
