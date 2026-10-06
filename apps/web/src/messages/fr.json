@@ -794,7 +794,8 @@
     "skipRest": "Passer",
     "upNext": "Ensuite : {name}",
     "bravo": "Séance terminée, bravo !",
-    "bravoText": "Elle est notée dans ton programme."
+    "bravoText": "Elle est notée dans ton programme.",
+    "demo": "Démonstration animée : {name}"
   },
   "progress": {
     "title": "Progrès",

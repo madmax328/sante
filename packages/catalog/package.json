@@ -12,5 +12,9 @@
   },
   "dependencies": {
     "@weeko/engine": "workspace:*"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./demos": "./src/demos.ts"
   }
 }

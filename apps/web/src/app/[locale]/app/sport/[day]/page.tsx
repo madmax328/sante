@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { exercises } from "@weeko/catalog";
+import { ExerciseDemo } from "@/components/exercise-demo";
 import { GuidedSession, type GuidedStep } from "@/components/sport-client";
 import { Card, PageHeader } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
@@ -22,12 +23,12 @@ export default async function SessionPage({ params }: PageProps<"/[locale]/app/s
   const steps: GuidedStep[] = [];
   for (const w of session.warmup) {
     const x = byId.get(w.exerciseId);
-    if (x) steps.push({ name: `${t("warmup")} · ${x.name.fr}`, amount: w.amount, unit: "seconds", restSec: 0, round: 1, rounds: 1 });
+    if (x) steps.push({ exerciseId: x.id, name: `${t("warmup")} · ${x.name.fr}`, amount: w.amount, unit: "seconds", restSec: 0, round: 1, rounds: 1 });
   }
   for (let r = 1; r <= session.rounds; r++) {
     for (const b of session.blocks) {
       const x = byId.get(b.exerciseId);
-      if (x) steps.push({ name: x.name.fr, amount: b.amount, unit: x.unit, restSec: b.restSec, round: r, rounds: session.rounds });
+      if (x) steps.push({ exerciseId: x.id, name: x.name.fr, amount: b.amount, unit: x.unit, restSec: b.restSec, round: r, rounds: session.rounds });
     }
   }
 
@@ -50,6 +51,7 @@ export default async function SessionPage({ params }: PageProps<"/[locale]/app/s
                   {x.unit === "seconds" ? `${b.amount} s` : t("reps", { n: b.amount })}{b.restSec ? ` · ${t("restShort", { s: b.restSec })}` : ""}
                 </span>
               </div>
+              <ExerciseDemo exerciseId={x.id} label={t("demo", { name: x.name.fr })} className="aspect-[10/9] max-h-56" />
               <ol className="grid list-decimal gap-1 pl-5 text-sm">
                 {x.steps.map((s, k) => <li key={k}>{s.fr}</li>)}
               </ol>

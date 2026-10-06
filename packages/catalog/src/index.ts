@@ -43,3 +43,5 @@ export function getCatalog(market: Market = "FR", dislikes: string[] = []): Cata
 }
 
 export { DISLIKE_GROUPS, type DislikeGroup } from "./dislikes";
+export { motions } from "./motions";
+export { drawMotion, poseAt, VIEW as MOTION_VIEW, type Motion, type Pose, type Shape, type Tone } from "./motion";

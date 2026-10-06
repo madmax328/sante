@@ -87,3 +87,25 @@ describe("dislikes", () => {
     expect(getCatalog("FR", ["tomato"])).toBe(base);
   });
 });
+
+describe("exercise demos", () => {
+  it("has a demo for every exercise, drawn inside the frame", async () => {
+    const { motions, drawMotion, MOTION_VIEW } = await import("../src/demos");
+    const { exercises } = await import("../src");
+    for (const x of exercises) {
+      const m = motions[x.id];
+      expect(m, x.id).toBeDefined();
+      for (let i = 0; i < 24; i++) {
+        for (const s of drawMotion(m!, i / 24)) {
+          if (s.kind !== "line" || s.tone === "floor" || s.tone === "prop") continue;
+          for (const [px, py] of [[s.x1, s.y1], [s.x2, s.y2]] as const) {
+            expect(px, `${x.id} x`).toBeGreaterThan(-2);
+            expect(px, `${x.id} x`).toBeLessThan(MOTION_VIEW.width + 2);
+            expect(py, `${x.id} y`).toBeGreaterThan(-2);
+            expect(py, `${x.id} y`).toBeLessThan(MOTION_VIEW.height);
+          }
+        }
+      }
+    }
+  });
+});

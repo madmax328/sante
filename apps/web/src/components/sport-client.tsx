@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Check, Pause, Play, SkipForward } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { setStepsAction, toggleWorkoutAction } from "@/app/[locale]/app/sport/actions";
+import { ExerciseDemo } from "./exercise-demo";
 import { Button, Input, cx } from "./ui";
 
 export function DoneToggle({ day, done }: { day: number; done: boolean }) {
@@ -60,6 +61,7 @@ export interface GuidedStep {
   restSec: number;
   round: number;
   rounds: number;
+  exerciseId: string;
 }
 
 /** Step-by-step session player: timers for timed exercises and rest periods. */
@@ -129,6 +131,11 @@ export function GuidedSession({ steps, day }: { steps: GuidedStep[]; day: number
         {phase === "rest" ? t("rest") : t("roundOf", { round: current!.round, rounds: current!.rounds })} · {index + 1}/{steps.length}
       </p>
       <p className="font-display text-3xl font-extrabold">{phase === "rest" ? t("breathe") : current!.name}</p>
+      {phase === "work" ? (
+        <ExerciseDemo key={index} exerciseId={current!.exerciseId} label={t("demo", { name: current!.name })} className="mx-auto max-w-xs bg-surface" />
+      ) : (
+        steps[index + 1] && <ExerciseDemo key={`next-${index}`} exerciseId={steps[index + 1]!.exerciseId} label={t("demo", { name: steps[index + 1]!.name })} className="mx-auto max-w-[12rem] bg-surface opacity-80" />
+      )}
       <p className="font-display text-6xl font-extrabold num">
         {phase === "rest" || current!.unit === "seconds" ? `${left}s` : `× ${current!.amount}`}
       </p>

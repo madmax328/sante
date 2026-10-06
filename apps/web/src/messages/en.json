@@ -794,7 +794,8 @@
     "skipRest": "Skip",
     "upNext": "Next: {name}",
     "bravo": "Session complete, well done!",
-    "bravoText": "It's recorded in your plan."
+    "bravoText": "It's recorded in your plan.",
+    "demo": "Animated demo: {name}"
   },
   "progress": {
     "title": "Progress",
