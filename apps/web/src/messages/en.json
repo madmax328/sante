@@ -902,7 +902,9 @@
       "replace_meal": "{day}: new {meal}.",
       "skip_meal": "{day}: no {meal}.",
       "regenerate": "Recreate menus from {day}."
-    }
+    },
+    "quotaLow": "You have {left, plural, one {# message} other {# messages}} left with the AI coach this month. After that, the coach keeps working in simplified mode until the 1st.",
+    "quotaReached": "You've used your 150 AI coach messages this month. The coach keeps working in simplified mode (it understands common requests: eating out, guests, missing ingredient…) until the 1st of next month."
   },
   "account": {
     "title": "My account",

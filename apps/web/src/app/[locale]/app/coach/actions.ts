@@ -7,13 +7,19 @@ import { askCoach } from "@/lib/ai";
 import { db } from "@/lib/db";
 import { loadUserContext, type UserContext } from "@/lib/planning";
 import { FREE_LIMITS, can } from "@/lib/premium";
-import { getPlan } from "@/lib/repo";
+import { aiMessagesLeft, takeAiMessage } from "@/lib/ai-quota";
+import { features } from "@/lib/env";
+import { getPlan, getProfile } from "@/lib/repo";
 import { requireUserId } from "@/lib/session";
 
 export interface CoachProposal {
   reply: string;
   actions: PlanAction[];
   labels: string[];
+  /** AI messages left this month (shown when it gets low) */
+  aiLeft?: number;
+  /** The monthly allowance is used up: answered with the simplified coach */
+  aiExhausted?: boolean;
 }
 
 const coach = () =>
@@ -53,8 +59,9 @@ export async function interpretAction(input: { text: string }): Promise<Interpre
   if (!uc) return { ok: false, error: "profile" };
   if (!can(uc.profile, "ai_adjust")) return { ok: false, error: "premium" };
   const stored = await getPlan(userId, uc.weekStart);
-  const answer = await askCoach(uc, stored, [], parsed.data.text, "adjust");
-  return { ok: true, proposal: { reply: answer.reply, actions: answer.actions, labels: await describe(uc, answer.actions) } };
+  const allowAi = await takeAiMessage(uc.profile);
+  const answer = await askCoach(uc, stored, [], parsed.data.text, "adjust", allowAi);
+  return { ok: true, proposal: { reply: answer.reply, actions: answer.actions, labels: await describe(uc, answer.actions), ...(await quotaInfo(userId, allowAi)) } };
 }
 
 export async function getCoachHistory(): Promise<{ role: "user" | "assistant"; content: string; labels?: string[]; actions?: PlanAction[] }[]> {
@@ -78,13 +85,20 @@ export async function sendCoachMessage(input: { text: string }): Promise<CoachRe
 
   const history = (await coach().find({ userId }).sort({ at: -1 }).limit(10).toArray()).reverse().map((d) => ({ role: d.role, content: d.content }));
   const stored = await getPlan(userId, uc.weekStart);
-  const answer = await askCoach(uc, stored, history, parsed.data.text, "chat");
+  const allowAi = await takeAiMessage(uc.profile);
+  const answer = await askCoach(uc, stored, history, parsed.data.text, "chat", allowAi);
   const now = Date.now();
   await coach().insertMany([
     { userId, role: "user", content: parsed.data.text, at: new Date(now) },
     { userId, role: "assistant", content: answer.reply, actions: answer.actions, at: new Date(now + 1) },
   ]);
-  return { ok: true, proposal: { reply: answer.reply, actions: answer.actions, labels: await describe(uc, answer.actions) } };
+  return { ok: true, proposal: { reply: answer.reply, actions: answer.actions, labels: await describe(uc, answer.actions), ...(await quotaInfo(userId, allowAi)) } };
+}
+
+async function quotaInfo(userId: string, usedAi: boolean): Promise<Pick<CoachProposal, "aiLeft" | "aiExhausted">> {
+  if (!features.ai()) return {};
+  const profile = await getProfile(userId);
+  return { aiLeft: profile ? aiMessagesLeft(profile) : 0, aiExhausted: !usedAi };
 }
 
 export async function clearCoachHistory(): Promise<void> {

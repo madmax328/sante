@@ -4,6 +4,7 @@ import { EmptyState, LinkButton, PageHeader } from "@/components/ui";
 import { requireContext } from "@/lib/app-user";
 import { features } from "@/lib/env";
 import { can } from "@/lib/premium";
+import { aiMessagesLeft } from "@/lib/ai-quota";
 import { getCoachHistory } from "./actions";
 
 export async function generateMetadata() {
@@ -27,7 +28,7 @@ export default async function CoachPage() {
     <div className="mx-auto grid w-full max-w-3xl gap-6">
       <PageHeader title={t("title")} subtitle={t("subtitle")} />
       {!features.ai() && <p className="rounded-2xl bg-miel-soft p-3 text-sm">{t("noAi")}</p>}
-      <CoachChat initial={history} />
+      <CoachChat initial={history} aiLeft={features.ai() ? aiMessagesLeft(uc.profile) : undefined} />
       <p className="text-xs text-muted">{t("disclaimer")}</p>
     </div>
   );

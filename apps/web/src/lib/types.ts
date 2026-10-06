@@ -76,6 +76,8 @@ export interface Profile {
   };
   subscription?: Subscription;
   usage?: { weekStart: string; replacements: number; aiMessages: number };
+  /** AI coach messages used in the current calendar month ("2026-10") */
+  aiUsage?: { month: string; count: number };
   createdAt: Date;
   updatedAt: Date;
 }

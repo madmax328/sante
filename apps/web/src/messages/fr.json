@@ -902,7 +902,9 @@
       "replace_meal": "{day} : nouveau {meal}.",
       "skip_meal": "{day} : pas de {meal}.",
       "regenerate": "Recréer les menus à partir de {day}."
-    }
+    },
+    "quotaLow": "Il te reste {left, plural, one {# message} other {# messages}} avec le coach IA ce mois-ci. Ensuite, le coach continue en mode simplifié jusqu'au 1er du mois.",
+    "quotaReached": "Tu as utilisé tes 150 messages du coach IA ce mois-ci. Le coach continue en mode simplifié (il comprend les demandes courantes : restaurant, invités, ingrédient manquant…) jusqu'au 1er du mois prochain."
   },
   "account": {
     "title": "Mon compte",

@@ -1,6 +1,9 @@
 import type { Profile } from "./types";
 
 /** What the free plan includes. Everything else needs Premium. */
+/** AI coach messages included in Premium each calendar month (fair use: ~2 cents each). */
+export const AI_MONTHLY_LIMIT = 150;
+
 export const FREE_LIMITS = {
   replacementsPerWeek: 3,
   aiMessagesPerWeek: 0,

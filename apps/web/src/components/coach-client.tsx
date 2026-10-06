@@ -17,13 +17,14 @@ interface Msg {
   applied?: boolean;
 }
 
-export function CoachChat({ initial }: { initial: Msg[] }) {
+export function CoachChat({ initial, aiLeft: initialLeft }: { initial: Msg[]; aiLeft?: number }) {
   const t = useTranslations("coach");
   const te = useTranslations("errors");
   const router = useRouter();
   const [messages, setMessages] = useState<Msg[]>(initial);
   const [text, setText] = useState("");
   const [error, setError] = useState<string>();
+  const [aiLeft, setAiLeft] = useState(initialLeft);
   const [pending, start] = useTransition();
   const end = useRef<HTMLDivElement>(null);
 
@@ -43,6 +44,7 @@ export function CoachChat({ initial }: { initial: Msg[] }) {
         return;
       }
       setMessages((m) => [...m, { role: "assistant", content: res.proposal.reply, labels: res.proposal.labels, actions: res.proposal.actions }]);
+      if (res.proposal.aiLeft !== undefined) setAiLeft(res.proposal.aiLeft);
     });
   };
 
@@ -90,6 +92,7 @@ export function CoachChat({ initial }: { initial: Msg[] }) {
         <div ref={end} />
       </div>
       {error && <p className="text-sm text-danger" role="alert">{error}</p>}
+      <AiQuota left={aiLeft} />
       <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); send(text); }}>
         <label htmlFor="coach-input" className="sr-only">{t("placeholder")}</label>
         <input id="coach-input" value={text} onChange={(e) => setText(e.target.value)} maxLength={1000} placeholder={t("placeholder")} className="h-12 min-w-0 flex-1 rounded-full border border-line bg-surface px-5 focus:border-basilic focus:outline-none" />
@@ -101,5 +104,16 @@ export function CoachChat({ initial }: { initial: Msg[] }) {
         </Button>
       )}
     </div>
+  );
+}
+
+/** Shown only when the monthly AI allowance gets low or is used up. */
+export function AiQuota({ left }: { left?: number }) {
+  const t = useTranslations("coach");
+  if (left === undefined || left > 20) return null;
+  return (
+    <p className={cx("rounded-2xl p-3 text-sm", left === 0 ? "bg-miel-soft" : "bg-riz text-muted")} role="status">
+      {left === 0 ? t("quotaReached") : t("quotaLow", { left })}
+    </p>
   );
 }

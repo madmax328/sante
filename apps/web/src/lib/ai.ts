@@ -131,8 +131,10 @@ export async function askCoach(
   history: { role: "user" | "assistant"; content: string }[],
   message: string,
   mode: "adjust" | "chat",
+  /** false when the monthly allowance is used up: simplified rules only */
+  allowAi = true,
 ): Promise<AiAnswer> {
-  if (!env.anthropicKey) return ruleBasedAnswer(uc, stored, message);
+  if (!env.anthropicKey || !allowAi) return ruleBasedAnswer(uc, stored, message);
 
   const messages: Anthropic.Beta.BetaMessageParam[] = [
     ...history.slice(-10).map((h) => ({ role: h.role, content: h.content })),

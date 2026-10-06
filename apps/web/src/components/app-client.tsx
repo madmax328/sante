@@ -14,6 +14,7 @@ import {
   type ActionResult,
 } from "@/app/[locale]/app/actions";
 import { interpretAction, type CoachProposal } from "@/app/[locale]/app/coach/actions";
+import { AiQuota } from "./coach-client";
 import { Button, Progress, cx } from "./ui";
 
 export function useActionError() {
@@ -230,6 +231,7 @@ export function QuickAdjust({ premium }: { premium: boolean }) {
       {proposal && (
         <div className="grid gap-3 rounded-2xl bg-basilic-soft p-4">
           <p>{proposal.reply}</p>
+          <AiQuota left={proposal.aiLeft} />
           {proposal.labels.length > 0 && (
             <>
               <ul className="grid gap-1 text-sm">
