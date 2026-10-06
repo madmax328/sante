@@ -25,7 +25,8 @@ const LIMITS = ["knees", "back", "shoulders", "wrists"] as const;
 const MEDICAL = ["diabetes", "kidney_disease", "heart_disease", "eating_disorder_history", "bariatric_surgery", "other"] as const;
 const GOALS = ["lose_weight", "maintain", "gain_muscle", "eat_better", "save_money", "family_meals"] as const;
 const ACTIVITIES = ["sedentary", "light", "moderate", "active", "very_active"] as const;
-const DIETS = ["omnivore", "pescatarian", "vegetarian", "vegan"] as const;
+const DIETS = ["omnivore", "flexitarian", "pescatarian", "vegetarian", "vegan"] as const;
+const VEGGIES = ["more", "normal", "less"] as const;
 const DAYS = [0, 1, 2, 3, 4, 5, 6] as const;
 
 const allMeals = { breakfast: true, lunch: true, dinner: true, snack: true };
@@ -304,6 +305,16 @@ export function Onboarding({ defaultName, dislikeOptions }: { defaultName: strin
                   <Chip key={d} active={prefs.diet === d} onClick={() => setPrefs({ ...prefs, diet: d })}>{e(`diet.${d}`)}</Chip>
                 ))}
               </div>
+              {prefs.diet === "flexitarian" && <p className="text-xs text-muted">{t("food.flexiHint")}</p>}
+            </div>
+            <div className="grid gap-2">
+              <span className="text-sm font-semibold">{t("food.veggies")}</span>
+              <div className="flex flex-wrap gap-2">
+                {VEGGIES.map((v) => (
+                  <Chip key={v} active={(prefs.veggies ?? "normal") === v} onClick={() => setPrefs({ ...prefs, veggies: v })}>{t(`food.veggiesOptions.${v}`)}</Chip>
+                ))}
+              </div>
+              {prefs.veggies === "less" && <p className="text-xs text-muted">{t("food.veggiesLessHint")}</p>}
             </div>
             <div className="grid gap-2">
               <span className="text-sm font-semibold">{t("food.avoid")}</span>

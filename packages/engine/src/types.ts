@@ -117,6 +117,8 @@ export interface Ingredient {
   shelfLifeDays: number;
   /** Salt, pepper, oil, spices: assumed in the kitchen, not costed per week. */
   staple?: boolean;
+  /** A vegetable (not a fruit, herb or spice): used for the "vegetables" taste setting */
+  vegetable?: boolean;
   /**
    * Seasoning or garnish (garlic, herbs, spices): left out of a recipe for someone
    * who doesn't eat it, instead of excluding the recipe — unless the recipe name
@@ -186,6 +188,10 @@ export interface RecipeInfo extends Recipe {
   nutrition: Nutrients;
   /** Per serving, in market currency (excluding staples) */
   cost: number;
+  /** Grams of vegetables per serving */
+  vegGrams: number;
+  /** Contains meat or poultry (not fish) */
+  hasMeat: boolean;
   totalMin: number;
   tagsAvoid: FoodTag[];
   diets: Diet[];
@@ -207,7 +213,8 @@ export type Goal =
   | "save_money"
   | "family_meals";
 
-export type Diet = "omnivore" | "pescatarian" | "vegetarian" | "vegan";
+/** flexitarian = eats everything, but meat only a few times a week */
+export type Diet = "omnivore" | "flexitarian" | "pescatarian" | "vegetarian" | "vegan";
 
 export type PregnancyStatus = "none" | "pregnant_t1" | "pregnant_t2" | "pregnant_t3" | "breastfeeding";
 
@@ -255,6 +262,10 @@ export interface FoodPreferences {
   /** Additional tags to avoid (pork, alcohol, ...). Allergies of members are added automatically. */
   avoid: FoodTag[];
   dislikedIngredients: string[];
+  /** Taste for vegetables: "less" favours recipes where they are discreet */
+  veggies?: "less" | "normal" | "more";
+  /** Flexitarian: dishes with meat per week (default 3) */
+  meatMealsPerWeek?: number;
   likedRecipes: string[];
   dislikedRecipes: string[];
   /** Max active minutes per meal on weekdays / weekends */

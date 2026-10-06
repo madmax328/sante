@@ -275,7 +275,15 @@
       "dislikesSearch": "Another food… (e.g. fennel)",
       "dislikesNone": "No food found.",
       "dislikesOthers": "Other excluded foods",
-      "dislikesRemove": "Remove {name} from the list"
+      "dislikesRemove": "Remove {name} from the list",
+      "flexiHint": "Meat 3 times a week at most; the rest of the time, fish, eggs and vegetarian dishes.",
+      "veggies": "Vegetables",
+      "veggiesOptions": {
+        "more": "Love them",
+        "normal": "Normal",
+        "less": "Not too many"
+      },
+      "veggiesLessHint": "We favour dishes where vegetables stay discreet (gratins, sauces, soups, stir-fries) and in small amounts. We keep a little: they matter for fibre and fullness."
     },
     "household": {
       "title": "Your household",
@@ -373,6 +381,7 @@
     },
     "diet": {
       "omnivore": "I eat everything",
+      "flexitarian": "Flexitarian",
       "pescatarian": "Pescatarian",
       "vegetarian": "Vegetarian",
       "vegan": "Vegan"

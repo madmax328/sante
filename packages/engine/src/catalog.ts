@@ -90,12 +90,14 @@ export class Catalog {
   private enrich(r: Recipe): RecipeInfo {
     let total = { ...ZERO_NUTRIENTS };
     let cost = 0;
+    let veg = 0;
     const tags = new Set<FoodTag>();
     for (const ri of r.ingredients) {
       const ing = this.ingredient(ri.id);
       const g = this.grams(ri.id, ri.qty);
       total = addNutrients(total, ing.nutrition, g / 100);
       if (!ing.staple) cost += this.price(ri.id, ri.qty);
+      if (ing.vegetable) veg += g;
       ing.tags.forEach((tag) => tags.add(tag));
     }
     const per = roundNutrients({
@@ -113,6 +115,8 @@ export class Catalog {
       ...r,
       nutrition: per,
       cost: Math.round((cost / r.servings) * 100) / 100,
+      vegGrams: Math.round(veg / r.servings),
+      hasMeat: tagsAvoid.some((t) => ANIMAL_FLESH.includes(t)),
       totalMin: r.prepMin + r.cookMin,
       tagsAvoid,
       diets: dietsFor(tagsAvoid),
@@ -124,7 +128,7 @@ export function dietsFor(tags: FoodTag[]): Diet[] {
   const flesh = tags.some((t) => ANIMAL_FLESH.includes(t));
   const sea = tags.includes("fish") || tags.includes("seafood");
   const animalProducts = tags.includes("dairy") || tags.includes("egg") || tags.includes("honey");
-  const diets: Diet[] = ["omnivore"];
+  const diets: Diet[] = ["omnivore", "flexitarian"];
   if (!flesh) diets.push("pescatarian");
   if (!flesh && !sea) diets.push("vegetarian");
   if (!flesh && !sea && !animalProducts) diets.push("vegan");

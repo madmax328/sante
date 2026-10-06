@@ -38,7 +38,8 @@ const schema = z.object({
   }),
   members: z.array(person).max(8),
   prefs: z.object({
-    diet: z.enum(["omnivore", "pescatarian", "vegetarian", "vegan"]),
+    diet: z.enum(["omnivore", "flexitarian", "pescatarian", "vegetarian", "vegan"]),
+    veggies: z.enum(["less", "normal", "more"]).optional(),
     avoid: z.array(z.enum(["pork", "beef", "lamb", "alcohol", "seafood", "fish", "dairy", "egg", "gluten"])),
     dislikedIngredients: z.array(z.string().max(40)).max(150),
     maxMinutesWeekday: z.number().min(10).max(120),

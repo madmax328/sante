@@ -60,7 +60,8 @@ export async function setCancelAction(cancel: boolean): Promise<{ ok: boolean }>
 }
 
 const prefsSchema = z.object({
-  diet: z.enum(["omnivore", "pescatarian", "vegetarian", "vegan"]),
+  diet: z.enum(["omnivore", "flexitarian", "pescatarian", "vegetarian", "vegan"]),
+  veggies: z.enum(["less", "normal", "more"]),
   avoid: z.array(z.enum(["pork", "beef", "lamb", "alcohol", "seafood", "fish", "dairy", "egg", "gluten"])),
   maxMinutesWeekday: z.number().min(10).max(120),
   maxMinutesWeekend: z.number().min(10).max(180),

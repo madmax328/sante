@@ -259,6 +259,8 @@ interface ScoreState {
   spent: number;
   remainingWeight: number;
   dayMains: Map<number, Set<string>>;
+  /** Meals with meat planned so far (flexitarian cap) */
+  meatMeals: number;
   /** 1 = full variety rules; lower values let the budget win */
   varietyScale: number;
 }
@@ -365,6 +367,20 @@ function scoreRecipe(
   const kids = allEaters.some((e) => e.isChild) && r.tags.includes("kid-friendly") ? 0.25 : 0;
   const cuisine = prefs.cuisines?.includes(r.cuisine) ? 0.15 : 0;
 
+  // Taste for vegetables (main meals): "less" prefers dishes where they stay
+  // discreet, without removing them; "more" favours generous portions.
+  let veggies = 0;
+  if (!light) {
+    if (prefs.veggies === "less") veggies = (Math.max(0, r.vegGrams - 80) / 100) * 0.8;
+    if (prefs.veggies === "more") veggies = -Math.min(1, r.vegGrams / 200) * 0.4;
+  }
+  // Flexitarian: meat only a few times a week (a dish eaten twice counts twice).
+  let meat = 0;
+  if (prefs.diet === "flexitarian" && r.hasMeat) {
+    const meals = 1 + (req.leftoverEaters?.length ? 1 : 0);
+    if (state.meatMeals + meals > (prefs.meatMealsPerWeek ?? 3)) meat = 6;
+  }
+
   const score =
     portionPenalty +
     proteinPenalty +
@@ -376,7 +392,9 @@ function scoreRecipe(
     liked -
     fiberBonus -
     kids -
-    cuisine;
+    cuisine +
+    veggies +
+    meat;
   return { score, cost };
 }
 
@@ -541,11 +559,13 @@ export function fillSlots(
     }
   };
   kept.forEach(markUsed);
+  const isMeat = (m: PlannedMeal) => (m.kind === "recipe" || m.kind === "leftover") && !!m.recipeId && ctx.catalog.recipe(m.recipeId).hasMeat;
+  const meatMeals = kept.filter(isMeat).length;
 
   let remainingWeight = 0;
   for (const k of open) remainingWeight += COST_WEIGHT[byKey.get(k)!.meal];
 
-  const state: ScoreState = { stock, used, families, mains, spent: stock.totalCost, remainingWeight, dayMains, varietyScale };
+  const state: ScoreState = { stock, used, families, mains, spent: stock.totalCost, remainingWeight, dayMains, meatMeals, varietyScale };
 
   for (const m of sortMeals(plan.meals)) {
     const k = key(m.day, m.meal);
@@ -570,6 +590,7 @@ export function fillSlots(
         });
         for (const [id, q] of mealRequirements(ctx.catalog, m)) stock.consume(id, q);
         state.spent = stock.totalCost;
+        if (isMeat(m)) state.meatMeals++;
         continue;
       }
     }
@@ -599,6 +620,7 @@ export function fillSlots(
     for (const [id, q] of mealRequirements(ctx.catalog, m)) stock.consume(id, q);
     state.spent = stock.totalCost;
     markUsed(m);
+    if (isMeat(m)) state.meatMeals++;
   }
 
   balanceDays(ctx, plan, open);

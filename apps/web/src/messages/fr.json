@@ -275,7 +275,15 @@
       "dislikesSearch": "Un autre aliment… (ex. fenouil)",
       "dislikesNone": "Aucun aliment trouvé.",
       "dislikesOthers": "Autres aliments exclus",
-      "dislikesRemove": "Retirer {name} de la liste"
+      "dislikesRemove": "Retirer {name} de la liste",
+      "flexiHint": "De la viande 3 fois par semaine au maximum ; le reste du temps, poisson, œufs et plats végétariens.",
+      "veggies": "Les légumes",
+      "veggiesOptions": {
+        "more": "J'adore",
+        "normal": "Normal",
+        "less": "Pas trop"
+      },
+      "veggiesLessHint": "On privilégie les plats où les légumes restent discrets (gratins, sauces, soupes, poêlées) et en petites quantités. On en garde un peu : ils comptent pour les fibres et la satiété."
     },
     "household": {
       "title": "Ton foyer",
@@ -373,6 +381,7 @@
     },
     "diet": {
       "omnivore": "Je mange de tout",
+      "flexitarian": "Flexitarien",
       "pescatarian": "Pesco-végétarien",
       "vegetarian": "Végétarien",
       "vegan": "Végétalien"

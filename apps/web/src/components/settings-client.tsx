@@ -98,7 +98,15 @@ export function FoodPrefsForm({ initial, dislikeOptions }: { initial: FoodPrefer
   return (
     <div className="grid gap-4">
       <div className="flex flex-wrap gap-2">
-        {(["omnivore", "pescatarian", "vegetarian", "vegan"] as const).map((d) => <Chip key={d} active={p.diet === d} onClick={() => setP({ ...p, diet: d })}>{e(`diet.${d}`)}</Chip>)}
+        {(["omnivore", "flexitarian", "pescatarian", "vegetarian", "vegan"] as const).map((d) => <Chip key={d} active={p.diet === d} onClick={() => setP({ ...p, diet: d })}>{e(`diet.${d}`)}</Chip>)}
+      </div>
+      {p.diet === "flexitarian" && <p className="-mt-2 text-xs text-muted">{t("flexiHint")}</p>}
+      <div className="grid gap-2">
+        <span className="text-sm font-semibold">{t("veggies")}</span>
+        <div className="flex flex-wrap gap-2">
+          {(["more", "normal", "less"] as const).map((v) => <Chip key={v} active={(p.veggies ?? "normal") === v} onClick={() => setP({ ...p, veggies: v })}>{t(`veggiesOptions.${v}`)}</Chip>)}
+        </div>
+        {p.veggies === "less" && <p className="text-xs text-muted">{t("veggiesLessHint")}</p>}
       </div>
       <div className="grid gap-2">
         <span className="text-sm font-semibold">{t("avoid")}</span>
@@ -121,7 +129,7 @@ export function FoodPrefsForm({ initial, dislikeOptions }: { initial: FoodPrefer
           disabled={pending}
           onClick={() =>
             start(async () => {
-              const res = await saveFoodPrefsAction({ diet: p.diet, avoid: p.avoid as never, maxMinutesWeekday: p.maxMinutesWeekday, maxMinutesWeekend: p.maxMinutesWeekend, equipment: p.equipment, leftovers: p.leftovers, snacks: p.snacks, dislikedIngredients: p.dislikedIngredients ?? [] });
+              const res = await saveFoodPrefsAction({ diet: p.diet, avoid: p.avoid as never, maxMinutesWeekday: p.maxMinutesWeekday, maxMinutesWeekend: p.maxMinutesWeekend, equipment: p.equipment, leftovers: p.leftovers, snacks: p.snacks, dislikedIngredients: p.dislikedIngredients ?? [], veggies: p.veggies ?? "normal" });
               setState(res.ok ? "saved" : "error");
             })
           }

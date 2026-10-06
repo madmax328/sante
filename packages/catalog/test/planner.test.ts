@@ -188,3 +188,34 @@ describe("foods the user doesn't eat", () => {
     expect(bought.filter((id) => disliked.includes(id))).toEqual([]);
   });
 });
+
+describe("diet nuances", () => {
+  const mains = (p: ReturnType<typeof generateWeek>["plan"]) =>
+    p.meals.filter((m) => (m.meal === "lunch" || m.meal === "dinner") && m.recipeId).map((m) => catalog.recipe(m.recipeId!));
+
+  it("flexitarian: meat at most 3 meals a week", () => {
+    for (const seed of [1, 2, 3]) {
+      const week = generateWeek({ ...ctx, prefs: { ...prefs, diet: "flexitarian" } }, { startDate: START, seed });
+      expect(mains(week.plan).filter((r) => r.hasMeat).length, `seed ${seed}`).toBeLessThanOrEqual(3);
+      expect(week.plan.meals).toHaveLength(28);
+    }
+  });
+
+  it("'not too many vegetables' plans lighter vegetable dishes, without removing them", () => {
+    const avg = (veggies: "less" | "normal") => {
+      let total = 0;
+      let n = 0;
+      for (const seed of [1, 2, 3]) {
+        for (const r of mains(generateWeek({ ...ctx, prefs: { ...prefs, veggies } }, { startDate: START, seed }).plan)) {
+          total += r.vegGrams;
+          n++;
+        }
+      }
+      return total / n;
+    };
+    const less = avg("less");
+    const normal = avg("normal");
+    expect(less).toBeLessThan(normal * 0.8);
+    expect(less).toBeGreaterThan(30);
+  });
+});

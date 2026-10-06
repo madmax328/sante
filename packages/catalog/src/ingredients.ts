@@ -66,6 +66,15 @@ const OMITTABLE: Record<string, string[]> = {
   bay_leaf: ["laurier", "bay"],
 };
 
+/** Vegetables (fruits, herbs and spices excluded), fresh, frozen or canned. */
+const VEGETABLES = new Set([
+  "carrot", "onion", "red_onion", "shallot", "zucchini", "eggplant", "bell_pepper", "tomato", "cherry_tomato",
+  "cucumber", "lettuce", "salad_mix", "arugula", "spinach", "broccoli", "cauliflower", "green_beans", "leek",
+  "mushroom", "cabbage", "red_cabbage", "butternut", "celery", "fennel", "beetroot", "radish", "spring_onion",
+  "corn", "canned_tomato", "passata", "frozen_spinach", "frozen_green_beans", "frozen_peas", "frozen_veg_mix",
+  "frozen_broccoli", "sweet_potato",
+]);
+
 function nutrients(n: N): Nutrients {
   const [kcal, protein, carbs, sugars, fat, satFat, fiber, salt] = n;
   return { kcal, protein, carbs, sugars, fat, satFat, fiber, salt };
@@ -87,6 +96,7 @@ function make(d: Def): Ingredient {
     shelfLifeDays: d.shelf,
     staple: d.staple,
     omittable: OMITTABLE[d.id],
+    vegetable: VEGETABLES.has(d.id) || undefined,
     season: d.season,
     keywords: d.kw ?? [d.en.toLowerCase()],
     source: d.ciqual ? `CIQUAL ${d.ciqual}` : "CIQUAL (approx.)",
