@@ -53,10 +53,10 @@ export async function sendContactAction(input: z.input<typeof schema>): Promise<
     if (recent >= 5) return { ok: false, error: "rate" };
     await attempts.insertOne({ key, at: new Date() });
 
-    const account = session ? `Compte Weeko : ${escape(session.user.email)} (id ${escape(session.user.id)})` : "Pas connecté";
+    const account = session ? `Compte Sorloo : ${escape(session.user.email)} (id ${escape(session.user.id)})` : "Pas connecté";
     await sendEmail(
       TO[data.topic],
-      `[Contact Weeko] ${LABEL[data.topic]} — ${data.name}`,
+      `[Contact Sorloo] ${LABEL[data.topic]} — ${data.name}`,
       `<p><strong>De :</strong> ${escape(data.name)} &lt;${escape(data.email)}&gt;<br/><strong>Sujet :</strong> ${LABEL[data.topic]}<br/>${account}</p>` +
         `<p style="white-space:pre-wrap">${escape(data.message)}</p>` +
         `<p style="color:#5c6b64">Réponds directement à cet e-mail pour répondre à ${escape(data.name)}.</p>`,

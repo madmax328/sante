@@ -26,7 +26,7 @@ export default function Login() {
       <Screen>
         <View style={{ alignItems: "center", gap: space.sm, marginTop: space.xl }}>
           <LogoMark size={56} />
-          <T variant="title">Weeko</T>
+          <T variant="title">Sorloo</T>
           <T variant="small" style={{ textAlign: "center" }}>Ta semaine organisée : menus, courses, budget et sport.</T>
         </View>
         <View style={{ gap: space.md }}>

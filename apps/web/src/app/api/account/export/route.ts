@@ -11,7 +11,7 @@ export async function GET() {
   return new NextResponse(body, {
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      "Content-Disposition": `attachment; filename="weeko-export-${new Date().toISOString().slice(0, 10)}.json"`,
+      "Content-Disposition": `attachment; filename="sorloo-export-${new Date().toISOString().slice(0, 10)}.json"`,
       "Cache-Control": "no-store",
     },
   });

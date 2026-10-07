@@ -9,8 +9,8 @@ import { env, features } from "./env";
 
 /**
  * Addresses allowed to sign in. Better Auth rejects requests from any other
- * origin ("Invalid origin"), e.g. www.getweeko.com when the site URL is
- * getweeko.com, or the *.vercel.app address of the deployment.
+ * origin ("Invalid origin"), e.g. www.sorloo.com when the site URL is
+ * sorloo.com, or the *.vercel.app address of the deployment.
  */
 function trustedOrigins(): string[] {
   const origins = new Set<string>();
@@ -30,7 +30,11 @@ function trustedOrigins(): string[] {
   add(process.env.VERCEL_URL);
   add(process.env.VERCEL_BRANCH_URL);
   add(process.env.VERCEL_PROJECT_PRODUCTION_URL);
-  // iOS / Android app (deep-link scheme), and the Expo dev client while developing.
+  // Former domain, still served while the redirect is in place.
+  add("https://getweeko.com");
+  // iOS / Android app (deep-link scheme; "weeko" for builds made before the rename),
+  // and the Expo dev client while developing.
+  origins.add("sorloo://");
   origins.add("weeko://");
   if (process.env.NODE_ENV !== "production") origins.add("exp://");
   return [...origins];
@@ -46,7 +50,7 @@ async function sendSafely(to: string, subject: string, html: string): Promise<vo
 }
 
 export const auth = betterAuth({
-  appName: "Weeko",
+  appName: "Sorloo",
   baseURL: env.appUrl,
   trustedOrigins: trustedOrigins(),
   secret: env.authSecret,
@@ -59,7 +63,7 @@ export const auth = betterAuth({
     sendResetPassword: async ({ user, url }) => {
       await sendSafely(
         user.email,
-        "Réinitialiser ton mot de passe Weeko",
+        "Réinitialiser ton mot de passe Sorloo",
         `<p>Bonjour,</p><p>Pour choisir un nouveau mot de passe, ouvre ce lien (valable 1 heure) :</p><p><a href="${url}">${url}</a></p><p>Si tu n'es pas à l'origine de cette demande, ignore cet e-mail.</p>`,
       );
     },
@@ -71,7 +75,7 @@ export const auth = betterAuth({
       await sendSafely(
         user.email,
         "Confirme ton adresse e-mail",
-        `<p>Bienvenue sur Weeko !</p><p>Confirme ton adresse en ouvrant ce lien :</p><p><a href="${url}">${url}</a></p>`,
+        `<p>Bienvenue sur Sorloo !</p><p>Confirme ton adresse en ouvrant ce lien :</p><p><a href="${url}">${url}</a></p>`,
       );
     },
   },

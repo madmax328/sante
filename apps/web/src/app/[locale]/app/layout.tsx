@@ -16,7 +16,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="mx-auto flex min-h-dvh max-w-7xl">
       <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col gap-6 border-r border-line px-4 py-6 lg:flex">
-        <Link href="/app" aria-label="Weeko">
+        <Link href="/app" aria-label="Sorloo">
           <Logo today={today} />
         </Link>
         <SideNav />
@@ -31,7 +31,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       </aside>
       <div className="min-w-0 flex-1 px-4 pb-28 pt-5 sm:px-6 lg:px-10 lg:pb-12 lg:pt-8">
         <div className="mb-4 flex items-center justify-between lg:hidden">
-          <Link href="/app" aria-label="Weeko">
+          <Link href="/app" aria-label="Sorloo">
             <Logo today={today} />
           </Link>
           {!premium && (

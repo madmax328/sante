@@ -23,7 +23,7 @@ export function QuickAdjust({ premium, onApplied }: { premium: boolean; onApplie
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string>();
 
-  if (!premium) return <T variant="small">Avec Weeko Premium, écris ce qui change (« ce soir je mange au restaurant ») : la semaine s'adapte toute seule.</T>;
+  if (!premium) return <T variant="small">Avec Sorloo Premium, écris ce qui change (« ce soir je mange au restaurant ») : la semaine s'adapte toute seule.</T>;
 
   const ask = async (value: string) => {
     setPending(true);

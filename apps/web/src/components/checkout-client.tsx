@@ -9,7 +9,7 @@ import { useRouter } from "@/i18n/navigation";
 import { completeCheckoutAction, prepareCheckoutAction } from "@/app/[locale]/app/account/actions";
 import { Button } from "./ui";
 
-/** Stripe's card form, dressed in the Weeko brand (colors, font, radius). */
+/** Stripe's card form, dressed in the Sorloo brand (colors, font, radius). */
 function weekoAppearance(dark: boolean): Appearance {
   const c = dark
     ? { primary: "#4fbf95", bg: "#18201d", text: "#eaf0ec", muted: "#9aaaa2", line: "#2a3531", danger: "#f07a72" }
@@ -130,7 +130,7 @@ function PayForm({ plan, amountMinor, currency, trialDays, completeUrl }: Props)
   const price = format.number(amountMinor / 100, { style: "currency", currency: currency.toUpperCase() });
   return (
     <form onSubmit={onSubmit} className="grid gap-5">
-      <PaymentElement onReady={() => setReady(true)} options={{ layout: "tabs", business: { name: "Weeko" } }} />
+      <PaymentElement onReady={() => setReady(true)} options={{ layout: "tabs", business: { name: "Sorloo" } }} />
       {!ready && <p className="flex items-center gap-2 text-sm text-muted"><Loader2 className="size-4 animate-spin" />{t("loading")}</p>}
       {error && (
         <p role="alert" className="rounded-xl bg-danger-soft px-3 py-2 text-sm text-danger">

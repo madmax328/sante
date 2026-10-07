@@ -11,7 +11,7 @@ export default function AppLayout() {
     void authClient.signOut();
     return <Loading />;
   }
-  if (!me) return <ErrorView message="Impossible de joindre Weeko. Vérifie ta connexion." onRetry={reload} />;
+  if (!me) return <ErrorView message="Impossible de joindre Sorloo. Vérifie ta connexion." onRetry={reload} />;
   return (
     <MeProvider me={me} reload={reload}>
       <Stack screenOptions={{ headerShown: false }}>

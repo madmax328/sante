@@ -16,7 +16,7 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-30 border-b border-line/70 bg-riz/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-        <Link href="/" aria-label="Weeko">
+        <Link href="/" aria-label="Sorloo">
           <Logo />
         </Link>
         <nav className="flex items-center gap-2 sm:gap-4">

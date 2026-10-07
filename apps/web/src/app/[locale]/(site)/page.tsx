@@ -41,7 +41,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             <p className="font-display text-2xl font-bold text-muted">« {t("compareOthersQuote")} »</p>
           </div>
           <div className="grid content-start gap-2">
-            <p className="text-sm font-semibold uppercase tracking-wider text-basilic">Weeko</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-basilic">Sorloo</p>
             <p className="font-display text-2xl font-bold">« {t("compareUsQuote")} »</p>
           </div>
         </div>
@@ -113,7 +113,7 @@ async function HeroPreview() {
     <div className="mx-auto w-full max-w-sm rounded-[28px] border border-line bg-surface p-5 shadow-[0_30px_60px_-35px_rgba(23,32,28,0.45)]" aria-label={t("label")}>
       <div className="flex items-center justify-between">
         <span className="inline-flex items-center gap-2 font-display font-extrabold">
-          <LogoMark size={22} today={2} /> Weeko
+          <LogoMark size={22} today={2} /> Sorloo
         </span>
         <span className="text-sm text-muted">{t("date")}</span>
       </div>

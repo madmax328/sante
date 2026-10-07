@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Weeko — ta semaine, organisée",
-    "description": "Menus de la semaine, recettes, liste de courses, budget et programme sportif : Weeko organise ta semaine et s'adapte quand la vraie vie s'en mêle."
+    "title": "Sorloo — ta semaine, organisée",
+    "description": "Menus de la semaine, recettes, liste de courses, budget et programme sportif : Sorloo organise ta semaine et s'adapte quand la vraie vie s'en mêle."
   },
   "site": {
     "pricing": "Tarifs",
@@ -14,13 +14,13 @@
     "privacy": "Confidentialité",
     "terms": "CGU / CGV",
     "notice": "Mentions légales",
-    "disclaimer": "Weeko est une application de bien-être et d'organisation. Elle ne remplace pas un avis médical. Valeurs nutritionnelles : table CIQUAL (ANSES).",
+    "disclaimer": "Sorloo est une application de bien-être et d'organisation. Elle ne remplace pas un avis médical. Valeurs nutritionnelles : table CIQUAL (ANSES).",
     "contact": "Contact"
   },
   "home": {
     "eyebrow": "Repas, courses, budget et sport",
     "title": "Ta semaine, organisée.",
-    "subtitle": "Dis-nous ton objectif, ton budget, tes goûts et ton emploi du temps. Weeko prépare tes 7 jours de repas, la liste de courses et ton programme sportif, puis s'adapte quand la vraie vie s'en mêle.",
+    "subtitle": "Dis-nous ton objectif, ton budget, tes goûts et ton emploi du temps. Sorloo prépare tes 7 jours de repas, la liste de courses et ton programme sportif, puis s'adapte quand la vraie vie s'en mêle.",
     "cta": "Créer ma semaine",
     "seePricing": "Voir les tarifs",
     "ctaNote": "Gratuit pour commencer. Sans carte bancaire.",
@@ -99,8 +99,8 @@
     "faqTitle": "Questions fréquentes",
     "faq": {
       "what": {
-        "q": "En quoi Weeko est différent d'une app de comptage de calories ?",
-        "a": "Weeko ne se contente pas d'enregistrer : il organise. À partir de ton objectif, ton budget, tes goûts et ton temps, il construit la semaine complète (menus, recettes, courses, sport) et la réorganise quand ton programme change."
+        "q": "En quoi Sorloo est différent d'une app de comptage de calories ?",
+        "a": "Sorloo ne se contente pas d'enregistrer : il organise. À partir de ton objectif, ton budget, tes goûts et ton temps, il construit la semaine complète (menus, recettes, courses, sport) et la réorganise quand ton programme change."
       },
       "budget": {
         "q": "Comment le budget est-il calculé ?",
@@ -138,7 +138,7 @@
   },
   "pricing": {
     "title": "Tarifs simples",
-    "subtitle": "Commence gratuitement. Passe à Premium quand tu veux que Weeko s'occupe de tout : budget, garde-manger, coach et sport.",
+    "subtitle": "Commence gratuitement. Passe à Premium quand tu veux que Sorloo s'occupe de tout : budget, garde-manger, coach et sport.",
     "free": "Gratuit",
     "freeNote": "Pour découvrir et suivre l'essentiel",
     "startFree": "Commencer gratuitement",
@@ -255,9 +255,9 @@
       "subtitle": "Certaines situations demandent un suivi professionnel : on adapte le programme en conséquence.",
       "pregnancy": "Grossesse ou allaitement",
       "medical": "Situations particulières (facultatif)",
-      "medicalHint": "Si tu coches une situation, Weeko reste prudent et te recommande d'en parler à un professionnel de santé.",
+      "medicalHint": "Si tu coches une situation, Sorloo reste prudent et te recommande d'en parler à un professionnel de santé.",
       "allergies": "Allergies et intolérances",
-      "consent": "J'accepte que Weeko traite mes données de santé (poids, taille, allergies, situations déclarées) pour personnaliser mes menus et mon programme. Ces données sont chiffrées, jamais vendues, et je peux retirer mon consentement ou les supprimer à tout moment."
+      "consent": "J'accepte que Sorloo traite mes données de santé (poids, taille, allergies, situations déclarées) pour personnaliser mes menus et mon programme. Ces données sont chiffrées, jamais vendues, et je peux retirer mon consentement ou les supprimer à tout moment."
     },
     "food": {
       "title": "Tes habitudes",
@@ -324,7 +324,7 @@
     },
     "errors": {
       "invalid": "Certaines informations sont incomplètes. Vérifie les étapes précédentes.",
-      "too_young": "Weeko est réservé aux personnes de 15 ans et plus.",
+      "too_young": "Sorloo est réservé aux personnes de 15 ans et plus.",
       "consent": "Le consentement au traitement des données de santé est nécessaire pour personnaliser ton programme.",
       "server": "La sauvegarde a échoué. Réessaie dans un instant."
     }
@@ -470,7 +470,7 @@
     "safety": {
       "under_min_age": {
         "title": "Réservé aux 15 ans et plus",
-        "text": "Weeko n'est pas adapté avant 15 ans. Parle de ton alimentation avec tes parents et ton médecin."
+        "text": "Sorloo n'est pas adapté avant 15 ans. Parle de ton alimentation avec tes parents et ton médecin."
       },
       "minor_no_deficit": {
         "title": "Pas de régime avant 18 ans",
@@ -502,7 +502,7 @@
       },
       "medical_supervision": {
         "title": "Situation médicale déclarée",
-        "text": "Weeko reste prudent (rythme limité, protéines ajustées si besoin). Fais valider ton programme par ton médecin ou un·e diététicien·ne."
+        "text": "Sorloo reste prudent (rythme limité, protéines ajustées si besoin). Fais valider ton programme par ton médecin ou un·e diététicien·ne."
       },
       "eating_disorder_history": {
         "title": "Un programme sans chiffres",
@@ -525,7 +525,7 @@
   "today": {
     "hello": "Bonjour {name} !",
     "noPlanTitle": "Ta semaine n'est pas encore prête",
-    "noPlanText": "En un clic, Weeko prépare tes repas des 7 prochains jours, ta liste de courses et ton programme sportif.",
+    "noPlanText": "En un clic, Sorloo prépare tes repas des 7 prochains jours, ta liste de courses et ton programme sportif.",
     "createWeek": "Créer ma semaine",
     "whatToEat": "Que manger aujourd'hui ?",
     "seeWeek": "Toute la semaine",
@@ -582,7 +582,7 @@
     "next": "Semaine suivante",
     "thisWeek": "Cette semaine",
     "emptyTitle": "Pas encore de menu pour cette semaine",
-    "emptyText": "Weeko construit les 7 jours de repas selon ton objectif, ton budget, tes goûts et ton temps.",
+    "emptyText": "Sorloo construit les 7 jours de repas selon ton objectif, ton budget, tes goûts et ton temps.",
     "create": "Créer ma semaine",
     "groceriesCost": "Courses estimées",
     "leftoverValue": "dont {value} de produits qui resteront pour la suite",
@@ -596,7 +596,7 @@
     "budgetOverTitle": "Budget difficile à tenir",
     "budgetOverText": "Avec tes contraintes, le menu le plus économique trouvé revient à {min}. Tu peux assouplir tes préférences (temps, aliments à éviter) ou augmenter un peu le budget.",
     "budgetTitle": "Budget de la semaine",
-    "budgetPremium": "Fixe un budget et laisse Weeko construire une semaine qui le respecte.",
+    "budgetPremium": "Fixe un budget et laisse Sorloo construire une semaine qui le respecte.",
     "discover": "Découvrir Premium",
     "budgetEnable": "Respecter un budget",
     "budgetAmount": "Montant",
@@ -717,7 +717,7 @@
     "title": "Garde-manger",
     "subtitle": "Ce que tu as déjà : déduit des courses et utilisé en priorité dans les menus.",
     "premiumTitle": "Le garde-manger fait partie de Premium",
-    "premiumText": "Indique ce que tu as chez toi : Weeko le retire de ta liste de courses et le cuisine en priorité, pour dépenser moins et moins gaspiller.",
+    "premiumText": "Indique ce que tu as chez toi : Sorloo le retire de ta liste de courses et le cuisine en priorité, pour dépenser moins et moins gaspiller.",
     "discover": "Découvrir Premium",
     "addTitle": "Ajouter un produit",
     "ingredient": "Produit (ex. riz long)",
@@ -770,7 +770,7 @@
     "title": "Sport",
     "subtitle": "Semaine {week} du programme · {done}/{total} séances faites",
     "premiumTitle": "Ton programme sportif personnalisé",
-    "premiumText": "Avec Premium, Weeko crée tes séances selon ton niveau, ton objectif, ton matériel et tes disponibilités, avec des exercices guidés.",
+    "premiumText": "Avec Premium, Sorloo crée tes séances selon ton niveau, ton objectif, ton matériel et tes disponibilités, avec des exercices guidés.",
     "discover": "Découvrir Premium",
     "today": "Aujourd'hui",
     "meta": "{minutes} min · environ {kcal} kcal",
@@ -834,7 +834,7 @@
     "avgKcal": "Moyenne journalière",
     "daysLogged": "Jours renseignés",
     "nextTitle": "Et la semaine prochaine ?",
-    "nextText": "Weeko tient compte de tes goûts (recettes aimées, remplacées) pour te proposer une nouvelle semaine.",
+    "nextText": "Sorloo tient compte de tes goûts (recettes aimées, remplacées) pour te proposer une nouvelle semaine.",
     "seeNext": "Voir la semaine prochaine",
     "createNext": "Préparer la semaine prochaine",
     "premiumTitle": "Bilan hebdomadaire",
@@ -903,7 +903,7 @@
     "placeholder": "Écris ton message…",
     "send": "Envoyer",
     "clear": "Effacer la conversation",
-    "disclaimer": "Le coach ne remplace pas un avis médical. Les chiffres sont toujours recalculés par le moteur Weeko.",
+    "disclaimer": "Le coach ne remplace pas un avis médical. Les chiffres sont toujours recalculés par le moteur Sorloo.",
     "actions": {
       "eat_out": "{day}, {meal} à l'extérieur : « {label} ». Les jours suivants sont un peu allégés.",
       "guests": "{day}, {meal} : {total} personnes à table.",
@@ -944,7 +944,7 @@
     "export": "Exporter mes données (JSON)",
     "logout": "Me déconnecter",
     "withdrawTitle": "Retirer mon consentement santé",
-    "withdrawText": "Tes données de santé (poids, mesures, allergies, situations déclarées) seront supprimées. Sans elles, Weeko ne peut plus personnaliser tes menus.",
+    "withdrawText": "Tes données de santé (poids, mesures, allergies, situations déclarées) seront supprimées. Sans elles, Sorloo ne peut plus personnaliser tes menus.",
     "withdraw": "Retirer mon consentement",
     "withdrawConfirm": "Supprimer mes données de santé",
     "cancel": "Annuler",
@@ -971,7 +971,7 @@
   },
   "checkout": {
     "title": "Passer à Premium",
-    "subtitle": "Paiement sécurisé, sans quitter Weeko.",
+    "subtitle": "Paiement sécurisé, sans quitter Sorloo.",
     "back": "Mon compte",
     "month": "mois",
     "year": "an",
@@ -985,7 +985,7 @@
     "processing": "Paiement en cours…",
     "pay": "Payer {price}",
     "startTrial": "Démarrer mes {days} jours gratuits",
-    "secure": "Paiement chiffré et traité par Stripe. Weeko ne voit jamais ton numéro de carte.",
+    "secure": "Paiement chiffré et traité par Stripe. Sorloo ne voit jamais ton numéro de carte.",
     "genericError": "Le paiement n'a pas abouti. Vérifie tes informations ou essaie une autre carte.",
     "notConfigured": "Le paiement n'est pas encore configuré.",
     "startError": "Impossible de préparer le paiement pour le moment. Réessaie dans un instant.",

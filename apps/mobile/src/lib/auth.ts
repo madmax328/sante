@@ -8,7 +8,8 @@ export const authClient = createAuthClient({
   baseURL: API_URL,
   plugins: [
     expoClient({
-      scheme: "weeko",
+      scheme: "sorloo",
+      // Kept from before the rename so testers stay signed in.
       storagePrefix: "weeko",
       storage: SecureStore,
     }),

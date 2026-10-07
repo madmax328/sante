@@ -24,7 +24,7 @@ export async function GET(request: Request) {
   };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) return NextResponse.json({ config, error: "add &to=your@email" });
   try {
-    await sendEmail(to, "Test Weeko", "<p>Si tu lis ce message, l'envoi d'e-mails de Weeko fonctionne.</p>");
+    await sendEmail(to, "Test Sorloo", "<p>Si tu lis ce message, l'envoi d'e-mails de Sorloo fonctionne.</p>");
     return NextResponse.json({ config, result: "sent" });
   } catch (e) {
     return NextResponse.json({ config, result: "failed", error: e instanceof Error ? e.message : String(e) });

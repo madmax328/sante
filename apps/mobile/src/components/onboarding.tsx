@@ -123,7 +123,7 @@ export function Onboarding() {
       .catch(() => null);
     setPending(false);
     if (!res?.ok) {
-      return setError(res?.error === "too_young" ? "Weeko est réservé aux personnes de 15 ans et plus." : "L'enregistrement a échoué. Vérifie tes réponses et réessaie.");
+      return setError(res?.error === "too_young" ? "Sorloo est réservé aux personnes de 15 ans et plus." : "L'enregistrement a échoué. Vérifie tes réponses et réessaie.");
     }
     await reload();
   };
@@ -175,13 +175,13 @@ export function Onboarding() {
             <T variant="small">Certaines situations demandent un suivi professionnel : on adapte le programme en conséquence.</T>
             <Group label="Allergies et intolérances"><MultiChips options={L.allergen} value={allergies} onChange={setAllergies} /></Group>
             {sex === "female" && <Group label="Grossesse ou allaitement"><Chips options={L.pregnancy} value={pregnancy} onChange={setPregnancy} /></Group>}
-            <Group label="Situations particulières (facultatif)" hint="Si tu coches une situation, Weeko reste prudent et te recommande d'en parler à un professionnel de santé.">
+            <Group label="Situations particulières (facultatif)" hint="Si tu coches une situation, Sorloo reste prudent et te recommande d'en parler à un professionnel de santé.">
               <MultiChips options={L.medical} value={medical} onChange={setMedical} />
             </Group>
             <View style={{ flexDirection: "row", gap: space.md, alignItems: "flex-start" }}>
               <Switch value={consent} onValueChange={setConsent} trackColor={{ true: c.basilic }} accessibilityLabel="Consentement données de santé" />
               <T variant="small" style={{ flex: 1 }}>
-                J'accepte que Weeko traite mes données de santé (poids, taille, allergies, situations déclarées) pour personnaliser mes menus et mon programme. Ces données sont chiffrées, jamais vendues, et je peux retirer mon consentement ou les supprimer à tout moment.
+                J'accepte que Sorloo traite mes données de santé (poids, taille, allergies, situations déclarées) pour personnaliser mes menus et mon programme. Ces données sont chiffrées, jamais vendues, et je peux retirer mon consentement ou les supprimer à tout moment.
               </T>
             </View>
           </Card>

@@ -161,7 +161,7 @@ export function EmptyState({ title, children, action }: { title: ReactNode; chil
   );
 }
 
-/** The Weeko mark: a plate cut in 7 parts, today's part highlighted. */
+/** The Sorloo mark: a plate cut in 7 parts, today's part highlighted. */
 export function LogoMark({ size = 28, today = 0, className }: { size?: number; today?: number; className?: string }) {
   const r = 50;
   const inner = 18;
@@ -185,7 +185,7 @@ export function Logo({ today = 0 }: { today?: number }) {
   return (
     <span className="inline-flex items-center gap-2">
       <LogoMark today={today} />
-      <span className="font-display text-xl font-extrabold tracking-tight">Weeko</span>
+      <span className="font-display text-xl font-extrabold tracking-tight">Sorloo</span>
     </span>
   );
 }

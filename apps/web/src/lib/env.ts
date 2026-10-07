@@ -21,7 +21,7 @@ export const env = {
   smtpPort: Number(process.env.SMTP_PORT ?? 465),
   smtpUser: process.env.SMTP_USER,
   smtpPassword: process.env.SMTP_PASSWORD,
-  emailFrom: process.env.EMAIL_FROM ?? (process.env.SMTP_USER ? `Weeko <${process.env.SMTP_USER}>` : "Weeko <noreply@getweeko.com>"),
+  emailFrom: process.env.EMAIL_FROM ?? (process.env.SMTP_USER ? `Sorloo <${process.env.SMTP_USER}>` : "Sorloo <noreply@sorloo.com>"),
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
 };

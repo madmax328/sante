@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Weeko",
+    "name": "Sorloo",
     "slug": "weeko",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "weeko",
+    "scheme": "sorloo",
     "userInterfaceStyle": "automatic",
     "ios": {
       "bundleIdentifier": "com.getweeko.app",
@@ -22,7 +22,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.getweeko.app"
+      "package": "com.sorloo.app"
     },
     "web": {
       "output": "single",

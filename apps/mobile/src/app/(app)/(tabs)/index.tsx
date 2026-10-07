@@ -58,10 +58,10 @@ export default function TodayScreen() {
         <T variant="small">{longDate(data.date)}</T>
       </View>
 
-      {data.notices.includes("pregnancy") && <Notice>Pendant la grossesse, Weeko ne propose jamais de perte de poids. Parle de ton alimentation avec ta sage-femme ou ton médecin.</Notice>}
+      {data.notices.includes("pregnancy") && <Notice>Pendant la grossesse, Sorloo ne propose jamais de perte de poids. Parle de ton alimentation avec ta sage-femme ou ton médecin.</Notice>}
 
       {!data.hasPlan ? (
-        <EmptyState title="Ta semaine n'est pas encore prête" text="Weeko prépare tes repas, tes quantités et ta liste de courses en quelques secondes." action={<Button variant="accent" onPress={generate} loading={generating}>Créer ma semaine</Button>} />
+        <EmptyState title="Ta semaine n'est pas encore prête" text="Sorloo prépare tes repas, tes quantités et ta liste de courses en quelques secondes." action={<Button variant="accent" onPress={generate} loading={generating}>Créer ma semaine</Button>} />
       ) : (
         <Card>
           <SectionTitle action={<Link href="/week"><T variant="small" tone="basilic" style={{ fontWeight: "700" }}>Semaine →</T></Link>}>Que manger aujourd'hui ?</SectionTitle>

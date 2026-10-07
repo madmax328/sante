@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Weeko — your week, sorted",
-    "description": "Weekly meal plans, recipes, grocery list, budget and workouts: Weeko organises your week and adapts when real life gets in the way."
+    "title": "Sorloo — your week, sorted",
+    "description": "Weekly meal plans, recipes, grocery list, budget and workouts: Sorloo organises your week and adapts when real life gets in the way."
   },
   "site": {
     "pricing": "Pricing",
@@ -14,13 +14,13 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "notice": "Legal notice",
-    "disclaimer": "Weeko is a wellness and organisation app. It does not replace medical advice. Nutrition data: CIQUAL table (ANSES).",
+    "disclaimer": "Sorloo is a wellness and organisation app. It does not replace medical advice. Nutrition data: CIQUAL table (ANSES).",
     "contact": "Contact"
   },
   "home": {
     "eyebrow": "Meals, groceries, budget and workouts",
     "title": "Your week, sorted.",
-    "subtitle": "Tell us your goal, budget, tastes and schedule. Weeko prepares 7 days of meals, the grocery list and your workout plan, then adapts when real life gets in the way.",
+    "subtitle": "Tell us your goal, budget, tastes and schedule. Sorloo prepares 7 days of meals, the grocery list and your workout plan, then adapts when real life gets in the way.",
     "cta": "Plan my week",
     "seePricing": "See pricing",
     "ctaNote": "Free to start. No credit card.",
@@ -99,8 +99,8 @@
     "faqTitle": "Frequently asked questions",
     "faq": {
       "what": {
-        "q": "How is Weeko different from a calorie counter?",
-        "a": "Weeko doesn't just record: it organises. From your goal, budget, tastes and time, it builds the whole week (menus, recipes, groceries, workouts) and reorganises it when your plans change."
+        "q": "How is Sorloo different from a calorie counter?",
+        "a": "Sorloo doesn't just record: it organises. From your goal, budget, tastes and time, it builds the whole week (menus, recipes, groceries, workouts) and reorganises it when your plans change."
       },
       "budget": {
         "q": "How is the budget calculated?",
@@ -138,7 +138,7 @@
   },
   "pricing": {
     "title": "Simple pricing",
-    "subtitle": "Start for free. Go Premium when you want Weeko to handle everything: budget, pantry, coach and workouts.",
+    "subtitle": "Start for free. Go Premium when you want Sorloo to handle everything: budget, pantry, coach and workouts.",
     "free": "Free",
     "freeNote": "To discover and track the essentials",
     "startFree": "Start for free",
@@ -255,9 +255,9 @@
       "subtitle": "Some situations need professional follow-up: we adapt the plan accordingly.",
       "pregnancy": "Pregnancy or breastfeeding",
       "medical": "Specific situations (optional)",
-      "medicalHint": "If you tick a situation, Weeko stays cautious and recommends talking to a health professional.",
+      "medicalHint": "If you tick a situation, Sorloo stays cautious and recommends talking to a health professional.",
       "allergies": "Allergies and intolerances",
-      "consent": "I agree that Weeko processes my health data (weight, height, allergies, declared situations) to personalise my menus and plan. This data is encrypted, never sold, and I can withdraw consent or delete it at any time."
+      "consent": "I agree that Sorloo processes my health data (weight, height, allergies, declared situations) to personalise my menus and plan. This data is encrypted, never sold, and I can withdraw consent or delete it at any time."
     },
     "food": {
       "title": "Your habits",
@@ -324,7 +324,7 @@
     },
     "errors": {
       "invalid": "Some information is missing. Check the previous steps.",
-      "too_young": "Weeko is for people aged 15 and over.",
+      "too_young": "Sorloo is for people aged 15 and over.",
       "consent": "Consent to health data processing is needed to personalise your plan.",
       "server": "Saving failed. Please try again."
     }
@@ -470,7 +470,7 @@
     "safety": {
       "under_min_age": {
         "title": "For ages 15 and over",
-        "text": "Weeko isn't suitable under 15. Talk about your diet with your parents and your doctor."
+        "text": "Sorloo isn't suitable under 15. Talk about your diet with your parents and your doctor."
       },
       "minor_no_deficit": {
         "title": "No dieting under 18",
@@ -502,7 +502,7 @@
       },
       "medical_supervision": {
         "title": "Medical situation declared",
-        "text": "Weeko stays cautious (limited pace, adjusted protein if needed). Have your plan checked by your doctor or a dietitian."
+        "text": "Sorloo stays cautious (limited pace, adjusted protein if needed). Have your plan checked by your doctor or a dietitian."
       },
       "eating_disorder_history": {
         "title": "A plan without numbers",
@@ -525,7 +525,7 @@
   "today": {
     "hello": "Hi {name}!",
     "noPlanTitle": "Your week isn't ready yet",
-    "noPlanText": "In one click, Weeko prepares your meals for the next 7 days, your grocery list and your workout plan.",
+    "noPlanText": "In one click, Sorloo prepares your meals for the next 7 days, your grocery list and your workout plan.",
     "createWeek": "Plan my week",
     "whatToEat": "What to eat today?",
     "seeWeek": "Whole week",
@@ -582,7 +582,7 @@
     "next": "Next week",
     "thisWeek": "This week",
     "emptyTitle": "No menu for this week yet",
-    "emptyText": "Weeko builds 7 days of meals around your goal, budget, tastes and time.",
+    "emptyText": "Sorloo builds 7 days of meals around your goal, budget, tastes and time.",
     "create": "Plan my week",
     "groceriesCost": "Estimated groceries",
     "leftoverValue": "including {value} of products left for later",
@@ -596,7 +596,7 @@
     "budgetOverTitle": "Budget hard to meet",
     "budgetOverText": "With your constraints, the cheapest menu found costs {min}. You can relax your preferences (time, foods to avoid) or raise the budget a little.",
     "budgetTitle": "Weekly budget",
-    "budgetPremium": "Set a budget and let Weeko build a week that respects it.",
+    "budgetPremium": "Set a budget and let Sorloo build a week that respects it.",
     "discover": "Discover Premium",
     "budgetEnable": "Stick to a budget",
     "budgetAmount": "Amount",
@@ -717,7 +717,7 @@
     "title": "Pantry",
     "subtitle": "What you already have: deducted from groceries and used first in menus.",
     "premiumTitle": "The pantry is part of Premium",
-    "premiumText": "Enter what you have at home: Weeko removes it from your grocery list and cooks it first, so you spend and waste less.",
+    "premiumText": "Enter what you have at home: Sorloo removes it from your grocery list and cooks it first, so you spend and waste less.",
     "discover": "Discover Premium",
     "addTitle": "Add a product",
     "ingredient": "Product (e.g. long grain rice)",
@@ -770,7 +770,7 @@
     "title": "Workouts",
     "subtitle": "Week {week} of the plan · {done}/{total} sessions done",
     "premiumTitle": "Your personalised workout plan",
-    "premiumText": "With Premium, Weeko creates sessions for your level, goal, equipment and availability, with guided exercises.",
+    "premiumText": "With Premium, Sorloo creates sessions for your level, goal, equipment and availability, with guided exercises.",
     "discover": "Discover Premium",
     "today": "Today",
     "meta": "{minutes} min · about {kcal} kcal",
@@ -834,7 +834,7 @@
     "avgKcal": "Daily average",
     "daysLogged": "Days logged",
     "nextTitle": "And next week?",
-    "nextText": "Weeko takes your tastes (liked and swapped recipes) into account to suggest a new week.",
+    "nextText": "Sorloo takes your tastes (liked and swapped recipes) into account to suggest a new week.",
     "seeNext": "See next week",
     "createNext": "Prepare next week",
     "premiumTitle": "Weekly review",
@@ -903,7 +903,7 @@
     "placeholder": "Write your message…",
     "send": "Send",
     "clear": "Clear the conversation",
-    "disclaimer": "The coach doesn't replace medical advice. Numbers are always recalculated by the Weeko engine.",
+    "disclaimer": "The coach doesn't replace medical advice. Numbers are always recalculated by the Sorloo engine.",
     "actions": {
       "eat_out": "{day}, {meal} out: \"{label}\". The following days are slightly lighter.",
       "guests": "{day}, {meal}: {total} people at the table.",
@@ -944,7 +944,7 @@
     "export": "Export my data (JSON)",
     "logout": "Log out",
     "withdrawTitle": "Withdraw my health consent",
-    "withdrawText": "Your health data (weight, measurements, allergies, declared situations) will be deleted. Without it, Weeko can no longer personalise your menus.",
+    "withdrawText": "Your health data (weight, measurements, allergies, declared situations) will be deleted. Without it, Sorloo can no longer personalise your menus.",
     "withdraw": "Withdraw my consent",
     "withdrawConfirm": "Delete my health data",
     "cancel": "Cancel",
@@ -971,7 +971,7 @@
   },
   "checkout": {
     "title": "Go Premium",
-    "subtitle": "Secure payment, without leaving Weeko.",
+    "subtitle": "Secure payment, without leaving Sorloo.",
     "back": "My account",
     "month": "month",
     "year": "year",
@@ -985,7 +985,7 @@
     "processing": "Processing payment…",
     "pay": "Pay {price}",
     "startTrial": "Start my {days} free days",
-    "secure": "Payment encrypted and processed by Stripe. Weeko never sees your card number.",
+    "secure": "Payment encrypted and processed by Stripe. Sorloo never sees your card number.",
     "genericError": "The payment didn't go through. Check your details or try another card.",
     "notConfigured": "Payment isn't configured yet.",
     "startError": "We couldn't prepare the payment right now. Please try again shortly.",

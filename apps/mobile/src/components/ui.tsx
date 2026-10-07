@@ -216,7 +216,7 @@ export function Ring({ value, max, size = 112, stroke = 11, children }: { value:
   );
 }
 
-/** The Weeko mark: a plate cut in 7 parts, today's part highlighted. */
+/** The Sorloo mark: a plate cut in 7 parts, today's part highlighted. */
 export function LogoMark({ size = 28, today = 0 }: { size?: number; today?: number }) {
   const c = useColors();
   const R = 50;

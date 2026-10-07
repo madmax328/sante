@@ -53,7 +53,7 @@ export default async function CheckoutPage({ searchParams }: PageProps<"/[locale
       <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
         <section className="grid content-start gap-5 rounded-2xl bg-basilic p-6 text-surface">
           <div className="grid gap-1">
-            <p className="text-sm font-semibold uppercase tracking-wider opacity-80">Weeko Premium</p>
+            <p className="text-sm font-semibold uppercase tracking-wider opacity-80">Sorloo Premium</p>
             <p className="font-display text-4xl font-extrabold num">
               {started ? price : plan === "yearly" ? "49,99 €" : p("monthlyPrice")}
               <span className="text-base font-semibold opacity-80"> / {plan === "yearly" ? t("year") : t("month")}</span>

@@ -7,7 +7,7 @@ import type { Subscription } from "./types";
 let client: Stripe | undefined;
 export function stripe(): Stripe {
   if (!env.stripeSecret) throw new Error("Stripe is not configured");
-  client ??= new Stripe(env.stripeSecret, { appInfo: { name: "Weeko" } });
+  client ??= new Stripe(env.stripeSecret, { appInfo: { name: "Sorloo" } });
   return client;
 }
 

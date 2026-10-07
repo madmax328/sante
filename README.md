@@ -1,6 +1,6 @@
-# Weeko
+# Sorloo
 
-Weeko organise la semaine : menus des 7 jours, recettes, liste de courses par rayon,
+Sorloo organise la semaine : menus des 7 jours, recettes, liste de courses par rayon,
 budget, garde-manger, programme sportif, journal alimentaire, suivi du poids,
 bilan hebdomadaire et coach IA. Version web (Next.js) ; les apps iOS/Android
 viendront dans un second temps et réutiliseront le moteur et la base.
@@ -35,12 +35,12 @@ pnpm test                                       # tests du moteur, du catalogue 
 Les collections et index sont créés automatiquement au premier lancement.
 
 ### 2. Stripe
-1. Créer un produit **Weeko Premium** avec deux prix récurrents : 6,99 € / mois et 49,99 € / an.
+1. Créer un produit **Sorloo Premium** avec deux prix récurrents : 6,99 € / mois et 49,99 € / an.
    Copier leurs identifiants (`price_…`) dans `STRIPE_PRICE_MONTHLY` et `STRIPE_PRICE_YEARLY`.
 2. *Développeurs → Clés API* : copier la clé secrète dans `STRIPE_SECRET_KEY` et la clé publiable
    dans `STRIPE_PUBLISHABLE_KEY` (le formulaire de carte s'affiche directement sur le site,
-   aux couleurs de Weeko, sans redirection vers une page Stripe).
-3. *Développeurs → Webhooks* : ajouter l'URL `https://getweeko.com/api/stripe/webhook`
+   aux couleurs de Sorloo, sans redirection vers une page Stripe).
+3. *Développeurs → Webhooks* : ajouter l'URL `https://sorloo.com/api/stripe/webhook`
    avec les événements `customer.subscription.created`,
    `customer.subscription.updated`, `customer.subscription.deleted`.
    Copier le secret de signature dans `STRIPE_WEBHOOK_SECRET`.
@@ -71,20 +71,24 @@ réactiver avant cette date. Le portail client Stripe n'est pas utilisé.
 
 Photos des recettes : Unsplash (`UNSPLASH_ACCESS_KEY`), ou Pexels (`PEXELS_API_KEY`) si une clé est disponible.
 La tâche planifiée `/api/cron/photos` (une fois par jour) en récupère par lots. Pour aller plus vite,
-ouvrir dans le navigateur `https://getweeko.com/api/cron/photos?key=CRON_SECRET` (une fois par heure :
+ouvrir dans le navigateur `https://sorloo.com/api/cron/photos?key=CRON_SECRET` (une fois par heure :
 Unsplash limite à 50 requêtes/heure en mode démo ; après validation « Production » par Unsplash, 5 000/heure,
 et on peut ajouter `&max=150`). La réponse indique combien de recettes restent sans photo (`remaining`).
 
 > Le plan gratuit Vercel (Hobby) est réservé aux projets non commerciaux : pour un lancement
 > payant, il faut le plan Pro.
 
-### 4. E-mails (getweeko.com)
-Boîte : `contact@getweeko.com`, avec les alias `bonjour@`, `support@`, `rgpd@` et `noreply@`
+### 4. E-mails (sorloo.com)
+Boîte : `contact@sorloo.com`, avec les alias `bonjour@`, `support@`, `rgpd@` et `noreply@`
 (adresses publiques dans `apps/web/src/lib/contact.ts`).
 - Envoi automatique (mot de passe oublié) par la boîte Hostinger : `SMTP_HOST=smtp.hostinger.com`,
-  `SMTP_PORT=465`, `SMTP_USER=contact@getweeko.com`, `SMTP_PASSWORD` (mot de passe de la boîte).
+  `SMTP_PORT=465`, `SMTP_USER=contact@sorloo.com`, `SMTP_PASSWORD` (mot de passe de la boîte).
   Limite Hostinger : 1 000 e-mails / 24 h. Au-delà, passer à Resend (`RESEND_API_KEY`, utilisé si SMTP est vide).
-- Stripe : *Paramètres → Informations publiques* → e-mail de support `support@getweeko.com`.
+- Stripe : *Paramètres → Informations publiques* → e-mail de support `support@sorloo.com`.
+
+### Ancien domaine (getweeko.com)
+Garder getweeko.com relié au projet Vercel : les pages redirigent vers l'adresse de
+`NEXT_PUBLIC_APP_URL` (sorloo.com), et l'API reste joignable pour les anciennes versions de l'app.
 
 ### 5. Clés à générer
 - `BETTER_AUTH_SECRET` : `openssl rand -base64 32`
@@ -93,7 +97,7 @@ Boîte : `contact@getweeko.com`, avec les alias `bonjour@`, `support@`, `rgpd@` 
 
 ## Ce qui reste à compléter avant le lancement
 - Les mentions entre crochets dans `apps/web/src/content/legal.ts` (raison sociale, adresse, médiateur…) et une relecture par un juriste.
-- Vérifier la disponibilité du nom « Weeko » (INPI, EUIPO, domaines, stores).
+- Vérifier la disponibilité du nom « Sorloo » (INPI, EUIPO, domaines, stores).
 - Les valeurs nutritionnelles sont alignées sur la table CIQUAL mais saisies à la main :
   les recharger depuis l'export officiel avant le lancement est recommandé.
 - Les prix sont des moyennes : à affiner avec de vraies données magasin.

@@ -8,7 +8,7 @@ import { Button, Field, Input, Select, Textarea } from "./ui";
 
 const TOPICS: ContactTopic[] = ["question", "subscription", "technical", "privacy", "idea"];
 
-/** Contact form: the message lands in the Weeko mailbox, replies go straight to the sender. */
+/** Contact form: the message lands in the Sorloo mailbox, replies go straight to the sender. */
 export function ContactForm({ defaultName = "", defaultEmail = "", defaultTopic = "question" }: { defaultName?: string; defaultEmail?: string; defaultTopic?: ContactTopic }) {
   const t = useTranslations("contact");
   const [form, setForm] = useState({ name: defaultName, email: defaultEmail, topic: defaultTopic, message: "", website: "" });

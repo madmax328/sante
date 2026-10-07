@@ -53,7 +53,7 @@ export default function WeekScreen() {
     setBusy(`${day}:${meal}`);
     const res = await api.action<{ ok: boolean; error?: string }>("replaceMeal", { day, meal, weekStart: data.weekStart }).catch(() => null);
     setBusy(undefined);
-    if (res?.error === "quota") Alert.alert("Remplacements gratuits utilisés", "Tu as utilisé tes 3 remplacements gratuits de la semaine. Ils sont illimités avec Weeko Premium.");
+    if (res?.error === "quota") Alert.alert("Remplacements gratuits utilisés", "Tu as utilisé tes 3 remplacements gratuits de la semaine. Ils sont illimités avec Sorloo Premium.");
     await reload();
   };
 
@@ -73,7 +73,7 @@ export default function WeekScreen() {
       {!data.hasPlan ? (
         <EmptyState
           title="Pas encore de menu"
-          text="Weeko prépare les 7 jours de repas et la liste de courses."
+          text="Sorloo prépare les 7 jours de repas et la liste de courses."
           action={<Button variant="accent" loading={busy === "all"} onPress={async () => { setBusy("all"); await api.action("generateWeek", { weekStart: data.weekStart }).catch(() => undefined); setBusy(undefined); await reload(); }}>Créer cette semaine</Button>}
         />
       ) : (

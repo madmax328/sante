@@ -59,7 +59,7 @@ interface UnsplashPhoto {
 }
 
 // Unsplash asks for these parameters on every link back to them.
-const UTM = "utm_source=weeko&utm_medium=referral";
+const UTM = "utm_source=sorloo&utm_medium=referral";
 
 async function searchUnsplash(query: string): Promise<Found | undefined> {
   const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=5&orientation=landscape&content_filter=high`;

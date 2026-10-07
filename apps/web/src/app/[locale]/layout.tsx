@@ -17,11 +17,11 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
   return {
-    title: { default: t("title"), template: "%s · Weeko" },
+    title: { default: t("title"), template: "%s · Sorloo" },
     description: t("description"),
-    applicationName: "Weeko",
+    applicationName: "Sorloo",
     metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
-    openGraph: { title: t("title"), description: t("description"), siteName: "Weeko", type: "website" },
+    openGraph: { title: t("title"), description: t("description"), siteName: "Sorloo", type: "website" },
   };
 }
 

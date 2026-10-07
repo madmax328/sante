@@ -62,7 +62,7 @@ export default function AccountScreen() {
             </Button>
           </>
         ) : (
-          <T variant="small">Tu utilises la version gratuite de Weeko. L'abonnement se gère depuis ton compte sur le site Weeko, avec les mêmes identifiants.</T>
+          <T variant="small">Tu utilises la version gratuite de Sorloo. L'abonnement se gère depuis ton compte sur le site Sorloo, avec les mêmes identifiants.</T>
         )}
         {me.ai && me.premium && <T variant="small">Coach IA : {me.ai.left} messages restants ce mois-ci.</T>}
       </Card>
@@ -94,7 +94,7 @@ export default function AccountScreen() {
           </>
         )}
       </Card>
-      <T variant="small" style={{ textAlign: "center" }}>Weeko est une application de bien-être et d'organisation. Elle ne remplace pas un avis médical.</T>
+      <T variant="small" style={{ textAlign: "center" }}>Sorloo est une application de bien-être et d'organisation. Elle ne remplace pas un avis médical.</T>
     </Screen>
   );
 }

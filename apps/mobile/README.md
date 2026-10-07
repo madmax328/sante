@@ -1,4 +1,4 @@
-# Weeko — app iOS / Android
+# Sorloo — app iOS / Android
 
 App Expo (React Native) qui utilise les mêmes comptes et les mêmes données que le site :
 elle appelle l'API du site (`apps/web/src/app/api/mobile/*`).
@@ -11,7 +11,7 @@ cd apps/mobile
 EXPO_PUBLIC_API_URL=http://<ip-de-ton-ordi>:3000 npx expo start
 ```
 
-Sans `EXPO_PUBLIC_API_URL`, l'app utilise https://getweeko.com.
+Sans `EXPO_PUBLIC_API_URL`, l'app utilise https://sorloo.com.
 
 ## Paiement
 
@@ -22,3 +22,8 @@ le statut Premium du compte. Ne pas ajouter de lien ou de bouton vers une page d
 ## Publier
 
 Avec EAS (service de compilation d'Expo) : `npx eas-cli@latest build` puis `npx eas-cli@latest submit`.
+
+Le nom affiché est « Sorloo ». Le `slug` Expo (`weeko`), l'identifiant iOS (`com.getweeko.app`)
+et le préfixe de stockage restent ceux d'avant le changement de nom : ils sont invisibles pour
+les utilisateurs, et les changer obligerait à recréer le projet EAS et la fiche App Store Connect.
+L'app Android n'étant pas encore publiée, elle utilise directement `com.sorloo.app`.
