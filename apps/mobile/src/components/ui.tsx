@@ -263,3 +263,42 @@ const styles = StyleSheet.create({
   label: { fontSize: 12, fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase" },
   big: { fontSize: 32, fontWeight: "800", fontVariant: ["tabular-nums"] },
 });
+
+/** A row of mutually exclusive choices (meal, tab…). */
+export function Segmented<K extends string>({ options, value, onChange }: { options: { key: K; label: string }[]; value: K; onChange: (k: K) => void }) {
+  const c = useColors();
+  return (
+    <View style={{ flexDirection: "row", backgroundColor: c.surface, borderColor: c.line, borderWidth: 1, borderRadius: radius.full, padding: 3 }} accessibilityRole="tablist">
+      {options.map((o) => {
+        const active = o.key === value;
+        return (
+          <Pressable
+            key={o.key}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: active }}
+            onPress={() => onChange(o.key)}
+            style={{ flex: 1, alignItems: "center", paddingVertical: 8, borderRadius: radius.full, backgroundColor: active ? c.basilic : "transparent" }}
+          >
+            <Text numberOfLines={1} style={{ color: active ? c.surface : c.muted, fontWeight: "700", fontSize: 14 }}>{o.label}</Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+/** Round icon button (header actions). */
+export function IconButton({ icon, label, onPress }: { icon: ReactNode; label: string; onPress: () => void }) {
+  const c = useColors();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={onPress}
+      hitSlop={6}
+      style={({ pressed }) => ({ width: 40, height: 40, borderRadius: 20, borderWidth: 1, borderColor: c.line, backgroundColor: c.surface, alignItems: "center", justifyContent: "center", opacity: pressed ? 0.7 : 1 })}
+    >
+      {icon}
+    </Pressable>
+  );
+}

@@ -31,6 +31,14 @@
     "plugins": [
       "expo-router",
       [
+        "expo-camera",
+        {
+          "cameraPermission": "Sorloo utilise l'appareil photo pour scanner le code-barres des produits que tu ajoutes \u00e0 ton journal.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "backgroundColor": "#1E6B52",

@@ -1,5 +1,6 @@
 import * as WebBrowser from "expo-web-browser";
-import { LogOut, Mail } from "lucide-react-native";
+import { router } from "expo-router";
+import { ChevronRight, Dumbbell, LogOut, Mail, MessageCircle, SlidersHorizontal, TrendingUp } from "lucide-react-native";
 import { useState } from "react";
 import { Alert, Pressable, View } from "react-native";
 import { Badge, Button, Card, Field, Notice, Screen, SectionTitle, T } from "@/components/ui";
@@ -48,9 +49,31 @@ export default function AccountScreen() {
   };
 
   return (
-    <Screen>
-      <T variant="title">Mon compte</T>
+    <Screen padTop={false}>
       <T variant="small">{me.user.email}</T>
+
+      <Card style={{ padding: space.sm, gap: 0 }}>
+        {[
+          { href: "/preferences", label: "Mes préférences", hint: "Alimentation, budget, objectif", icon: SlidersHorizontal },
+          { href: "/progress", label: "Mes progrès", hint: "Poids, bilan de la semaine", icon: TrendingUp },
+          { href: "/sport-settings", label: "Mon programme sportif", hint: "Jours, niveau, matériel", icon: Dumbbell },
+          { href: "/coach", label: "Coach", hint: "Questions et changements de menu", icon: MessageCircle },
+        ].map((item, i) => (
+          <Pressable
+            key={item.href}
+            accessibilityRole="button"
+            onPress={() => router.push(item.href as never)}
+            style={({ pressed }) => ({ flexDirection: "row", alignItems: "center", gap: space.md, padding: space.md, backgroundColor: pressed ? c.riz : "transparent", borderTopWidth: i ? 1 : 0, borderTopColor: c.line })}
+          >
+            <item.icon size={20} color={c.basilic} />
+            <View style={{ flex: 1 }}>
+              <T style={{ fontWeight: "600" }}>{item.label}</T>
+              <T variant="small">{item.hint}</T>
+            </View>
+            <ChevronRight size={18} color={c.muted} />
+          </Pressable>
+        ))}
+      </Card>
 
       <Card>
         <SectionTitle action={me.premium ? <Badge>Premium</Badge> : <Badge tone="miel">Gratuit</Badge>}>Abonnement</SectionTitle>

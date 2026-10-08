@@ -1,9 +1,9 @@
 import * as Haptics from "expo-haptics";
-import { Link } from "expo-router";
-import { Check, Clock, Droplet, Minus, Plus } from "lucide-react-native";
+import { Link, router } from "expo-router";
+import { Check, Clock, Droplet, MessageCircle, Minus, Plus, TrendingUp, UserRound } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, View } from "react-native";
-import { Badge, Button, Card, EmptyState, ErrorView, Loading, Notice, ProgressBar, Ring, Screen, SectionTitle, T } from "@/components/ui";
+import { Badge, Button, Card, EmptyState, ErrorView, IconButton, Loading, Notice, ProgressBar, Ring, Screen, SectionTitle, T } from "@/components/ui";
 import { QuickAdjust } from "@/components/quick-adjust";
 import { Thumb } from "@/components/thumb";
 import { api, useApi } from "@/lib/api";
@@ -53,9 +53,14 @@ export default function TodayScreen() {
 
   return (
     <Screen refreshing={refreshing} onRefresh={refresh}>
-      <View>
-        <T variant="title">Bonjour {data.name} !</T>
-        <T variant="small">{longDate(data.date)}</T>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
+        <View style={{ flex: 1 }}>
+          <T variant="title">Bonjour {data.name} !</T>
+          <T variant="small">{longDate(data.date)}</T>
+        </View>
+        <IconButton label="Coach" icon={<MessageCircle size={20} color={c.basilic} />} onPress={() => router.push("/coach")} />
+        <IconButton label="Mes progrès" icon={<TrendingUp size={20} color={c.basilic} />} onPress={() => router.push("/progress")} />
+        <IconButton label="Mon compte" icon={<UserRound size={20} color={c.basilic} />} onPress={() => router.push("/account")} />
       </View>
 
       {data.notices.includes("pregnancy") && <Notice>Pendant la grossesse, Sorloo ne propose jamais de perte de poids. Parle de ton alimentation avec ta sage-femme ou ton médecin.</Notice>}
@@ -156,6 +161,9 @@ export default function TodayScreen() {
             <View style={{ gap: 4 }}>
               <T variant="h3">{data.workout.title}</T>
               <T variant="small">{data.workout.minutes} min{data.workout.done ? " · fait ✓" : ""}</T>
+              <Button small variant={data.workout.done ? "secondary" : "accent"} style={{ alignSelf: "flex-start", marginTop: space.sm }} onPress={() => router.push("/sport")}>
+                {data.workout.done ? "Voir mon programme" : "Voir la séance"}
+              </Button>
             </View>
           )}
         </Card>

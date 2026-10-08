@@ -33,3 +33,11 @@ export class MobileError extends Error {
     super(code);
   }
 }
+
+/** The signed-in person's planning context, or "no_profile" (409) before the questionnaire. */
+export async function contextFor(userId: string) {
+  const { loadUserContext } = await import("./planning");
+  const uc = await loadUserContext(userId);
+  if (!uc) throw new NoProfileError();
+  return uc;
+}

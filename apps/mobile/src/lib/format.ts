@@ -30,3 +30,13 @@ export function quantity(qty: number, unit: "g" | "ml" | "pc", name: string, plu
   if (unit === "ml") return q >= 1000 ? `${num(q / 1000, 2)} l · ${name.toLowerCase()}` : `${num(Math.round(q))} ml · ${name.toLowerCase()}`;
   return q >= 1000 ? `${num(q / 1000, 2)} kg · ${name.toLowerCase()}` : `${num(Math.round(q))} g · ${name.toLowerCase()}`;
 }
+
+/** ISO date n days later (or earlier). */
+export function addDays(iso: string, n: number): string {
+  const d = new Date(`${iso}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+
+export const MEAL_ORDER = ["breakfast", "lunch", "snack", "dinner"] as const;
+export type Meal = (typeof MEAL_ORDER)[number];
