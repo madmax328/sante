@@ -1044,5 +1044,19 @@
     "resend": "Resend the email",
     "sent": "Email sent. Check your spam folder too.",
     "error": "Sending failed. Try again in a few minutes."
+  },
+  "stores": {
+    "title": "Compare supermarkets",
+    "subtitle": "Your weekly list estimated in each chain, from in-store prices recorded by Open Prices users.",
+    "cheapest": "Cheapest",
+    "measured": "{n} of {total} products with recorded prices",
+    "index": "{pct} compared with average prices",
+    "none": "Not enough recorded prices yet to compare chains for your list. The database grows every day.",
+    "note": "Estimate: median prices over the last 12 months in France, excluding promotions. For products without a record, the chain's usual gap is applied. Prices vary between stores.",
+    "contribute": "You can help by adding your receipts on Open Prices.",
+    "premium": "With Premium, compare the cost of your list in each chain (Leclerc, Carrefour, Lidl…).",
+    "cheaper": "{pct}% cheaper",
+    "dearer": "{pct}% more expensive",
+    "same": "at the average price"
   }
 }

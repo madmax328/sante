@@ -22,8 +22,9 @@ export const env = {
   smtpUser: process.env.SMTP_USER,
   smtpPassword: process.env.SMTP_PASSWORD,
   emailFrom: process.env.EMAIL_FROM ?? (process.env.SMTP_USER ? `Sorloo <${process.env.SMTP_USER}>` : "Sorloo <noreply@sorloo.com>"),
-  /** Comma-separated emails allowed on /admin */
-  adminEmails: (process.env.ADMIN_EMAILS ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean),
+  /** Separate sign-in for /admin (not a Sorloo user account) */
+  adminEmail: process.env.ADMIN_EMAIL?.trim().toLowerCase(),
+  adminPassword: process.env.ADMIN_PASSWORD,
   /** Where error alerts go (default: the support mailbox) */
   alertEmail: process.env.ALERT_EMAIL,
   googleClientId: process.env.GOOGLE_CLIENT_ID,

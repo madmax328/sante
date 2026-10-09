@@ -7,6 +7,8 @@ import { Link } from "@/i18n/navigation";
 import { requireContext } from "@/lib/app-user";
 import { can } from "@/lib/premium";
 import { loadWeek, shoppingFor } from "@/lib/week-service";
+import { compareStores } from "@/lib/store-prices";
+import { StoreComparisonCard } from "@/components/store-comparison";
 
 export async function generateMetadata() {
   const t = await getTranslations("nav");
@@ -47,6 +49,8 @@ export default async function GroceriesPage() {
     .filter((i) => i.leftover > 0 && c.ingredient(i.ingredientId).shelfLifeDays <= 14 && worthKeeping(i.ingredientId, i.leftover))
     .sort((a, b) => c.price(b.ingredientId, b.leftover) - c.price(a.ingredientId, a.leftover));
   const pantryOn = can(uc.profile, "pantry");
+  const storesOn = can(uc.profile, "budget");
+  const stores = storesOn ? await compareStores(list) : null;
 
   return (
     <div className="grid gap-6">
@@ -67,6 +71,8 @@ export default async function GroceriesPage() {
         </div>
         <p className="text-xs text-muted">{t("priceNote")}</p>
       </Card>
+
+      <StoreComparisonCard data={stores} premium={storesOn} />
 
       {!pantryOn && (
         <Notice tone="eau" title={t("pantryTitle")}>

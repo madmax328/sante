@@ -1044,5 +1044,19 @@
     "resend": "Renvoyer l'e-mail",
     "sent": "E-mail envoyé. Pense à regarder dans les indésirables.",
     "error": "L'envoi a échoué. Réessaie dans quelques minutes."
+  },
+  "stores": {
+    "title": "Comparer les enseignes",
+    "subtitle": "Ta liste de la semaine estimée dans chaque enseigne, à partir des prix relevés en magasin par les utilisateurs d'Open Prices.",
+    "cheapest": "Le moins cher",
+    "measured": "{n} produit(s) sur {total} avec des prix relevés",
+    "index": "{pct} par rapport aux prix moyens",
+    "none": "Pas encore assez de prix relevés pour comparer les enseignes sur ta liste. La base s'enrichit chaque jour.",
+    "note": "Estimation : prix médians des 12 derniers mois en France, hors promotions. Pour les produits sans relevé, on applique l'écart habituel de l'enseigne. Les prix varient selon les magasins.",
+    "contribute": "Tu peux aider en ajoutant tes tickets sur Open Prices.",
+    "premium": "Avec Premium, compare le coût de ta liste dans chaque enseigne (Leclerc, Carrefour, Lidl…).",
+    "cheaper": "{pct} % moins cher",
+    "dearer": "{pct} % plus cher",
+    "same": "au prix moyen"
   }
 }

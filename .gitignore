@@ -8,3 +8,4 @@ coverage
 .vercel
 *.tsbuildinfo
 .DS_Store
+*.whl

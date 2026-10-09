@@ -3,8 +3,7 @@ import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { BodyForm, DangerZone, FoodPrefsForm, SubscriptionButtons } from "@/components/settings-client";
 import { Badge, Card, Notice, PageHeader } from "@/components/ui";
 import { requireAppUser } from "@/lib/app-user";
-import { env, features } from "@/lib/env";
-import { Link } from "@/i18n/navigation";
+import { features } from "@/lib/env";
 import { isPremium } from "@/lib/premium";
 import { getHealth } from "@/lib/repo";
 import { dislikeOptions } from "@/lib/dislikes";
@@ -35,11 +34,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
 
   return (
     <div className="grid gap-6">
-      <PageHeader
-        title={t("title")}
-        subtitle={user.email}
-        action={env.adminEmails.includes(user.email.toLowerCase()) ? <Link href="/admin" className="text-sm font-semibold text-basilic">Administration →</Link> : undefined}
-      />
+      <PageHeader title={t("title")} subtitle={user.email} />
       {sp.checkout === "success" && <Notice tone="basilic" title={t("thanksTitle")}>{t("thanksText")}</Notice>}
       {sp.checkout === "pending" && !premium && <Notice tone="miel">{t("pending")}</Notice>}
       {sp.checkout === "cancel" && <Notice tone="miel">{t("cancelled")}</Notice>}

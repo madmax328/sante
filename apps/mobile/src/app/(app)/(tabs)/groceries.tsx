@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import { Check, Refrigerator, Share2 } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, Share, View } from "react-native";
-import { Button, Card, EmptyState, ErrorView, Field, Loading, Notice, Screen, SectionTitle, T } from "@/components/ui";
+import { Badge, Button, Card, EmptyState, ErrorView, Field, Loading, Notice, Screen, SectionTitle, T } from "@/components/ui";
 import { api, useApi } from "@/lib/api";
 import { euro } from "@/lib/format";
 import { space, useColors } from "@/lib/theme";
@@ -17,6 +17,7 @@ interface Groceries {
   staples: string[];
   fromPantry: { name: string; qty: string }[];
   leftovers: { name: string; qty: string }[];
+  stores?: { premium: boolean; items: number; list: { brand: string; total: number; measured: number; index: number }[] };
 }
 
 export default function GroceriesScreen() {
@@ -77,6 +78,8 @@ export default function GroceriesScreen() {
         </Card>
       ))}
 
+      {data.stores && <Stores stores={data.stores} />}
+
       {data.staples.length > 0 && (
         <Card>
           <SectionTitle>À vérifier dans le placard</SectionTitle>
@@ -103,5 +106,40 @@ export default function GroceriesScreen() {
         )}
       </Card>
     </Screen>
+  );
+}
+
+/** Estimated cost of the list in each chain (Open Prices data). */
+function Stores({ stores }: { stores: NonNullable<Groceries["stores"]> }) {
+  const c = useColors();
+  const gap = (index: number) => {
+    const pct = Math.round(Math.abs(1 - index) * 100);
+    return pct === 0 ? "au prix moyen" : index < 1 ? `${pct} % moins cher` : `${pct} % plus cher`;
+  };
+  return (
+    <Card>
+      <SectionTitle>Comparer les enseignes</SectionTitle>
+      {!stores.premium ? (
+        <T variant="small">Avec Sorloo Premium, compare le coût de ta liste dans chaque enseigne (Leclerc, Carrefour, Lidl…).</T>
+      ) : stores.list.length === 0 ? (
+        <T variant="small">Pas encore assez de prix relevés pour comparer les enseignes sur ta liste. La base s'enrichit chaque jour.</T>
+      ) : (
+        <>
+          {stores.list.map((s, i) => (
+            <View key={s.brand} style={{ flexDirection: "row", alignItems: "center", gap: space.sm, paddingVertical: 6, borderTopWidth: i ? 1 : 0, borderTopColor: c.line }}>
+              <View style={{ flex: 1, gap: 2 }}>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                  <T style={{ fontWeight: "700" }}>{s.brand}</T>
+                  {i === 0 && stores.list.length > 1 && <Badge>Le moins cher</Badge>}
+                </View>
+                <T variant="small">{gap(s.index)} · prix relevés pour {s.measured}/{stores.items} produits</T>
+              </View>
+              <T variant="h3">{euro(s.total)}</T>
+            </View>
+          ))}
+        </>
+      )}
+      {stores.premium && <T variant="small">Estimation à partir des prix relevés en magasin sur Open Prices (12 derniers mois, hors promotions). Les prix varient selon les magasins.</T>}
+    </Card>
   );
 }

@@ -1,5 +1,7 @@
 import { Badge, Card, PageHeader } from "@/components/ui";
-import { requireAppUser } from "@/lib/app-user";
+import { redirect } from "next/navigation";
+import { isAdmin } from "@/lib/admin-auth";
+import { adminLogoutAction } from "./actions";
 import { db } from "@/lib/db";
 import { env, features } from "@/lib/env";
 import { recentErrors } from "@/lib/errors";
@@ -32,22 +34,7 @@ function clock() {
 
 /** Private dashboard: sign-ups, subscribers, AI usage and recent errors. Only for ADMIN_EMAILS. */
 export default async function AdminPage() {
-  const me = await requireAppUser();
-  if (!env.adminEmails.includes(me.email.toLowerCase())) {
-    return (
-      <main className="mx-auto grid max-w-xl gap-4 px-4 py-16">
-        <PageHeader title="Accès réservé" />
-        <Card className="grid gap-2 text-sm">
-          <p>Tu es connecté avec <strong>{me.email}</strong>, qui n&apos;a pas accès à l&apos;administration.</p>
-          <p className="text-muted">
-            {env.adminEmails.length === 0
-              ? "Aucune adresse administrateur n'est configurée : ajoute la variable ADMIN_EMAILS sur Vercel (environnement Production), puis redéploie le site."
-              : "Vérifie que cette adresse figure exactement dans ADMIN_EMAILS sur Vercel, puis redéploie le site."}
-          </p>
-        </Card>
-      </main>
-    );
-  }
+  if (!(await isAdmin())) redirect("/admin/login");
 
   const users = db.collection<{ _id: unknown; name: string; email: string; emailVerified: boolean; createdAt: Date }>("user");
   const profiles = db.collection<Profile>("profiles");
@@ -90,7 +77,15 @@ export default async function AdminPage() {
 
   return (
     <main className="mx-auto grid max-w-6xl gap-6 px-4 py-8">
-      <PageHeader title="Administration" subtitle={`Mis à jour le ${fmt.format(now)}`} />
+      <PageHeader
+        title="Administration"
+        subtitle={`Mis à jour le ${fmt.format(now)}`}
+        action={
+          <form action={adminLogoutAction}>
+            <button type="submit" className="text-sm font-semibold text-muted hover:text-encre">Se déconnecter</button>
+          </form>
+        }
+      />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {stats.map(([label, value, hint]) => (
           <Card key={label} className="grid gap-1">

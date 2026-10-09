@@ -91,10 +91,19 @@ Garder getweeko.com relié au projet Vercel : les pages redirigent vers l'adress
 `NEXT_PUBLIC_APP_URL` (sorloo.com), et l'API reste joignable pour les anciennes versions de l'app.
 
 ### Administration et alertes
-- `ADMIN_EMAILS` : ton adresse de connexion (plusieurs possibles, séparées par des virgules).
-  La page https://sorloo.com/admin affiche alors inscrits, abonnés, revenu estimé et erreurs récentes.
+- `ADMIN_EMAIL` et `ADMIN_PASSWORD` : identifiants de l'administration, indépendants des comptes
+  Sorloo (mot de passe long et unique). https://sorloo.com/admin demande ces identifiants
+  (5 essais par quart d'heure, session de 12 h) et affiche inscrits, abonnés, revenu estimé et erreurs.
 - Chaque erreur du serveur est enregistrée (30 jours) et envoyée par e-mail à `ALERT_EMAIL`
   (par défaut support@sorloo.com), au plus une fois par heure pour une même erreur.
+
+### Comparaison des enseignes (Open Prices)
+Les prix relevés en magasin par les utilisateurs d'Open Prices (Open Food Facts, base ouverte)
+sont importés chaque nuit par `/api/cron/prices` (médiane sur 12 mois, France, hors promotions,
+par enseigne). Lancement à la main : `https://sorloo.com/api/cron/prices?key=CRON_SECRET`
+(chaque appel reprend là où le précédent s'est arrêté). Une enseigne n'apparaît dans la
+comparaison qu'avec au moins 3 produits de la liste relevés. Correspondances ingrédient →
+catégorie : `apps/web/src/lib/price-sources.ts`.
 
 ### 5. Clés à générer
 - `BETTER_AUTH_SECRET` : `openssl rand -base64 32`

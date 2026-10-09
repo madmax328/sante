@@ -2,6 +2,7 @@ import { formatQty } from "@weeko/engine";
 import { getTranslations } from "next-intl/server";
 import { mobileRoute } from "@/lib/mobile";
 import { can } from "@/lib/premium";
+import { compareStores } from "@/lib/store-prices";
 import { loadWeek, shoppingFor } from "@/lib/week-service";
 
 export const dynamic = "force-dynamic";
@@ -13,6 +14,8 @@ export const GET = mobileRoute(async (_req, userId) => {
   const e = await getTranslations("enums");
   const c = uc.ctx.catalog;
   const list = shoppingFor(uc, result);
+  const storesOn = can(uc.profile, "budget");
+  const comparison = storesOn ? await compareStores(list) : null;
   const name = (id: string) => c.ingredient(id).name.fr;
   const worthKeeping = (id: string, qty: number) =>
     c.ingredient(id).unit === "pc" ? qty >= 1 : c.grams(id, qty) >= 40 && c.price(id, qty) >= 0.15;
@@ -23,6 +26,7 @@ export const GET = mobileRoute(async (_req, userId) => {
     shopped: !!stored.shoppedAt,
     actualSpent: stored.actualSpent ?? null,
     pantry: can(uc.profile, "pantry"),
+    stores: comparison ? { premium: true, items: comparison.items, list: comparison.stores } : { premium: false, items: 0, list: [] },
     aisles: list.aisles.map((a) => ({
       aisle: a.aisle,
       label: e(`aisle.${a.aisle}`),
