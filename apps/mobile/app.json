@@ -33,7 +33,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Sorloo utilise l'appareil photo pour scanner le code-barres des produits que tu ajoutes \u00e0 ton journal.",
+          "cameraPermission": "Sorloo utilise l'appareil photo pour scanner le code-barres des produits que tu ajoutes à ton journal.",
           "microphonePermission": false,
           "recordAudioAndroid": false
         }
@@ -41,8 +41,8 @@
       [
         "@kingstinct/react-native-healthkit",
         {
-          "NSHealthShareUsageDescription": "Sorloo lit tes pas, tes pes\u00e9es et tes entra\u00eenements pour suivre ton objectif de pas, ta courbe de poids et cocher tes s\u00e9ances.",
-          "NSHealthUpdateUsageDescription": "Sorloo n'\u00e9crit aucune donn\u00e9e dans Sant\u00e9. Cette autorisation n'est jamais demand\u00e9e : Sorloo lit seulement tes pas, tes pes\u00e9es et tes entra\u00eenements.",
+          "NSHealthShareUsageDescription": "Sorloo lit tes pas, tes pesées et tes entraînements pour suivre ton objectif de pas, ta courbe de poids et cocher tes séances.",
+          "NSHealthUpdateUsageDescription": "Sorloo n'enregistre rien dans Santé : l'app lit uniquement tes pas, tes pesées et tes entraînements pour ton suivi.",
           "background": false
         }
       ],
