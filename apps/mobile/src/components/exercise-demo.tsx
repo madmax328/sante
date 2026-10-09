@@ -2,7 +2,9 @@ import { useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AccessibilityInfo, View, type StyleProp, type ViewStyle } from "react-native";
 import Svg, { Circle, Line, Path, Rect } from "react-native-svg";
-import { drawMotion, motions, MOTION_VIEW, type Shape, type Tone } from "@weeko/catalog/demos";
+import { Image } from "expo-image";
+import { drawMotion, exerciseVideo, motions, MOTION_VIEW, type Shape, type Tone } from "@weeko/catalog/demos";
+import { WEBSITE_URL } from "@/lib/config";
 import { radius, useColors } from "@/lib/theme";
 
 /** About 30 images per second: smooth enough for these simple figures. */
@@ -22,11 +24,38 @@ function Shapes({ shapes }: { shapes: Shape[] }) {
 }
 
 /**
- * Looping animated demo of an exercise (same drawings as the website).
+ * Demo of an exercise: the real video (an animated image served by the
+ * website) when there is one, the drawn animation otherwise or on error.
+ */
+export function ExerciseDemo(props: { exerciseId: string; label: string; style?: StyleProp<ViewStyle>; background?: string }) {
+  const video = exerciseVideo(props.exerciseId);
+  const [failed, setFailed] = useState(false);
+  const [reduced, setReduced] = useState(false);
+  const c = useColors();
+  useEffect(() => {
+    void AccessibilityInfo.isReduceMotionEnabled().then(setReduced);
+  }, []);
+  if (!video || failed) return <AnimatedDemo {...props} />;
+  return (
+    <View accessible accessibilityRole="image" accessibilityLabel={props.label} style={[{ width: "100%", aspectRatio: 1, borderRadius: radius.md, backgroundColor: props.background ?? c.riz, overflow: "hidden" }, props.style]}>
+      <Image
+        source={{ uri: `${WEBSITE_URL}${reduced ? video.poster : video.webp}` }}
+        placeholder={{ uri: `${WEBSITE_URL}${video.poster}` }}
+        contentFit="cover"
+        cachePolicy="disk"
+        style={{ width: "100%", height: "100%" }}
+        onError={() => setFailed(true)}
+      />
+    </View>
+  );
+}
+
+/**
+ * Looping animated drawing of an exercise (same drawings as the website).
  * Shows the key position only when "Reduce motion" is on, and stops while
  * the screen is not visible.
  */
-export function ExerciseDemo({ exerciseId, label, style, background }: { exerciseId: string; label: string; style?: StyleProp<ViewStyle>; background?: string }) {
+function AnimatedDemo({ exerciseId, label, style, background }: { exerciseId: string; label: string; style?: StyleProp<ViewStyle>; background?: string }) {
   const c = useColors();
   const motion = motions[exerciseId];
   const [phase, setPhase] = useState(0.5 / Math.max(2, motion?.frames.length ?? 2));

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { drawMotion, motions, MOTION_VIEW, type Shape, type Tone } from "@weeko/catalog/demos";
+import { drawMotion, exerciseVideo, motions, MOTION_VIEW, type Shape, type Tone } from "@weeko/catalog/demos";
 import { cx } from "./ui";
 
 const COLOR: Record<Tone, string> = {
@@ -22,10 +22,30 @@ function Shapes({ shapes }: { shapes: Shape[] }) {
 }
 
 /**
- * Looping animated demo of an exercise. Static (the key position) when the
- * user prefers reduced motion; pauses while off screen.
+ * Demo of an exercise: the real video when there is one, the drawn animation
+ * otherwise (or if the video can't be played).
  */
 export function ExerciseDemo({ exerciseId, label, className }: { exerciseId: string; label: string; className?: string }) {
+  const video = exerciseVideo(exerciseId);
+  const [failed, setFailed] = useState(false);
+  if (video && !failed) return <VideoDemo src={video.mp4} poster={video.poster} label={label} className={className} onError={() => setFailed(true)} />;
+  return <AnimatedDemo exerciseId={exerciseId} label={label} className={className} />;
+}
+
+/** Silent looping video; the still image only when the user prefers reduced motion. */
+function VideoDemo({ src, poster, label, className, onError }: { src: string; poster: string; label: string; className?: string; onError: () => void }) {
+  const [reduced] = useState(() => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const box = cx("w-full rounded-2xl bg-riz object-cover", className);
+  // eslint-disable-next-line @next/next/no-img-element
+  if (reduced) return <img src={poster} alt={label} className={box} />;
+  return <video src={src} poster={poster} autoPlay muted loop playsInline preload="metadata" aria-label={label} className={box} onError={onError} />;
+}
+
+/**
+ * Looping animated drawing of an exercise. Static (the key position) when the
+ * user prefers reduced motion; pauses while off screen.
+ */
+function AnimatedDemo({ exerciseId, label, className }: { exerciseId: string; label: string; className?: string }) {
   const motion = motions[exerciseId];
   const [phase, setPhase] = useState(0.5 / Math.max(2, motion?.frames.length ?? 2));
   const [el, setEl] = useState<SVGSVGElement | null>(null);
