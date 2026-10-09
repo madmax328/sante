@@ -162,3 +162,17 @@ export async function compareStores(list: ShoppingList): Promise<StoreComparison
   const updatedAt = docs.reduce<Date | null>((d, x) => (!d || x.updatedAt > d ? x.updatedAt : d), null);
   return { reference: Math.round(items.reduce((s, i) => s + i.cost, 0) * 100) / 100, items: items.length, stores, updatedAt };
 }
+
+/** Coverage of the price data, for the admin page. */
+export async function storePriceStats(): Promise<{ ingredients: number; withData: number; samples: number; brands: { brand: string; ingredients: number }[]; updatedAt: Date | null }> {
+  const docs = await collection().find({}).toArray().catch(() => []);
+  const perBrand = new Map<string, number>();
+  for (const d of docs) for (const [b, v] of Object.entries(d.brands)) if (v.count >= MIN_SAMPLES) perBrand.set(b, (perBrand.get(b) ?? 0) + 1);
+  return {
+    ingredients: Object.keys(PRICE_SOURCES).length,
+    withData: docs.filter((d) => d.samples > 0).length,
+    samples: docs.reduce((s, d) => s + d.samples, 0),
+    brands: [...perBrand].map(([brand, ingredients]) => ({ brand, ingredients })).sort((a, b) => b.ingredients - a.ingredients),
+    updatedAt: docs.reduce<Date | null>((d, x) => (!d || x.updatedAt > d ? x.updatedAt : d), null),
+  };
+}

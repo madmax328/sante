@@ -5,6 +5,7 @@ import { adminLogoutAction } from "./actions";
 import { db } from "@/lib/db";
 import { env, features } from "@/lib/env";
 import { recentErrors } from "@/lib/errors";
+import { storePriceStats } from "@/lib/store-prices";
 import { stripe } from "@/lib/stripe";
 import type { Profile } from "@/lib/types";
 
@@ -39,7 +40,7 @@ export default async function AdminPage() {
   const users = db.collection<{ _id: unknown; name: string; email: string; emailVerified: boolean; createdAt: Date }>("user");
   const profiles = db.collection<Profile>("profiles");
   const { now, month } = clock();
-  const [total, week, month30, verified, onboarded, active7, subs, aiAgg, latest, errors, amounts] = await Promise.all([
+  const [total, week, month30, verified, onboarded, active7, subs, aiAgg, latest, errors, prices, amounts] = await Promise.all([
     users.countDocuments(),
     users.countDocuments({ createdAt: { $gte: new Date(now - 7 * DAY) } }),
     users.countDocuments({ createdAt: { $gte: new Date(now - 30 * DAY) } }),
@@ -50,6 +51,7 @@ export default async function AdminPage() {
     profiles.aggregate<{ total: number; users: number }>([{ $match: { "aiUsage.month": month } }, { $group: { _id: null, total: { $sum: "$aiUsage.count" }, users: { $sum: 1 } } }]).toArray(),
     users.find({}, { sort: { createdAt: -1 }, limit: 25 }).toArray(),
     recentErrors(),
+    storePriceStats(),
     monthlyAmounts(),
   ]);
   const plans = await profiles.find({ _id: { $in: latest.map((u) => String(u._id)) } }, { projection: { onboarded: 1, subscription: 1 } }).toArray();
@@ -122,6 +124,19 @@ export default async function AdminPage() {
             </tbody>
           </table>
         </div>
+      </Card>
+
+      <Card className="grid gap-3">
+        <h2 className="text-lg font-bold">Prix des enseignes (Open Prices)</h2>
+        <p className="text-sm text-muted">
+          {prices.withData} ingrédients sur {prices.ingredients} avec des prix relevés · {prices.samples} relevés
+          {prices.updatedAt ? ` · dernier import le ${fmt.format(prices.updatedAt)}` : " · pas encore importé"}
+        </p>
+        {prices.brands.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {prices.brands.map((b) => <Badge key={b.brand}>{b.brand} · {b.ingredients}</Badge>)}
+          </div>
+        )}
       </Card>
 
       <Card className="grid gap-3">
