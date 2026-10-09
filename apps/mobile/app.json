@@ -42,7 +42,7 @@
         "@kingstinct/react-native-healthkit",
         {
           "NSHealthShareUsageDescription": "Sorloo lit tes pas, tes pes\u00e9es et tes entra\u00eenements pour suivre ton objectif de pas, ta courbe de poids et cocher tes s\u00e9ances.",
-          "NSHealthUpdateUsageDescription": false,
+          "NSHealthUpdateUsageDescription": "Sorloo n'\u00e9crit aucune donn\u00e9e dans Sant\u00e9. Cette autorisation n'est jamais demand\u00e9e : Sorloo lit seulement tes pas, tes pes\u00e9es et tes entra\u00eenements.",
           "background": false
         }
       ],
