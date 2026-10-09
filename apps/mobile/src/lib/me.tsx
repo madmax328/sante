@@ -10,6 +10,7 @@ export interface Me {
   sportEnabled: boolean;
   budget: { enabled: boolean; weekly: number };
   ai: { left: number } | null;
+  devices?: { appleHealth: string | null; healthConnect: string | null };
 }
 
 const MeContext = createContext<{ me: Me; reload: () => Promise<void> } | null>(null);

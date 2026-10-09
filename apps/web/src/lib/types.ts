@@ -60,6 +60,8 @@ export interface Subscription {
   hasPaymentMethod?: boolean;
 }
 
+export type HealthSource = "apple_health" | "health_connect";
+
 export interface Profile {
   _id: string;
   locale: "fr" | "en";
@@ -78,6 +80,8 @@ export interface Profile {
   usage?: { weekStart: string; replacements: number; aiMessages: number };
   /** AI coach messages used in the current calendar month ("2026-10") */
   aiUsage?: { month: string; count: number };
+  /** Health apps the phone app reads from (Apple Santé, Health Connect) */
+  devices?: Partial<Record<HealthSource, { lastSync: Date }>>;
   createdAt: Date;
   updatedAt: Date;
 }

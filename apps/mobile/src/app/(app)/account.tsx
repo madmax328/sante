@@ -1,6 +1,6 @@
 import * as WebBrowser from "expo-web-browser";
 import { router } from "expo-router";
-import { ChevronRight, Dumbbell, LogOut, Mail, MessageCircle, Refrigerator, SlidersHorizontal, TrendingUp, Users } from "lucide-react-native";
+import { ChevronRight, Dumbbell, HeartPulse, LogOut, Mail, MessageCircle, Refrigerator, SlidersHorizontal, TrendingUp, Users } from "lucide-react-native";
 import { useState } from "react";
 import { Alert, Pressable, View } from "react-native";
 import { Badge, Button, Card, Field, Notice, Screen, SectionTitle, T } from "@/components/ui";
@@ -58,6 +58,7 @@ export default function AccountScreen() {
           { href: "/household", label: "Mon foyer", hint: "Personnes, repas, allergies", icon: Users },
           { href: "/pantry", label: "Garde-manger", hint: "Ce que j'ai déjà à la maison", icon: Refrigerator },
           { href: "/progress", label: "Mes progrès", hint: "Poids, bilan de la semaine", icon: TrendingUp },
+          { href: "/devices", label: "Appareils et santé", hint: "Apple Santé, montre, balance", icon: HeartPulse },
           { href: "/sport-settings", label: "Mon programme sportif", hint: "Jours, niveau, matériel", icon: Dumbbell },
           { href: "/coach", label: "Coach", hint: "Questions et changements de menu", icon: MessageCircle },
         ].map((item, i) => (

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
 import { Badge, Button, Card, EmptyState, ErrorView, Field, IconButton, Loading, Screen, SectionTitle, T } from "@/components/ui";
 import { api, useApi } from "@/lib/api";
+import { healthAvailable, healthEnabled } from "@/lib/health";
 import { DAY_LABEL, num } from "@/lib/format";
 import { space, useColors } from "@/lib/theme";
 
@@ -125,7 +126,11 @@ function Steps({ date, goal, initial }: { date: string; goal: number; initial: n
   const c = useColors();
   const [value, setValue] = useState(initial ? String(initial) : "");
   const [saved, setSaved] = useState(false);
+  const [synced, setSynced] = useState(false);
   useEffect(() => setValue(initial ? String(initial) : ""), [initial]);
+  useEffect(() => {
+    void healthEnabled().then(setSynced);
+  }, []);
   const save = async () => {
     const steps = Math.round(Number(value) || 0);
     await api.action("setSteps", { date, steps }).catch(() => undefined);
@@ -139,6 +144,14 @@ function Steps({ date, goal, initial }: { date: string; goal: number; initial: n
         <SectionTitle>Mes pas</SectionTitle>
       </View>
       <T variant="small">Objectif : {num(goal)} pas par jour.</T>
+      {healthAvailable() &&
+        (synced ? (
+          <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>Comptés automatiquement avec Apple Santé.</T>
+        ) : (
+          <Pressable accessibilityRole="button" onPress={() => router.push("/devices")}>
+            <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>Connecte Apple Santé pour les compter automatiquement →</T>
+          </Pressable>
+        ))}
       <View style={{ flexDirection: "row", gap: space.sm, alignItems: "flex-end" }}>
         <View style={{ flex: 1 }}>
           <Field label="Pas aujourd'hui" value={value} onChangeText={(v) => { setValue(v); setSaved(false); }} keyboardType="number-pad" />

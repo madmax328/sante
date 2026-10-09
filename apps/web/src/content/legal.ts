@@ -51,6 +51,13 @@ const fr: Record<LegalDoc, Doc> = {
         ],
       },
       {
+        h: "Apple Santé et appareils connectés",
+        p: [
+          "Si vous connectez Apple Santé dans l'application iPhone, Sorloo lit uniquement vos pas quotidiens, vos pesées et la durée de vos entraînements (y compris ceux d'une montre ou d'une balance connectée qui alimente Apple Santé). Sorloo n'écrit rien dans Apple Santé.",
+          "Ces données servent uniquement à votre suivi dans Sorloo (objectif de pas, courbe de poids, séances cochées). Elles ne sont jamais vendues, ni utilisées à des fins publicitaires, ni transmises à des tiers. Vous pouvez retirer l'accès à tout moment dans Réglages → Santé → Accès aux données → Sorloo.",
+        ],
+      },
+      {
         h: "Sous-traitants",
         p: [
           "Vercel (hébergement de l'application, région Europe), MongoDB Atlas (base de données, région Europe), Stripe (paiements), Anthropic (assistant IA : seules les informations nécessaires à la demande sont transmises, sans votre nom ni votre e-mail), Hostinger (e-mails transactionnels), Unsplash et Pexels (photos de recettes, aucune donnée personnelle transmise ; les photos Unsplash sont chargées depuis leurs serveurs).",
@@ -123,6 +130,7 @@ const en: Record<LegalDoc, Doc> = {
       { h: "Data we process", p: ["Account data (name, email, hashed password); profile data (food preferences, budget, time, equipment, availability); health data (age, sex, height, weight, measurements, goal, allergies, pregnancy, declared medical situations, household members you add); usage data (plans, logged meals, water, workouts, assistant conversations). Payment data is handled by Stripe only."] },
       { h: "Legal basis", p: ["Health data is processed only with your explicit consent (GDPR art. 9.2.a), which you can withdraw at any time from your account. Other data is processed to provide the service and to meet legal obligations."] },
       { h: "Security", p: ["Health data is stored separately and encrypted with AES-256-GCM using a key that never leaves our servers. All traffic uses HTTPS."] },
+      { h: "Apple Health and connected devices", p: ["If you connect Apple Health in the iPhone app, Sorloo only reads your daily steps, weigh-ins and workout durations (including those from a watch or scale that feeds Apple Health). Sorloo never writes to Apple Health.", "This data is only used for your tracking in Sorloo (step goal, weight curve, ticked sessions). It is never sold, used for advertising or shared with third parties. You can remove access at any time in Settings → Health → Data Access → Sorloo."] },
       { h: "Processors", p: ["Vercel (hosting, EU region), MongoDB Atlas (database, EU region), Stripe (payments), Anthropic (AI assistant, only the data needed for each request, without your name or email), Hostinger (emails), Unsplash and Pexels (recipe photos, no personal data; Unsplash photos load from their servers). Transfers outside the EU rely on standard contractual clauses."] },
       { h: "Retention", p: ["Data is kept while your account is active; inactive accounts are deleted after 3 years with prior notice. Billing records are kept 10 years."] },
       { h: "Your rights", p: ["Access, rectification, export (JSON download from your account), consent withdrawal and one-click deletion of your account and data. Contact rgpd@sorloo.com; you may also complain to your data protection authority."] },

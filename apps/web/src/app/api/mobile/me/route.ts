@@ -25,5 +25,6 @@ export const GET = mobileRoute(async (req, userId) => {
     budget: profile.budget,
     prefs: profile.prefs,
     ai: features.ai() ? { left: aiMessagesLeft(profile) } : null,
+    devices: { appleHealth: profile.devices?.apple_health?.lastSync ?? null, healthConnect: profile.devices?.health_connect?.lastSync ?? null },
   };
 });

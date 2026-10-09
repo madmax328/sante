@@ -39,6 +39,14 @@
         }
       ],
       [
+        "@kingstinct/react-native-healthkit",
+        {
+          "NSHealthShareUsageDescription": "Sorloo lit tes pas, tes pes\u00e9es et tes entra\u00eenements pour suivre ton objectif de pas, ta courbe de poids et cocher tes s\u00e9ances.",
+          "NSHealthUpdateUsageDescription": false,
+          "background": false
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "backgroundColor": "#1E6B52",

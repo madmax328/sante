@@ -51,6 +51,7 @@ const ACTIONS: Record<string, Handler> = {
   toggleWorkout: (i) => sport.toggleWorkoutAction(i),
   setSteps: (i) => sport.setStepsAction(i),
   saveSportSettings: (i) => sport.saveSportSettingsAction(i),
+  importHealth: (i) => sport.importHealthAction(i),
 
   saveFoodPrefs: (i) => account.saveFoodPrefsAction(i),
   saveBody: (i) => account.saveBodyAction(i),
