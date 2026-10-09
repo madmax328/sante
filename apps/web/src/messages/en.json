@@ -1038,5 +1038,11 @@
       "limit": "The household is limited to 9 people.",
       "future": "The birth date can't be in the future."
     }
+  },
+  "verify": {
+    "text": "Confirm your email address: we sent a link to {email}. It lets you recover your account if you forget your password.",
+    "resend": "Resend the email",
+    "sent": "Email sent. Check your spam folder too.",
+    "error": "Sending failed. Try again in a few minutes."
   }
 }

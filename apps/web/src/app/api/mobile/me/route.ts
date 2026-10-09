@@ -14,7 +14,7 @@ export const GET = mobileRoute(async (req, userId) => {
   const health = profile.onboarded ? await getHealth(userId) : null;
   const sub = profile.subscription;
   return {
-    user: { id: userId, name: session?.user.name ?? "", email: session?.user.email ?? "" },
+    user: { id: userId, name: session?.user.name ?? "", email: session?.user.email ?? "", emailVerified: !!session?.user.emailVerified || !features.email() },
     onboarded: profile.onboarded && !!health,
     premium: isPremium(profile),
     subscription: sub?.status

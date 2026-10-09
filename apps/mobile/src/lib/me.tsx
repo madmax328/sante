@@ -2,7 +2,7 @@ import { createContext, useContext, type ReactNode } from "react";
 import { useApi } from "./api";
 
 export interface Me {
-  user: { id: string; name: string; email: string };
+  user: { id: string; name: string; email: string; emailVerified?: boolean };
   onboarded: boolean;
   premium: boolean;
   subscription: { status: string; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean } | null;

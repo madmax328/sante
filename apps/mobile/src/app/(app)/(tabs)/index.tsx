@@ -7,6 +7,8 @@ import { Badge, Button, Card, EmptyState, ErrorView, IconButton, Loading, Notice
 import { QuickAdjust } from "@/components/quick-adjust";
 import { Thumb } from "@/components/thumb";
 import { api, useApi } from "@/lib/api";
+import { authClient } from "@/lib/auth";
+import { useMe } from "@/lib/me";
 import { euro, longDate, MEAL_LABEL, num } from "@/lib/format";
 import { space, useColors } from "@/lib/theme";
 
@@ -26,6 +28,7 @@ interface Today {
 
 export default function TodayScreen() {
   const c = useColors();
+  const { me } = useMe();
   const { data, error, loading, refreshing, refresh, reload, setData } = useApi<Today>("/today");
   const [generating, setGenerating] = useState(false);
 
@@ -62,6 +65,8 @@ export default function TodayScreen() {
         <IconButton label="Mes progrès" icon={<TrendingUp size={20} color={c.basilic} />} onPress={() => router.push("/progress")} />
         <IconButton label="Mon compte" icon={<UserRound size={20} color={c.basilic} />} onPress={() => router.push("/account")} />
       </View>
+
+      {me.user.emailVerified === false && <VerifyEmail email={me.user.email} />}
 
       {data.notices.includes("pregnancy") && <Notice>Pendant la grossesse, Sorloo ne propose jamais de perte de poids. Parle de ton alimentation avec ta sage-femme ou ton médecin.</Notice>}
 
@@ -187,5 +192,27 @@ export default function TodayScreen() {
         </Card>
       )}
     </Screen>
+  );
+}
+
+/** Reminder until the email address is confirmed (used to recover the account). */
+function VerifyEmail({ email }: { email: string }) {
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const resend = async () => {
+    setState("sending");
+    const res = await authClient.sendVerificationEmail({ email, callbackURL: "/app" }).catch(() => ({ error: true }));
+    setState(res?.error ? "error" : "sent");
+  };
+  return (
+    <Notice>
+      Confirme ton adresse e-mail : nous t'avons envoyé un lien à {email}.{" "}
+      {state === "sent" ? (
+        <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>E-mail renvoyé, pense à regarder dans les indésirables.</T>
+      ) : state === "error" ? (
+        <T variant="small" tone="danger">L'envoi a échoué, réessaie plus tard.</T>
+      ) : (
+        <T variant="small" tone="basilic" style={{ fontWeight: "700", textDecorationLine: "underline" }} onPress={state === "idle" ? resend : undefined}>Renvoyer l'e-mail</T>
+      )}
+    </Notice>
   );
 }

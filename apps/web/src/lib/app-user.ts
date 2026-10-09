@@ -11,6 +11,7 @@ export interface AppUser {
   userId: string;
   name: string;
   email: string;
+  emailVerified: boolean;
   profile: Profile;
 }
 
@@ -28,7 +29,7 @@ export async function requireAppUser(): Promise<AppUser> {
     if (!exists) return redirect({ href: "/login", locale });
     profile = await ensureProfile(id, locale === "en" ? "en" : "fr");
   }
-  return { userId: session.user.id, name: session.user.name, email: session.user.email, profile };
+  return { userId: session.user.id, name: session.user.name, email: session.user.email, emailVerified: !!session.user.emailVerified, profile };
 }
 
 /** Like requireAppUser, and sends users who have not finished onboarding to it. */

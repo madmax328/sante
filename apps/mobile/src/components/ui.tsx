@@ -58,16 +58,18 @@ export function T({
   tone,
   style,
   numberOfLines,
+  onPress,
 }: {
   children: ReactNode;
   variant?: "title" | "h2" | "h3" | "body" | "small" | "label" | "big";
   tone?: keyof Colors;
   style?: StyleProp<TextStyle>;
   numberOfLines?: number;
+  onPress?: () => void;
 }) {
   const c = useColors();
   return (
-    <Text numberOfLines={numberOfLines} style={[styles[variant], { color: tone ? c[tone] : variant === "small" || variant === "label" ? c.muted : c.encre }, style]}>
+    <Text numberOfLines={numberOfLines} onPress={onPress} accessibilityRole={onPress ? "link" : undefined} style={[styles[variant], { color: tone ? c[tone] : variant === "small" || variant === "label" ? c.muted : c.encre }, style]}>
       {children}
     </Text>
   );

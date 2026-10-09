@@ -36,6 +36,9 @@ export function ensureIndexes(): Promise<void> {
       db.collection("profiles").createIndex({ "subscription.customerId": 1 }, { sparse: true }),
       // Anti-spam counters for the contact form, deleted automatically after a day.
       db.collection("contact_attempts").createIndex({ at: 1 }, { expireAfterSeconds: 86400 }),
+      // Server errors, kept 30 days (admin page and alerts).
+      db.collection("error_log").createIndex({ at: 1 }, { expireAfterSeconds: 30 * 86400 }),
+      db.collection("error_log").createIndex({ key: 1, at: -1 }),
     ]);
   })().catch((e) => {
     indexesReady = undefined;

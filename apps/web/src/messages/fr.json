@@ -1038,5 +1038,11 @@
       "limit": "Le foyer est limité à 9 personnes.",
       "future": "La date de naissance ne peut pas être dans le futur."
     }
+  },
+  "verify": {
+    "text": "Confirme ton adresse e-mail : nous t'avons envoyé un lien à {email}. Elle sert à récupérer ton compte si tu oublies ton mot de passe.",
+    "resend": "Renvoyer l'e-mail",
+    "sent": "E-mail envoyé. Pense à regarder dans les indésirables.",
+    "error": "L'envoi a échoué. Réessaie dans quelques minutes."
   }
 }

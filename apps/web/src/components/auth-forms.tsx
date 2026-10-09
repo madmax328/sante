@@ -29,6 +29,7 @@ export function LoginForm({ google }: { google: boolean }) {
     const { error } = await authClient.signIn.email({
       email: String(fd.get("email")),
       password: String(fd.get("password")),
+      callbackURL: "/app",
     });
     setPending(false);
     if (error) {

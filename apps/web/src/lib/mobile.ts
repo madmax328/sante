@@ -20,6 +20,8 @@ export function mobileRoute<T>(handler: (req: Request, userId: string) => Promis
       if (e instanceof NoProfileError) return NextResponse.json({ error: "no_profile" }, { status: 409 });
       if (e instanceof MobileError) return NextResponse.json({ error: e.code }, { status: e.status });
       console.error("[mobile api]", e);
+      const { reportError } = await import("./errors");
+      await reportError(e, { source: "mobile api", path: new URL(req.url).pathname, method: req.method });
       return NextResponse.json({ error: "server" }, { status: 500 });
     }
   };

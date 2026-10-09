@@ -90,6 +90,12 @@ Boîte : `contact@sorloo.com`, avec les alias `bonjour@`, `support@`, `rgpd@` et
 Garder getweeko.com relié au projet Vercel : les pages redirigent vers l'adresse de
 `NEXT_PUBLIC_APP_URL` (sorloo.com), et l'API reste joignable pour les anciennes versions de l'app.
 
+### Administration et alertes
+- `ADMIN_EMAILS` : ton adresse de connexion (plusieurs possibles, séparées par des virgules).
+  La page https://sorloo.com/admin affiche alors inscrits, abonnés, revenu estimé et erreurs récentes.
+- Chaque erreur du serveur est enregistrée (30 jours) et envoyée par e-mail à `ALERT_EMAIL`
+  (par défaut support@sorloo.com), au plus une fois par heure pour une même erreur.
+
 ### 5. Clés à générer
 - `BETTER_AUTH_SECRET` : `openssl rand -base64 32`
 - `HEALTH_DATA_KEY` : `openssl rand -base64 32` — **à sauvegarder** : sans cette clé, les données de santé chiffrées sont illisibles.

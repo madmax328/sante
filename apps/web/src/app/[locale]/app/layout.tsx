@@ -5,6 +5,8 @@ import { Link } from "@/i18n/navigation";
 import { requireAppUser } from "@/lib/app-user";
 import { dayIndex, todayIn } from "@/lib/dates";
 import { isPremium } from "@/lib/premium";
+import { features } from "@/lib/env";
+import { VerifyEmailBanner } from "@/components/verify-email";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +43,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <div className="mb-5 lg:hidden">
           <MobileMoreLinks />
         </div>
+        {!user.emailVerified && features.email() && <VerifyEmailBanner email={user.email} />}
         {children}
       </div>
       <BottomNav />
