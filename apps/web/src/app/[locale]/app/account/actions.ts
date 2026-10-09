@@ -14,6 +14,8 @@ import { cancelSubscriptionNow, prepareCheckout, refreshSubscription, setCancelA
 import { isPremium } from "@/lib/premium";
 import { db } from "@/lib/db";
 import { cleanDislikes } from "@/lib/dislikes";
+import { ALLERGENS } from "@weeko/engine";
+import type { MemberHealth } from "@/lib/types";
 
 export async function prepareCheckoutAction(plan: Plan): Promise<{ data?: PreparedPayment; error?: string }> {
   const session = await getSession();
@@ -102,6 +104,55 @@ export async function saveBodyAction(input: z.input<typeof bodySchema>): Promise
   );
   await saveHealth(userId, { ...health, members });
   await saveMeasurement(userId, { date: todayIn(profile.timeZone), kg: d.weightKg });
+  revalidatePath("/[locale]/app", "layout");
+  return { ok: true };
+}
+
+const eats = z.object({ breakfast: z.boolean(), lunch: z.boolean(), dinner: z.boolean(), snack: z.boolean() });
+const memberSchema = z.object({
+  /** Absent for a new person; "self" for the account holder (only meals and allergies change). */
+  id: z.string().max(20).optional(),
+  name: z.string().trim().min(1).max(40),
+  sex: z.enum(["female", "male"]),
+  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  heightCm: z.number().min(50).max(250),
+  weightKg: z.number().min(10).max(350),
+  activity: z.enum(["sedentary", "light", "moderate", "active", "very_active"]),
+  allergies: z.array(z.enum(ALLERGENS)).max(14),
+  eats,
+});
+
+export type MemberInput = z.input<typeof memberSchema>;
+const MAX_HOUSEHOLD = 9;
+
+/** Adds or updates a person of the household (portions and allergies follow). */
+export async function saveMemberAction(input: MemberInput): Promise<{ ok: boolean; error?: "invalid" | "limit" | "future" }> {
+  const userId = await requireUserId();
+  const parsed = memberSchema.safeParse(input);
+  const [profile, health] = await Promise.all([getProfile(userId), getHealth(userId)]);
+  if (!parsed.success || !health || !profile) return { ok: false, error: "invalid" };
+  const d = parsed.data;
+  if (d.birthDate > todayIn(profile.timeZone)) return { ok: false, error: "future" };
+  let members: MemberHealth[];
+  if (d.id === "self" || health.members.some((m) => m.self && m.id === d.id)) {
+    members = health.members.map((m) => (m.self ? { ...m, allergies: d.allergies, eats: d.eats } : m));
+  } else if (d.id) {
+    if (!health.members.some((m) => m.id === d.id && !m.self)) return { ok: false, error: "invalid" };
+    members = health.members.map((m) => (m.id === d.id ? { ...m, ...d, id: m.id, self: false } : m));
+  } else {
+    if (health.members.length >= MAX_HOUSEHOLD) return { ok: false, error: "limit" };
+    members = [...health.members, { ...d, id: `m${Date.now().toString(36)}`, self: false, goal: "maintain" }];
+  }
+  await saveHealth(userId, { ...health, members });
+  revalidatePath("/[locale]/app", "layout");
+  return { ok: true };
+}
+
+export async function removeMemberAction(id: string): Promise<{ ok: boolean }> {
+  const userId = await requireUserId();
+  const health = await getHealth(userId);
+  if (!health || typeof id !== "string" || !health.members.some((m) => m.id === id && !m.self)) return { ok: false };
+  await saveHealth(userId, { ...health, members: health.members.filter((m) => m.id !== id) });
   revalidatePath("/[locale]/app", "layout");
   return { ok: true };
 }

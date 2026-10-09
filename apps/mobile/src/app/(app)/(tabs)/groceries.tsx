@@ -1,5 +1,6 @@
 import * as Haptics from "expo-haptics";
-import { Check, Share2 } from "lucide-react-native";
+import { router } from "expo-router";
+import { Check, Refrigerator, Share2 } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, Share, View } from "react-native";
 import { Button, Card, EmptyState, ErrorView, Field, Loading, Notice, Screen, SectionTitle, T } from "@/components/ui";
@@ -54,6 +55,10 @@ export default function GroceriesScreen() {
         </View>
         <Button small variant="secondary" onPress={share} icon={<Share2 size={16} color={c.encre} />}>Partager</Button>
       </View>
+      <Pressable accessibilityRole="button" onPress={() => router.push("/pantry")} style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+        <Refrigerator size={16} color={c.basilic} />
+        <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>Tu as déjà certains produits ? Garde-manger →</T>
+      </Pressable>
 
       {data.aisles.map((a) => (
         <Card key={a.aisle} style={{ gap: 0 }}>

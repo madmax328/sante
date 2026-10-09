@@ -54,6 +54,8 @@ const ACTIONS: Record<string, Handler> = {
 
   saveFoodPrefs: (i) => account.saveFoodPrefsAction(i),
   saveBody: (i) => account.saveBodyAction(i),
+  saveMember: (i) => account.saveMemberAction(i),
+  removeMember: (i) => account.removeMemberAction(String(i?.id ?? "")),
   setCancel: (i) => account.setCancelAction(!!i?.cancel),
   withdrawHealthConsent: () => account.withdrawHealthConsentAction(),
 

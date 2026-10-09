@@ -1017,5 +1017,26 @@
       "rate": "Trop de messages envoyés. Réessaie dans une heure.",
       "server": "Le message n'a pas pu être envoyé. Réessaie dans un instant."
     }
+  },
+  "household": {
+    "text": "Le même repas pour tout le monde, avec des portions adaptées à chacun et sans les allergènes de personne.",
+    "you": "toi",
+    "age": "{n} ans",
+    "edit": "Modifier",
+    "add": "Ajouter une personne",
+    "remove": "Retirer du foyer",
+    "removeConfirm": "Retirer {name} du foyer ?",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "meals": "Repas pris à la maison",
+    "allergies": "Allergies",
+    "none": "Aucune",
+    "premiumNote": "La planification pour plusieurs personnes fait partie de Premium : sans abonnement, seuls tes repas sont calculés.",
+    "regenerate": "Pour appliquer ces changements aux menus de la semaine, refais ta semaine depuis la page Semaine.",
+    "errors": {
+      "invalid": "Vérifie les informations saisies.",
+      "limit": "Le foyer est limité à 9 personnes.",
+      "future": "La date de naissance ne peut pas être dans le futur."
+    }
   }
 }

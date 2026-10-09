@@ -1017,5 +1017,26 @@
       "rate": "Too many messages sent. Try again in an hour.",
       "server": "The message couldn't be sent. Please try again shortly."
     }
+  },
+  "household": {
+    "text": "The same meal for everyone, with portions for each person and without anyone's allergens.",
+    "you": "you",
+    "age": "{n} years old",
+    "edit": "Edit",
+    "add": "Add a person",
+    "remove": "Remove from household",
+    "removeConfirm": "Remove {name} from the household?",
+    "save": "Save",
+    "cancel": "Cancel",
+    "meals": "Meals eaten at home",
+    "allergies": "Allergies",
+    "none": "None",
+    "premiumNote": "Planning for several people is part of Premium: without a subscription, only your meals are calculated.",
+    "regenerate": "To apply these changes to this week's menus, rebuild your week from the Week page.",
+    "errors": {
+      "invalid": "Check the information entered.",
+      "limit": "The household is limited to 9 people.",
+      "future": "The birth date can't be in the future."
+    }
   }
 }

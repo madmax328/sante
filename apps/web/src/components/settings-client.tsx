@@ -143,12 +143,12 @@ export function FoodPrefsForm({ initial, dislikeOptions }: { initial: FoodPrefer
   );
 }
 
-export function BodyForm({ initial }: { initial: { weightKg: number; heightCm: number; goal: Goal; activity: ActivityLevel; targetWeightKg?: number } }) {
+export function BodyForm({ initial }: { initial: { weightKg: number; heightCm: number; goal: Goal; activity: ActivityLevel; targetWeightKg?: number; pace: "gentle" | "moderate" } }) {
   const t = useTranslations("onboarding");
   const e = useTranslations("enums");
   const a = useTranslations("account");
   const router = useRouter();
-  const [b, setB] = useState({ ...initial, pace: "gentle" as "gentle" | "moderate" });
+  const [b, setB] = useState(initial);
   const [state, setState] = useState<"idle" | "saved" | "error">("idle");
   const [pending, start] = useTransition();
   return (

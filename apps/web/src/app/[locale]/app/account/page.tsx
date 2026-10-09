@@ -1,13 +1,16 @@
 import { Check } from "lucide-react";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { BodyForm, DangerZone, FoodPrefsForm, SubscriptionButtons } from "@/components/settings-client";
-import { Badge, Card, LinkButton, Notice, PageHeader } from "@/components/ui";
+import { Badge, Card, Notice, PageHeader } from "@/components/ui";
 import { requireAppUser } from "@/lib/app-user";
 import { features } from "@/lib/env";
 import { isPremium } from "@/lib/premium";
 import { getHealth } from "@/lib/repo";
 import { dislikeOptions } from "@/lib/dislikes";
 import { ContactForm } from "@/components/contact-form";
+import { HouseholdEditor } from "@/components/household-client";
+import { ageFrom, todayIn } from "@/lib/dates";
+import { paceOf } from "@/lib/planning";
 
 export async function generateMetadata() {
   const t = await getTranslations("nav");
@@ -27,6 +30,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
   const sub = user.profile.subscription;
   const health = await getHealth(user.userId);
   const self = health?.members.find((m) => m.self);
+  const today = todayIn(user.profile.timeZone);
 
   return (
     <div className="grid gap-6">
@@ -68,7 +72,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
       {self && (
         <Card className="grid gap-4">
           <h2 className="text-xl font-bold">{t("body")}</h2>
-          <BodyForm initial={{ weightKg: self.weightKg, heightCm: self.heightCm, goal: self.goal, activity: self.activity, targetWeightKg: self.targetWeightKg }} />
+          <BodyForm initial={{ weightKg: self.weightKg, heightCm: self.heightCm, goal: self.goal, activity: self.activity, targetWeightKg: self.targetWeightKg, pace: paceOf(self) }} />
         </Card>
       )}
 
@@ -79,10 +83,24 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
 
       <Card className="grid gap-3">
         <h2 className="text-xl font-bold">{t("household")}</h2>
-        <ul className="grid gap-1 text-sm">
-          {health?.members.map((m) => <li key={m.id}>{m.name}{m.self ? ` (${t("you")})` : ""}</li>)}
-        </ul>
-        <LinkButton href="/app/welcome" variant="secondary" size="sm" className="justify-self-start">{t("redoProfile")}</LinkButton>
+        {health && (
+          <HouseholdEditor
+            premium={premium}
+            members={health.members.map((m) => ({
+              id: m.id,
+              name: m.name,
+              self: m.self,
+              sex: m.sex,
+              birthDate: m.birthDate,
+              heightCm: m.heightCm,
+              weightKg: m.weightKg,
+              activity: m.activity,
+              allergies: m.allergies,
+              eats: m.eats,
+              age: ageFrom(m.birthDate, today),
+            }))}
+          />
+        )}
       </Card>
 
       <Card id="contact" className="grid scroll-mt-24 gap-4">

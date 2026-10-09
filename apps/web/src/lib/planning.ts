@@ -123,3 +123,11 @@ export function workoutWeekFor(uc: UserContext, weekStart: string): WorkoutWeek 
     exercises,
   );
 }
+
+/** The pace chosen for a weight goal, read back from the stored weekly change. */
+export function paceOf(m: Pick<MemberHealth, "goal" | "weeklyChangeKg" | "weightKg">): "gentle" | "moderate" {
+  const weekly = m.weeklyChangeKg ?? 0;
+  if (m.goal === "lose_weight") return Math.abs(weekly) <= m.weightKg * 0.005 ? "gentle" : "moderate";
+  if (m.goal === "gain_muscle") return weekly <= 0.15 ? "gentle" : "moderate";
+  return "gentle";
+}

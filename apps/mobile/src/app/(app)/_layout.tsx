@@ -24,6 +24,8 @@ export default function AppLayout() {
           <Stack.Screen name="account" options={{ ...header, title: "Mon compte" }} />
           <Stack.Screen name="preferences" options={{ ...header, title: "Mes préférences" }} />
           <Stack.Screen name="progress" options={{ ...header, title: "Mes progrès" }} />
+          <Stack.Screen name="household" options={{ ...header, title: "Mon foyer" }} />
+          <Stack.Screen name="pantry" options={{ ...header, title: "Garde-manger" }} />
           <Stack.Screen name="coach" options={{ ...header, title: "Coach" }} />
           <Stack.Screen name="sport/[day]" options={{ ...header, title: "Séance" }} />
           <Stack.Screen name="sport-settings" options={{ ...header, title: "Mon programme" }} />
