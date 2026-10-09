@@ -1052,11 +1052,11 @@
     "measured": "{n} produit(s) sur {total} avec des prix relevés",
     "index": "{pct} par rapport aux prix moyens",
     "none": "Pas encore assez de prix relevés pour comparer les enseignes sur ta liste. La base s'enrichit chaque jour.",
-    "note": "Estimation : prix médians des 12 derniers mois en France, hors promotions. Pour les produits sans relevé, on applique l'écart habituel de l'enseigne. Les prix varient selon les magasins.",
+    "note": "Estimation : prix médians relevés sur 12 mois en France, hors promotions et hors bio (sauf Biocoop). Chaque enseigne est comparée aux autres sur les mêmes produits ; pour ceux sans relevé, on applique son écart habituel. Les prix varient selon les magasins.",
     "contribute": "Tu peux aider en ajoutant tes tickets sur Open Prices.",
     "premium": "Avec Premium, compare le coût de ta liste dans chaque enseigne (Leclerc, Carrefour, Lidl…).",
-    "cheaper": "{pct} % moins cher",
-    "dearer": "{pct} % plus cher",
-    "same": "au prix moyen"
+    "cheaper": "{pct} % moins cher que la moyenne",
+    "dearer": "{pct} % plus cher que la moyenne",
+    "same": "dans la moyenne des enseignes"
   }
 }

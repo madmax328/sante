@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 
 // In-memory stand-in for the store_prices collection.
-const docs = new Map<string, { _id: string; brands: Record<string, { price: number; count: number }>; samples: number; updatedAt: Date }>();
+const docs = new Map<string, { _id: string; brands: Record<string, { price: number; count: number }>; samples: number; updatedAt: Date; v?: number }>();
 vi.mock("../src/lib/db", () => ({
   ensureIndexes: async () => undefined,
   db: {
@@ -35,6 +35,7 @@ function fakeApi() {
         { price: "2.10", price_per: "KILOGRAM", location: loc("Lidl") },
         { price: "1.20", price_per: "KILOGRAM", location: loc("Mercadona", "ES") },
         { price: "90", price_per: "KILOGRAM", location: loc("Lidl") },
+        { price: "6.90", price_per: "KILOGRAM", labels_tags: ["en:organic"], location: loc("Carrefour") },
       ];
     }
     if (q.get("product__categories_tags__contains") === "en:dry-pastas") {
@@ -55,31 +56,30 @@ afterEach(() => {
 });
 
 describe("store prices", () => {
-  it("keeps French prices per chain, converts packs to €/kg and drops outliers", async () => {
+  it("keeps French, non-organic prices per chain, converts packs to €/kg and drops outliers", async () => {
     vi.stubGlobal("fetch", fakeApi());
     await refreshStorePrices(20_000);
     expect(docs.get("tomato")?.brands).toEqual({ Carrefour: { price: 2.6, count: 2 }, Lidl: { price: 2, count: 2 } });
     expect(docs.get("pasta")?.brands).toEqual({ "E.Leclerc": { price: 2.1, count: 2 }, Lidl: { price: 1.7, count: 2 } });
+    expect(docs.get("tomato")?.v).toBe(2);
   });
 
-  it("estimates the list per chain from measured prices and the chain's usual gap", async () => {
+  it("compares chains with each other on the same products", async () => {
     const at = new Date();
-    docs.set("tomato", { _id: "tomato", brands: { Lidl: { price: 2, count: 3 }, Carrefour: { price: 2.6, count: 2 } }, samples: 5, updatedAt: at });
-    docs.set("pasta", { _id: "pasta", brands: { Lidl: { price: 1.6, count: 4 } }, samples: 4, updatedAt: at });
-    docs.set("rice", { _id: "rice", brands: { Lidl: { price: 2, count: 2 } }, samples: 2, updatedAt: at });
+    const ids = ["tomato", "pasta", "rice", "carrot", "apple", "banana"];
+    // Lidl 10 % under Carrefour on every product; Aldi priced on 2 products only.
+    for (const id of ids) docs.set(id, { _id: id, brands: { Lidl: { price: 0.9, count: 3 }, Carrefour: { price: 1, count: 3 } }, samples: 6, updatedAt: at, v: 2 } as never);
+    docs.get("apple")!.brands.Aldi = { price: 0.5, count: 2 };
+    docs.get("banana")!.brands.Aldi = { price: 0.5, count: 2 };
     const { getCatalog } = await import("@weeko/catalog");
     const c = getCatalog();
     const item = (id: string, qty: number) => ({ ingredientId: id, needed: qty, fromPantry: 0, toBuy: qty, packs: [qty], cost: c.price(id, qty), leftover: 0 });
-    const list = { aisles: [{ aisle: "produce", items: [item("tomato", 1000), item("pasta", 500), item("rice", 1000), item("carrot", 1000)] }], staples: [], fromPantry: [], total: 0, leftoverValue: 0 };
+    const list = { aisles: [{ aisle: "produce", items: [...ids.map((id) => item(id, 1000)), item("onion", 1000)] }], staples: [], fromPantry: [], total: 0, leftoverValue: 0 };
     const res = await compareStores(list as never);
-    expect(res.items).toBe(4);
-    // Carrefour has a single measured product: not enough to compare.
-    expect(res.stores.map((s) => s.brand)).toEqual(["Lidl"]);
-    const lidl = res.stores[0]!;
-    expect(lidl.measured).toBe(3);
-    const ratio = (id: string, p: number) => p / c.price(id, 1000);
-    const index = [ratio("tomato", 2), ratio("pasta", 1.6), ratio("rice", 2)].sort((a, b) => a - b)[1]!;
-    const expected = c.price("tomato", 1000) * ratio("tomato", 2) + c.price("pasta", 500) * ratio("pasta", 1.6) + c.price("rice", 1000) * ratio("rice", 2) + c.price("carrot", 1000) * index;
-    expect(lidl.total).toBeCloseTo(expected, 1);
+    expect(res.items).toBe(7);
+    expect(res.stores.map((s) => s.brand)).toEqual(["Lidl", "Carrefour"]);
+    const [lidl, carrefour] = res.stores;
+    expect(lidl!.measured).toBe(6);
+    expect(lidl!.total / carrefour!.total).toBeCloseTo(0.9, 2);
   });
 });

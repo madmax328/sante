@@ -14,7 +14,10 @@ import { brandOf, PRICE_SOURCES } from "./price-sources";
 
 const API = "https://prices.openfoodfacts.org/api/v1/prices";
 const MIN_SAMPLES = 2;
-const MIN_ITEMS = 3;
+/** A chain is compared only with this many products of the list priced there. */
+const MIN_ITEMS = 5;
+/** Bumped when the import rules change: older entries are fetched again. */
+const VERSION = 2;
 
 interface StorePrices {
   _id: string;
@@ -22,16 +25,18 @@ interface StorePrices {
   brands: Record<string, { price: number; count: number }>;
   samples: number;
   updatedAt: Date;
+  v?: number;
 }
 
 const collection = () => db.collection<StorePrices>("store_prices");
 
 interface OpenPrice {
   price: string | number;
+  labels_tags?: string[] | null;
   price_per?: "KILOGRAM" | "UNIT" | null;
   currency?: string;
   location?: { type?: string; osm_brand?: string | null; osm_name?: string | null; osm_address_country_code?: string | null } | null;
-  product?: { product_quantity?: number | null; product_quantity_unit?: string | null } | null;
+  product?: { product_quantity?: number | null; product_quantity_unit?: string | null; labels_tags?: string[] | null } | null;
 }
 
 const median = (xs: number[]) => {
@@ -72,6 +77,9 @@ async function samplesFor(ingredientId: string): Promise<{ brand: string; price:
         const brand = brandOf(loc.osm_brand, loc.osm_name);
         const value = Number(p.price);
         if (!brand || !(value > 0)) continue;
+        // Organic prices would make mainstream chains look dearer: only kept for organic shops.
+        const labels = [...(p.labels_tags ?? []), ...(p.product?.labels_tags ?? [])];
+        if (brand !== "Biocoop" && labels.some((l) => /organic|biologique|\bbio\b|^fr:ab-/i.test(l))) continue;
         let price: number | null = null;
         if ("category_tag" in q) {
           if (p.price_per === "KILOGRAM") price = perPiece ? (ing.pieceWeight ? (value * ing.pieceWeight) / 1000 : null) : value;
@@ -88,7 +96,10 @@ async function samplesFor(ingredientId: string): Promise<{ brand: string; price:
       if (items.length < 100) break;
     }
   }
-  return out;
+  // Drop what is far from the typical price of this product (wrong size, mislabelled item…).
+  if (out.length < 3) return out;
+  const typical = median(out.map((x) => x.price));
+  return out.filter((x) => x.price > typical / 2 && x.price < typical * 2);
 }
 
 /** Refreshes the oldest ingredients first, within a time budget (daily cron). */
@@ -96,7 +107,8 @@ export async function refreshStorePrices(budgetMs = 50_000): Promise<{ updated: 
   await ensureIndexes();
   const started = Date.now();
   const ids = Object.keys(PRICE_SOURCES);
-  const known = new Map((await collection().find({}, { projection: { updatedAt: 1 } }).toArray()).map((d) => [d._id, d.updatedAt.getTime()]));
+  // Entries imported with older rules count as never imported.
+  const known = new Map((await collection().find({}, { projection: { updatedAt: 1, v: 1 } }).toArray()).map((d) => [d._id, d.v === VERSION ? d.updatedAt.getTime() : 0]));
   const queue = ids.sort((a, b) => (known.get(a) ?? 0) - (known.get(b) ?? 0));
   const fresh = Date.now() - 3 * 86400_000;
   let updated = 0;
@@ -109,11 +121,11 @@ export async function refreshStorePrices(budgetMs = 50_000): Promise<{ updated: 
     for (const s of samples) byBrand.set(s.brand, [...(byBrand.get(s.brand) ?? []), s.price]);
     const brands: StorePrices["brands"] = {};
     for (const [brand, prices] of byBrand) brands[brand] = { price: Math.round(median(prices) * 100) / 100, count: prices.length };
-    await collection().updateOne({ _id: id }, { $set: { brands, samples: samples.length, updatedAt: new Date() } }, { upsert: true });
+    await collection().updateOne({ _id: id }, { $set: { brands, samples: samples.length, updatedAt: new Date(), v: VERSION } }, { upsert: true });
     updated++;
     if (samples.length) withData++;
   }
-  const done = await collection().countDocuments({ updatedAt: { $gt: new Date(fresh) } });
+  const done = await collection().countDocuments({ updatedAt: { $gt: new Date(fresh) }, v: VERSION });
   return { updated, withData, remaining: Math.max(0, ids.length - done) };
 }
 
@@ -133,30 +145,34 @@ export interface StoreComparison {
   updatedAt: Date | null;
 }
 
-/** The week's shopping list priced in each chain that has enough data. */
+/**
+ * The week's shopping list priced in each chain. Chains are compared with
+ * each other on the same products: for each product priced in several chains,
+ * each chain's price is divided by the median of those chains. A chain's
+ * index is the median of its ratios, used for the products it has no price for.
+ */
 export async function compareStores(list: ShoppingList): Promise<StoreComparison> {
-  const catalog = getCatalog();
   const items = list.aisles.flatMap((a) => a.items).filter((i) => i.cost > 0);
   const docs = await collection()
     .find({ _id: { $in: items.map((i) => i.ingredientId) } })
     .toArray()
     .catch(() => []);
-  const byId = new Map(docs.map((d) => [d._id, d]));
-  const brands = new Set(docs.flatMap((d) => Object.entries(d.brands).filter(([, v]) => v.count >= MIN_SAMPLES).map(([b]) => b)));
-  const stores: StoreEstimate[] = [];
-  for (const brand of brands) {
-    const ratios = new Map<string, number>();
-    for (const i of items) {
-      const p = byId.get(i.ingredientId)?.brands[brand];
-      if (!p || p.count < MIN_SAMPLES) continue;
-      const ing = catalog.ingredient(i.ingredientId);
-      const reference = catalog.price(i.ingredientId, ing.unit === "pc" ? 1 : 1000);
-      if (reference > 0) ratios.set(i.ingredientId, p.price / reference);
+  const ratios = new Map<string, Map<string, number>>();
+  for (const d of docs) {
+    const priced = Object.entries(d.brands).filter(([, v]) => v.count >= MIN_SAMPLES);
+    if (priced.length < 2) continue;
+    const typical = median(priced.map(([, v]) => v.price));
+    for (const [brand, v] of priced) {
+      if (!ratios.has(brand)) ratios.set(brand, new Map());
+      ratios.get(brand)!.set(d._id, v.price / typical);
     }
-    if (ratios.size < MIN_ITEMS) continue;
-    const index = Math.min(1.8, Math.max(0.55, median([...ratios.values()])));
-    const total = items.reduce((s, i) => s + i.cost * (ratios.get(i.ingredientId) ?? index), 0);
-    stores.push({ brand, total: Math.round(total * 100) / 100, measured: ratios.size, index: Math.round(index * 100) / 100 });
+  }
+  const stores: StoreEstimate[] = [];
+  for (const [brand, byItem] of ratios) {
+    if (byItem.size < MIN_ITEMS) continue;
+    const index = Math.min(1.5, Math.max(0.7, median([...byItem.values()])));
+    const total = items.reduce((s, i) => s + i.cost * (byItem.get(i.ingredientId) ?? index), 0);
+    stores.push({ brand, total: Math.round(total * 100) / 100, measured: byItem.size, index: Math.round(index * 100) / 100 });
   }
   stores.sort((a, b) => a.total - b.total);
   const updatedAt = docs.reduce<Date | null>((d, x) => (!d || x.updatedAt > d ? x.updatedAt : d), null);

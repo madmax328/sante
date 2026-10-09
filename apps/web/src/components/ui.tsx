@@ -80,12 +80,18 @@ export function Label({ className, ...props }: ComponentProps<"label">) {
 export const inputClass =
   "h-10 w-full rounded-xl border border-line bg-surface px-3 text-encre placeholder:text-muted/70 focus:border-basilic focus:outline-none";
 
+/** Base input classes, without w-full when the caller sets its own width (w-28…): both would conflict. */
+function fieldClass(className?: string, ...extra: string[]) {
+  const ownWidth = !!className && /(^|\s)w-/.test(className);
+  return cx(ownWidth ? inputClass.replace("w-full ", "") : inputClass, ...extra, className);
+}
+
 export function Input({ className, ...props }: ComponentProps<"input">) {
-  return <input className={cx(inputClass, className)} {...props} />;
+  return <input className={fieldClass(className)} {...props} />;
 }
 
 export function Select({ className, ...props }: ComponentProps<"select">) {
-  return <select className={cx(inputClass, "pr-8", className)} {...props} />;
+  return <select className={fieldClass(className, "pr-8")} {...props} />;
 }
 
 export function Textarea({ className, ...props }: ComponentProps<"textarea">) {

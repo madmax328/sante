@@ -102,9 +102,12 @@ export function PantryRow({ id, name, qty, unit }: { id: string; name: string; q
   return (
     <li className="flex items-center gap-3 py-2">
       <span className="min-w-0 flex-1 font-semibold">{name}</span>
-      <Input type="number" min={0} value={value} onChange={(e) => setValue(e.target.value)} onBlur={() => Number(value) !== qty && save(Number(value) || 0)} className="w-24" aria-label={t("quantity")} />
-      <span className="w-6 text-sm text-muted">{unitLabel[unit]}</span>
-      <Button size="sm" variant="ghost" onClick={() => save(0)} disabled={pending} aria-label={t("remove")}><Trash2 className="size-4" /></Button>
+      {/* Fixed-width box: the Input itself is full width. */}
+      <div className="w-24 shrink-0">
+        <Input type="number" inputMode="decimal" min={0} value={value} onChange={(e) => setValue(e.target.value)} onBlur={() => Number(value) !== qty && save(Number(value) || 0)} className="text-right" aria-label={`${t("quantity")} : ${name}`} />
+      </div>
+      <span className="w-6 shrink-0 text-sm text-muted">{unitLabel[unit]}</span>
+      <Button size="sm" variant="ghost" className="shrink-0" onClick={() => save(0)} disabled={pending} aria-label={t("remove")}><Trash2 className="size-4" /></Button>
     </li>
   );
 }

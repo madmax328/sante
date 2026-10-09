@@ -114,7 +114,7 @@ function Stores({ stores }: { stores: NonNullable<Groceries["stores"]> }) {
   const c = useColors();
   const gap = (index: number) => {
     const pct = Math.round(Math.abs(1 - index) * 100);
-    return pct === 0 ? "au prix moyen" : index < 1 ? `${pct} % moins cher` : `${pct} % plus cher`;
+    return pct === 0 ? "dans la moyenne des enseignes" : index < 1 ? `${pct} % moins cher que la moyenne` : `${pct} % plus cher que la moyenne`;
   };
   return (
     <Card>
@@ -139,7 +139,7 @@ function Stores({ stores }: { stores: NonNullable<Groceries["stores"]> }) {
           ))}
         </>
       )}
-      {stores.premium && <T variant="small">Estimation à partir des prix relevés en magasin sur Open Prices (12 derniers mois, hors promotions). Les prix varient selon les magasins.</T>}
+      {stores.premium && <T variant="small">Estimation à partir des prix relevés en magasin sur Open Prices (12 derniers mois, hors promotions et hors bio, sauf Biocoop). Chaque enseigne est comparée aux autres sur les mêmes produits. Les prix varient selon les magasins.</T>}
     </Card>
   );
 }
