@@ -16,14 +16,13 @@ const DAY = 86400_000;
 const fmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Paris" });
 const eur = (n: number) => new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(n);
 
-/** Monthly price of each Stripe price, to estimate recurring revenue. */
-async function monthlyAmounts(): Promise<Map<string, number>> {
+/** Monthly amount of each Stripe price used by subscribers (including former prices). */
+async function monthlyAmounts(priceIds: string[]): Promise<Map<string, number>> {
   const map = new Map<string, number>();
   if (!features.stripe()) return map;
-  for (const id of [env.stripePriceMonthly, env.stripePriceYearly]) {
-    if (!id) continue;
+  for (const id of new Set(priceIds)) {
     const p = await stripe().prices.retrieve(id).catch(() => null);
-    if (p?.unit_amount) map.set(id, p.unit_amount / 100 / (p.recurring?.interval === "year" ? 12 : 1));
+    if (p?.unit_amount) map.set(id, p.unit_amount / 100 / (p.recurring?.interval === "year" ? 12 : (p.recurring?.interval_count ?? 1)));
   }
   return map;
 }
@@ -40,7 +39,7 @@ export default async function AdminPage() {
   const users = db.collection<{ _id: unknown; name: string; email: string; emailVerified: boolean; createdAt: Date }>("user");
   const profiles = db.collection<Profile>("profiles");
   const { now, month } = clock();
-  const [total, week, month30, verified, onboarded, active7, subs, aiAgg, latest, errors, prices, amounts] = await Promise.all([
+  const [total, week, month30, verified, onboarded, active7, subs, aiAgg, latest, errors, prices] = await Promise.all([
     users.countDocuments(),
     users.countDocuments({ createdAt: { $gte: new Date(now - 7 * DAY) } }),
     users.countDocuments({ createdAt: { $gte: new Date(now - 30 * DAY) } }),
@@ -52,11 +51,11 @@ export default async function AdminPage() {
     users.find({}, { sort: { createdAt: -1 }, limit: 25 }).toArray(),
     recentErrors(),
     storePriceStats(),
-    monthlyAmounts(),
   ]);
   const plans = await profiles.find({ _id: { $in: latest.map((u) => String(u._id)) } }, { projection: { onboarded: 1, subscription: 1 } }).toArray();
   const byId = new Map(plans.map((p) => [p._id, p]));
 
+  const amounts = await monthlyAmounts(subs.map((p) => p.subscription?.priceId).filter((x): x is string => !!x));
   const paying = subs.filter((p) => p.subscription?.status === "active" || (p.subscription?.status === "trialing" && p.subscription.hasPaymentMethod));
   const trialing = subs.filter((p) => p.subscription?.status === "trialing").length;
   const pastDue = subs.filter((p) => p.subscription?.status === "past_due").length;

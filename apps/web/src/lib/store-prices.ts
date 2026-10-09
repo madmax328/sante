@@ -134,7 +134,7 @@ export interface StoreEstimate {
   total: number;
   /** Items of the list with prices measured in this chain */
   measured: number;
-  /** Chain price compared with the average (1 = same, 0.92 = 8 % cheaper) */
+  /** Basket in this chain compared with the median chain (1 = same, 0.92 = 8 % cheaper) */
   index: number;
 }
 
@@ -174,6 +174,9 @@ export async function compareStores(list: ShoppingList): Promise<StoreComparison
     const total = items.reduce((s, i) => s + i.cost * (byItem.get(i.ingredientId) ?? index), 0);
     stores.push({ brand, total: Math.round(total * 100) / 100, measured: byItem.size, index: Math.round(index * 100) / 100 });
   }
+  // The gap shown is the one of the whole basket, against the median of the chains.
+  const typicalTotal = stores.length ? median(stores.map((x) => x.total)) : 0;
+  for (const x of stores) x.index = typicalTotal ? Math.round((x.total / typicalTotal) * 100) / 100 : 1;
   stores.sort((a, b) => a.total - b.total);
   const updatedAt = docs.reduce<Date | null>((d, x) => (!d || x.updatedAt > d ? x.updatedAt : d), null);
   return { reference: Math.round(items.reduce((s, i) => s + i.cost, 0) * 100) / 100, items: items.length, stores, updatedAt };
