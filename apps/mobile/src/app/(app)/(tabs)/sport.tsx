@@ -1,11 +1,11 @@
 import * as Haptics from "expo-haptics";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { Check, Dumbbell, Footprints, Moon, Settings2, StretchHorizontal, Timer } from "lucide-react-native";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
-import { Badge, Button, Card, EmptyState, ErrorView, Field, IconButton, Loading, Screen, SectionTitle, T } from "@/components/ui";
+import { Badge, Button, Card, EmptyState, ErrorView, Field, IconButton, Loading, ProgressBar, Screen, SectionTitle, T } from "@/components/ui";
 import { api, useApi } from "@/lib/api";
-import { healthAvailable, healthEnabled } from "@/lib/health";
+import { healthAvailable, healthEnabled, syncAppleHealth } from "@/lib/health";
 import { DAY_LABEL, num } from "@/lib/format";
 import { space, useColors } from "@/lib/theme";
 
@@ -36,6 +36,12 @@ const ICONS = { rest: Moon, walk: Footprints, strength: Dumbbell, cardio: Timer,
 export default function SportScreen() {
   const c = useColors();
   const { data, error, loading, refreshing, refresh, reload, setData } = useApi<Sport>("/sport");
+  // Fresh steps from Apple Santé each time the tab is opened (at most every 2 minutes).
+  useFocusEffect(
+    useCallback(() => {
+      void syncAppleHealth(2 * 60_000).then((r) => r && reload(), () => undefined);
+    }, []),
+  );
 
   if (loading && !data) return <Loading />;
   if (!data) return <ErrorView message={error?.code === "network" ? "Pas de connexion internet." : "Le chargement a échoué."} onRetry={reload} />;
@@ -117,16 +123,17 @@ export default function SportScreen() {
           </Card>
         );
       })}
-      <Steps date={data.date!} goal={data.week.stepsGoal} initial={data.week.steps} />
+      <Steps date={data.date!} goal={data.week.stepsGoal} initial={data.week.steps} onSynced={reload} />
     </Screen>
   );
 }
 
-function Steps({ date, goal, initial }: { date: string; goal: number; initial: number | null }) {
+function Steps({ date, goal, initial, onSynced }: { date: string; goal: number; initial: number | null; onSynced: () => void }) {
   const c = useColors();
   const [value, setValue] = useState(initial ? String(initial) : "");
   const [saved, setSaved] = useState(false);
-  const [synced, setSynced] = useState(false);
+  const [synced, setSynced] = useState<boolean>();
+  const [syncing, setSyncing] = useState(false);
   useEffect(() => setValue(initial ? String(initial) : ""), [initial]);
   useEffect(() => {
     void healthEnabled().then(setSynced);
@@ -137,27 +144,43 @@ function Steps({ date, goal, initial }: { date: string; goal: number; initial: n
     setSaved(true);
     void Haptics.selectionAsync();
   };
+  const refresh = async () => {
+    setSyncing(true);
+    await syncAppleHealth().catch(() => undefined);
+    setSyncing(false);
+    onSynced();
+  };
   return (
     <Card>
       <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
         <Footprints size={20} color={c.basilic} />
         <SectionTitle>Mes pas</SectionTitle>
       </View>
-      <T variant="small">Objectif : {num(goal)} pas par jour.</T>
-      {healthAvailable() &&
-        (synced ? (
-          <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>Comptés automatiquement avec Apple Santé.</T>
-        ) : (
-          <Pressable accessibilityRole="button" onPress={() => router.push("/devices")}>
-            <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>Connecte Apple Santé pour les compter automatiquement →</T>
-          </Pressable>
-        ))}
-      <View style={{ flexDirection: "row", gap: space.sm, alignItems: "flex-end" }}>
-        <View style={{ flex: 1 }}>
-          <Field label="Pas aujourd'hui" value={value} onChangeText={(v) => { setValue(v); setSaved(false); }} keyboardType="number-pad" />
-        </View>
-        <Button variant="secondary" onPress={save}>{saved ? "Enregistré" : "Enregistrer"}</Button>
-      </View>
+      {synced ? (
+        <>
+          <T variant="big">{num(initial ?? 0)} <T variant="small">/ {num(goal)} pas aujourd'hui</T></T>
+          <ProgressBar value={initial ?? 0} max={goal} />
+          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: space.sm }}>
+            <T variant="small" style={{ flex: 1 }}>Comptés automatiquement avec Apple Santé et enregistrés.</T>
+            <Button small variant="secondary" loading={syncing} onPress={refresh}>Actualiser</Button>
+          </View>
+        </>
+      ) : (
+        <>
+          <T variant="small">Objectif : {num(goal)} pas par jour.</T>
+          {healthAvailable() && synced === false && (
+            <Pressable accessibilityRole="button" onPress={() => router.push("/devices")}>
+              <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>Connecte Apple Santé pour les compter automatiquement →</T>
+            </Pressable>
+          )}
+          <View style={{ flexDirection: "row", gap: space.sm, alignItems: "flex-end" }}>
+            <View style={{ flex: 1 }}>
+              <Field label="Pas aujourd'hui" value={value} onChangeText={(v) => { setValue(v); setSaved(false); }} keyboardType="number-pad" />
+            </View>
+            <Button variant="secondary" onPress={save}>{saved ? "Enregistré" : "Enregistrer"}</Button>
+          </View>
+        </>
+      )}
     </Card>
   );
 }

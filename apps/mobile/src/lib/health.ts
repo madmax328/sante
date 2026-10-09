@@ -65,10 +65,17 @@ export async function disconnectAppleHealth(): Promise<void> {
 }
 
 let running: Promise<SyncResult | null> | null = null;
+let lastRun = 0;
 
-/** Imports the last 7 days of steps and workouts and 30 days of weigh-ins. */
-export function syncAppleHealth(): Promise<SyncResult | null> {
-  running ??= doSync().finally(() => {
+/**
+ * Imports the last 7 days of steps and workouts and 30 days of weigh-ins.
+ * Skipped (null) when the previous import is more recent than `minIntervalMs`.
+ */
+export function syncAppleHealth(minIntervalMs = 0): Promise<SyncResult | null> {
+  if (running) return running;
+  if (Date.now() - lastRun < minIntervalMs) return Promise.resolve(null);
+  lastRun = Date.now();
+  running = doSync().finally(() => {
     running = null;
   });
   return running;

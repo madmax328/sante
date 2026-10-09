@@ -1,7 +1,7 @@
 import * as Haptics from "expo-haptics";
-import { Search, X } from "lucide-react-native";
+import { Check, Search, X } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { Pressable, TextInput, View } from "react-native";
+import { Keyboard, Pressable, TextInput, View } from "react-native";
 import { Button, Card, EmptyState, ErrorView, Field, Loading, Screen, SectionTitle, T } from "@/components/ui";
 import { api, useApi } from "@/lib/api";
 import { radius, space, useColors } from "@/lib/theme";
@@ -109,25 +109,29 @@ function PantryRow({ item, first, onSave }: { item: Pantry["items"][number]; fir
   const c = useColors();
   const [value, setValue] = useState(String(item.qty));
   useEffect(() => setValue(String(item.qty)), [item.qty]);
-  const commit = () => {
-    const q = Number(value.replace(",", ".")) || 0;
-    if (q !== item.qty) onSave(q);
-  };
+  const q = Number(value.replace(",", ".")) || 0;
+  const changed = value.trim() !== "" && q !== item.qty;
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm, paddingVertical: space.sm, borderTopWidth: first ? 0 : 1, borderTopColor: c.line }}>
       <T style={{ flex: 1 }} numberOfLines={2}>{item.name}</T>
       <TextInput
         value={value}
         onChangeText={setValue}
-        onEndEditing={commit}
         keyboardType="decimal-pad"
+        selectTextOnFocus
         accessibilityLabel={`Quantité de ${item.name}`}
-        style={{ width: 72, height: 40, borderRadius: radius.sm, borderWidth: 1, borderColor: c.line, paddingHorizontal: space.sm, color: c.encre, backgroundColor: c.surface, textAlign: "right" }}
+        style={{ width: 72, height: 40, borderRadius: radius.sm, borderWidth: 1, borderColor: changed ? c.basilic : c.line, paddingHorizontal: space.sm, color: c.encre, backgroundColor: c.surface, textAlign: "right" }}
       />
       <T variant="small" style={{ width: 52 }}>{UNIT[item.unit]}</T>
-      <Pressable accessibilityRole="button" accessibilityLabel={`Retirer ${item.name}`} hitSlop={8} onPress={() => onSave(0)}>
-        <X size={18} color={c.muted} />
-      </Pressable>
+      {changed ? (
+        <Pressable accessibilityRole="button" accessibilityLabel={`Enregistrer la quantité de ${item.name}`} hitSlop={8} onPress={() => { Keyboard.dismiss(); onSave(q); }}>
+          <Check size={20} color={c.basilic} />
+        </Pressable>
+      ) : (
+        <Pressable accessibilityRole="button" accessibilityLabel={`Retirer ${item.name}`} hitSlop={8} onPress={() => onSave(0)}>
+          <X size={18} color={c.muted} />
+        </Pressable>
+      )}
     </View>
   );
 }

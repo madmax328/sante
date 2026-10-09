@@ -37,6 +37,8 @@ export function Screen({
       contentContainerStyle={{ padding: space.lg, paddingTop: padTop ? insets.top + space.md : space.lg, paddingBottom: space.xl * 2, gap: space.lg }}
       refreshControl={onRefresh ? <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} tintColor={c.basilic} /> : undefined}
       keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
+      automaticallyAdjustKeyboardInsets
     >
       {children}
     </ScrollView>

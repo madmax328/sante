@@ -11,12 +11,7 @@ import { syncAppleHealth } from "@/lib/health";
 function useHealthSync(active: boolean) {
   useEffect(() => {
     if (!active) return;
-    let last = 0;
-    const sync = () => {
-      if (Date.now() - last < 15 * 60_000) return;
-      last = Date.now();
-      void syncAppleHealth().catch(() => undefined);
-    };
+    const sync = () => void syncAppleHealth(15 * 60_000).catch(() => undefined);
     sync();
     const sub = AppState.addEventListener("change", (s) => s === "active" && sync());
     return () => sub.remove();
