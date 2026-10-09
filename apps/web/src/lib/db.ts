@@ -39,6 +39,7 @@ export function ensureIndexes(): Promise<void> {
       // Server errors, kept 30 days (admin page and alerts).
       db.collection("error_log").createIndex({ at: 1 }, { expireAfterSeconds: 30 * 86400 }),
       db.collection("error_log").createIndex({ key: 1, at: -1 }),
+      db.collection("saved_meals").createIndex({ userId: 1, at: -1 }),
       db.collection("admin_attempts").createIndex({ at: 1 }, { expireAfterSeconds: 3600 }),
     ]);
   })().catch((e) => {

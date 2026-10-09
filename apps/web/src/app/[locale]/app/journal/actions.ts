@@ -4,10 +4,10 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getCatalog } from "@weeko/catalog";
 import { MEAL_TYPES } from "@weeko/engine";
-import { todayIn } from "@/lib/dates";
-import { addLogEntry, getProfile, removeLogEntry } from "@/lib/repo";
+import { addDays, todayIn } from "@/lib/dates";
+import { addLogEntry, getLog, getLogs, getProfile, removeLogEntry } from "@/lib/repo";
 import { requireUserId } from "@/lib/session";
-import type { LogEntry } from "@/lib/types";
+import { buildLogEntry, entryInput, favorites, inputFromLog, keyOf, quickFood, savedMeals, type EntryInput, type QuickFood } from "@/lib/journal";
 
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const meal = z.enum(MEAL_TYPES);
@@ -44,52 +44,14 @@ export async function searchFoodsAction(query: string): Promise<FoodHit[]> {
   return [...ingredients, ...recipes];
 }
 
-const entryInput = z.discriminatedUnion("kind", [
-  z.object({ kind: z.literal("recipe"), id: z.string().max(120), amount: z.number().min(0.1).max(10) }),
-  z.object({ kind: z.literal("ingredient"), id: z.string().max(60), amount: z.number().min(1).max(5000) }),
-  z.object({
-    kind: z.literal("custom"),
-    name: z.string().trim().min(1).max(80),
-    kcal: z.number().min(0).max(5000),
-    protein: z.number().min(0).max(300).optional(),
-    carbs: z.number().min(0).max(600).optional(),
-    fat: z.number().min(0).max(300).optional(),
-  }),
-  z.object({
-    kind: z.literal("barcode"),
-    code: z.string().regex(/^\d{8,14}$/),
-    name: z.string().max(120),
-    grams: z.number().min(1).max(2000),
-    per100: z.object({ kcal: z.number().min(0).max(1000), protein: z.number().min(0).max(100), carbs: z.number().min(0).max(100), fat: z.number().min(0).max(100) }),
-  }),
-]);
-
-export async function addFoodAction(input: { date?: string; meal: (typeof MEAL_TYPES)[number]; entry: z.input<typeof entryInput> }): Promise<{ ok: boolean }> {
+export async function addFoodAction(input: { date?: string; meal: (typeof MEAL_TYPES)[number]; entry: EntryInput }): Promise<{ ok: boolean }> {
   const userId = await requireUserId();
   const parsed = z.object({ date: date.optional(), meal, entry: entryInput }).safeParse(input);
   if (!parsed.success) return { ok: false };
   const profile = await getProfile(userId);
   const day = parsed.data.date ?? todayIn(profile?.timeZone);
-  const catalog = getCatalog();
-  const e = parsed.data.entry;
-  const base = { id: crypto.randomUUID(), meal: parsed.data.meal, at: new Date() };
-  let entry: LogEntry;
-  if (e.kind === "recipe") {
-    if (!catalog.recipes.has(e.id)) return { ok: false };
-    const r = catalog.recipe(e.id);
-    entry = { ...base, kind: "recipe", refId: r.id, name: r.name.fr, amount: e.amount, kcal: Math.round(r.nutrition.kcal * e.amount), protein: Math.round(r.nutrition.protein * e.amount), carbs: Math.round(r.nutrition.carbs * e.amount), fat: Math.round(r.nutrition.fat * e.amount) };
-  } else if (e.kind === "ingredient") {
-    if (!catalog.ingredients.has(e.id)) return { ok: false };
-    const i = catalog.ingredient(e.id);
-    const grams = catalog.grams(e.id, e.amount);
-    const f = grams / 100;
-    entry = { ...base, kind: "ingredient", refId: i.id, name: i.name.fr, amount: e.amount, kcal: Math.round(i.nutrition.kcal * f), protein: Math.round(i.nutrition.protein * f), carbs: Math.round(i.nutrition.carbs * f), fat: Math.round(i.nutrition.fat * f) };
-  } else if (e.kind === "custom") {
-    entry = { ...base, kind: "custom", name: e.name, amount: 1, kcal: Math.round(e.kcal), protein: Math.round(e.protein ?? 0), carbs: Math.round(e.carbs ?? 0), fat: Math.round(e.fat ?? 0) };
-  } else {
-    const f = e.grams / 100;
-    entry = { ...base, kind: "barcode", refId: e.code, name: e.name, amount: e.grams, kcal: Math.round(e.per100.kcal * f), protein: Math.round(e.per100.protein * f), carbs: Math.round(e.per100.carbs * f), fat: Math.round(e.per100.fat * f) };
-  }
+  const entry = buildLogEntry(parsed.data.entry, parsed.data.meal);
+  if (!entry) return { ok: false };
   await addLogEntry(userId, day, entry);
   revalidatePath("/[locale]/app", "layout");
   return { ok: true };
@@ -140,4 +102,120 @@ export async function lookupBarcodeAction(code: string): Promise<BarcodeProduct 
   } catch {
     return null;
   }
+}
+
+// ---------------------------------------------------------------- Favorites, recent foods, saved meals
+
+export interface QuickFoods {
+  favorites: QuickFood[];
+  recents: QuickFood[];
+  meals: { id: string; name: string; kcal: number; count: number; names: string[] }[];
+}
+
+/** Everything that can be added in one tap: favorites, foods of the last 3 weeks, saved meals. */
+export async function quickFoodsAction(): Promise<QuickFoods> {
+  const userId = await requireUserId();
+  const profile = await getProfile(userId);
+  const today = todayIn(profile?.timeZone);
+  const [fav, logs, meals] = await Promise.all([
+    favorites().findOne({ _id: userId }),
+    getLogs(userId, addDays(today, -21), today),
+    savedMeals().find({ userId }).sort({ at: -1 }).limit(30).toArray(),
+  ]);
+  const favs = (fav?.items ?? []).map((i) => quickFood(i.entry, true)).filter((x): x is QuickFood => !!x);
+  const favKeys = new Set(favs.map((f) => f.key));
+  const seen = new Set<string>();
+  const recents: QuickFood[] = [];
+  for (const log of [...logs].reverse()) {
+    for (const x of [...log.entries].reverse()) {
+      if (x.kind === "planned") continue;
+      const input = inputFromLog(x);
+      if (!input) continue;
+      const key = keyOf(input);
+      if (seen.has(key) || favKeys.has(key)) continue;
+      seen.add(key);
+      const q = quickFood(input, false);
+      if (q) recents.push(q);
+      if (recents.length >= 20) break;
+    }
+    if (recents.length >= 20) break;
+  }
+  return {
+    favorites: favs,
+    recents,
+    meals: meals.map((m) => ({ id: m._id, name: m.name, kcal: m.kcal, count: m.entries.length, names: m.entries.map((e) => quickFood(e, false)?.name ?? "").filter(Boolean).slice(0, 4) })),
+  };
+}
+
+/** Adds or removes a food from the favorites (from a quick list, or from a journal line). */
+export async function toggleFavoriteAction(input: { entry?: EntryInput; date?: string; id?: string }): Promise<{ ok: boolean; favorite?: boolean }> {
+  const userId = await requireUserId();
+  let entry: EntryInput | null = null;
+  if (input?.entry) {
+    const parsed = entryInput.safeParse(input.entry);
+    if (parsed.success) entry = parsed.data;
+  } else if (input?.date && input.id && date.safeParse(input.date).success) {
+    const x = (await getLog(userId, input.date)).entries.find((e) => e.id === input.id);
+    entry = x ? inputFromLog(x) : null;
+  }
+  if (!entry || !buildLogEntry(entry, "lunch")) return { ok: false };
+  const key = keyOf(entry);
+  const current = (await favorites().findOne({ _id: userId }))?.items ?? [];
+  const exists = current.some((i) => i.key === key);
+  const items = exists ? current.filter((i) => i.key !== key) : [{ key, entry, at: new Date() }, ...current].slice(0, 100);
+  await favorites().updateOne({ _id: userId }, { $set: { items } }, { upsert: true });
+  return { ok: true, favorite: !exists };
+}
+
+/** Saves the foods of one meal of one day under a name ("Mon petit-déjeuner"). */
+export async function saveMealAction(input: { date: string; meal: (typeof MEAL_TYPES)[number]; name: string }): Promise<{ ok: boolean }> {
+  const userId = await requireUserId();
+  const parsed = z.object({ date, meal, name: z.string().trim().min(1).max(60) }).safeParse(input);
+  if (!parsed.success) return { ok: false };
+  const lines = (await getLog(userId, parsed.data.date)).entries.filter((e) => e.meal === parsed.data.meal);
+  const entries = lines.map(inputFromLog).filter((e): e is EntryInput => !!e).slice(0, 30);
+  if (!entries.length) return { ok: false };
+  if ((await savedMeals().countDocuments({ userId })) >= 50) return { ok: false };
+  await savedMeals().insertOne({ _id: crypto.randomUUID(), userId, name: parsed.data.name, entries, kcal: lines.reduce((s, e) => s + e.kcal, 0), at: new Date() });
+  return { ok: true };
+}
+
+export async function deleteSavedMealAction(input: { id: string }): Promise<{ ok: boolean }> {
+  const userId = await requireUserId();
+  if (typeof input?.id !== "string") return { ok: false };
+  await savedMeals().deleteOne({ _id: input.id, userId });
+  return { ok: true };
+}
+
+async function addAll(userId: string, day: string, mealType: (typeof MEAL_TYPES)[number], entries: EntryInput[]): Promise<number> {
+  let n = 0;
+  for (const e of entries) {
+    const line = buildLogEntry(e, mealType);
+    if (!line) continue;
+    await addLogEntry(userId, day, line);
+    n++;
+  }
+  revalidatePath("/[locale]/app", "layout");
+  return n;
+}
+
+/** Adds a saved meal to a meal of the day. */
+export async function addSavedMealAction(input: { id: string; date: string; meal: (typeof MEAL_TYPES)[number] }): Promise<{ ok: boolean; added?: number }> {
+  const userId = await requireUserId();
+  const parsed = z.object({ id: z.string().max(60), date, meal }).safeParse(input);
+  if (!parsed.success) return { ok: false };
+  const saved = await savedMeals().findOne({ _id: parsed.data.id, userId });
+  if (!saved) return { ok: false };
+  return { ok: true, added: await addAll(userId, parsed.data.date, parsed.data.meal, saved.entries) };
+}
+
+/** Copies a meal of the previous day (or any day) into a meal of the given day. */
+export async function copyMealAction(input: { fromDate: string; meal: (typeof MEAL_TYPES)[number]; toDate: string; toMeal?: (typeof MEAL_TYPES)[number] }): Promise<{ ok: boolean; added?: number }> {
+  const userId = await requireUserId();
+  const parsed = z.object({ fromDate: date, meal, toDate: date, toMeal: meal.optional() }).safeParse(input);
+  if (!parsed.success) return { ok: false };
+  const lines = (await getLog(userId, parsed.data.fromDate)).entries.filter((e) => e.meal === parsed.data.meal);
+  const entries = lines.map(inputFromLog).filter((e): e is EntryInput => !!e);
+  if (!entries.length) return { ok: true, added: 0 };
+  return { ok: true, added: await addAll(userId, parsed.data.toDate, parsed.data.toMeal ?? parsed.data.meal, entries) };
 }

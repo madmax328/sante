@@ -740,7 +740,8 @@
     "tabs": {
       "search": "Search",
       "custom": "Manual entry",
-      "barcode": "Barcode"
+      "barcode": "Barcode",
+      "quick": "Favorites"
     },
     "searchPlaceholder": "E.g. apple, yogurt, chicken…",
     "perServing": "serving",
@@ -764,7 +765,26 @@
     "remove": "Remove",
     "fromPlan": "Menu",
     "servingsCount": "{n} serving(s)",
-    "water": "Hydration"
+    "water": "Hydration",
+    "quick": {
+      "favorites": "Favorites",
+      "recents": "Recent",
+      "meals": "Saved meals",
+      "empty": "Your favorites, recent foods and saved meals will show up here. Tap the star of a journal food to add it to your favorites.",
+      "star": "Add {name} to favorites",
+      "unstar": "Remove {name} from favorites",
+      "addOne": "Add {name}",
+      "addMeal": "Add",
+      "deleteMeal": "Delete the meal {name}",
+      "deleteConfirm": "Delete the saved meal \"{name}\"?",
+      "copyYesterday": "Copy from yesterday",
+      "saveMeal": "Save this meal",
+      "savePrompt": "Meal name (e.g. My usual breakfast)",
+      "saved": "Meal \"{name}\" saved: find it in the Favorites tab.",
+      "saveError": "Couldn't save this meal (50 meals at most).",
+      "copied": "{n} food(s) copied from yesterday.",
+      "nothingYesterday": "Nothing to copy: this meal was empty yesterday."
+    }
   },
   "sport": {
     "title": "Workouts",

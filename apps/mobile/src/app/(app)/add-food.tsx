@@ -1,9 +1,9 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as Haptics from "expo-haptics";
 import { router, useLocalSearchParams } from "expo-router";
-import { Search } from "lucide-react-native";
+import { Plus, Search, Star, Trash2 } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
-import { Pressable, View } from "react-native";
+import { ActivityIndicator, Alert, Pressable, View } from "react-native";
 import { Button, Card, Field, Notice, Screen, Segmented, T } from "@/components/ui";
 import { api } from "@/lib/api";
 import { MEAL_ORDER, num, type Meal } from "@/lib/format";
@@ -27,7 +27,21 @@ interface Product {
   nutriscore?: string;
 }
 
-type Tab = "search" | "barcode" | "custom";
+type Tab = "quick" | "search" | "barcode" | "custom";
+
+interface QuickFood {
+  key: string;
+  name: string;
+  detail: string;
+  entry: unknown;
+  favorite: boolean;
+}
+
+interface QuickFoods {
+  favorites: QuickFood[];
+  recents: QuickFood[];
+  meals: { id: string; name: string; kcal: number; count: number; names: string[] }[];
+}
 
 const MEAL_SHORT: Record<Meal, string> = { breakfast: "Matin", lunch: "Midi", snack: "Goûter", dinner: "Soir" };
 
@@ -36,7 +50,7 @@ const parse = (s: string) => Number(s.replace(",", "."));
 
 export default function AddFoodScreen() {
   const params = useLocalSearchParams<{ date: string; meal?: string; tab?: string }>();
-  const [tab, setTab] = useState<Tab>(params.tab === "barcode" ? "barcode" : "search");
+  const [tab, setTab] = useState<Tab>(params.tab === "barcode" ? "barcode" : "quick");
   const [meal, setMeal] = useState<Meal>(MEAL_ORDER.includes(params.meal as Meal) ? (params.meal as Meal) : "lunch");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>();
@@ -51,12 +65,23 @@ export default function AddFoodScreen() {
     router.back();
   };
 
+  const addMeal = async (id: string) => {
+    setBusy(true);
+    setError(undefined);
+    const res = await api.action<{ ok: boolean }>("addSavedMeal", { id, date: params.date, meal }).catch(() => null);
+    setBusy(false);
+    if (!res?.ok) return setError("L'ajout a échoué. Réessaie.");
+    void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    router.back();
+  };
+
   return (
     <Screen padTop={false}>
       <Segmented options={MEAL_ORDER.map((m) => ({ key: m, label: MEAL_SHORT[m] }))} value={meal} onChange={setMeal} />
       <Segmented<Tab>
         options={[
-          { key: "search", label: "Rechercher" },
+          { key: "quick", label: "Favoris" },
+          { key: "search", label: "Chercher" },
           { key: "barcode", label: "Scanner" },
           { key: "custom", label: "Manuel" },
         ]}
@@ -67,6 +92,7 @@ export default function AddFoodScreen() {
         }}
       />
       {error && <Notice tone="danger">{error}</Notice>}
+      {tab === "quick" && <QuickAdd busy={busy} onAdd={add} onAddMeal={addMeal} />}
       {tab === "search" && <SearchFood busy={busy} onAdd={add} />}
       {tab === "barcode" && <ScanFood busy={busy} onAdd={add} />}
       {tab === "custom" && <CustomFood busy={busy} onAdd={add} />}
@@ -245,5 +271,76 @@ function CustomFood({ busy, onAdd }: { busy: boolean; onAdd: (entry: unknown) =>
         Ajouter
       </Button>
     </Card>
+  );
+}
+
+/** Favorites, recent foods and saved meals, added in one tap. */
+function QuickAdd({ busy, onAdd, onAddMeal }: { busy: boolean; onAdd: (entry: unknown) => void; onAddMeal: (id: string) => void }) {
+  const c = useColors();
+  const [data, setData] = useState<QuickFoods>();
+  const load = () => api.action<QuickFoods>("quickFoods").then(setData, () => setData({ favorites: [], recents: [], meals: [] }));
+  useEffect(() => {
+    void load();
+  }, []);
+  if (!data) return <ActivityIndicator color={c.basilic} />;
+
+  const star = async (f: QuickFood) => {
+    void Haptics.selectionAsync();
+    await api.action("toggleFavorite", { entry: f.entry }).catch(() => undefined);
+    await load();
+  };
+  const removeMeal = (m: QuickFoods["meals"][number]) =>
+    Alert.alert(`Supprimer « ${m.name} » ?`, undefined, [
+      { text: "Annuler", style: "cancel" },
+      { text: "Supprimer", style: "destructive", onPress: async () => { await api.action("deleteSavedMeal", { id: m.id }).catch(() => undefined); await load(); } },
+    ]);
+  const row = (f: QuickFood) => (
+    <View key={f.key} style={{ flexDirection: "row", alignItems: "center", gap: space.sm, paddingVertical: 8 }}>
+      <Pressable accessibilityRole="button" accessibilityLabel={f.favorite ? `Retirer ${f.name} des favoris` : `Ajouter ${f.name} aux favoris`} hitSlop={8} onPress={() => star(f)}>
+        <Star size={20} color={f.favorite ? c.miel : c.muted} fill={f.favorite ? c.miel : "transparent"} />
+      </Pressable>
+      <View style={{ flex: 1 }}>
+        <T numberOfLines={1} style={{ fontWeight: "600" }}>{f.name}</T>
+        <T variant="small">{f.detail}</T>
+      </View>
+      <Button small variant="secondary" disabled={busy} onPress={() => onAdd(f.entry)} icon={<Plus size={16} color={c.encre} />} accessibilityLabel={`Ajouter ${f.name}`} />
+    </View>
+  );
+
+  if (!data.favorites.length && !data.recents.length && !data.meals.length) {
+    return <T variant="small">Tes favoris, tes aliments récents et tes repas enregistrés apparaîtront ici. Touche l'étoile d'un aliment dans le journal pour l'ajouter aux favoris.</T>;
+  }
+  return (
+    <>
+      {data.meals.length > 0 && (
+        <Card style={{ gap: 0 }}>
+          <T variant="label">Repas enregistrés</T>
+          {data.meals.map((m) => (
+            <View key={m.id} style={{ flexDirection: "row", alignItems: "center", gap: space.sm, paddingVertical: 8 }}>
+              <View style={{ flex: 1 }}>
+                <T numberOfLines={1} style={{ fontWeight: "600" }}>{m.name}</T>
+                <T variant="small" numberOfLines={1}>{m.kcal} kcal · {m.names.join(", ")}</T>
+              </View>
+              <Pressable accessibilityRole="button" accessibilityLabel={`Supprimer ${m.name}`} hitSlop={8} onPress={() => removeMeal(m)} style={{ padding: 4 }}>
+                <Trash2 size={18} color={c.muted} />
+              </Pressable>
+              <Button small disabled={busy} onPress={() => onAddMeal(m.id)}>Ajouter</Button>
+            </View>
+          ))}
+        </Card>
+      )}
+      {data.favorites.length > 0 && (
+        <Card style={{ gap: 0 }}>
+          <T variant="label">Favoris</T>
+          {data.favorites.map(row)}
+        </Card>
+      )}
+      {data.recents.length > 0 && (
+        <Card style={{ gap: 0 }}>
+          <T variant="label">Récents</T>
+          {data.recents.map(row)}
+        </Card>
+      )}
+    </>
   );
 }

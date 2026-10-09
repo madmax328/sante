@@ -740,7 +740,8 @@
     "tabs": {
       "search": "Rechercher",
       "custom": "Saisie libre",
-      "barcode": "Code-barres"
+      "barcode": "Code-barres",
+      "quick": "Favoris"
     },
     "searchPlaceholder": "Ex. pomme, yaourt, poulet…",
     "perServing": "portion",
@@ -764,7 +765,26 @@
     "remove": "Supprimer",
     "fromPlan": "Menu",
     "servingsCount": "{n} portion(s)",
-    "water": "Hydratation"
+    "water": "Hydratation",
+    "quick": {
+      "favorites": "Favoris",
+      "recents": "Récents",
+      "meals": "Repas enregistrés",
+      "empty": "Tes favoris, tes aliments récents et tes repas enregistrés apparaîtront ici. Touche l'étoile d'un aliment du journal pour l'ajouter aux favoris.",
+      "star": "Ajouter {name} aux favoris",
+      "unstar": "Retirer {name} des favoris",
+      "addOne": "Ajouter {name}",
+      "addMeal": "Ajouter",
+      "deleteMeal": "Supprimer le repas {name}",
+      "deleteConfirm": "Supprimer le repas enregistré « {name} » ?",
+      "copyYesterday": "Copier d'hier",
+      "saveMeal": "Enregistrer ce repas",
+      "savePrompt": "Nom du repas (ex. Mon petit-déjeuner habituel)",
+      "saved": "Repas « {name} » enregistré : retrouve-le dans l'onglet Favoris.",
+      "saveError": "Impossible d'enregistrer ce repas (50 repas au maximum).",
+      "copied": "{n} aliment(s) copié(s) depuis hier.",
+      "nothingYesterday": "Rien à copier : ce repas était vide hier."
+    }
   },
   "sport": {
     "title": "Sport",

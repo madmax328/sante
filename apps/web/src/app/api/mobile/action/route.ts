@@ -44,6 +44,12 @@ const ACTIONS: Record<string, Handler> = {
   addFood: (i) => journal.addFoodAction(i),
   removeFood: (i) => journal.removeFoodAction(i),
   lookupBarcode: (i) => journal.lookupBarcodeAction(String(i?.code ?? "")),
+  quickFoods: () => journal.quickFoodsAction(),
+  toggleFavorite: (i) => journal.toggleFavoriteAction(i),
+  saveMeal: (i) => journal.saveMealAction(i),
+  deleteSavedMeal: (i) => journal.deleteSavedMealAction(i),
+  addSavedMeal: (i) => journal.addSavedMealAction(i),
+  copyMeal: (i) => journal.copyMealAction(i),
 
   setPantryItem: (i) => pantry.setPantryItemAction(i),
   addMeasurement: (i) => progress.addMeasurementAction(i),

@@ -2,7 +2,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { MEAL_TYPES, type MealType } from "@weeko/engine";
 import { WaterTracker } from "@/components/app-client";
-import { AddFood, RemoveEntry } from "@/components/journal-client";
+import { AddFood, FavoriteEntry, MealTools, RemoveEntry } from "@/components/journal-client";
+import { favorites, inputFromLog, keyOf } from "@/lib/journal";
 import { Badge, Card, PageHeader, Progress } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { requireContext } from "@/lib/app-user";
@@ -28,7 +29,12 @@ export default async function JournalPage({ searchParams }: PageProps<"/[locale]
   const t = await getTranslations("journal");
   const e = await getTranslations("enums");
   const format = await getFormatter();
-  const log = await getLog(userId, date);
+  const [log, fav] = await Promise.all([getLog(userId, date), favorites().findOne({ _id: userId })]);
+  const favKeys = new Set((fav?.items ?? []).map((i) => i.key));
+  const isFavorite = (x: (typeof log.entries)[number]) => {
+    const input = x.kind === "planned" ? null : inputFromLog(x);
+    return !!input && favKeys.has(keyOf(input));
+  };
   const target = uc.self.targets;
   const hidden = !!uc.health.numbersHidden;
   const totals = log.entries.reduce(
@@ -97,11 +103,13 @@ export default async function JournalPage({ searchParams }: PageProps<"/[locale]
                           {!hidden && `${x.kcal} kcal · ${x.protein} g prot.`}
                         </p>
                       </div>
+                      {x.kind !== "planned" && <FavoriteEntry date={date} id={x.id} name={x.name} initial={isFavorite(x)} />}
                       <RemoveEntry date={date} id={x.id} />
                     </li>
                   ))}
                 </ul>
               )}
+              <MealTools date={date} meal={m} yesterday={addDays(date, -1)} hasEntries={entries.length > 0} />
             </Card>
           );
         })}

@@ -229,7 +229,7 @@ export async function getRecipeEvents(userId: string, sinceDays = 120) {
 
 /** Every piece of data stored about a user, decrypted, for the export. */
 export async function exportAllData(userId: string) {
-  const [profile, healthData, allPlans, pantry, allLogs, allMeasurements, allWorkouts, allEvents, coach] = await Promise.all([
+  const [profile, healthData, allPlans, pantry, allLogs, allMeasurements, allWorkouts, allEvents, coach, favorites, meals] = await Promise.all([
     getProfile(userId),
     getHealth(userId),
     plans().find({ userId }, { projection: { _id: 0 } }).toArray(),
@@ -239,6 +239,8 @@ export async function exportAllData(userId: string) {
     workouts().find({ userId }, { projection: { _id: 0 } }).toArray(),
     events().find({ userId }, { projection: { _id: 0 } }).toArray(),
     db.collection("coach_messages").find({ userId }, { projection: { _id: 0 } }).toArray(),
+    db.collection("journal_favorites").findOne({ _id: userId as never }, { projection: { _id: 0 } }),
+    db.collection("saved_meals").find({ userId }, { projection: { _id: 0, userId: 0 } }).toArray(),
   ]);
   return {
     exportedAt: new Date().toISOString(),
@@ -251,6 +253,8 @@ export async function exportAllData(userId: string) {
     workouts: allWorkouts,
     recipeEvents: allEvents,
     coachMessages: coach,
+    journalFavorites: favorites?.items ?? [],
+    savedMeals: meals,
   };
 }
 
@@ -266,6 +270,8 @@ export async function deleteAllData(userId: string): Promise<void> {
     workouts().deleteMany({ userId }),
     events().deleteMany({ userId }),
     db.collection("coach_messages").deleteMany({ userId }),
+    db.collection("journal_favorites").deleteOne({ _id: userId as never }),
+    db.collection("saved_meals").deleteMany({ userId }),
   ]);
   // Better Auth collections store ids as ObjectId.
   const { ObjectId } = await import("mongodb");

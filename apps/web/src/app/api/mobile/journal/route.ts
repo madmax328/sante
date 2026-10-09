@@ -1,5 +1,6 @@
 import { MEAL_TYPES, type MealType } from "@weeko/engine";
-import { isValidDate } from "@/lib/dates";
+import { addDays, isValidDate } from "@/lib/dates";
+import { favorites, inputFromLog, keyOf } from "@/lib/journal";
 import { contextFor, mobileRoute } from "@/lib/mobile";
 import { getLog } from "@/lib/repo";
 
@@ -17,7 +18,8 @@ export const GET = mobileRoute(async (req, userId) => {
   const uc = await contextFor(userId);
   const asked = new URL(req.url).searchParams.get("date");
   const date = asked && isValidDate(asked) && asked <= uc.today ? asked : uc.today;
-  const log = await getLog(userId, date);
+  const [log, fav] = await Promise.all([getLog(userId, date), favorites().findOne({ _id: userId })]);
+  const favKeys = new Set((fav?.items ?? []).map((i) => i.key));
   const hidden = !!uc.health.numbersHidden;
   const t = uc.self.targets;
   const totals = log.entries.reduce(
@@ -27,6 +29,7 @@ export const GET = mobileRoute(async (req, userId) => {
   const hour = Number(new Intl.DateTimeFormat("fr-FR", { hour: "numeric", hour12: false, timeZone: uc.profile.timeZone }).format(new Date()));
   return {
     date,
+    yesterday: addDays(date, -1),
     today: uc.today,
     hidden,
     defaultMeal: date === uc.today ? currentMeal(hour) : "dinner",
@@ -36,7 +39,10 @@ export const GET = mobileRoute(async (req, userId) => {
       meal,
       entries: log.entries
         .filter((x) => x.meal === meal)
-        .map((x) => ({ id: x.id, kind: x.kind, name: x.name, amount: x.amount, kcal: hidden ? null : x.kcal, protein: hidden ? null : x.protein })),
+        .map((x) => {
+          const input = x.kind === "planned" ? null : inputFromLog(x);
+          return { id: x.id, kind: x.kind, name: x.name, amount: x.amount, kcal: hidden ? null : x.kcal, protein: hidden ? null : x.protein, favorite: !!input && favKeys.has(keyOf(input)) };
+        }),
     })),
     water: { ml: log.waterMl ?? 0, target: t.waterMl },
   };

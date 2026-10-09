@@ -2,12 +2,19 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Barcode, Camera, Loader2, Plus, Search, Trash2 } from "lucide-react";
+import { Barcode, BookmarkPlus, Camera, CopyPlus, Loader2, Plus, Search, Star, Trash2 } from "lucide-react";
 import type { MealType } from "@weeko/engine";
 import { useRouter } from "@/i18n/navigation";
 import {
   addFoodAction,
+  addSavedMealAction,
+  copyMealAction,
+  deleteSavedMealAction,
   lookupBarcodeAction,
+  quickFoodsAction,
+  saveMealAction,
+  toggleFavoriteAction,
+  type QuickFoods,
   removeFoodAction,
   searchFoodsAction,
   type BarcodeProduct,
@@ -39,13 +46,13 @@ export function RemoveEntry({ date, id }: { date: string; id: string }) {
   );
 }
 
-type Tab = "search" | "custom" | "barcode";
+type Tab = "quick" | "search" | "custom" | "barcode";
 
 export function AddFood({ date, defaultMeal }: { date: string; defaultMeal: MealType }) {
   const t = useTranslations("journal");
   const e = useTranslations("enums");
   const router = useRouter();
-  const [tab, setTab] = useState<Tab>("search");
+  const [tab, setTab] = useState<Tab>("quick");
   const [meal, setMeal] = useState<MealType>(defaultMeal);
   const [query, setQuery] = useState("");
   const [hits, setHits] = useState<FoodHit[]>([]);
@@ -92,13 +99,15 @@ export function AddFood({ date, defaultMeal }: { date: string; defaultMeal: Meal
           {MEALS.map((m) => <option key={m} value={m}>{e(`meal.${m}`)}</option>)}
         </Select>
         <div className="flex rounded-full border border-line bg-surface p-1" role="tablist">
-          {(["search", "custom", "barcode"] as const).map((k) => (
+          {(["quick", "search", "custom", "barcode"] as const).map((k) => (
             <button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => { setTab(k); setMessage(undefined); }} className={cx("rounded-full px-3 py-1 text-sm font-semibold", tab === k ? "bg-basilic text-surface" : "text-muted")}>
               {t(`tabs.${k}`)}
             </button>
           ))}
         </div>
       </div>
+
+      {tab === "quick" && <QuickAdd date={date} meal={meal} onAdded={() => { setMessage(t("added")); router.refresh(); }} />}
 
       {tab === "search" && (
         <div className="grid gap-3">
@@ -252,5 +261,126 @@ function CameraScan({ onCode }: { onCode: (code: string) => void }) {
       <Button type="button" variant="secondary" onClick={() => setActive(!active)}><Camera className="size-4" /> {active ? t("stopCamera") : t("scan")}</Button>
       {active && <video ref={video} className="mt-2 w-full max-w-sm rounded-2xl" muted playsInline />}
     </>
+  );
+}
+
+/** Favorites, recent foods and saved meals: added in one tap. */
+function QuickAdd({ date, meal, onAdded }: { date: string; meal: MealType; onAdded: () => void }) {
+  const t = useTranslations("journal.quick");
+  const [data, setData] = useState<QuickFoods>();
+  const [pending, start] = useTransition();
+  const load = () => quickFoodsAction().then(setData, () => setData({ favorites: [], recents: [], meals: [] }));
+  useEffect(() => {
+    void load();
+  }, []);
+  if (!data) return <p className="text-sm text-muted"><Loader2 className="inline size-4 animate-spin" /></p>;
+  const empty = !data.favorites.length && !data.recents.length && !data.meals.length;
+  const add = (entry: QuickFoods["favorites"][number]["entry"]) =>
+    start(async () => {
+      const res = await addFoodAction({ date, meal, entry });
+      if (res.ok) onAdded();
+    });
+  const star = (entry: QuickFoods["favorites"][number]["entry"]) =>
+    start(async () => {
+      await toggleFavoriteAction({ entry });
+      await load();
+    });
+  const Row = ({ f }: { f: QuickFoods["favorites"][number] }) => (
+    <li className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-riz">
+      <button type="button" onClick={() => star(f.entry)} disabled={pending} aria-label={f.favorite ? t("unstar", { name: f.name }) : t("star", { name: f.name })} aria-pressed={f.favorite} className="p-1">
+        <Star className={cx("size-4", f.favorite ? "fill-miel text-miel" : "text-muted")} />
+      </button>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate font-semibold">{f.name}</span>
+        <span className="text-xs text-muted num">{f.detail}</span>
+      </span>
+      <Button size="sm" variant="secondary" disabled={pending} onClick={() => add(f.entry)} aria-label={t("addOne", { name: f.name })}><Plus className="size-4" /></Button>
+    </li>
+  );
+  return (
+    <div className="grid gap-4">
+      {empty && <p className="text-sm text-muted">{t("empty")}</p>}
+      {data.meals.length > 0 && (
+        <section className="grid gap-1">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">{t("meals")}</h3>
+          <ul className="grid gap-1">
+            {data.meals.map((m) => (
+              <li key={m.id} className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-riz">
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-semibold">{m.name}</span>
+                  <span className="block truncate text-xs text-muted num">{m.kcal} kcal · {m.names.join(", ")}</span>
+                </span>
+                <Button size="sm" disabled={pending} onClick={() => start(async () => { const res = await addSavedMealAction({ id: m.id, date, meal }); if (res.ok) onAdded(); })}>
+                  <Plus className="size-4" /> {t("addMeal")}
+                </Button>
+                <button type="button" aria-label={t("deleteMeal", { name: m.name })} disabled={pending} onClick={() => window.confirm(t("deleteConfirm", { name: m.name })) && start(async () => { await deleteSavedMealAction({ id: m.id }); await load(); })} className="p-1 text-muted hover:text-danger">
+                  <Trash2 className="size-4" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {data.favorites.length > 0 && (
+        <section className="grid gap-1">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">{t("favorites")}</h3>
+          <ul className="grid gap-1">{data.favorites.map((f) => <Row key={f.key} f={f} />)}</ul>
+        </section>
+      )}
+      {data.recents.length > 0 && (
+        <section className="grid gap-1">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">{t("recents")}</h3>
+          <ul className="grid max-h-80 gap-1 overflow-y-auto">{data.recents.map((f) => <Row key={f.key} f={f} />)}</ul>
+        </section>
+      )}
+    </div>
+  );
+}
+
+/** Star on a journal line: adds the food to the favorites. */
+export function FavoriteEntry({ date, id, name, initial }: { date: string; id: string; name: string; initial: boolean }) {
+  const t = useTranslations("journal.quick");
+  const [on, setOn] = useState(initial);
+  const [pending, start] = useTransition();
+  return (
+    <button
+      type="button"
+      disabled={pending}
+      aria-pressed={on}
+      aria-label={on ? t("unstar", { name }) : t("star", { name })}
+      onClick={() => start(async () => { const res = await toggleFavoriteAction({ date, id }); if (res.ok) setOn(!!res.favorite); })}
+      className="p-1.5"
+    >
+      <Star className={cx("size-4", on ? "fill-miel text-miel" : "text-muted")} />
+    </button>
+  );
+}
+
+/** "Copier d'hier" and "Enregistrer ce repas" under each meal of the journal. */
+export function MealTools({ date, meal, yesterday, hasEntries }: { date: string; meal: MealType; yesterday: string; hasEntries: boolean }) {
+  const t = useTranslations("journal.quick");
+  const router = useRouter();
+  const [pending, start] = useTransition();
+  const [note, setNote] = useState<string>();
+  const copy = () =>
+    start(async () => {
+      const res = await copyMealAction({ fromDate: yesterday, meal, toDate: date });
+      setNote(res.ok && res.added ? t("copied", { n: res.added }) : t("nothingYesterday"));
+      router.refresh();
+    });
+  const save = () => {
+    const name = window.prompt(t("savePrompt"));
+    if (!name?.trim()) return;
+    start(async () => {
+      const res = await saveMealAction({ date, meal, name: name.trim() });
+      setNote(res.ok ? t("saved", { name: name.trim() }) : t("saveError"));
+    });
+  };
+  return (
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-sm">
+      <button type="button" onClick={copy} disabled={pending} className="inline-flex items-center gap-1 font-semibold text-basilic"><CopyPlus className="size-4" /> {t("copyYesterday")}</button>
+      {hasEntries && <button type="button" onClick={save} disabled={pending} className="inline-flex items-center gap-1 font-semibold text-basilic"><BookmarkPlus className="size-4" /> {t("saveMeal")}</button>}
+      {note && <span className="w-full text-xs text-muted" role="status">{note}</span>}
+    </div>
   );
 }
