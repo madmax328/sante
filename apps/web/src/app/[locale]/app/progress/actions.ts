@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { addProgressPhoto, deleteProgressPhoto, listProgressPhotos, type AddPhotoResult, type ProgressPhoto } from "@/lib/progress-photos";
 import { deleteMeasurement, getHealth, saveHealth, saveMeasurement } from "@/lib/repo";
 import { requireUserId } from "@/lib/session";
 
@@ -27,4 +28,30 @@ export async function deleteMeasurementAction(date: string): Promise<{ ok: boole
   await deleteMeasurement(userId, date);
   revalidatePath("/[locale]/app", "layout");
   return { ok: true };
+}
+
+const b64 = z.string().max(1_300_000).regex(/^[A-Za-z0-9+/=]+$/);
+
+export async function addProgressPhotoAction(input: { date: string; full: string; thumb: string; width: number; height: number }): Promise<AddPhotoResult> {
+  const userId = await requireUserId();
+  const parsed = z
+    .object({ date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), full: b64, thumb: b64, width: z.number().min(1).max(5000), height: z.number().min(1).max(5000) })
+    .safeParse(input);
+  if (!parsed.success) return { ok: false, error: "invalid" };
+  const res = await addProgressPhoto(userId, parsed.data);
+  revalidatePath("/[locale]/app/progress");
+  return res;
+}
+
+export async function listProgressPhotosAction(): Promise<ProgressPhoto[]> {
+  return listProgressPhotos(await requireUserId());
+}
+
+export async function deleteProgressPhotoAction(input: { id: string }): Promise<{ ok: boolean }> {
+  const userId = await requireUserId();
+  const id = String(input?.id ?? "");
+  if (!/^[0-9a-f-]{36}$/.test(id)) return { ok: false };
+  const ok = await deleteProgressPhoto(userId, id);
+  revalidatePath("/[locale]/app/progress");
+  return { ok };
 }

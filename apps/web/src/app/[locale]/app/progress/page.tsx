@@ -1,6 +1,8 @@
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { GenerateWeekButton } from "@/components/app-client";
 import { DeleteMeasurement, MeasurementForm } from "@/components/progress-client";
+import { ProgressPhotos } from "@/components/progress-photos-client";
+import { listProgressPhotos } from "@/lib/progress-photos";
 import { Card, EmptyState, LinkButton, PageHeader } from "@/components/ui";
 import { WeightChart } from "@/components/weight-chart";
 import { requireContext } from "@/lib/app-user";
@@ -43,6 +45,13 @@ export default async function ProgressPage() {
           )}
           <p className="text-xs text-muted">{t("trendNote")}</p>
           <MeasurementForm today={uc.today} />
+        </Card>
+      )}
+
+      {!hidden && (
+        <Card className="grid gap-4">
+          <h2 className="text-lg font-bold">{t("photos.title")}</h2>
+          <ProgressPhotos photos={await listProgressPhotos(userId)} today={uc.today} />
         </Card>
       )}
 

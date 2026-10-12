@@ -1,3 +1,4 @@
+import { requestLocale, tr } from "@/lib/locale";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { exercises } from "@weeko/catalog";
@@ -10,6 +11,7 @@ import { can } from "@/lib/premium";
 import { getWorkoutWeek } from "@/lib/repo";
 
 export default async function SessionPage({ params }: PageProps<"/[locale]/app/sport/[day]">) {
+  const loc = await requestLocale();
   const { day: dayParam } = await params;
   const day = Number(dayParam);
   if (!Number.isInteger(day) || day < 0 || day > 6) notFound();
@@ -23,19 +25,19 @@ export default async function SessionPage({ params }: PageProps<"/[locale]/app/s
   const steps: GuidedStep[] = [];
   for (const w of session.warmup) {
     const x = byId.get(w.exerciseId);
-    if (x) steps.push({ exerciseId: x.id, name: `${t("warmup")} · ${x.name.fr}`, amount: w.amount, unit: "seconds", restSec: 0, round: 1, rounds: 1 });
+    if (x) steps.push({ exerciseId: x.id, name: `${t("warmup")} · ${tr(x.name, loc)}`, amount: w.amount, unit: "seconds", restSec: 0, round: 1, rounds: 1 });
   }
   for (let r = 1; r <= session.rounds; r++) {
     for (const b of session.blocks) {
       const x = byId.get(b.exerciseId);
-      if (x) steps.push({ exerciseId: x.id, name: x.name.fr, amount: b.amount, unit: x.unit, restSec: b.restSec, round: r, rounds: session.rounds });
+      if (x) steps.push({ exerciseId: x.id, name: tr(x.name, loc), amount: b.amount, unit: x.unit, restSec: b.restSec, round: r, rounds: session.rounds });
     }
   }
 
   return (
     <div className="grid gap-6">
       <Link href="/app/sport" className="text-sm font-semibold text-muted hover:text-encre">← {t("back")}</Link>
-      <PageHeader title={session.title.fr} subtitle={t("sessionSubtitle", { minutes: session.minutes, rounds: session.rounds })} />
+      <PageHeader title={tr(session.title, loc)} subtitle={t("sessionSubtitle", { minutes: session.minutes, rounds: session.rounds })} />
       <GuidedSession steps={steps} day={day} />
       <p className="text-sm text-muted">{t("safety")}</p>
       <div className="grid gap-4 md:grid-cols-2">
@@ -46,17 +48,17 @@ export default async function SessionPage({ params }: PageProps<"/[locale]/app/s
           return (
             <Card key={`${b.exerciseId}-${i}`} className="grid content-start gap-3">
               <div className="flex items-baseline justify-between gap-2">
-                <h2 className="text-lg font-bold">{x.name.fr}</h2>
+                <h2 className="text-lg font-bold">{tr(x.name, loc)}</h2>
                 <span className="text-sm font-semibold text-basilic num">
                   {x.unit === "seconds" ? `${b.amount} s` : t("reps", { n: b.amount })}{b.restSec ? ` · ${t("restShort", { s: b.restSec })}` : ""}
                 </span>
               </div>
-              <ExerciseDemo exerciseId={x.id} label={t("demo", { name: x.name.fr })} className="aspect-[10/9] max-h-56" />
+              <ExerciseDemo exerciseId={x.id} label={t("demo", { name: tr(x.name, loc) })} className="aspect-[10/9] max-h-56" />
               <ol className="grid list-decimal gap-1 pl-5 text-sm">
-                {x.steps.map((s, k) => <li key={k}>{s.fr}</li>)}
+                {x.steps.map((s, k) => <li key={k}>{tr(s, loc)}</li>)}
               </ol>
-              {x.tips.length > 0 && <p className="rounded-xl bg-riz p-3 text-sm"><strong>{t("tip")} :</strong> {x.tips.map((s) => s.fr).join(" ")}</p>}
-              {easier && <p className="text-sm text-muted">{t("easier", { name: easier.name.fr })}</p>}
+              {x.tips.length > 0 && <p className="rounded-xl bg-riz p-3 text-sm"><strong>{t("tip")} :</strong> {x.tips.map((s) => tr(s, loc)).join(" ")}</p>}
+              {easier && <p className="text-sm text-muted">{t("easier", { name: tr(easier.name, loc) })}</p>}
             </Card>
           );
         })}

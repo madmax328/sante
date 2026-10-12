@@ -2,7 +2,9 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { adminSignIn, adminSignOut } from "@/lib/admin-auth";
+import { revalidatePath } from "next/cache";
+import { adminSignIn, adminSignOut, isAdmin } from "@/lib/admin-auth";
+import { stepRecipeTranslation } from "@/lib/recipe-i18n";
 
 const MESSAGES = {
   invalid: "E-mail ou mot de passe incorrect.",
@@ -20,4 +22,11 @@ export async function adminLoginAction(_prev: string | undefined, form: FormData
 export async function adminLogoutAction(): Promise<void> {
   await adminSignOut();
   redirect("/admin/login");
+}
+
+/** Starts the English translation of the recipes, or collects a finished batch. */
+export async function translateRecipesAction(): Promise<void> {
+  if (!(await isAdmin())) redirect("/admin/login");
+  await stepRecipeTranslation();
+  revalidatePath("/admin");
 }

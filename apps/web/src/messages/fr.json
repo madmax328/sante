@@ -741,7 +741,8 @@
       "search": "Rechercher",
       "custom": "Saisie libre",
       "barcode": "Code-barres",
-      "quick": "Favoris"
+      "quick": "Favoris",
+      "photo": "Photo"
     },
     "searchPlaceholder": "Ex. pomme, yaourt, poulet…",
     "perServing": "portion",
@@ -784,6 +785,31 @@
       "saveError": "Impossible d'enregistrer ce repas (50 repas au maximum).",
       "copied": "{n} aliment(s) copié(s) depuis hier.",
       "nothingYesterday": "Rien à copier : ce repas était vide hier."
+    },
+    "photo": {
+      "intro": "Photographie ton assiette (de préférence vue de dessus) : Sorloo reconnaît les aliments et estime les quantités. Tu vérifies, puis tout s'ajoute à ton journal.",
+      "choose": "Prendre ou choisir une photo",
+      "retake": "Une autre photo",
+      "analyzing": "Analyse en cours…",
+      "photoAlt": "Photo du repas",
+      "check": "Vérifie et corrige",
+      "toCheck": "à vérifier",
+      "gramsOf": "Quantité de {name} en grammes",
+      "remove": "Retirer {name}",
+      "estimates": "Les quantités sont des estimations : ajuste-les si besoin.",
+      "addAll": "Ajouter {n, plural, one {# aliment} other {# aliments}} · {kcal} kcal",
+      "premiumTitle": "Photographie ton assiette, Sorloo note le reste",
+      "premiumText": "La reconnaissance des repas par photo fait partie de Premium.",
+      "premiumLink": "Voir Premium",
+      "errors": {
+        "not_food": "Je ne vois pas de repas sur cette photo. Essaie avec l'assiette bien visible, vue de dessus.",
+        "unclear": "La photo n'est pas assez nette pour reconnaître les aliments. Réessaie avec plus de lumière.",
+        "unavailable": "L'analyse n'est pas disponible pour le moment. Réessaie dans un instant ou ajoute tes aliments à la main.",
+        "premium": "La reconnaissance des repas par photo fait partie de Premium.",
+        "quota": "Tu as utilisé toutes tes analyses IA de ce mois-ci. Elles reviennent le 1er du mois.",
+        "invalid": "Cette photo n'a pas pu être envoyée. Essaie avec une autre (JPEG ou PNG).",
+        "add": "L'ajout a échoué. Réessaie."
+      }
     }
   },
   "sport": {
@@ -842,7 +868,20 @@
     "add": "Enregistrer",
     "invalid": "Indique au moins un poids ou un tour de taille valide.",
     "history": "Historique",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "photos": {
+      "title": "Photos de progression",
+      "privacy": "Facultatives et privées : elles sont chiffrées et visibles uniquement par toi. Une photo par semaine, même endroit, même lumière, suffit pour voir l'évolution.",
+      "before": "Avant",
+      "now": "Maintenant",
+      "alt": "Photo du {date}",
+      "add": "Ajouter une photo",
+      "close": "Fermer",
+      "delete": "Supprimer cette photo",
+      "deleteConfirm": "Supprimer la photo du {date} ?",
+      "limit": "Tu as atteint 100 photos. Supprime-en une pour en ajouter une nouvelle.",
+      "error": "Cette photo n'a pas pu être enregistrée. Essaie avec une autre."
+    }
   },
   "review": {
     "lastWeek": "Bilan de la semaine dernière",

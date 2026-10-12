@@ -15,6 +15,7 @@ export type Feature =
   | "unlimited_replacements"
   | "ai_adjust"
   | "coach"
+  | "meal_photo"
   | "sport"
   | "family"
   | "weekly_review"

@@ -1,23 +1,25 @@
+import { intlLocale, t } from "./i18n";
+
 export const MEAL_LABEL: Record<string, string> = {
-  breakfast: "Petit-déjeuner",
-  lunch: "Déjeuner",
-  snack: "Collation",
-  dinner: "Dîner",
+  breakfast: t("Petit-déjeuner", "Breakfast"),
+  lunch: t("Déjeuner", "Lunch"),
+  snack: t("Collation", "Snack"),
+  dinner: t("Dîner", "Dinner"),
 };
 
-export const DAY_LABEL = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+export const DAY_LABEL = t("Lundi Mardi Mercredi Jeudi Vendredi Samedi Dimanche", "Monday Tuesday Wednesday Thursday Friday Saturday Sunday").split(" ");
 
-const nf = (d = 0) => new Intl.NumberFormat("fr-FR", { maximumFractionDigits: d });
+const nf = (d = 0) => new Intl.NumberFormat(intlLocale, { maximumFractionDigits: d });
 export const num = (n: number, d = 0) => nf(d).format(n);
-export const euro = (n: number) => new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(n);
+export const euro = (n: number) => new Intl.NumberFormat(intlLocale, { style: "currency", currency: "EUR" }).format(n);
 
 export function longDate(iso: string): string {
-  const s = new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "numeric", month: "long" }).format(new Date(`${iso}T12:00:00`));
+  const s = new Intl.DateTimeFormat(intlLocale, { weekday: "long", day: "numeric", month: "long" }).format(new Date(`${iso}T12:00:00`));
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 export function shortDate(iso: string): string {
-  return new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short" }).format(new Date(`${iso}T12:00:00`));
+  return new Intl.DateTimeFormat(intlLocale, { day: "numeric", month: "short" }).format(new Date(`${iso}T12:00:00`));
 }
 
 /** "250 g", "1,5 l", "2 œufs": quantities for one person and n servings. */

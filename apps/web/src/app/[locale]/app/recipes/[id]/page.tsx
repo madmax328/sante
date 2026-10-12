@@ -1,3 +1,4 @@
+import { requestLocale, tr } from "@/lib/locale";
 import { notFound } from "next/navigation";
 import { ChefHat, Clock, Flame, Snowflake, Wallet } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
@@ -12,12 +13,14 @@ import { requireContext } from "@/lib/app-user";
 import { getPhotoMap } from "@/lib/photos";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/app/recipes/[id]">) {
+  const loc = await requestLocale();
   const { id } = await params;
   const r = getCatalog().recipes.get(id);
-  return { title: r?.name.fr ?? "Recette" };
+  return { title: tr(r?.name, loc) ?? "Recette" };
 }
 
 export default async function RecipePage({ params }: PageProps<"/[locale]/app/recipes/[id]">) {
+  const loc = await requestLocale();
   const { id } = await params;
   const { uc } = await requireContext();
   const recipe = uc.ctx.catalog.recipes.get(id);
@@ -32,12 +35,12 @@ export default async function RecipePage({ params }: PageProps<"/[locale]/app/re
   const rating = uc.ctx.prefs.likedRecipes.includes(id) ? "liked" : uc.ctx.prefs.dislikedRecipes.includes(id) ? "disliked" : "none";
   const lines: IngredientLine[] = recipe.ingredients.map((ri) => {
     const ing = uc.ctx.catalog.ingredient(ri.id);
-    return { id: ri.id, name: ing.name.fr, plural: ing.plural?.fr, qty: ri.qty / recipe.servings, unit: ing.unit, staple: !!ing.staple };
+    return { id: ri.id, name: tr(ing.name, loc), plural: tr(ing.plural, loc), qty: ri.qty / recipe.servings, unit: ing.unit, staple: !!ing.staple };
   });
   const n = recipe.nutrition;
   // "Ail" reads better than "Gousse d'ail": use the picker's label when it names this one food.
   const nameOf = (ids: string[]) =>
-    ids.map((x) => (DISLIKE_GROUPS.find((g) => g.ingredients.length === 1 && g.ingredients[0] === x)?.name.fr ?? uc.ctx.catalog.ingredient(x).name.fr).toLowerCase()).join(", ");
+    ids.map((x) => (DISLIKE_GROUPS.find((g) => g.ingredients.length === 1 && g.ingredients[0] === x)?.name.fr ?? tr(uc.ctx.catalog.ingredient(x).name, loc)).toLowerCase()).join(", ");
   const omitted = recipe.omitted ?? [];
   const disliked = recipe.ingredients.map((i) => i.id).filter((x) => uc.ctx.prefs.dislikedIngredients?.includes(x));
 
@@ -55,8 +58,8 @@ export default async function RecipePage({ params }: PageProps<"/[locale]/app/re
             {recipe.diets.includes("vegan") ? <Badge tone="basilic">{e("diet.vegan")}</Badge> : recipe.diets.includes("vegetarian") ? <Badge tone="basilic">{e("diet.vegetarian")}</Badge> : null}
             {recipe.tags.includes("batch") && <Badge tone="miel">{t("batch")}</Badge>}
           </div>
-          <h1 className="text-3xl font-extrabold">{recipe.name.fr}</h1>
-          {recipe.description && <p className="text-muted">{recipe.description.fr}</p>}
+          <h1 className="text-3xl font-extrabold">{tr(recipe.name, loc)}</h1>
+          {recipe.description && <p className="text-muted">{tr(recipe.description, loc)}</p>}
           <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="rounded-2xl bg-surface p-3"><dt className="flex items-center gap-1 text-xs text-muted"><Clock className="size-3.5" />{t("time")}</dt><dd className="font-bold num">{recipe.totalMin} min</dd></div>
             <div className="rounded-2xl bg-surface p-3"><dt className="flex items-center gap-1 text-xs text-muted"><ChefHat className="size-3.5" />{t("difficulty")}</dt><dd className="font-bold">{t(`level${recipe.difficulty}`)}</dd></div>
@@ -89,7 +92,7 @@ export default async function RecipePage({ params }: PageProps<"/[locale]/app/re
             {recipe.steps.map((s, i) => (
               <li key={i} className="flex gap-3">
                 <span className="grid size-7 shrink-0 place-items-center rounded-full bg-basilic-soft font-display text-sm font-bold text-basilic">{i + 1}</span>
-                <p className="pt-0.5">{s.fr}</p>
+                <p className="pt-0.5">{tr(s, loc)}</p>
               </li>
             ))}
           </ol>

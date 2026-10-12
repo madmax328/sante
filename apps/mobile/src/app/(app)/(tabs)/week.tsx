@@ -7,6 +7,7 @@ import { Badge, Button, Card, EmptyState, ErrorView, Loading, Screen, T } from "
 import { api, useApi } from "@/lib/api";
 import { DAY_LABEL, euro, MEAL_LABEL, num, shortDate } from "@/lib/format";
 import { radius, space, useColors } from "@/lib/theme";
+import { t } from "@/lib/i18n";
 
 interface Week {
   weekStart: string;
@@ -34,13 +35,13 @@ export default function WeekScreen() {
   const [busy, setBusy] = useState<string>();
 
   if (loading && !data) return <Loading />;
-  if (!data) return <ErrorView message={error?.code === "network" ? "Pas de connexion internet." : "Le chargement a échoué."} onRetry={reload} />;
+  if (!data) return <ErrorView message={error?.code === "network" ? t("Pas de connexion internet.", "No internet connection.") : t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
 
   const generate = () =>
-    Alert.alert("Nouveau menu", "Refaire tous les repas de cette semaine ? Les repas pris dehors sont conservés.", [
-      { text: "Annuler", style: "cancel" },
+    Alert.alert(t("Nouveau menu", "New menu"), t("Refaire tous les repas de cette semaine ? Les repas pris dehors sont conservés.", "Redo all of this week's meals? Meals eaten out are kept."), [
+      { text: t("Annuler", "Cancel"), style: "cancel" },
       {
-        text: "Refaire",
+        text: t("Refaire", "Redo"),
         onPress: async () => {
           setBusy("all");
           await api.action("generateWeek", { weekStart: data.weekStart }).catch(() => undefined);
@@ -53,7 +54,7 @@ export default function WeekScreen() {
     setBusy(`${day}:${meal}`);
     const res = await api.action<{ ok: boolean; error?: string }>("replaceMeal", { day, meal, weekStart: data.weekStart }).catch(() => null);
     setBusy(undefined);
-    if (res?.error === "quota") Alert.alert("Remplacements gratuits utilisés", "Tu as utilisé tes 3 remplacements gratuits de la semaine. Ils sont illimités avec Sorloo Premium.");
+    if (res?.error === "quota") Alert.alert(t("Remplacements gratuits utilisés", "Free replacements used"), t("Tu as utilisé tes 3 remplacements gratuits de la semaine. Ils sont illimités avec Sorloo Premium.", "You've used your 3 free replacements this week. They're unlimited with Sorloo Premium."));
     await reload();
   };
 
@@ -61,20 +62,20 @@ export default function WeekScreen() {
     <Screen refreshing={refreshing} onRefresh={refresh}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
         <View>
-          <T variant="title">Ma semaine</T>
+          <T variant="title">{t("Ma semaine", "My week")}</T>
           <T variant="small">{shortDate(data.weekStart)} – {shortDate(addDays(data.weekStart, 6))}</T>
         </View>
         <View style={{ flexDirection: "row", gap: space.sm }}>
-          <Pressable accessibilityLabel="Semaine précédente" hitSlop={8} onPress={() => setStart(addDays(data.weekStart, -7))} style={{ padding: 8 }}><ChevronLeft color={c.encre} /></Pressable>
-          <Pressable accessibilityLabel="Semaine suivante" hitSlop={8} onPress={() => setStart(addDays(data.weekStart, 7))} style={{ padding: 8 }}><ChevronRight color={c.encre} /></Pressable>
+          <Pressable accessibilityLabel={t("Semaine précédente", "Previous week")} hitSlop={8} onPress={() => setStart(addDays(data.weekStart, -7))} style={{ padding: 8 }}><ChevronLeft color={c.encre} /></Pressable>
+          <Pressable accessibilityLabel={t("Semaine suivante", "Next week")} hitSlop={8} onPress={() => setStart(addDays(data.weekStart, 7))} style={{ padding: 8 }}><ChevronRight color={c.encre} /></Pressable>
         </View>
       </View>
 
       {!data.hasPlan ? (
         <EmptyState
-          title="Pas encore de menu"
-          text="Sorloo prépare les 7 jours de repas et la liste de courses."
-          action={<Button variant="accent" loading={busy === "all"} onPress={async () => { setBusy("all"); await api.action("generateWeek", { weekStart: data.weekStart }).catch(() => undefined); setBusy(undefined); await reload(); }}>Créer cette semaine</Button>}
+          title={t("Pas encore de menu", "No menu yet")}
+          text={t("Sorloo prépare les 7 jours de repas et la liste de courses.", "Sorloo prepares 7 days of meals and the shopping list.")}
+          action={<Button variant="accent" loading={busy === "all"} onPress={async () => { setBusy("all"); await api.action("generateWeek", { weekStart: data.weekStart }).catch(() => undefined); setBusy(undefined); await reload(); }}>{t("Créer cette semaine", "Create this week")}</Button>}
         />
       ) : (
         <>
@@ -82,18 +83,18 @@ export default function WeekScreen() {
             <Card>
               <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" }}>
                 <View>
-                  <T variant="label">Courses estimées</T>
+                  <T variant="label">{t("Courses estimées", "Estimated groceries")}</T>
                   <T variant="big">{euro(data.summary.cost)}</T>
                 </View>
                 {data.summary.avgKcal !== null && (
                   <View style={{ alignItems: "flex-end" }}>
-                    <T variant="label">Moyenne / jour</T>
+                    <T variant="label">{t("Moyenne / jour", "Average / day")}</T>
                     <T variant="h2">{num(data.summary.avgKcal)} kcal</T>
                   </View>
                 )}
               </View>
-              {data.summary.kept >= 5 && <T variant="small">dont {euro(data.summary.kept)} de produits qui te resteront pour la suite</T>}
-              <Button small variant="secondary" onPress={generate} loading={busy === "all"} icon={<RefreshCw size={16} color={c.encre} />} style={{ alignSelf: "flex-start" }}>Nouveau menu</Button>
+              {data.summary.kept >= 5 && <T variant="small">{t(`dont ${euro(data.summary.kept)} de produits qui te resteront pour la suite`, `including ${euro(data.summary.kept)} of food you'll have left for later`)}</T>}
+              <Button small variant="secondary" onPress={generate} loading={busy === "all"} icon={<RefreshCw size={16} color={c.encre} />} style={{ alignSelf: "flex-start" }}>{t("Nouveau menu", "New menu")}</Button>
             </Card>
           )}
           {data.days.map((d) => (
@@ -102,7 +103,7 @@ export default function WeekScreen() {
                 <View style={{ flexDirection: "row", gap: space.sm, alignItems: "center" }}>
                   <T variant="h2">{DAY_LABEL[d.day]}</T>
                   <T variant="small">{shortDate(d.date)}</T>
-                  {d.day === data.today && <Badge tone="abricot">Aujourd'hui</Badge>}
+                  {d.day === data.today && <Badge tone="abricot">{t("Aujourd'hui", "Today")}</Badge>}
                 </View>
                 {d.kcal !== null && <T variant="small">{num(d.kcal)} kcal</T>}
               </View>
@@ -114,19 +115,19 @@ export default function WeekScreen() {
                         <Thumb uri={m.photo} size={52} />
                         <View style={{ flex: 1, gap: 2 }}>
                           <T variant="label">{MEAL_LABEL[m.meal]}</T>
-                          <T variant="h3" numberOfLines={2}>{m.name ?? "Rien de prévu"}</T>
+                          <T variant="h3" numberOfLines={2}>{m.name ?? t("Rien de prévu", "Nothing planned")}</T>
                           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
-                            {m.kind === "leftover" && m.leftoverOf !== null && <Badge tone="miel">{`Restes de ${DAY_LABEL[m.leftoverOf]}`}</Badge>}
-                            {m.cookDouble && <Badge>Cuisiner en double</Badge>}
-                            {m.kind === "external" && <Badge tone="eau">Dehors</Badge>}
-                            {m.guests > 0 && <Badge tone="abricot">{`+${m.guests} invités`}</Badge>}
+                            {m.kind === "leftover" && m.leftoverOf !== null && <Badge tone="miel">{t(`Restes de ${DAY_LABEL[m.leftoverOf]}`, `${DAY_LABEL[m.leftoverOf]}'s leftovers`)}</Badge>}
+                            {m.cookDouble && <Badge>{t("Cuisiner en double", "Cook a double batch")}</Badge>}
+                            {m.kind === "external" && <Badge tone="eau">{t("Dehors", "Eating out")}</Badge>}
+                            {m.guests > 0 && <Badge tone="abricot">{t(`+${m.guests} invités`, `+${m.guests} guests`)}</Badge>}
                             {m.minutes !== null && <T variant="small">{m.minutes} min{m.cost !== null ? ` · ${euro(m.cost)}` : ""}</T>}
                           </View>
                         </View>
                       </Pressable>
                     </Link>
                     {m.kind === "recipe" && (
-                      <Pressable accessibilityLabel={`Remplacer ${MEAL_LABEL[m.meal]}`} hitSlop={8} onPress={() => replace(d.day, m.meal)} disabled={!!busy} style={{ padding: 6, opacity: busy === `${d.day}:${m.meal}` ? 0.4 : 1 }}>
+                      <Pressable accessibilityLabel={t(`Remplacer ${MEAL_LABEL[m.meal]}`, `Replace ${MEAL_LABEL[m.meal]}`)} hitSlop={8} onPress={() => replace(d.day, m.meal)} disabled={!!busy} style={{ padding: 6, opacity: busy === `${d.day}:${m.meal}` ? 0.4 : 1 }}>
                         <RefreshCw size={18} color={c.muted} />
                       </Pressable>
                     )}

@@ -5,6 +5,8 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@weeko/engine", "@weeko/catalog"],
+  // Meal and progress photos are sent to server actions (shrunk to ~0.3 MB first).
+  experimental: { serverActions: { bodySizeLimit: "4mb" } },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.pexels.com" },

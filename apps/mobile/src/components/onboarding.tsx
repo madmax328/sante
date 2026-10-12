@@ -5,6 +5,7 @@ import { api } from "@/lib/api";
 import { L } from "@/lib/labels";
 import { useMe } from "@/lib/me";
 import { space, useColors } from "@/lib/theme";
+import { t } from "@/lib/i18n";
 
 type Key<T> = keyof T & string;
 const toggle = <T,>(list: T[], v: T) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
@@ -81,13 +82,13 @@ export function Onboarding() {
   const index = STEPS.indexOf(step);
   const valid = (): string | null => {
     if (step === "you") {
-      if (!sex) return "Indique ton sexe (pour le calcul des besoins).";
-      if (!isoDate(birth)) return "Date de naissance au format JJ/MM/AAAA.";
+      if (!sex) return t("Indique ton sexe (pour le calcul des besoins).", "Tell us your sex (to calculate your needs).");
+      if (!isoDate(birth)) return t("Date de naissance au format JJ/MM/AAAA.", "Date of birth as DD/MM/YYYY.");
       const h = Number(height), w = Number(weight.replace(",", "."));
-      if (!(h >= 100 && h <= 250)) return "Taille en cm, entre 100 et 250.";
-      if (!(w >= 25 && w <= 350)) return "Poids en kg, entre 25 et 350.";
+      if (!(h >= 100 && h <= 250)) return t("Taille en cm, entre 100 et 250.", "Height in cm, between 100 and 250.");
+      if (!(w >= 25 && w <= 350)) return t("Poids en kg, entre 25 et 350.", "Weight in kg, between 25 and 350.");
     }
-    if (step === "health" && !consent) return "Ton accord est nécessaire pour calculer tes besoins.";
+    if (step === "health" && !consent) return t("Ton accord est nécessaire pour calculer tes besoins.", "Your consent is needed to calculate your needs.");
     return null;
   };
 
@@ -100,7 +101,7 @@ export function Onboarding() {
     const res = await api
       .action<{ ok: boolean; error?: string }>("completeOnboarding", {
         self: {
-          name: me.user.name || "Moi",
+          name: me.user.name || t("Moi", "Me"),
           sex,
           birthDate: isoDate(birth),
           heightCm: Number(height),
@@ -123,7 +124,7 @@ export function Onboarding() {
       .catch(() => null);
     setPending(false);
     if (!res?.ok) {
-      return setError(res?.error === "too_young" ? "Sorloo est réservé aux personnes de 15 ans et plus." : "L'enregistrement a échoué. Vérifie tes réponses et réessaie.");
+      return setError(res?.error === "too_young" ? t("Sorloo est réservé aux personnes de 15 ans et plus.", "Sorloo is for people aged 15 and over.") : t("L'enregistrement a échoué. Vérifie tes réponses et réessaie.", "Saving failed. Check your answers and try again."));
     }
     await reload();
   };
@@ -132,23 +133,23 @@ export function Onboarding() {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <Screen>
         <View style={{ gap: space.sm }}>
-          <T variant="label">Étape {index + 1} sur {STEPS.length}</T>
+          <T variant="label">{t(`Étape ${index + 1} sur ${STEPS.length}`, `Step ${index + 1} of ${STEPS.length}`)}</T>
           <ProgressBar value={index + 1} max={STEPS.length} />
         </View>
 
         {step === "you" && (
           <Card>
-            <T variant="title">Faisons connaissance</T>
-            <T variant="small">Pour calculer des quantités adaptées à toi.</T>
-            <Group label="Sexe">
-              <Chips<"female" | "male"> options={{ female: "Femme", male: "Homme" }} value={sex} onChange={setSex} />
+            <T variant="title">{t("Faisons connaissance", "Let's get to know you")}</T>
+            <T variant="small">{t("Pour calculer des quantités adaptées à toi.", "To calculate portions that suit you.")}</T>
+            <Group label={t("Sexe", "Sex")}>
+              <Chips<"female" | "male"> options={{ female: t("Femme", "Woman"), male: t("Homme", "Man") }} value={sex} onChange={setSex} />
             </Group>
-            <Field label="Date de naissance (JJ/MM/AAAA)" value={birth} onChangeText={setBirth} keyboardType="numbers-and-punctuation" placeholder="16/04/1990" />
+            <Field label={t("Date de naissance (JJ/MM/AAAA)", "Date of birth (DD/MM/YYYY)")} value={birth} onChangeText={setBirth} keyboardType="numbers-and-punctuation" placeholder="16/04/1990" />
             <View style={{ flexDirection: "row", gap: space.md }}>
-              <View style={{ flex: 1 }}><Field label="Taille (cm)" value={height} onChangeText={setHeight} keyboardType="number-pad" /></View>
-              <View style={{ flex: 1 }}><Field label="Poids (kg)" value={weight} onChangeText={setWeight} keyboardType="decimal-pad" /></View>
+              <View style={{ flex: 1 }}><Field label={t("Taille (cm)", "Height (cm)")} value={height} onChangeText={setHeight} keyboardType="number-pad" /></View>
+              <View style={{ flex: 1 }}><Field label={t("Poids (kg)", "Weight (kg)")} value={weight} onChangeText={setWeight} keyboardType="decimal-pad" /></View>
             </View>
-            <Group label="Activité au quotidien (hors sport)">
+            <Group label={t("Activité au quotidien (hors sport)", "Daily activity (outside workouts)")}>
               <Chips options={L.activity} value={activity} onChange={setActivity} />
             </Group>
           </Card>
@@ -156,13 +157,13 @@ export function Onboarding() {
 
         {step === "goal" && (
           <Card>
-            <T variant="title">Ton objectif</T>
+            <T variant="title">{t("Ton objectif", "Your goal")}</T>
             <Chips options={L.goal} value={goal} onChange={setGoal} />
             {(goal === "lose_weight" || goal === "gain_muscle") && (
               <>
-                <Field label="Poids visé (facultatif)" value={target} onChangeText={setTarget} keyboardType="decimal-pad" />
-                <Group label="Rythme">
-                  <Chips options={{ gentle: "Doux (recommandé)", moderate: "Modéré" }} value={pace} onChange={setPace} />
+                <Field label={t("Poids visé (facultatif)", "Target weight (optional)")} value={target} onChangeText={setTarget} keyboardType="decimal-pad" />
+                <Group label={t("Rythme", "Pace")}>
+                  <Chips options={{ gentle: t("Doux (recommandé)", "Gentle (recommended)"), moderate: t("Modéré", "Moderate") }} value={pace} onChange={setPace} />
                 </Group>
               </>
             )}
@@ -171,17 +172,17 @@ export function Onboarding() {
 
         {step === "health" && (
           <Card>
-            <T variant="title">Ta santé d'abord</T>
-            <T variant="small">Certaines situations demandent un suivi professionnel : on adapte le programme en conséquence.</T>
-            <Group label="Allergies et intolérances"><MultiChips options={L.allergen} value={allergies} onChange={setAllergies} /></Group>
-            {sex === "female" && <Group label="Grossesse ou allaitement"><Chips options={L.pregnancy} value={pregnancy} onChange={setPregnancy} /></Group>}
-            <Group label="Situations particulières (facultatif)" hint="Si tu coches une situation, Sorloo reste prudent et te recommande d'en parler à un professionnel de santé.">
+            <T variant="title">{t("Ta santé d'abord", "Your health first")}</T>
+            <T variant="small">{t("Certaines situations demandent un suivi professionnel : on adapte le programme en conséquence.", "Some situations call for professional follow-up: we adapt the programme accordingly.")}</T>
+            <Group label={t("Allergies et intolérances", "Allergies and intolerances")}><MultiChips options={L.allergen} value={allergies} onChange={setAllergies} /></Group>
+            {sex === "female" && <Group label={t("Grossesse ou allaitement", "Pregnancy or breastfeeding")}><Chips options={L.pregnancy} value={pregnancy} onChange={setPregnancy} /></Group>}
+            <Group label={t("Situations particulières (facultatif)", "Specific situations (optional)")} hint={t("Si tu coches une situation, Sorloo reste prudent et te recommande d'en parler à un professionnel de santé.", "If you tick a situation, Sorloo stays cautious and recommends you talk to a health professional.")}>
               <MultiChips options={L.medical} value={medical} onChange={setMedical} />
             </Group>
             <View style={{ flexDirection: "row", gap: space.md, alignItems: "flex-start" }}>
-              <Switch value={consent} onValueChange={setConsent} trackColor={{ true: c.basilic }} accessibilityLabel="Consentement données de santé" />
+              <Switch value={consent} onValueChange={setConsent} trackColor={{ true: c.basilic }} accessibilityLabel={t("Consentement données de santé", "Health data consent")} />
               <T variant="small" style={{ flex: 1 }}>
-                J'accepte que Sorloo traite mes données de santé (poids, taille, allergies, situations déclarées) pour personnaliser mes menus et mon programme. Ces données sont chiffrées, jamais vendues, et je peux retirer mon consentement ou les supprimer à tout moment.
+                {t("J'accepte que Sorloo traite mes données de santé (poids, taille, allergies, situations déclarées) pour personnaliser mes menus et mon programme. Ces données sont chiffrées, jamais vendues, et je peux retirer mon consentement ou les supprimer à tout moment.", "I agree that Sorloo processes my health data (weight, height, allergies, declared situations) to personalise my menus and programme. This data is encrypted, never sold, and I can withdraw my consent or delete it at any time.")}
               </T>
             </View>
           </Card>
@@ -189,36 +190,36 @@ export function Onboarding() {
 
         {step === "food" && (
           <Card>
-            <T variant="title">Tes habitudes</T>
-            <Group label="Régime" hint={diet === "flexitarian" ? "De la viande 3 fois par semaine au maximum." : undefined}><Chips options={L.diet} value={diet} onChange={setDiet} /></Group>
-            <Group label="Les légumes"><Chips options={{ more: "J'adore", normal: "Normal", less: "Pas trop" }} value={veggies} onChange={setVeggies} /></Group>
-            <Group label="À éviter"><MultiChips options={L.avoid} value={avoid} onChange={setAvoid} /></Group>
-            <Field label="Temps de cuisine max en semaine (min)" value={weekday} onChangeText={setWeekday} keyboardType="number-pad" />
-            <Group label="Équipement"><MultiChips options={L.equipment} value={equipment} onChange={setEquipment} /></Group>
+            <T variant="title">{t("Tes habitudes", "Your habits")}</T>
+            <Group label={t("Régime", "Diet")} hint={diet === "flexitarian" ? t("De la viande 3 fois par semaine au maximum.", "Meat 3 times a week at most.") : undefined}><Chips options={L.diet} value={diet} onChange={setDiet} /></Group>
+            <Group label={t("Les légumes", "Vegetables")}><Chips options={{ more: t("J'adore", "Love them"), normal: "Normal", less: t("Pas trop", "Not too many") }} value={veggies} onChange={setVeggies} /></Group>
+            <Group label={t("À éviter", "Avoid")}><MultiChips options={L.avoid} value={avoid} onChange={setAvoid} /></Group>
+            <Field label={t("Temps de cuisine max en semaine (min)", "Max cooking time on weekdays (min)")} value={weekday} onChangeText={setWeekday} keyboardType="number-pad" />
+            <Group label={t("Équipement", "Equipment")}><MultiChips options={L.equipment} value={equipment} onChange={setEquipment} /></Group>
             <View style={{ flexDirection: "row", gap: space.md, alignItems: "center" }}>
-              <Switch value={leftovers} onValueChange={setLeftovers} trackColor={{ true: c.basilic }} accessibilityLabel="Cuisiner une fois, manger deux fois" />
-              <T variant="small" style={{ flex: 1 }}>Cuisiner une fois, manger deux fois : certains dîners servent aussi de déjeuner le lendemain.</T>
+              <Switch value={leftovers} onValueChange={setLeftovers} trackColor={{ true: c.basilic }} accessibilityLabel={t("Cuisiner une fois, manger deux fois", "Cook once, eat twice")} />
+              <T variant="small" style={{ flex: 1 }}>{t("Cuisiner une fois, manger deux fois : certains dîners servent aussi de déjeuner le lendemain.", "Cook once, eat twice: some dinners also make the next day's lunch.")}</T>
             </View>
-            <T variant="small">Aliments refusés, foyer et budget : réglables ensuite depuis ton compte.</T>
+            <T variant="small">{t("Aliments refusés, foyer et budget : réglables ensuite depuis ton compte.", "Foods you don't eat, household and budget: you can set them later from your account.")}</T>
           </Card>
         )}
 
         {step === "sport" && (
           <Card>
-            <T variant="title">Le sport</T>
+            <T variant="title">{t("Le sport", "Workouts")}</T>
             <View style={{ flexDirection: "row", gap: space.md, alignItems: "center" }}>
-              <Switch value={sport} onValueChange={setSport} trackColor={{ true: c.basilic }} accessibilityLabel="Programme sportif" />
-              <T style={{ flex: 1 }}>Je veux un programme sportif adapté</T>
+              <Switch value={sport} onValueChange={setSport} trackColor={{ true: c.basilic }} accessibilityLabel={t("Programme sportif", "Workout programme")} />
+              <T style={{ flex: 1 }}>{t("Je veux un programme sportif adapté", "I want a workout programme that suits me")}</T>
             </View>
             {sport && (
               <>
-                <Group label="Niveau"><Chips options={L.level} value={level} onChange={setLevel} /></Group>
-                <Group label="Jours disponibles">
+                <Group label={t("Niveau", "Level")}><Chips options={L.level} value={level} onChange={setLevel} /></Group>
+                <Group label={t("Jours disponibles", "Available days")}>
                   <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
-                    {["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"].map((d, i) => <Chip key={d} label={d} active={days.includes(i)} onPress={() => setDays(toggle(days, i).sort())} />)}
+                    {t("Lun Mar Mer Jeu Ven Sam Dim", "Mon Tue Wed Thu Fri Sat Sun").split(" ").map((d, i) => <Chip key={d} label={d} active={days.includes(i)} onPress={() => setDays(toggle(days, i).sort())} />)}
                   </View>
                 </Group>
-                <Group label="Durée d'une séance">
+                <Group label={t("Durée d'une séance", "Workout length")}>
                   <View style={{ flexDirection: "row", gap: space.sm }}>
                     {[15, 20, 30, 45].map((m) => <Chip key={m} label={`${m} min`} active={minutes === m} onPress={() => setMinutes(m)} />)}
                   </View>
@@ -230,9 +231,9 @@ export function Onboarding() {
 
         {error && <Notice tone="danger">{error}</Notice>}
         <View style={{ flexDirection: "row", gap: space.md }}>
-          {index > 0 && <Button variant="ghost" onPress={() => setStep(STEPS[index - 1]!)}>Retour</Button>}
+          {index > 0 && <Button variant="ghost" onPress={() => setStep(STEPS[index - 1]!)}>{t("Retour", "Back")}</Button>}
           <Button variant={index === STEPS.length - 1 ? "accent" : "primary"} onPress={next} loading={pending} style={{ flex: 1 }}>
-            {index === STEPS.length - 1 ? "Créer ma semaine" : "Continuer"}
+            {index === STEPS.length - 1 ? t("Créer ma semaine", "Create my week") : t("Continuer", "Continue")}
           </Button>
         </View>
       </Screen>

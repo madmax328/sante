@@ -1,7 +1,8 @@
 import { Badge, Card, PageHeader } from "@/components/ui";
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/admin-auth";
-import { adminLogoutAction } from "./actions";
+import { adminLogoutAction, translateRecipesAction } from "./actions";
+import { translationStatus } from "@/lib/recipe-i18n";
 import { db } from "@/lib/db";
 import { env, features } from "@/lib/env";
 import { recentErrors } from "@/lib/errors";
@@ -52,6 +53,7 @@ export default async function AdminPage() {
     recentErrors(),
     storePriceStats(),
   ]);
+  const i18n = await translationStatus().catch(() => null);
   const plans = await profiles.find({ _id: { $in: latest.map((u) => String(u._id)) } }, { projection: { onboarded: 1, subscription: 1 } }).toArray();
   const byId = new Map(plans.map((p) => [p._id, p]));
 
@@ -135,6 +137,32 @@ export default async function AdminPage() {
           <div className="flex flex-wrap gap-2">
             {prices.brands.map((b) => <Badge key={b.brand}>{b.brand} · {b.ingredients}</Badge>)}
           </div>
+        )}
+      </Card>
+
+      <Card className="grid gap-3">
+        <h2 className="text-lg font-bold">Recettes en anglais</h2>
+        {!i18n ? (
+          <p className="text-sm text-muted">État indisponible.</p>
+        ) : (
+          <>
+            <p className="text-sm text-muted">
+              {i18n.done} recettes traduites sur {i18n.total}
+              {i18n.batch ? ` · traduction en cours (${i18n.batch.status === "ended" ? "terminée, à relever" : `${i18n.batch.processing} lots restants`}), lancée le ${fmt.format(i18n.batch.createdAt)}` : ""}
+            </p>
+            {!i18n.configured ? (
+              <p className="text-sm text-muted">Ajoute ANTHROPIC_API_KEY sur Vercel pour traduire les recettes.</p>
+            ) : (
+              i18n.done < i18n.total && (
+                <form action={translateRecipesAction}>
+                  <button type="submit" className="rounded-full bg-basilic px-4 py-2 text-sm font-semibold text-surface">
+                    {i18n.batch ? "Relever les traductions" : "Traduire les recettes manquantes"}
+                  </button>
+                </form>
+              )
+            )}
+            <p className="text-xs text-muted">{"La traduction passe par l'API Batch d'Anthropic (moitié prix, résultat en général en moins d'une heure). Le relevé est aussi fait chaque nuit automatiquement."}</p>
+          </>
         )}
       </Card>
 

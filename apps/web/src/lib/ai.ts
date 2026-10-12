@@ -5,6 +5,7 @@ import { z } from "zod";
 import { MEAL_TYPES, type MealType, type PlanAction } from "@weeko/engine";
 import { dayIndex } from "./dates";
 import { env } from "./env";
+import type { Locale } from "./locale";
 import type { UserContext } from "./planning";
 import type { StoredPlan } from "./types";
 
@@ -46,7 +47,7 @@ const SYSTEM = `Tu es le coach de Sorloo, une application qui organise la semain
 
 Ton rôle :
 - Comprendre ce que la personne écrit (imprévus, envies, contraintes) et proposer des modifications concrètes de son programme sous forme d'actions.
-- Répondre à ses questions sur son programme, l'alimentation équilibrée et l'activité physique, de façon courte, chaleureuse et concrète, en français et en tutoyant.
+- Répondre à ses questions sur son programme, l'alimentation équilibrée et l'activité physique, de façon courte, chaleureuse et concrète, en tutoyant, en français sauf si <langue> demande une autre langue.
 
 Règles impératives :
 - Tu n'inventes jamais de chiffres nutritionnels, de prix ou de quantités : ils sont calculés par le moteur de l'application. Tu peux citer ceux qui figurent dans le contexte.
@@ -133,12 +134,17 @@ export async function askCoach(
   mode: "adjust" | "chat",
   /** false when the monthly allowance is used up: simplified rules only */
   allowAi = true,
+  /** Language of the answer (the app's or website's language) */
+  locale: Locale = "fr",
 ): Promise<AiAnswer> {
   if (!env.anthropicKey || !allowAi) return ruleBasedAnswer(uc, stored, message);
 
   const messages: Anthropic.Beta.BetaMessageParam[] = [
     ...history.slice(-10).map((h) => ({ role: h.role, content: h.content })),
-    { role: "user", content: `<contexte>\n${describeContext(uc, stored)}\n</contexte>\n\n${message}` },
+    {
+      role: "user",
+      content: `<contexte>\n${describeContext(uc, stored)}\n</contexte>\n${locale === "en" ? "<langue>Réponds en anglais (reply and action labels in English).</langue>\n" : ""}\n${message}`,
+    },
   ];
 
   try {

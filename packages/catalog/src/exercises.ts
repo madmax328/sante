@@ -1,3 +1,4 @@
+import { EXERCISES_EN } from "./exercises-en";
 import { tutoie } from "./tutoie";
 import type { Exercise, ExerciseKind, Limitation, MuscleGroup, SportEquipment } from "@weeko/engine";
 
@@ -90,7 +91,7 @@ export const exercises: Exercise[] = defs.map((d) => ({
   met: d.met,
   lowImpact: d.low ?? false,
   stresses: d.stresses ?? [],
-  steps: d.steps.map((fr) => ({ fr: tutoie(fr) })),
-  tips: d.tips.map((fr) => ({ fr: tutoie(fr) })),
+  steps: d.steps.map((fr, i) => ({ fr: tutoie(fr), en: EXERCISES_EN[d.id]?.steps[i] })),
+  tips: d.tips.map((fr, i) => ({ fr: tutoie(fr), en: EXERCISES_EN[d.id]?.tips[i] })),
   easier: d.easier,
 }));

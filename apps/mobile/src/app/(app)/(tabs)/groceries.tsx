@@ -7,6 +7,7 @@ import { Badge, Button, Card, EmptyState, ErrorView, Field, Loading, Notice, Scr
 import { api, useApi } from "@/lib/api";
 import { euro } from "@/lib/format";
 import { space, useColors } from "@/lib/theme";
+import { t } from "@/lib/i18n";
 
 interface Groceries {
   hasPlan: boolean;
@@ -27,8 +28,8 @@ export default function GroceriesScreen() {
   const [saving, setSaving] = useState(false);
 
   if (loading && !data) return <Loading />;
-  if (!data) return <ErrorView message={error?.code === "network" ? "Pas de connexion internet." : "Le chargement a échoué."} onRetry={reload} />;
-  if (!data.hasPlan) return <Screen><T variant="title">Liste de courses</T><EmptyState title="Pas encore de liste" text="Crée ta semaine depuis l'onglet Aujourd'hui : la liste se fait toute seule." /></Screen>;
+  if (!data) return <ErrorView message={error?.code === "network" ? t("Pas de connexion internet.", "No internet connection.") : t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
+  if (!data.hasPlan) return <Screen><T variant="title">{t("Liste de courses", "Shopping list")}</T><EmptyState title={t("Pas encore de liste", "No list yet")} text={t("Crée ta semaine depuis l'onglet Aujourd'hui : la liste se fait toute seule.", "Create your week from the Today tab: the list builds itself.")} /></Screen>;
 
   const toggle = async (id: string) => {
     void Haptics.selectionAsync();
@@ -51,14 +52,14 @@ export default function GroceriesScreen() {
     <Screen refreshing={refreshing} onRefresh={refresh}>
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
         <View>
-          <T variant="title">Liste de courses</T>
-          <T variant="small">{done}/{count} produits · {euro(data.total)}</T>
+          <T variant="title">{t("Liste de courses", "Shopping list")}</T>
+          <T variant="small">{done}/{count} {t("produits", "items")} · {euro(data.total)}</T>
         </View>
-        <Button small variant="secondary" onPress={share} icon={<Share2 size={16} color={c.encre} />}>Partager</Button>
+        <Button small variant="secondary" onPress={share} icon={<Share2 size={16} color={c.encre} />}>{t("Partager", "Share")}</Button>
       </View>
       <Pressable accessibilityRole="button" onPress={() => router.push("/pantry")} style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
         <Refrigerator size={16} color={c.basilic} />
-        <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>Tu as déjà certains produits ? Garde-manger →</T>
+        <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>{t("Tu as déjà certains produits ? Garde-manger →", "Already have some items? Pantry →")}</T>
       </Pressable>
 
       {data.aisles.map((a) => (
@@ -82,26 +83,26 @@ export default function GroceriesScreen() {
 
       {data.staples.length > 0 && (
         <Card>
-          <SectionTitle>À vérifier dans le placard</SectionTitle>
+          <SectionTitle>{t("À vérifier dans le placard", "Check your cupboard")}</SectionTitle>
           <T variant="small">{data.staples.join(", ")}</T>
         </Card>
       )}
       {data.leftovers.length > 0 && (
         <Card>
-          <SectionTitle>Il te restera</SectionTitle>
-          <T variant="small">Pense à les utiliser (omelette, salade, soupe) ou à les congeler.</T>
+          <SectionTitle>{t("Il te restera", "You'll have left")}</SectionTitle>
+          <T variant="small">{t("Pense à les utiliser (omelette, salade, soupe) ou à les congeler.", "Use them up (omelette, salad, soup) or freeze them.")}</T>
           {data.leftovers.map((l) => <T key={l.name} variant="small">{l.name} · {l.qty}</T>)}
         </Card>
       )}
 
       <Card>
-        <SectionTitle>Courses faites ?</SectionTitle>
+        <SectionTitle>{t("Courses faites ?", "Shopping done?")}</SectionTitle>
         {data.shopped ? (
-          <Notice tone="basilic">Courses faites, bravo !{data.actualSpent ? ` Montant réel : ${euro(data.actualSpent)}.` : ""}</Notice>
+          <Notice tone="basilic">{t("Courses faites, bravo !", "Shopping done, well done!")}{data.actualSpent ? t(` Montant réel : ${euro(data.actualSpent)}.`, ` Actual amount: ${euro(data.actualSpent)}.`) : ""}</Notice>
         ) : (
           <>
-            <Field label="Montant réel (facultatif)" value={spent} onChangeText={setSpent} keyboardType="decimal-pad" placeholder={String(Math.round(data.total))} />
-            <Button onPress={shopped} loading={saving}>Courses faites</Button>
+            <Field label={t("Montant réel (facultatif)", "Actual amount (optional)")} value={spent} onChangeText={setSpent} keyboardType="decimal-pad" placeholder={String(Math.round(data.total))} />
+            <Button onPress={shopped} loading={saving}>{t("Courses faites", "Shopping done")}</Button>
           </>
         )}
       </Card>
@@ -114,15 +115,15 @@ function Stores({ stores }: { stores: NonNullable<Groceries["stores"]> }) {
   const c = useColors();
   const gap = (index: number) => {
     const pct = Math.round(Math.abs(1 - index) * 100);
-    return pct === 0 ? "dans la moyenne des enseignes" : index < 1 ? `${pct} % moins cher que la moyenne` : `${pct} % plus cher que la moyenne`;
+    return pct === 0 ? t("dans la moyenne des enseignes", "around the average of the chains") : index < 1 ? t(`${pct} % moins cher que la moyenne`, `${pct}% cheaper than average`) : t(`${pct} % plus cher que la moyenne`, `${pct}% more expensive than average`);
   };
   return (
     <Card>
-      <SectionTitle>Comparer les enseignes</SectionTitle>
+      <SectionTitle>{t("Comparer les enseignes", "Compare supermarkets")}</SectionTitle>
       {!stores.premium ? (
-        <T variant="small">Avec Sorloo Premium, compare le coût de ta liste dans chaque enseigne (Leclerc, Carrefour, Lidl…).</T>
+        <T variant="small">{t("Avec Sorloo Premium, compare le coût de ta liste dans chaque enseigne (Leclerc, Carrefour, Lidl…).", "With Sorloo Premium, compare the cost of your list at each supermarket chain (Leclerc, Carrefour, Lidl…).")}</T>
       ) : stores.list.length === 0 ? (
-        <T variant="small">Pas encore assez de prix relevés pour comparer les enseignes sur ta liste. La base s'enrichit chaque jour.</T>
+        <T variant="small">{t("Pas encore assez de prix relevés pour comparer les enseignes sur ta liste. La base s'enrichit chaque jour.", "Not enough prices recorded yet to compare chains for your list. The data grows every day.")}</T>
       ) : (
         <>
           {stores.list.map((s, i) => (
@@ -130,16 +131,16 @@ function Stores({ stores }: { stores: NonNullable<Groceries["stores"]> }) {
               <View style={{ flex: 1, gap: 2 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
                   <T style={{ fontWeight: "700" }}>{s.brand}</T>
-                  {i === 0 && stores.list.length > 1 && <Badge>Le moins cher</Badge>}
+                  {i === 0 && stores.list.length > 1 && <Badge>{t("Le moins cher", "Cheapest")}</Badge>}
                 </View>
-                <T variant="small">{gap(s.index)} · prix relevés pour {s.measured}/{stores.items} produits</T>
+                <T variant="small">{gap(s.index)} · {t(`prix relevés pour ${s.measured}/${stores.items} produits`, `prices recorded for ${s.measured}/${stores.items} items`)}</T>
               </View>
               <T variant="h3">{euro(s.total)}</T>
             </View>
           ))}
         </>
       )}
-      {stores.premium && <T variant="small">Estimation à partir des prix relevés en magasin sur Open Prices (12 derniers mois, hors promotions et hors bio, sauf Biocoop). Chaque enseigne est comparée aux autres sur les mêmes produits. Les prix varient selon les magasins.</T>}
+      {stores.premium && <T variant="small">{t("Estimation à partir des prix relevés en magasin sur Open Prices (12 derniers mois, hors promotions et hors bio, sauf Biocoop). Chaque enseigne est comparée aux autres sur les mêmes produits. Les prix varient selon les magasins.", "Estimate based on in-store prices recorded on Open Prices (last 12 months, excluding promotions and organic, except Biocoop). Each chain is compared with the others on the same products. Prices vary between stores.")}</T>}
     </Card>
   );
 }

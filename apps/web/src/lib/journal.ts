@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getCatalog } from "@weeko/catalog";
 import type { MealType } from "@weeko/engine";
 import { db } from "./db";
+import { tr, type Locale } from "./locale";
 import type { LogEntry } from "./types";
 
 /** What can be added to the journal (also what favorites and saved meals store). */
@@ -70,6 +71,16 @@ export function keyOf(e: EntryInput): string {
   return `custom:${e.name.trim().toLowerCase()}`;
 }
 
+/** The name of a journal line in the language (catalog foods are stored with their French name). */
+export function entryName(x: Pick<LogEntry, "kind" | "refId" | "recipeId" | "name">, locale: Locale): string {
+  const catalog = getCatalog();
+  if (locale !== "fr" && x.kind === "planned" && x.recipeId && catalog.recipes.has(x.recipeId)) return tr(catalog.recipe(x.recipeId).name, locale);
+  if (locale === "fr" || !x.refId) return x.name;
+  if (x.kind === "recipe" && catalog.recipes.has(x.refId)) return tr(catalog.recipe(x.refId).name, locale);
+  if (x.kind === "ingredient" && catalog.ingredients.has(x.refId)) return tr(catalog.ingredient(x.refId).name, locale);
+  return x.name;
+}
+
 export interface QuickFood {
   key: string;
   name: string;
@@ -80,12 +91,22 @@ export interface QuickFood {
   favorite: boolean;
 }
 
-export function quickFood(e: EntryInput, favorite: boolean): QuickFood | null {
+export function quickFood(e: EntryInput, favorite: boolean, locale: Locale = "fr"): QuickFood | null {
   const line = buildLogEntry(e, "lunch");
   if (!line) return null;
+  const en = locale === "en";
+  const many = (n: number) => (en ? n !== 1 : n > 1);
   const qty =
-    e.kind === "recipe" ? `${e.amount} portion${e.amount > 1 ? "s" : ""}` : e.kind === "ingredient" ? (getCatalog().ingredient(e.id).unit === "pc" ? `${e.amount} pièce${e.amount > 1 ? "s" : ""}` : `${e.amount} g`) : e.kind === "barcode" ? `${e.grams} g` : "";
-  return { key: keyOf(e), name: line.name, detail: [qty, `${line.kcal} kcal`].filter(Boolean).join(" · "), kcal: line.kcal, entry: e, favorite };
+    e.kind === "recipe"
+      ? `${e.amount} ${en ? "serving" : "portion"}${many(e.amount) ? "s" : ""}`
+      : e.kind === "ingredient"
+        ? getCatalog().ingredient(e.id).unit === "pc"
+          ? `${e.amount} ${en ? "piece" : "pièce"}${many(e.amount) ? "s" : ""}`
+          : `${e.amount} g`
+        : e.kind === "barcode"
+          ? `${e.grams} g`
+          : "";
+  return { key: keyOf(e), name: entryName(line, locale), detail: [qty, `${line.kcal} kcal`].filter(Boolean).join(" · "), kcal: line.kcal, entry: e, favorite };
 }
 
 export interface SavedMeal {

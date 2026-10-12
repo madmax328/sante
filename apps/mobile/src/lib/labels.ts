@@ -1,5 +1,7 @@
-/** Labels shared with the website (copied from apps/web/src/messages/fr.json). */
-export const L = {
+import { lang } from "./i18n";
+
+/** Labels shared with the website (copied from apps/web/src/messages/*.json, "enums"). */
+const FR = {
   "activity": {
     "sedentary": "Sédentaire (bureau, peu de marche)",
     "light": "Légère (marche quotidienne)",
@@ -87,3 +89,94 @@ export const L = {
     "other": "Autre situation suivie"
   }
 } as const;
+
+const EN: { [K in keyof typeof FR]: Record<keyof (typeof FR)[K], string> } = {
+  "activity": {
+    "sedentary": "Sedentary (desk job, little walking)",
+    "light": "Light (daily walking)",
+    "moderate": "Moderate (on your feet much of the day)",
+    "active": "Active (physical job)",
+    "very_active": "Very active (very physical job)"
+  },
+  "goal": {
+    "lose_weight": "Lose weight",
+    "maintain": "Maintain my weight",
+    "gain_muscle": "Build muscle",
+    "eat_better": "Eat better",
+    "save_money": "Tight budget",
+    "family_meals": "Family meals"
+  },
+  "allergen": {
+    "gluten": "Gluten",
+    "dairy": "Milk / lactose",
+    "egg": "Eggs",
+    "peanut": "Peanuts",
+    "nuts": "Tree nuts",
+    "fish": "Fish",
+    "seafood": "Shellfish",
+    "soy": "Soy",
+    "sesame": "Sesame",
+    "celery": "Celery",
+    "mustard": "Mustard",
+    "sulphites": "Sulphites",
+    "lupin": "Lupin"
+  },
+  "diet": {
+    "omnivore": "I eat everything",
+    "flexitarian": "Flexitarian",
+    "pescatarian": "Pescatarian",
+    "vegetarian": "Vegetarian",
+    "vegan": "Vegan"
+  },
+  "avoid": {
+    "pork": "Pork",
+    "beef": "Beef",
+    "lamb": "Lamb",
+    "alcohol": "Alcohol",
+    "fish": "Fish",
+    "seafood": "Seafood"
+  },
+  "equipment": {
+    "oven": "Oven",
+    "microwave": "Microwave",
+    "blender": "Blender",
+    "airfryer": "Air fryer",
+    "slowcooker": "Slow cooker"
+  },
+  "sportEquipment": {
+    "dumbbells": "Dumbbells",
+    "band": "Resistance band",
+    "kettlebell": "Kettlebell",
+    "pullup_bar": "Pull-up bar",
+    "bike": "Bike",
+    "pool": "Pool"
+  },
+  "limitation": {
+    "knees": "Knees",
+    "back": "Back",
+    "shoulders": "Shoulders",
+    "wrists": "Wrists"
+  },
+  "level": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced"
+  },
+  "pregnancy": {
+    "none": "Not applicable",
+    "pregnant_t1": "Pregnant, 1st trimester",
+    "pregnant_t2": "Pregnant, 2nd trimester",
+    "pregnant_t3": "Pregnant, 3rd trimester",
+    "breastfeeding": "Breastfeeding"
+  },
+  "medical": {
+    "diabetes": "Diabetes",
+    "kidney_disease": "Kidney disease",
+    "heart_disease": "Heart disease",
+    "eating_disorder_history": "History of eating disorder",
+    "bariatric_surgery": "Bariatric surgery",
+    "other": "Other monitored condition"
+  }
+};
+
+export const L: { [K in keyof typeof FR]: Record<keyof (typeof FR)[K], string> } = lang === "en" ? EN : FR;

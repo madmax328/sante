@@ -109,7 +109,9 @@ export function formatQty(catalog: Catalog, id: string, q: number, locale = "fr"
   const nf = (n: number, d = 1) => n.toLocaleString(locale, { maximumFractionDigits: d });
   if (ing.unit === "pc") {
     const n = Math.round(q * 4) / 4;
-    const name = n > 1 ? (ing.plural?.[locale as "fr"] ?? ing.plural?.fr ?? ing.name.fr) : ing.name.fr;
+    const loc = locale as "fr";
+    const single = ing.name[loc] ?? ing.name.fr;
+    const name = n > 1 ? (ing.plural?.[loc] ?? (loc === "fr" ? ing.plural?.fr : undefined) ?? single) : single;
     return `${nf(n, 2)} ${name.toLowerCase()}`;
   }
   const unit = ing.unit === "ml" ? ["ml", "l"] : ["g", "kg"];

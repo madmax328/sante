@@ -2,6 +2,7 @@ import { useFocusEffect } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import { authClient } from "./auth";
 import { API_URL } from "./config";
+import { lang } from "./i18n";
 
 export class ApiError extends Error {
   constructor(
@@ -17,7 +18,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const cookie = await Promise.resolve(authClient.getCookie()).catch(() => "");
   const res = await fetch(`${API_URL}${path}`, {
     ...init,
-    headers: { "content-type": "application/json", ...(cookie ? { Cookie: cookie } : {}), ...init?.headers },
+    headers: { "content-type": "application/json", "accept-language": lang, ...(cookie ? { Cookie: cookie } : {}), ...init?.headers },
     // The session travels in the Cookie header above, not the platform cookie jar.
     credentials: "omit",
   });

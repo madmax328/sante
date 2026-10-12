@@ -8,6 +8,7 @@ import { api, useApi } from "@/lib/api";
 import { healthAvailable, healthEnabled, syncAppleHealth } from "@/lib/health";
 import { DAY_LABEL, num } from "@/lib/format";
 import { space, useColors } from "@/lib/theme";
+import { t } from "@/lib/i18n";
 
 export interface SportSettings {
   enabled: boolean;
@@ -44,7 +45,7 @@ export default function SportScreen() {
   );
 
   if (loading && !data) return <Loading />;
-  if (!data) return <ErrorView message={error?.code === "network" ? "Pas de connexion internet." : "Le chargement a échoué."} onRetry={reload} />;
+  if (!data) return <ErrorView message={error?.code === "network" ? t("Pas de connexion internet.", "No internet connection.") : t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
 
   const header = (
     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
@@ -52,11 +53,11 @@ export default function SportScreen() {
         <T variant="title">Sport</T>
         {data.week && (
           <T variant="small">
-            Semaine {data.week.number} · {data.week.sessions.filter((s) => s.done).length} / {data.week.sessions.filter((s) => s.type !== "rest").length} séances
+            {t("Semaine", "Week")} {data.week.number} · {data.week.sessions.filter((s) => s.done).length} / {data.week.sessions.filter((s) => s.type !== "rest").length} {t("séances", "workouts")}
           </T>
         )}
       </View>
-      {data.allowed && <IconButton label="Réglages du programme" icon={<Settings2 size={20} color={c.encre} />} onPress={() => router.push("/sport-settings")} />}
+      {data.allowed && <IconButton label={t("Réglages du programme", "Programme settings")} icon={<Settings2 size={20} color={c.encre} />} onPress={() => router.push("/sport-settings")} />}
     </View>
   );
 
@@ -64,7 +65,7 @@ export default function SportScreen() {
     return (
       <Screen>
         {header}
-        <EmptyState title="Ton programme sportif" text="Avec Sorloo Premium, tu reçois des séances adaptées à ton niveau, ton matériel et tes disponibilités, avec des exercices guidés et animés." />
+        <EmptyState title={t("Ton programme sportif", "Your workout programme")} text={t("Avec Sorloo Premium, tu reçois des séances adaptées à ton niveau, ton matériel et tes disponibilités, avec des exercices guidés et animés.", "With Sorloo Premium, you get workouts suited to your level, equipment and schedule, with guided, animated exercises.")} />
       </Screen>
     );
   }
@@ -72,7 +73,7 @@ export default function SportScreen() {
     return (
       <Screen>
         {header}
-        <EmptyState title="Le programme sportif est désactivé" text="Active-le et choisis tes jours : Sorloo prépare tes séances de la semaine." action={<Button onPress={() => router.push("/sport-settings")}>Régler mon programme</Button>} />
+        <EmptyState title={t("Le programme sportif est désactivé", "The workout programme is turned off")} text={t("Active-le et choisis tes jours : Sorloo prépare tes séances de la semaine.", "Turn it on and pick your days: Sorloo prepares your workouts for the week.")} action={<Button onPress={() => router.push("/sport-settings")}>{t("Régler mon programme", "Set up my programme")}</Button>} />
       </Screen>
     );
   }
@@ -97,17 +98,17 @@ export default function SportScreen() {
               <View style={{ flex: 1, gap: 2 }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
                   <T variant="label">{DAY_LABEL[s.day]}</T>
-                  {isToday && <Badge tone="abricot">Aujourd'hui</Badge>}
+                  {isToday && <Badge tone="abricot">{t("Aujourd'hui", "Today")}</Badge>}
                 </View>
                 <T variant="h3">{s.title}</T>
-                {s.type !== "rest" && <T variant="small">{s.minutes} min · environ {num(s.kcal)} kcal</T>}
+                {s.type !== "rest" && <T variant="small">{s.minutes} min · {t("environ", "about")} {num(s.kcal)} kcal</T>}
               </View>
               {s.type !== "rest" && (
                 <Pressable
                   onPress={() => toggle(s.day, !s.done)}
                   accessibilityRole="checkbox"
                   accessibilityState={{ checked: s.done }}
-                  accessibilityLabel={`Séance de ${DAY_LABEL[s.day]} faite`}
+                  accessibilityLabel={t(`Séance de ${DAY_LABEL[s.day]} faite`, `${DAY_LABEL[s.day]} workout done`)}
                   hitSlop={8}
                   style={{ width: 34, height: 34, borderRadius: 17, borderWidth: 2, borderColor: s.done ? c.basilic : c.line, backgroundColor: s.done ? c.basilic : "transparent", alignItems: "center", justifyContent: "center" }}
                 >
@@ -117,7 +118,7 @@ export default function SportScreen() {
             </View>
             {s.guided && (
               <Button small variant={isToday && !s.done ? "accent" : "secondary"} style={{ alignSelf: "flex-start" }} onPress={() => router.push(`/sport/${s.day}`)}>
-                {isToday && !s.done ? "Commencer la séance" : "Voir la séance"}
+                {isToday && !s.done ? t("Commencer la séance", "Start the workout") : t("Voir la séance", "See the workout")}
               </Button>
             )}
           </Card>
@@ -154,30 +155,30 @@ function Steps({ date, goal, initial, onSynced }: { date: string; goal: number; 
     <Card>
       <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
         <Footprints size={20} color={c.basilic} />
-        <SectionTitle>Mes pas</SectionTitle>
+        <SectionTitle>{t("Mes pas", "My steps")}</SectionTitle>
       </View>
       {synced ? (
         <>
-          <T variant="big">{num(initial ?? 0)} <T variant="small">/ {num(goal)} pas aujourd'hui</T></T>
+          <T variant="big">{num(initial ?? 0)} <T variant="small">/ {num(goal)} {t("pas aujourd'hui", "steps today")}</T></T>
           <ProgressBar value={initial ?? 0} max={goal} />
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: space.sm }}>
-            <T variant="small" style={{ flex: 1 }}>Comptés automatiquement avec Apple Santé et enregistrés.</T>
-            <Button small variant="secondary" loading={syncing} onPress={refresh}>Actualiser</Button>
+            <T variant="small" style={{ flex: 1 }}>{t("Comptés automatiquement avec Apple Santé et enregistrés.", "Counted automatically with Apple Health and saved.")}</T>
+            <Button small variant="secondary" loading={syncing} onPress={refresh}>{t("Actualiser", "Refresh")}</Button>
           </View>
         </>
       ) : (
         <>
-          <T variant="small">Objectif : {num(goal)} pas par jour.</T>
+          <T variant="small">{t(`Objectif : ${num(goal)} pas par jour.`, `Goal: ${num(goal)} steps a day.`)}</T>
           {healthAvailable() && synced === false && (
             <Pressable accessibilityRole="button" onPress={() => router.push("/devices")}>
-              <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>Connecte Apple Santé pour les compter automatiquement →</T>
+              <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>{t("Connecte Apple Santé pour les compter automatiquement →", "Connect Apple Health to count them automatically →")}</T>
             </Pressable>
           )}
           <View style={{ flexDirection: "row", gap: space.sm, alignItems: "flex-end" }}>
             <View style={{ flex: 1 }}>
-              <Field label="Pas aujourd'hui" value={value} onChangeText={(v) => { setValue(v); setSaved(false); }} keyboardType="number-pad" />
+              <Field label={t("Pas aujourd'hui", "Steps today")} value={value} onChangeText={(v) => { setValue(v); setSaved(false); }} keyboardType="number-pad" />
             </View>
-            <Button variant="secondary" onPress={save}>{saved ? "Enregistré" : "Enregistrer"}</Button>
+            <Button variant="secondary" onPress={save}>{saved ? t("Enregistré", "Saved") : t("Enregistrer", "Save")}</Button>
           </View>
         </>
       )}

@@ -1,5 +1,6 @@
 "use server";
 
+import { requestLocale, tr } from "@/lib/locale";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { MEAL_TYPES, alternatives as engineAlternatives, type MealType, type PlanAction } from "@weeko/engine";
@@ -115,9 +116,10 @@ export async function getAlternativesAction(input: { day: number; meal: MealType
   if (!parsed.success) return [];
   const { uc, stored } = await loadWeek(userId, parsed.data.weekStart);
   if (!stored) return [];
+  const loc = await requestLocale();
   return engineAlternatives(uc.ctx, stored.plan, parsed.data.day, parsed.data.meal, { limit: 8, query: parsed.data.query }).map((a) => ({
     id: a.recipe.id,
-    name: a.recipe.name.fr,
+    name: tr(a.recipe.name, loc),
     kcal: a.recipe.nutrition.kcal,
     protein: a.recipe.nutrition.protein,
     minutes: a.recipe.totalMin,
@@ -152,6 +154,7 @@ export async function toggleEatenAction(input: { day: number; meal: MealType; we
         meal: m.meal,
         kind: "planned",
         refId,
+        recipeId: r.id,
         name: r.name.fr,
         amount: servings,
         kcal: Math.round(r.nutrition.kcal * servings),

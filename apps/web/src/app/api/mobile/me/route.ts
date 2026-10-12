@@ -3,14 +3,18 @@ import { auth } from "@/lib/auth";
 import { features } from "@/lib/env";
 import { mobileRoute } from "@/lib/mobile";
 import { isPremium } from "@/lib/premium";
-import { ensureProfile, getHealth } from "@/lib/repo";
+import { localeOf } from "@/lib/locale";
+import { ensureProfile, getHealth, updateProfile } from "@/lib/repo";
 
 export const dynamic = "force-dynamic";
 
 /** Who is signed in, and what the app should show (onboarding, Premium…). */
 export const GET = mobileRoute(async (req, userId) => {
   const session = await auth.api.getSession({ headers: req.headers });
-  const profile = await ensureProfile(userId);
+  const locale = localeOf(req);
+  const profile = await ensureProfile(userId, locale);
+  // The app follows the phone's language: remember it (emails, reminders).
+  if (profile.locale !== locale) await updateProfile(userId, { locale });
   const health = profile.onboarded ? await getHealth(userId) : null;
   const sub = profile.subscription;
   return {

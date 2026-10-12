@@ -1,3 +1,4 @@
+import { requestLocale, tr } from "@/lib/locale";
 import { Dumbbell, Footprints, Moon, StretchHorizontal, Timer } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { DoneToggle, StepsInput } from "@/components/sport-client";
@@ -18,6 +19,7 @@ export async function generateMetadata() {
 const ICONS = { rest: Moon, walk: Footprints, strength: Dumbbell, cardio: Timer, mobility: StretchHorizontal } as const;
 
 export default async function SportPage() {
+  const loc = await requestLocale();
   const { userId, uc } = await requireContext();
   const t = await getTranslations("sport");
   const e = await getTranslations("enums");
@@ -57,7 +59,7 @@ export default async function SportPage() {
                   <div className="flex items-center gap-3">
                     <Icon className={`size-6 ${s.type === "rest" ? "text-muted" : "text-basilic"}`} aria-hidden />
                     <div>
-                      <p className="font-semibold">{s.title.fr}</p>
+                      <p className="font-semibold">{tr(s.title, loc)}</p>
                       {s.type !== "rest" && <p className="text-sm text-muted num">{t("meta", { minutes: s.minutes, kcal: s.kcal })}</p>}
                     </div>
                   </div>

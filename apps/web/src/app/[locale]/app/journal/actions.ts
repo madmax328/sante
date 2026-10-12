@@ -6,6 +6,11 @@ import { getCatalog } from "@weeko/catalog";
 import { MEAL_TYPES } from "@weeko/engine";
 import { addDays, todayIn } from "@/lib/dates";
 import { addLogEntry, getLog, getLogs, getProfile, removeLogEntry } from "@/lib/repo";
+import { takeAiMessage } from "@/lib/ai-quota";
+import { features } from "@/lib/env";
+import { requestLocale, tr } from "@/lib/locale";
+import { analyzeMealPhoto, isPhotoMedia, type PhotoFood, type PhotoResult } from "@/lib/meal-photo";
+import { can } from "@/lib/premium";
 import { requireUserId } from "@/lib/session";
 import { buildLogEntry, entryInput, favorites, inputFromLog, keyOf, quickFood, savedMeals, type EntryInput, type QuickFood } from "@/lib/journal";
 
@@ -32,15 +37,18 @@ export async function searchFoodsAction(query: string): Promise<FoodHit[]> {
   if (q.length < 2) return [];
   const words = q.split(/\s+/);
   const catalog = getCatalog();
+  const loc = await requestLocale();
+  // Both languages are searched; results are shown in the person's language.
+  const hay = (t: { fr: string; en?: string }) => norm(`${t.fr} ${t.en ?? ""}`);
   const ingredients: FoodHit[] = [...catalog.ingredients.values()]
-    .filter((i) => words.every((w) => norm(i.name.fr).includes(w)))
+    .filter((i) => words.every((w) => hay(i.name).includes(w)))
     .slice(0, 12)
-    .map((i) => ({ kind: "ingredient", id: i.id, name: i.name.fr, kcal: i.nutrition.kcal, unit: i.unit, pieceWeight: i.pieceWeight }));
+    .map((i) => ({ kind: "ingredient", id: i.id, name: tr(i.name, loc), kcal: i.nutrition.kcal, unit: i.unit, pieceWeight: i.pieceWeight }));
   const recipes: FoodHit[] = catalog
     .allRecipes()
-    .filter((r) => words.every((w) => norm(r.name.fr).includes(w)))
+    .filter((r) => words.every((w) => hay(r.name).includes(w)))
     .slice(0, 12)
-    .map((r) => ({ kind: "recipe", id: r.id, name: r.name.fr, kcal: r.nutrition.kcal, unit: "serving" }));
+    .map((r) => ({ kind: "recipe", id: r.id, name: tr(r.name, loc), kcal: r.nutrition.kcal, unit: "serving" }));
   return [...ingredients, ...recipes];
 }
 
@@ -55,6 +63,58 @@ export async function addFoodAction(input: { date?: string; meal: (typeof MEAL_T
   await addLogEntry(userId, day, entry);
   revalidatePath("/[locale]/app", "layout");
   return { ok: true };
+}
+
+/** About 1.5 MB of base64: a 1280 px JPEG weighs far less. */
+const MAX_PHOTO = 2_000_000;
+
+/** Meal photo → foods and estimated weights to check (Premium, counts as one AI message). */
+export async function analyzeMealPhotoAction(input: { image: string; mediaType: string }): Promise<PhotoResult | { ok: false; error: "premium" | "quota" | "invalid" | "unavailable" }> {
+  const userId = await requireUserId();
+  const image = typeof input?.image === "string" ? input.image.replace(/^data:[^,]*,/, "") : "";
+  const mediaType = String(input?.mediaType ?? "");
+  if (!image || image.length > MAX_PHOTO || !isPhotoMedia(mediaType) || !/^[A-Za-z0-9+/=]+$/.test(image)) return { ok: false, error: "invalid" };
+  const profile = await getProfile(userId);
+  if (!profile || !can(profile, "meal_photo")) return { ok: false, error: "premium" };
+  if (!features.ai()) return { ok: false, error: "unavailable" };
+  if (!(await takeAiMessage(profile))) return { ok: false, error: "quota" };
+  return analyzeMealPhoto(image, mediaType, await requestLocale());
+}
+
+const photoFood = z.object({
+  name: z.string().trim().min(1).max(80),
+  grams: z.number().min(1).max(2000),
+  ingredientId: z.string().max(60).nullable(),
+  per100: z.object({ kcal: z.number().min(0).max(900), protein: z.number().min(0).max(100), carbs: z.number().min(0).max(100), fat: z.number().min(0).max(100) }),
+});
+
+/** The journal entry for a checked photo food: the catalog's when known, otherwise the estimate. */
+function photoEntry(f: Omit<PhotoFood, "confidence">): EntryInput {
+  const catalog = getCatalog();
+  if (f.ingredientId && catalog.ingredients.has(f.ingredientId)) {
+    const i = catalog.ingredient(f.ingredientId);
+    if (i.unit !== "pc") return { kind: "ingredient", id: i.id, amount: Math.round(f.grams) };
+    if (i.pieceWeight) return { kind: "ingredient", id: i.id, amount: Math.max(0.5, Math.round((f.grams / i.pieceWeight) * 2) / 2) };
+  }
+  const k = f.grams / 100;
+  return { kind: "custom", name: `${f.name} (${Math.round(f.grams)} g)`.slice(0, 80), kcal: Math.min(5000, f.per100.kcal * k), protein: Math.min(300, f.per100.protein * k), carbs: Math.min(600, f.per100.carbs * k), fat: Math.min(300, f.per100.fat * k) };
+}
+
+export async function addPhotoFoodsAction(input: { date?: string; meal: (typeof MEAL_TYPES)[number]; foods: Omit<PhotoFood, "confidence">[] }): Promise<{ ok: boolean; added?: number }> {
+  const userId = await requireUserId();
+  const parsed = z.object({ date: date.optional(), meal, foods: z.array(photoFood).min(1).max(12) }).safeParse(input);
+  if (!parsed.success) return { ok: false };
+  const profile = await getProfile(userId);
+  const day = parsed.data.date ?? todayIn(profile?.timeZone);
+  let added = 0;
+  for (const f of parsed.data.foods) {
+    const entry = buildLogEntry(photoEntry(f), parsed.data.meal);
+    if (!entry) continue;
+    await addLogEntry(userId, day, entry);
+    added++;
+  }
+  revalidatePath("/[locale]/app", "layout");
+  return { ok: added > 0, added };
 }
 
 export async function removeFoodAction(input: { date: string; id: string }): Promise<{ ok: boolean }> {
@@ -114,6 +174,7 @@ export interface QuickFoods {
 
 /** Everything that can be added in one tap: favorites, foods of the last 3 weeks, saved meals. */
 export async function quickFoodsAction(): Promise<QuickFoods> {
+  const loc = await requestLocale();
   const userId = await requireUserId();
   const profile = await getProfile(userId);
   const today = todayIn(profile?.timeZone);
@@ -122,7 +183,7 @@ export async function quickFoodsAction(): Promise<QuickFoods> {
     getLogs(userId, addDays(today, -21), today),
     savedMeals().find({ userId }).sort({ at: -1 }).limit(30).toArray(),
   ]);
-  const favs = (fav?.items ?? []).map((i) => quickFood(i.entry, true)).filter((x): x is QuickFood => !!x);
+  const favs = (fav?.items ?? []).map((i) => quickFood(i.entry, true, loc)).filter((x): x is QuickFood => !!x);
   const favKeys = new Set(favs.map((f) => f.key));
   const seen = new Set<string>();
   const recents: QuickFood[] = [];
@@ -134,7 +195,7 @@ export async function quickFoodsAction(): Promise<QuickFoods> {
       const key = keyOf(input);
       if (seen.has(key) || favKeys.has(key)) continue;
       seen.add(key);
-      const q = quickFood(input, false);
+      const q = quickFood(input, false, loc);
       if (q) recents.push(q);
       if (recents.length >= 20) break;
     }
@@ -143,7 +204,7 @@ export async function quickFoodsAction(): Promise<QuickFoods> {
   return {
     favorites: favs,
     recents,
-    meals: meals.map((m) => ({ id: m._id, name: m.name, kcal: m.kcal, count: m.entries.length, names: m.entries.map((e) => quickFood(e, false)?.name ?? "").filter(Boolean).slice(0, 4) })),
+    meals: meals.map((m) => ({ id: m._id, name: m.name, kcal: m.kcal, count: m.entries.length, names: m.entries.map((e) => quickFood(e, false, loc)?.name ?? "").filter(Boolean).slice(0, 4) })),
   };
 }
 

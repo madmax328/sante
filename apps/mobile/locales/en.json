@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Sorloo",
+    "NSCameraUsageDescription": "Sorloo uses the camera to scan barcodes, photograph your meals and, if you wish, take your progress photos.",
+    "NSPhotoLibraryUsageDescription": "Sorloo only accesses your photos when you pick a meal or progress photo.",
+    "NSHealthShareUsageDescription": "Sorloo reads your steps, weigh-ins and workouts to track your step goal, your weight curve and tick off your sessions.",
+    "NSHealthUpdateUsageDescription": "Sorloo writes nothing to Health: the app only reads your steps, weigh-ins and workouts for your tracking."
+  }
+}

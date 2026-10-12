@@ -1,6 +1,7 @@
+import { localeOf } from "@/lib/locale";
 import { MEAL_TYPES, type MealType } from "@weeko/engine";
 import { addDays, isValidDate } from "@/lib/dates";
-import { favorites, inputFromLog, keyOf } from "@/lib/journal";
+import { entryName, favorites, inputFromLog, keyOf } from "@/lib/journal";
 import { contextFor, mobileRoute } from "@/lib/mobile";
 import { getLog } from "@/lib/repo";
 
@@ -15,6 +16,7 @@ function currentMeal(hour: number): MealType {
 
 /** The food journal of one day (today by default; future days are not allowed). */
 export const GET = mobileRoute(async (req, userId) => {
+  const loc = localeOf(req);
   const uc = await contextFor(userId);
   const asked = new URL(req.url).searchParams.get("date");
   const date = asked && isValidDate(asked) && asked <= uc.today ? asked : uc.today;
@@ -41,7 +43,7 @@ export const GET = mobileRoute(async (req, userId) => {
         .filter((x) => x.meal === meal)
         .map((x) => {
           const input = x.kind === "planned" ? null : inputFromLog(x);
-          return { id: x.id, kind: x.kind, name: x.name, amount: x.amount, kcal: hidden ? null : x.kcal, protein: hidden ? null : x.protein, favorite: !!input && favKeys.has(keyOf(input)) };
+          return { id: x.id, kind: x.kind, name: entryName(x, loc), amount: x.amount, kcal: hidden ? null : x.kcal, protein: hidden ? null : x.protein, favorite: !!input && favKeys.has(keyOf(input)) };
         }),
     })),
     water: { ml: log.waterMl ?? 0, target: t.waterMl },

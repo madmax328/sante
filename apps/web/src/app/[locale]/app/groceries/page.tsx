@@ -1,3 +1,4 @@
+import { requestLocale, tr } from "@/lib/locale";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { formatQty } from "@weeko/engine";
 import { GenerateWeekButton } from "@/components/app-client";
@@ -16,6 +17,7 @@ export async function generateMetadata() {
 }
 
 export default async function GroceriesPage() {
+  const loc = await requestLocale();
   const { userId, uc } = await requireContext();
   const t = await getTranslations("groceries");
   const e = await getTranslations("enums");
@@ -32,14 +34,14 @@ export default async function GroceriesPage() {
   const c = uc.ctx.catalog;
   const list = shoppingFor(uc, result);
   const money = (v: number) => format.number(v, { style: "currency", currency: stored.plan.currency });
-  const name = (id: string) => c.ingredient(id).name.fr;
+  const name = (id: string) => tr(c.ingredient(id).name, loc);
   const packs = (id: string, ps: number[]) => {
     const counts = new Map<number, number>();
     ps.forEach((p) => counts.set(p, (counts.get(p) ?? 0) + 1));
-    return [...counts].map(([size, n]) => `${n} × ${formatQty(c, id, size)}`).join(" + ");
+    return [...counts].map(([size, n]) => `${n} × ${formatQty(c, id, size, loc)}`).join(" + ");
   };
   const text = list.aisles
-    .map((a) => `${e(`aisle.${a.aisle}`)}\n${a.items.map((i) => `- ${name(i.ingredientId)} : ${formatQty(c, i.ingredientId, i.toBuy)}`).join("\n")}`)
+    .map((a) => `${e(`aisle.${a.aisle}`)}\n${a.items.map((i) => `- ${name(i.ingredientId)} : ${formatQty(c, i.ingredientId, i.toBuy, loc)}`).join("\n")}`)
     .join("\n\n");
   // Only leftovers worth planning for: no "3 g of pear" crumbs.
   const worthKeeping = (id: string, qty: number) =>
@@ -93,7 +95,7 @@ export default async function GroceriesPage() {
                   key={i.ingredientId}
                   id={i.ingredientId}
                   label={name(i.ingredientId)}
-                  detail={`${formatQty(c, i.ingredientId, i.toBuy)}${i.packs.length > 1 ? ` (${packs(i.ingredientId, i.packs)})` : ""}`}
+                  detail={`${formatQty(c, i.ingredientId, i.toBuy, loc)}${i.packs.length > 1 ? ` (${packs(i.ingredientId, i.packs)})` : ""}`}
                   cost={money(i.cost)}
                   checked={stored.checked.includes(i.ingredientId)}
                   weekStart={stored.weekStart}
@@ -109,7 +111,7 @@ export default async function GroceriesPage() {
           <Card className="grid content-start gap-2">
             <h2 className="text-lg font-bold">{t("fromPantry")}</h2>
             <ul className="grid gap-1 text-sm">
-              {list.fromPantry.map((p) => <li key={p.ingredientId}>{name(p.ingredientId)} · <span className="text-muted num">{formatQty(c, p.ingredientId, p.qty)}</span></li>)}
+              {list.fromPantry.map((p) => <li key={p.ingredientId}>{name(p.ingredientId)} · <span className="text-muted num">{formatQty(c, p.ingredientId, p.qty, loc)}</span></li>)}
             </ul>
           </Card>
         )}
@@ -125,7 +127,7 @@ export default async function GroceriesPage() {
             <h2 className="text-lg font-bold">{t("leftoversTitle")}</h2>
             <p className="text-sm text-muted">{t("leftoversText")}</p>
             <ul className="grid gap-1 text-sm">
-              {leftovers.map((i) => <li key={i.ingredientId}>{name(i.ingredientId)} · <span className="text-muted num">{formatQty(c, i.ingredientId, i.leftover)}</span></li>)}
+              {leftovers.map((i) => <li key={i.ingredientId}>{name(i.ingredientId)} · <span className="text-muted num">{formatQty(c, i.ingredientId, i.leftover, loc)}</span></li>)}
             </ul>
           </Card>
         )}

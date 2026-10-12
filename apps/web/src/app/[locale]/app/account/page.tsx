@@ -1,3 +1,4 @@
+import { LanguageSwitch } from "@/components/language-switch";
 import { Check } from "lucide-react";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { BodyForm, DangerZone, FoodPrefsForm, SubscriptionButtons } from "@/components/settings-client";
@@ -35,6 +36,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
   return (
     <div className="grid gap-6">
       <PageHeader title={t("title")} subtitle={user.email} />
+      <LanguageSwitch className="-mt-4" />
       {sp.checkout === "success" && <Notice tone="basilic" title={t("thanksTitle")}>{t("thanksText")}</Notice>}
       {sp.checkout === "pending" && !premium && <Notice tone="miel">{t("pending")}</Notice>}
       {sp.checkout === "cancel" && <Notice tone="miel">{t("cancelled")}</Notice>}

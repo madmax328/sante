@@ -1,6 +1,7 @@
 "use server";
 
 import { getTranslations } from "next-intl/server";
+import { requestLocale, tr } from "@/lib/locale";
 import { z } from "zod";
 import type { PlanAction } from "@weeko/engine";
 import { askCoach } from "@/lib/ai";
@@ -26,8 +27,9 @@ const coach = () =>
   db.collection<{ userId: string; role: "user" | "assistant"; content: string; actions?: PlanAction[]; at: Date }>("coach_messages");
 
 async function describe(uc: UserContext, actions: PlanAction[]): Promise<string[]> {
-  const t = await getTranslations("coach.actions");
-  const e = await getTranslations("enums");
+  const locale = await requestLocale();
+  const t = await getTranslations({ locale, namespace: "coach.actions" });
+  const e = await getTranslations({ locale, namespace: "enums" });
   return actions.map((a) => {
     switch (a.type) {
       case "eat_out":
@@ -37,7 +39,7 @@ async function describe(uc: UserContext, actions: PlanAction[]): Promise<string[
       case "time_limit":
         return t("time_limit", { day: e(`day.${a.day}`), meal: e(`meal.${a.meal}`).toLowerCase(), minutes: a.minutes });
       case "missing_ingredient":
-        return t("missing_ingredient", { ingredient: uc.ctx.catalog.ingredient(a.ingredientId).name.fr.toLowerCase(), day: e(`day.${a.fromDay}`) });
+        return t("missing_ingredient", { ingredient: tr(uc.ctx.catalog.ingredient(a.ingredientId).name, locale).toLowerCase(), day: e(`day.${a.fromDay}`) });
       case "replace_meal":
         return t("replace_meal", { day: e(`day.${a.day}`), meal: e(`meal.${a.meal}`).toLowerCase() });
       case "skip_meal":
@@ -60,7 +62,7 @@ export async function interpretAction(input: { text: string }): Promise<Interpre
   if (!can(uc.profile, "ai_adjust")) return { ok: false, error: "premium" };
   const stored = await getPlan(userId, uc.weekStart);
   const allowAi = await takeAiMessage(uc.profile);
-  const answer = await askCoach(uc, stored, [], parsed.data.text, "adjust", allowAi);
+  const answer = await askCoach(uc, stored, [], parsed.data.text, "adjust", allowAi, await requestLocale());
   return { ok: true, proposal: { reply: answer.reply, actions: answer.actions, labels: await describe(uc, answer.actions), ...(await quotaInfo(userId, allowAi)) } };
 }
 
@@ -86,7 +88,7 @@ export async function sendCoachMessage(input: { text: string }): Promise<CoachRe
   const history = (await coach().find({ userId }).sort({ at: -1 }).limit(10).toArray()).reverse().map((d) => ({ role: d.role, content: d.content }));
   const stored = await getPlan(userId, uc.weekStart);
   const allowAi = await takeAiMessage(uc.profile);
-  const answer = await askCoach(uc, stored, history, parsed.data.text, "chat", allowAi);
+  const answer = await askCoach(uc, stored, history, parsed.data.text, "chat", allowAi, await requestLocale());
   const now = Date.now();
   await coach().insertMany([
     { userId, role: "user", content: parsed.data.text, at: new Date(now) },

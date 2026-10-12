@@ -741,7 +741,8 @@
       "search": "Search",
       "custom": "Manual entry",
       "barcode": "Barcode",
-      "quick": "Favorites"
+      "quick": "Favorites",
+      "photo": "Photo"
     },
     "searchPlaceholder": "E.g. apple, yogurt, chicken…",
     "perServing": "serving",
@@ -784,6 +785,31 @@
       "saveError": "Couldn't save this meal (50 meals at most).",
       "copied": "{n} food(s) copied from yesterday.",
       "nothingYesterday": "Nothing to copy: this meal was empty yesterday."
+    },
+    "photo": {
+      "intro": "Take a photo of your plate (ideally from above): Sorloo recognises the foods and estimates the amounts. You check, then everything goes into your journal.",
+      "choose": "Take or choose a photo",
+      "retake": "Another photo",
+      "analyzing": "Analysing…",
+      "photoAlt": "Meal photo",
+      "check": "Check and correct",
+      "toCheck": "check this",
+      "gramsOf": "{name} amount in grams",
+      "remove": "Remove {name}",
+      "estimates": "Amounts are estimates: adjust them if needed.",
+      "addAll": "Add {n, plural, one {# food} other {# foods}} · {kcal} kcal",
+      "premiumTitle": "Snap your plate, Sorloo logs the rest",
+      "premiumText": "Meal photo recognition is part of Premium.",
+      "premiumLink": "See Premium",
+      "errors": {
+        "not_food": "I can't see a meal in this photo. Try again with the plate clearly visible, from above.",
+        "unclear": "The photo isn't clear enough to recognise the foods. Try again with more light.",
+        "unavailable": "Analysis isn't available right now. Try again shortly or add your foods by hand.",
+        "premium": "Meal photo recognition is part of Premium.",
+        "quota": "You've used all of this month's AI analyses. They come back on the 1st.",
+        "invalid": "This photo couldn't be sent. Try another one (JPEG or PNG).",
+        "add": "Adding failed. Try again."
+      }
     }
   },
   "sport": {
@@ -842,7 +868,20 @@
     "add": "Save",
     "invalid": "Enter at least a valid weight or waist measurement.",
     "history": "History",
-    "delete": "Delete"
+    "delete": "Delete",
+    "photos": {
+      "title": "Progress photos",
+      "privacy": "Optional and private: they're encrypted and only you can see them. One photo a week, same place, same light, is enough to see the change.",
+      "before": "Before",
+      "now": "Now",
+      "alt": "Photo from {date}",
+      "add": "Add a photo",
+      "close": "Close",
+      "delete": "Delete this photo",
+      "deleteConfirm": "Delete the photo from {date}?",
+      "limit": "You've reached 100 photos. Delete one to add a new one.",
+      "error": "This photo couldn't be saved. Try another one."
+    }
   },
   "review": {
     "lastWeek": "Last week's review",

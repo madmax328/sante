@@ -1,3 +1,4 @@
+import { requestLocale, tr } from "@/lib/locale";
 import { Clock, Search } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { isCompatible, MEAL_TYPES, type Diet, type MealType, type RecipeInfo } from "@weeko/engine";
@@ -20,6 +21,7 @@ function norm(s: string) {
 }
 
 export default async function RecipesPage({ searchParams }: PageProps<"/[locale]/app/recipes">) {
+  const loc = await requestLocale();
   const { uc } = await requireContext();
   const t = await getTranslations("recipes");
   const e = await getTranslations("enums");
@@ -41,7 +43,7 @@ export default async function RecipesPage({ searchParams }: PageProps<"/[locale]
     if (max && r.totalMin > max) return false;
     if (onlyMine && !isCompatible(r, { prefs: { ...uc.ctx.prefs, diet, equipment: ["oven", "microwave", "blender", "airfryer", "slowcooker"] }, avoid })) return false;
     if (terms.length) {
-      const hay = norm(r.name.fr + " " + r.ingredients.map((i) => uc.ctx.catalog.ingredient(i.id).name.fr).join(" "));
+      const hay = norm(tr(r.name, loc) + " " + r.ingredients.map((i) => tr(uc.ctx.catalog.ingredient(i.id).name, loc)).join(" "));
       if (!terms.every((w) => hay.includes(w))) return false;
     }
     return true;
@@ -91,7 +93,7 @@ export default async function RecipesPage({ searchParams }: PageProps<"/[locale]
               <Card className="grid h-full content-start gap-3 overflow-hidden p-0 transition-colors group-hover:border-basilic">
                 <RecipeImage photo={photos.get(r.id)} meal={r.meals[0]} thumb className="aspect-[4/3] w-full" sizes="(max-width: 640px) 100vw, 25vw" />
                 <div className="grid gap-2 px-4 pb-4">
-                  <p className="line-clamp-2 font-semibold">{r.name.fr}</p>
+                  <p className="line-clamp-2 font-semibold">{tr(r.name, loc)}</p>
                   <p className="flex flex-wrap gap-x-3 text-sm text-muted num">
                     <span className="inline-flex items-center gap-1"><Clock className="size-3.5" aria-hidden />{r.totalMin} min</span>
                     {!hidden && <span>{r.nutrition.kcal} kcal</span>}

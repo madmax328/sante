@@ -3,10 +3,12 @@ import { X } from "lucide-react-native";
 import { useState } from "react";
 import { Alert, Pressable, View, useWindowDimensions } from "react-native";
 import Svg, { Circle, Line, Path, Text as SvgText } from "react-native-svg";
+import { ProgressPhotos } from "@/components/progress-photos";
 import { Button, Card, EmptyState, ErrorView, Field, Loading, Notice, Screen, SectionTitle, T } from "@/components/ui";
 import { api, useApi } from "@/lib/api";
 import { euro, num, shortDate } from "@/lib/format";
 import { radius, space, useColors } from "@/lib/theme";
+import { t } from "@/lib/i18n";
 
 interface Review {
   trendChangeKg: number | null;
@@ -42,7 +44,7 @@ export default function ProgressScreen() {
   const [failed, setFailed] = useState(false);
 
   if (loading && !data) return <Loading />;
-  if (!data) return <ErrorView message={error?.code === "network" ? "Pas de connexion internet." : "Le chargement a échoué."} onRetry={reload} />;
+  if (!data) return <ErrorView message={error?.code === "network" ? t("Pas de connexion internet.", "No internet connection.") : t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
 
   const weights = data.measurements.filter((m) => m.kg !== null).map((m) => ({ date: m.date, kg: m.kg! }));
   const save = async () => {
@@ -58,9 +60,9 @@ export default function ProgressScreen() {
     await reload();
   };
   const remove = (date: string) =>
-    Alert.alert("Supprimer cette mesure ?", shortDate(date), [
-      { text: "Annuler", style: "cancel" },
-      { text: "Supprimer", style: "destructive", onPress: async () => { await api.action("deleteMeasurement", { date }).catch(() => undefined); await reload(); } },
+    Alert.alert(t("Supprimer cette mesure ?", "Delete this measurement?"), shortDate(date), [
+      { text: t("Annuler", "Cancel"), style: "cancel" },
+      { text: t("Supprimer", "Delete"), style: "destructive", onPress: async () => { await api.action("deleteMeasurement", { date }).catch(() => undefined); await reload(); } },
     ]);
   const createNext = async () => {
     if (!data.next) return;
@@ -74,46 +76,48 @@ export default function ProgressScreen() {
     <Screen padTop={false} refreshing={refreshing} onRefresh={refresh}>
       {!data.hidden && (
         <Card>
-          <SectionTitle>Mon poids</SectionTitle>
-          {weights.length >= 2 ? <WeightChart entries={weights} goal={data.goalKg} /> : <T variant="small">Ajoute au moins deux pesées pour voir ta courbe.</T>}
-          <T variant="small">La courbe montre la tendance : les variations d'un jour à l'autre (eau, repas) sont normales.</T>
+          <SectionTitle>{t("Mon poids", "My weight")}</SectionTitle>
+          {weights.length >= 2 ? <WeightChart entries={weights} goal={data.goalKg} /> : <T variant="small">{t("Ajoute au moins deux pesées pour voir ta courbe.", "Add at least two weigh-ins to see your curve.")}</T>}
+          <T variant="small">{t("La courbe montre la tendance : les variations d'un jour à l'autre (eau, repas) sont normales.", "The curve shows the trend: day-to-day changes (water, meals) are normal.")}</T>
           <View style={{ flexDirection: "row", gap: space.sm }}>
-            <View style={{ flex: 1 }}><Field label="Poids (kg)" value={kg} onChangeText={setKg} keyboardType="decimal-pad" placeholder="ex. 72,5" /></View>
-            <View style={{ flex: 1 }}><Field label="Tour de taille (cm)" value={waist} onChangeText={setWaist} keyboardType="decimal-pad" placeholder="facultatif" /></View>
+            <View style={{ flex: 1 }}><Field label={t("Poids (kg)", "Weight (kg)")} value={kg} onChangeText={setKg} keyboardType="decimal-pad" placeholder={t("ex. 72,5", "e.g. 72.5")} /></View>
+            <View style={{ flex: 1 }}><Field label={t("Tour de taille (cm)", "Waist (cm)")} value={waist} onChangeText={setWaist} keyboardType="decimal-pad" placeholder={t("facultatif", "optional")} /></View>
           </View>
-          {failed && <Notice tone="danger">Vérifie les valeurs (poids entre 25 et 350 kg).</Notice>}
-          <Button onPress={save} loading={busy} disabled={!kg && !waist}>Enregistrer la mesure du jour</Button>
+          {failed && <Notice tone="danger">{t("Vérifie les valeurs (poids entre 25 et 350 kg).", "Check the values (weight between 25 and 350 kg).")}</Notice>}
+          <Button onPress={save} loading={busy} disabled={!kg && !waist}>{t("Enregistrer la mesure du jour", "Save today's measurement")}</Button>
         </Card>
       )}
 
+      {!data.hidden && <ProgressPhotos today={data.today} />}
+
       {data.premium && data.lastWeek && data.thisWeek ? (
         <>
-          <ReviewCard title="Bilan de la semaine dernière" r={data.lastWeek} />
-          <ReviewCard title="Cette semaine, jusqu'ici" r={data.thisWeek} />
+          <ReviewCard title={t("Bilan de la semaine dernière", "Last week's review")} r={data.lastWeek} />
+          <ReviewCard title={t("Cette semaine, jusqu'ici", "This week so far")} r={data.thisWeek} />
           {data.next && (
             <Card>
-              <SectionTitle>La semaine prochaine</SectionTitle>
-              <T variant="small">Sorloo tient compte de tes goûts (recettes aimées, remplacées) pour te proposer une nouvelle semaine.</T>
+              <SectionTitle>{t("La semaine prochaine", "Next week")}</SectionTitle>
+              <T variant="small">{t("Sorloo tient compte de tes goûts (recettes aimées, remplacées) pour te proposer une nouvelle semaine.", "Sorloo takes your tastes into account (recipes liked, replaced) to suggest a new week.")}</T>
               {data.next.ready ? (
-                <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>Ta semaine prochaine est prête : ouvre l'onglet Semaine et passe à la suivante.</T>
+                <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>{t("Ta semaine prochaine est prête : ouvre l'onglet Semaine et passe à la suivante.", "Next week is ready: open the Week tab and move to the next one.")}</T>
               ) : (
-                <Button variant="accent" loading={busy} onPress={createNext}>Préparer la semaine prochaine</Button>
+                <Button variant="accent" loading={busy} onPress={createNext}>{t("Préparer la semaine prochaine", "Prepare next week")}</Button>
               )}
             </Card>
           )}
         </>
       ) : (
-        <EmptyState title="Ton bilan de la semaine" text="Avec Sorloo Premium, tu reçois chaque semaine un bilan (poids, repas suivis, séances, budget) et des conseils pour la suite." />
+        <EmptyState title={t("Ton bilan de la semaine", "Your weekly review")} text={t("Avec Sorloo Premium, tu reçois chaque semaine un bilan (poids, repas suivis, séances, budget) et des conseils pour la suite.", "With Sorloo Premium, you get a weekly review (weight, meals followed, workouts, budget) and tips for what's next.")} />
       )}
 
       {!data.hidden && data.measurements.length > 0 && (
         <Card>
-          <SectionTitle>Historique</SectionTitle>
+          <SectionTitle>{t("Historique", "History")}</SectionTitle>
           {[...data.measurements].reverse().slice(0, 30).map((m) => (
             <View key={m.date} style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
               <T style={{ width: 80 }} variant="small">{shortDate(m.date)}</T>
               <T style={{ flex: 1 }}>{m.kg !== null ? `${num(m.kg, 1)} kg` : "—"}{m.waistCm !== null ? ` · ${num(m.waistCm)} cm` : ""}</T>
-              <Pressable accessibilityRole="button" accessibilityLabel={`Supprimer la mesure du ${shortDate(m.date)}`} hitSlop={8} onPress={() => remove(m.date)}>
+              <Pressable accessibilityRole="button" accessibilityLabel={t(`Supprimer la mesure du ${shortDate(m.date)}`, `Delete the ${shortDate(m.date)} measurement`)} hitSlop={8} onPress={() => remove(m.date)}>
                 <X size={18} color={c.muted} />
               </Pressable>
             </View>
@@ -139,12 +143,12 @@ function ReviewCard({ title, r }: { title: string; r: Review }) {
     <Card>
       <SectionTitle>{title}</SectionTitle>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
-        {r.trendChangeKg !== null && <Stat label="Tendance du poids" value={`${r.trendChangeKg > 0 ? "+" : ""}${num(r.trendChangeKg, 2)} kg`} />}
-        {r.adherence !== null && <Stat label="Repas suivis" value={`${Math.round(r.adherence * 100)} %`} />}
-        <Stat label="Séances" value={`${r.sessionsDone} / ${r.sessionsPlanned}`} />
+        {r.trendChangeKg !== null && <Stat label={t("Tendance du poids", "Weight trend")} value={`${r.trendChangeKg > 0 ? "+" : ""}${num(r.trendChangeKg, 2)} kg`} />}
+        {r.adherence !== null && <Stat label={t("Repas suivis", "Meals followed")} value={`${Math.round(r.adherence * 100)} %`} />}
+        <Stat label={t("Séances", "Workouts")} value={`${r.sessionsDone} / ${r.sessionsPlanned}`} />
         {r.budgetPlanned !== null && <Stat label="Budget" value={`${r.budgetActual !== null ? euro(r.budgetActual) : "—"} / ${euro(r.budgetPlanned)}`} />}
-        {r.avgKcal !== null && <Stat label="Moyenne" value={`${num(r.avgKcal)} kcal`} />}
-        <Stat label="Jours notés" value={`${r.daysLogged} / 7`} />
+        {r.avgKcal !== null && <Stat label={t("Moyenne", "Average")} value={`${num(r.avgKcal)} kcal`} />}
+        <Stat label={t("Jours notés", "Days logged")} value={`${r.daysLogged} / 7`} />
       </View>
       {r.recommendations.map((rec) => (
         <Notice key={rec.code} tone="basilic">
@@ -178,12 +182,12 @@ function WeightChart({ entries, goal }: { entries: { date: string; kg: number }[
   const line = trend.map((kg, i) => `${i ? "L" : "M"}${x(pts[i]!.date).toFixed(1)},${y(kg).toFixed(1)}`).join(" ");
   const ticks = [min, Math.round((min + max) / 2), max];
   return (
-    <Svg width={width} height={height} accessibilityLabel={`Courbe de poids : dernière pesée ${num(pts[pts.length - 1]!.kg, 1)} kg`}>
-      {ticks.map((t) => (
-        <Line key={t} x1={pad.left} x2={width - pad.right} y1={y(t)} y2={y(t)} stroke={c.line} strokeWidth={1} />
+    <Svg width={width} height={height} accessibilityLabel={t(`Courbe de poids : dernière pesée ${num(pts[pts.length - 1]!.kg, 1)} kg`, `Weight curve: last weigh-in ${num(pts[pts.length - 1]!.kg, 1)} kg`)}>
+      {ticks.map((v) => (
+        <Line key={v} x1={pad.left} x2={width - pad.right} y1={y(v)} y2={y(v)} stroke={c.line} strokeWidth={1} />
       ))}
-      {ticks.map((t) => (
-        <SvgText key={`l${t}`} x={pad.left - 6} y={y(t) + 4} fontSize={11} fill={c.muted} textAnchor="end">{t}</SvgText>
+      {ticks.map((v) => (
+        <SvgText key={`l${v}`} x={pad.left - 6} y={y(v) + 4} fontSize={11} fill={c.muted} textAnchor="end">{v}</SvgText>
       ))}
       {goal && <Line x1={pad.left} x2={width - pad.right} y1={y(goal)} y2={y(goal)} stroke={c.abricot} strokeWidth={1.5} strokeDasharray="5 4" />}
       {pts.map((p) => <Circle key={p.date} cx={x(p.date)} cy={y(p.kg)} r={2.5} fill={c.muted} fillOpacity={0.6} />)}

@@ -106,6 +106,8 @@ export interface LogEntry {
   meal: MealType;
   kind: "planned" | "recipe" | "ingredient" | "custom" | "barcode";
   refId?: string;
+  /** Planned meals: the recipe, to show its name in the person's language */
+  recipeId?: string;
   name: string;
   /** grams for ingredients/barcode, servings for recipes */
   amount: number;

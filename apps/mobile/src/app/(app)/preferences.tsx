@@ -7,6 +7,7 @@ import { api, useApi } from "@/lib/api";
 import { L } from "@/lib/labels";
 import { useMe } from "@/lib/me";
 import { radius, space, useColors } from "@/lib/theme";
+import { t } from "@/lib/i18n";
 
 interface Prefs {
   diet: keyof typeof L.diet;
@@ -36,8 +37,8 @@ interface Preferences {
   body: Body | null;
 }
 
-const AVOID: Record<string, string> = { ...L.avoid, dairy: "Produits laitiers", egg: "Œufs", gluten: "Gluten" };
-const VEGGIES = { more: "J'adore", normal: "Normal", less: "Pas trop" } as const;
+const AVOID: Record<string, string> = { ...L.avoid, dairy: t("Produits laitiers", "Dairy"), egg: t("Œufs", "Eggs"), gluten: "Gluten" };
+const VEGGIES = { more: t("J'adore", "Love them"), normal: t("Normal", "Normal"), less: t("Pas trop", "Not too many") } as const;
 const WEEKDAY = [15, 20, 30, 45, 60];
 const WEEKEND = [20, 30, 45, 60, 90];
 const parse = (s: string) => Number(s.replace(",", "."));
@@ -69,7 +70,7 @@ function SwitchRow({ label, hint, value, onChange }: { label: string; hint?: str
 export default function PreferencesScreen() {
   const { data, error, loading, reload } = useApi<Preferences>("/preferences");
   if (loading && !data) return <Loading />;
-  if (!data) return <ErrorView message={error?.code === "network" ? "Pas de connexion internet." : "Le chargement a échoué."} onRetry={reload} />;
+  if (!data) return <ErrorView message={error?.code === "network" ? t("Pas de connexion internet.", "No internet connection.") : t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
   return (
     <Screen padTop={false}>
       <FoodPrefs initial={data.prefs} options={data.dislikeOptions} />
@@ -81,10 +82,10 @@ export default function PreferencesScreen() {
 
 /** Offers to rebuild the current week after a change that affects the menus. */
 function offerRegenerate() {
-  Alert.alert("Préférences enregistrées", "Veux-tu refaire les menus de cette semaine avec ces préférences ? Les repas pris dehors sont conservés.", [
-    { text: "Plus tard", style: "cancel" },
+  Alert.alert(t("Préférences enregistrées", "Preferences saved"), t("Veux-tu refaire les menus de cette semaine avec ces préférences ? Les repas pris dehors sont conservés.", "Do you want to redo this week's menus with these preferences? Meals eaten out are kept."), [
+    { text: t("Plus tard", "Later"), style: "cancel" },
     {
-      text: "Refaire mes menus",
+      text: t("Refaire mes menus", "Redo my menus"),
       onPress: async () => {
         await api.action("generateWeek").catch(() => undefined);
         router.navigate("/week");
@@ -121,31 +122,31 @@ function FoodPrefs({ initial, options }: { initial: Prefs; options: Preferences[
 
   return (
     <Card>
-      <SectionTitle>Mon alimentation</SectionTitle>
-      <Group label="Régime">
+      <SectionTitle>{t("Mon alimentation", "My food")}</SectionTitle>
+      <Group label={t("Régime", "Diet")}>
         {(Object.keys(L.diet) as Prefs["diet"][]).map((k) => <Chip key={k} label={L.diet[k]} active={p.diet === k} onPress={() => setP({ ...p, diet: k })} />)}
       </Group>
-      {p.diet === "flexitarian" && <T variant="small">Flexitarien : de la viande 3 fois par semaine au plus, le reste en poisson, œufs et protéines végétales.</T>}
-      <Group label="Les légumes">
+      {p.diet === "flexitarian" && <T variant="small">{t("Flexitarien : de la viande 3 fois par semaine au plus, le reste en poisson, œufs et protéines végétales.", "Flexitarian: meat 3 times a week at most, the rest fish, eggs and plant proteins.")}</T>}
+      <Group label={t("Les légumes", "Vegetables")}>
         {(Object.keys(VEGGIES) as (keyof typeof VEGGIES)[]).map((k) => <Chip key={k} label={VEGGIES[k]} active={p.veggies === k} onPress={() => setP({ ...p, veggies: k })} />)}
       </Group>
-      <Group label="À éviter">
+      <Group label={t("À éviter", "Avoid")}>
         {Object.entries(AVOID).map(([k, label]) => <Chip key={k} label={label} active={p.avoid.includes(k)} onPress={() => setP({ ...p, avoid: toggle(p.avoid, k) })} />)}
       </Group>
       <Dislikes value={p.dislikedIngredients ?? []} onChange={(dislikedIngredients) => setP({ ...p, dislikedIngredients })} options={options} />
-      <Group label="Temps de cuisine en semaine">
+      <Group label={t("Temps de cuisine en semaine", "Cooking time on weekdays")}>
         {WEEKDAY.map((m) => <Chip key={m} label={`${m} min`} active={p.maxMinutesWeekday === m} onPress={() => setP({ ...p, maxMinutesWeekday: m })} />)}
       </Group>
-      <Group label="Temps de cuisine le week-end">
+      <Group label={t("Temps de cuisine le week-end", "Cooking time at weekends")}>
         {WEEKEND.map((m) => <Chip key={m} label={`${m} min`} active={p.maxMinutesWeekend === m} onPress={() => setP({ ...p, maxMinutesWeekend: m })} />)}
       </Group>
-      <Group label="Équipement de cuisine">
+      <Group label={t("Équipement de cuisine", "Kitchen equipment")}>
         {Object.entries(L.equipment).map(([k, label]) => <Chip key={k} label={label} active={p.equipment.includes(k)} onPress={() => setP({ ...p, equipment: toggle(p.equipment, k) })} />)}
       </Group>
-      <SwitchRow label="Cuisiner une fois, manger deux fois" hint="Le dîner du lundi, du mercredi et du vendredi sert aussi de déjeuner le lendemain." value={p.leftovers} onChange={(leftovers) => setP({ ...p, leftovers })} />
-      <SwitchRow label="Prévoir des collations" value={p.snacks} onChange={(snacks) => setP({ ...p, snacks })} />
-      {failed && <Notice tone="danger">L'enregistrement a échoué. Réessaie.</Notice>}
-      <Button onPress={save} loading={busy}>Enregistrer mon alimentation</Button>
+      <SwitchRow label={t("Cuisiner une fois, manger deux fois", "Cook once, eat twice")} hint={t("Le dîner du lundi, du mercredi et du vendredi sert aussi de déjeuner le lendemain.", "Monday's, Wednesday's and Friday's dinners also make the next day's lunch.")} value={p.leftovers} onChange={(leftovers) => setP({ ...p, leftovers })} />
+      <SwitchRow label={t("Prévoir des collations", "Plan snacks")} value={p.snacks} onChange={(snacks) => setP({ ...p, snacks })} />
+      {failed && <Notice tone="danger">{t("L'enregistrement a échoué. Réessaie.", "Saving failed. Try again.")}</Notice>}
+      <Button onPress={save} loading={busy}>{t("Enregistrer mon alimentation", "Save my food preferences")}</Button>
     </Card>
   );
 }
@@ -162,13 +163,13 @@ function Dislikes({ value, onChange, options }: { value: string[]; onChange: (v:
 
   return (
     <View style={{ gap: space.sm }}>
-      <T variant="label">Aliments que je ne mange pas</T>
-      <T variant="small">Aucune recette qui en contient ne te sera proposée. L'ail, les herbes et les épices sont simplement retirés de la recette.</T>
+      <T variant="label">{t("Aliments que je ne mange pas", "Foods I don't eat")}</T>
+      <T variant="small">{t("Aucune recette qui en contient ne te sera proposée. L'ail, les herbes et les épices sont simplement retirés de la recette.", "No recipe containing them will be suggested. Garlic, herbs and spices are simply left out of the recipe.")}</T>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
         {options.groups.map((g) => <Chip key={g.id} label={g.label} active={groupOn(g)} onPress={() => toggleGroup(g)} />)}
       </View>
       <View>
-        <Field label="Un ingrédient précis" value={query} onChangeText={setQuery} placeholder="ex. fenouil" autoCorrect={false} style={{ paddingLeft: 40 }} />
+        <Field label={t("Un ingrédient précis", "A specific ingredient")} value={query} onChangeText={setQuery} placeholder={t("ex. fenouil", "e.g. fennel")} autoCorrect={false} style={{ paddingLeft: 40 }} />
         <View pointerEvents="none" style={{ position: "absolute", left: 12, bottom: 14 }}><Search size={18} color={c.muted} /></View>
       </View>
       {hits.length > 0 && (
@@ -178,14 +179,14 @@ function Dislikes({ value, onChange, options }: { value: string[]; onChange: (v:
       )}
       {value.length > 0 && (
         <View style={{ gap: space.sm }}>
-          <T variant="small">{value.length} ingrédient{value.length > 1 ? "s" : ""} exclu{value.length > 1 ? "s" : ""} :</T>
+          <T variant="small">{t(`${value.length} ${value.length > 1 ? "ingrédients exclus" : "ingrédient exclu"} :`, `${value.length} ${value.length === 1 ? "ingredient" : "ingredients"} excluded:`)}</T>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
             {value.map((id) => (
               <Pressable
                 key={id}
                 onPress={() => onChange(value.filter((x) => x !== id))}
                 accessibilityRole="button"
-                accessibilityLabel={`Retirer ${names.get(id) ?? id}`}
+                accessibilityLabel={t(`Retirer ${names.get(id) ?? id}`, `Remove ${names.get(id) ?? id}`)}
                 style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: c.abricotSoft, borderRadius: radius.full, paddingHorizontal: 10, paddingVertical: 4 }}
               >
                 <T variant="small" tone="encre">{names.get(id) ?? id}</T>
@@ -210,8 +211,8 @@ function Budget({ initial }: { initial: Preferences["budget"] }) {
   if (!initial.allowed) {
     return (
       <Card>
-        <SectionTitle>Mon budget courses</SectionTitle>
-        <T variant="small">Avec Sorloo Premium, fixe un budget par semaine : Sorloo construit des menus qui le respectent.</T>
+        <SectionTitle>{t("Mon budget courses", "My grocery budget")}</SectionTitle>
+        <T variant="small">{t("Avec Sorloo Premium, fixe un budget par semaine : Sorloo construit des menus qui le respectent.", "With Sorloo Premium, set a weekly budget: Sorloo builds menus that stay within it.")}</T>
       </Card>
     );
   }
@@ -226,13 +227,13 @@ function Budget({ initial }: { initial: Preferences["budget"] }) {
   };
   return (
     <Card>
-      <SectionTitle>Mon budget courses</SectionTitle>
-      <SwitchRow label="Respecter un budget" value={enabled} onChange={setEnabled} />
-      {enabled && <Field label="Budget par semaine (€)" value={weekly} onChangeText={setWeekly} keyboardType="decimal-pad" />}
-      {failed && <Notice tone="danger">Le budget doit être compris entre 10 et 1 000 €.</Notice>}
+      <SectionTitle>{t("Mon budget courses", "My grocery budget")}</SectionTitle>
+      <SwitchRow label={t("Respecter un budget", "Stick to a budget")} value={enabled} onChange={setEnabled} />
+      {enabled && <Field label={t("Budget par semaine (€)", "Weekly budget (€)")} value={weekly} onChangeText={setWeekly} keyboardType="decimal-pad" />}
+      {failed && <Notice tone="danger">{t("Le budget doit être compris entre 10 et 1 000 €.", "The budget must be between €10 and €1,000.")}</Notice>}
       <View style={{ flexDirection: "row", gap: space.sm }}>
-        <Button variant="secondary" style={{ flex: 1 }} loading={busy} onPress={() => save(false)}>Enregistrer</Button>
-        {enabled && <Button style={{ flex: 1 }} loading={busy} onPress={() => save(true)}>Refaire ma semaine</Button>}
+        <Button variant="secondary" style={{ flex: 1 }} loading={busy} onPress={() => save(false)}>{t("Enregistrer", "Save")}</Button>
+        {enabled && <Button style={{ flex: 1 }} loading={busy} onPress={() => save(true)}>{t("Refaire ma semaine", "Redo my week")}</Button>}
       </View>
     </Card>
   );
@@ -266,27 +267,27 @@ function BodyForm({ initial }: { initial: Body }) {
   };
   return (
     <Card>
-      <SectionTitle>Mon objectif</SectionTitle>
-      <Group label="Objectif">
+      <SectionTitle>{t("Mon objectif", "My goal")}</SectionTitle>
+      <Group label={t("Objectif", "Goal")}>
         {(Object.keys(L.goal) as Body["goal"][]).map((k) => <Chip key={k} label={L.goal[k]} active={b.goal === k} onPress={() => set({ goal: k })} />)}
       </Group>
       {(b.goal === "lose_weight" || b.goal === "gain_muscle") && (
-        <Group label="Rythme">
-          <Chip label="Doux" active={b.pace === "gentle"} onPress={() => set({ pace: "gentle" })} />
-          <Chip label="Modéré" active={b.pace === "moderate"} onPress={() => set({ pace: "moderate" })} />
+        <Group label={t("Rythme", "Pace")}>
+          <Chip label={t("Doux", "Gentle")} active={b.pace === "gentle"} onPress={() => set({ pace: "gentle" })} />
+          <Chip label={t("Modéré", "Moderate")} active={b.pace === "moderate"} onPress={() => set({ pace: "moderate" })} />
         </Group>
       )}
       <View style={{ flexDirection: "row", gap: space.sm }}>
-        <View style={{ flex: 1 }}><Field label="Poids (kg)" value={b.weight} onChangeText={(weight) => set({ weight })} keyboardType="decimal-pad" /></View>
-        <View style={{ flex: 1 }}><Field label="Taille (cm)" value={b.height} onChangeText={(height) => set({ height })} keyboardType="number-pad" /></View>
+        <View style={{ flex: 1 }}><Field label={t("Poids (kg)", "Weight (kg)")} value={b.weight} onChangeText={(weight) => set({ weight })} keyboardType="decimal-pad" /></View>
+        <View style={{ flex: 1 }}><Field label={t("Taille (cm)", "Height (cm)")} value={b.height} onChangeText={(height) => set({ height })} keyboardType="number-pad" /></View>
       </View>
-      {(b.goal === "lose_weight" || b.goal === "gain_muscle") && <Field label="Poids visé (kg, facultatif)" value={b.target} onChangeText={(target) => set({ target })} keyboardType="decimal-pad" />}
-      <Group label="Activité au quotidien">
+      {(b.goal === "lose_weight" || b.goal === "gain_muscle") && <Field label={t("Poids visé (kg, facultatif)", "Target weight (kg, optional)")} value={b.target} onChangeText={(target) => set({ target })} keyboardType="decimal-pad" />}
+      <Group label={t("Activité au quotidien", "Daily activity")}>
         {(Object.keys(L.activity) as Body["activity"][]).map((k) => <Chip key={k} label={L.activity[k].split(" (")[0]!} active={b.activity === k} onPress={() => set({ activity: k })} />)}
       </Group>
-      {failed && <Notice tone="danger">Vérifie les valeurs saisies.</Notice>}
-      {saved && <Notice tone="basilic">Enregistré : tes objectifs du jour sont recalculés.</Notice>}
-      <Button onPress={save} loading={busy}>Enregistrer mon objectif</Button>
+      {failed && <Notice tone="danger">{t("Vérifie les valeurs saisies.", "Check the values entered.")}</Notice>}
+      {saved && <Notice tone="basilic">{t("Enregistré : tes objectifs du jour sont recalculés.", "Saved: your daily targets are recalculated.")}</Notice>}
+      <Button onPress={save} loading={busy}>{t("Enregistrer mon objectif", "Save my goal")}</Button>
     </Card>
   );
 }

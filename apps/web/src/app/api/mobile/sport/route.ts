@@ -1,3 +1,4 @@
+import { localeOf, tr } from "@/lib/locale";
 import { dayIndex } from "@/lib/dates";
 import { contextFor, mobileRoute } from "@/lib/mobile";
 import { workoutWeekFor } from "@/lib/planning";
@@ -7,7 +8,8 @@ import { getWorkoutWeek, saveWorkoutWeek } from "@/lib/repo";
 export const dynamic = "force-dynamic";
 
 /** This week's workout programme, the steps of the day and the sport settings. */
-export const GET = mobileRoute(async (_req, userId) => {
+export const GET = mobileRoute(async (req, userId) => {
+  const loc = localeOf(req);
   const uc = await contextFor(userId);
   const settings = uc.profile.sport;
   if (!can(uc.profile, "sport")) return { allowed: false, settings, week: null };
@@ -29,7 +31,7 @@ export const GET = mobileRoute(async (_req, userId) => {
           sessions: stored.week.sessions.map((s) => ({
             day: s.day,
             type: s.type,
-            title: s.title.fr,
+            title: tr(s.title, loc),
             minutes: s.minutes,
             kcal: s.kcal,
             guided: s.blocks.length > 0,

@@ -1,3 +1,4 @@
+import { localeOf } from "@/lib/locale";
 import { getTranslations } from "next-intl/server";
 import type { WeeklyReview } from "@weeko/engine";
 import { addDays } from "@/lib/dates";
@@ -9,7 +10,8 @@ import { reviewFor } from "@/lib/review-service";
 export const dynamic = "force-dynamic";
 
 /** Weight curve, measurement history and the weekly review (Premium). */
-export const GET = mobileRoute(async (_req, userId) => {
+export const GET = mobileRoute(async (req, userId) => {
+  const loc = localeOf(req);
   const uc = await contextFor(userId);
   const hidden = !!uc.health.numbersHidden;
   const premium = can(uc.profile, "weekly_review");
@@ -20,7 +22,7 @@ export const GET = mobileRoute(async (_req, userId) => {
     premium ? reviewFor(uc, uc.weekStart) : Promise.resolve(null),
     premium ? getPlan(userId, nextWeek) : Promise.resolve(null),
   ]);
-  const t = await getTranslations({ locale: "fr", namespace: "review" });
+  const t = await getTranslations({ locale: loc, namespace: "review" });
   const review = (r: WeeklyReview | null, recs: boolean) =>
     r && {
       trendChangeKg: hidden ? null : (r.trendChangeKg ?? null),

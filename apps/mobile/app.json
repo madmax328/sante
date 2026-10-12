@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sorloo",
     "slug": "weeko",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "sorloo",
@@ -12,6 +12,9 @@
       "supportsTablet": false,
       "config": {
         "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "CFBundleAllowMixedLocalizations": true
       }
     },
     "android": {
@@ -33,7 +36,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Sorloo utilise l'appareil photo pour scanner le code-barres des produits que tu ajoutes à ton journal.",
+          "cameraPermission": "Sorloo utilise l'appareil photo pour scanner les codes-barres, photographier tes repas et, si tu le souhaites, prendre tes photos de progression.",
           "microphonePermission": false,
           "recordAudioAndroid": false
         }
@@ -54,6 +57,21 @@
           "imageWidth": 120
         }
       ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Sorloo accède à tes photos uniquement quand tu choisis une photo de repas ou de progression.",
+          "cameraPermission": "Sorloo utilise l'appareil photo pour scanner les codes-barres, photographier tes repas et, si tu le souhaites, prendre tes photos de progression.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#1E6B52"
+        }
+      ],
+      "expo-localization",
       "expo-secure-store",
       "expo-web-browser"
     ],
@@ -73,6 +91,10 @@
       "url": "https://u.expo.dev/04a8bf82-f7f5-4f51-835a-f99d4405ef8d",
       "checkAutomatically": "ON_LOAD",
       "fallbackToCacheTimeout": 0
+    },
+    "locales": {
+      "fr": "./locales/fr.json",
+      "en": "./locales/en.json"
     }
   }
 }

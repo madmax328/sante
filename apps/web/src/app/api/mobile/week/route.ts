@@ -1,3 +1,4 @@
+import { localeOf, tr } from "@/lib/locale";
 import { MEAL_ORDER } from "@weeko/engine";
 import { addDays, dayIndex, weekStartOf } from "@/lib/dates";
 import { mobileRoute } from "@/lib/mobile";
@@ -8,6 +9,7 @@ export const dynamic = "force-dynamic";
 
 /** The week plan: 7 days × meals, with daily totals and the shopping estimate. */
 export const GET = mobileRoute(async (req, userId) => {
+  const loc = localeOf(req);
   const start = new URL(req.url).searchParams.get("start");
   const weekStart = start && /^\d{4}-\d{2}-\d{2}$/.test(start) ? weekStartOf(start) : undefined;
   const { uc, stored, result } = await loadWeek(userId, weekStart);
@@ -42,7 +44,7 @@ export const GET = mobileRoute(async (req, userId) => {
             meal: m.meal,
             kind: m.kind,
             recipeId: r?.id ?? null,
-            name: r?.name.fr ?? m.external?.label ?? null,
+            name: tr(r?.name, loc) ?? m.external?.label ?? null,
             minutes: r?.totalMin ?? null,
             kcal: r && !hidden ? r.nutrition.kcal : null,
             cost: r?.cost ?? null,

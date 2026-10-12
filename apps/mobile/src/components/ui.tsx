@@ -16,6 +16,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Circle, Path } from "react-native-svg";
 import { radius, space, useColors, type Colors } from "@/lib/theme";
+import { t } from "@/lib/i18n";
 
 /** Scrolling page with pull-to-refresh and safe-area padding. */
 export function Screen({
@@ -253,7 +254,7 @@ export function EmptyState({ title, text, action }: { title: string; text?: stri
 export function ErrorView({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
     <Screen>
-      <EmptyState title="Oups" text={message} action={onRetry ? <Button variant="secondary" onPress={onRetry}>Réessayer</Button> : undefined} />
+      <EmptyState title={t("Oups", "Oops")} text={message} action={onRetry ? <Button variant="secondary" onPress={onRetry}>{t("Réessayer", "Try again")}</Button> : undefined} />
     </Screen>
   );
 }

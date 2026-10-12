@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 
@@ -34,7 +34,20 @@ export default function proxy(req: NextRequest) {
     url.port = "";
     return NextResponse.redirect(url, 308);
   }
-  return intl(req);
+  return intl(withLanguageFallback(req));
+}
+
+/**
+ * The site exists in French and English: French for French speakers,
+ * English for everyone else (German, Italian… speakers rather read English),
+ * like the app. Only the first visit is concerned: the choice is then kept.
+ */
+function withLanguageFallback(req: NextRequest): NextRequest {
+  const accept = req.headers.get("accept-language");
+  if (!accept || /(^|[\s,])(fr|en)\b/i.test(accept) || req.cookies.has("NEXT_LOCALE")) return req;
+  const headers = new Headers(req.headers);
+  headers.set("accept-language", "en");
+  return new NextRequest(req.url, { headers, method: req.method });
 }
 
 export const config = {

@@ -1,3 +1,4 @@
+import { localeOf } from "@/lib/locale";
 import { dislikeOptions } from "@/lib/dislikes";
 import { contextFor, mobileRoute } from "@/lib/mobile";
 import { paceOf } from "@/lib/planning";
@@ -6,12 +7,13 @@ import { can } from "@/lib/premium";
 export const dynamic = "force-dynamic";
 
 /** Everything the "Mes préférences" screens edit, with the choices for disliked foods. */
-export const GET = mobileRoute(async (_req, userId) => {
+export const GET = mobileRoute(async (req, userId) => {
+  const loc = localeOf(req);
   const uc = await contextFor(userId);
   const self = uc.self.member;
   return {
     prefs: uc.profile.prefs,
-    dislikeOptions: dislikeOptions("fr"),
+    dislikeOptions: dislikeOptions(loc),
     budget: { allowed: can(uc.profile, "budget"), ...uc.profile.budget },
     body: uc.health.numbersHidden
       ? null

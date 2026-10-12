@@ -20,6 +20,7 @@ import {
   type BarcodeProduct,
   type FoodHit,
 } from "@/app/[locale]/app/journal/actions";
+import { MealPhoto } from "./meal-photo-client";
 import { Button, Input, Select, cx } from "./ui";
 
 const MEALS: MealType[] = ["breakfast", "lunch", "dinner", "snack"];
@@ -46,9 +47,9 @@ export function RemoveEntry({ date, id }: { date: string; id: string }) {
   );
 }
 
-type Tab = "quick" | "search" | "custom" | "barcode";
+type Tab = "quick" | "search" | "photo" | "custom" | "barcode";
 
-export function AddFood({ date, defaultMeal }: { date: string; defaultMeal: MealType }) {
+export function AddFood({ date, defaultMeal, premium }: { date: string; defaultMeal: MealType; premium: boolean }) {
   const t = useTranslations("journal");
   const e = useTranslations("enums");
   const router = useRouter();
@@ -99,7 +100,7 @@ export function AddFood({ date, defaultMeal }: { date: string; defaultMeal: Meal
           {MEALS.map((m) => <option key={m} value={m}>{e(`meal.${m}`)}</option>)}
         </Select>
         <div className="flex rounded-full border border-line bg-surface p-1" role="tablist">
-          {(["quick", "search", "custom", "barcode"] as const).map((k) => (
+          {(["quick", "search", "photo", "custom", "barcode"] as const).map((k) => (
             <button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => { setTab(k); setMessage(undefined); }} className={cx("rounded-full px-3 py-1 text-sm font-semibold", tab === k ? "bg-basilic text-surface" : "text-muted")}>
               {t(`tabs.${k}`)}
             </button>
@@ -107,6 +108,7 @@ export function AddFood({ date, defaultMeal }: { date: string; defaultMeal: Meal
         </div>
       </div>
 
+      {tab === "photo" && <MealPhoto date={date} meal={meal} premium={premium} onAdded={() => { setMessage(t("added")); router.refresh(); }} />}
       {tab === "quick" && <QuickAdd date={date} meal={meal} onAdded={() => { setMessage(t("added")); router.refresh(); }} />}
 
       {tab === "search" && (

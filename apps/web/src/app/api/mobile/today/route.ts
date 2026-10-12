@@ -1,3 +1,4 @@
+import { localeOf, tr } from "@/lib/locale";
 import { MEAL_ORDER } from "@weeko/engine";
 import { dayIndex } from "@/lib/dates";
 import { mobileRoute } from "@/lib/mobile";
@@ -9,7 +10,8 @@ import { loadWeek } from "@/lib/week-service";
 export const dynamic = "force-dynamic";
 
 /** The "Aujourd'hui" screen: meals, energy, water, workout and budget. */
-export const GET = mobileRoute(async (_req, userId) => {
+export const GET = mobileRoute(async (req, userId) => {
+  const loc = localeOf(req);
   const { uc, stored, result } = await loadWeek(userId);
   const day = dayIndex(uc.today);
   const [log, workouts] = await Promise.all([
@@ -35,7 +37,7 @@ export const GET = mobileRoute(async (_req, userId) => {
         meal: m.meal,
         kind: m.kind,
         recipeId: recipe?.id ?? null,
-        name: recipe?.name.fr ?? m.external?.label ?? null,
+        name: tr(recipe?.name, loc) ?? m.external?.label ?? null,
         kcal: recipe && !hidden ? Math.round(recipe.nutrition.kcal * servings) : null,
         minutes: recipe?.totalMin ?? null,
         servings,
@@ -55,7 +57,7 @@ export const GET = mobileRoute(async (_req, userId) => {
     workout: !uc.profile.sport.enabled
       ? null
       : session
-        ? { type: session.type, title: session.title.fr, minutes: session.minutes, done: workouts?.done.includes(day) ?? false }
+        ? { type: session.type, title: tr(session.title, loc), minutes: session.minutes, done: workouts?.done.includes(day) ?? false }
         : { type: "none" as const },
     budget: result
       ? {

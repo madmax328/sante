@@ -8,6 +8,7 @@ import { Button, Card, ErrorView, Loading, Notice, Screen, SectionTitle, T } fro
 import { api, useApi } from "@/lib/api";
 import { euro, num, quantity } from "@/lib/format";
 import { radius, space, useColors } from "@/lib/theme";
+import { plural, t } from "@/lib/i18n";
 
 interface Recipe {
   id: string;
@@ -34,7 +35,7 @@ export default function RecipeScreen() {
   const [servings, setServings] = useState(1);
 
   if (loading && !data) return <Loading />;
-  if (!data) return <ErrorView message={error?.status === 404 ? "Recette introuvable." : "Le chargement a échoué."} onRetry={reload} />;
+  if (!data) return <ErrorView message={error?.status === 404 ? t("Recette introuvable.", "Recipe not found.") : t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
 
   const rate = async (rating: "liked" | "disliked") => {
     const next = data.rating === rating ? "none" : rating;
@@ -52,7 +53,7 @@ export default function RecipeScreen() {
           <View style={{ gap: 4 }}>
             <Image source={{ uri: data.photo.url }} style={{ width: "100%", aspectRatio: 4 / 3, borderRadius: radius.lg }} contentFit="cover" transition={200} />
             <Pressable onPress={() => WebBrowser.openBrowserAsync(data.photo!.photographerUrl)}>
-              <T variant="small">Photo : {data.photo.photographer} · {data.photo.source === "unsplash" ? "Unsplash" : "Pexels"}</T>
+              <T variant="small">{t("Photo :", "Photo:")} {data.photo.photographer} · {data.photo.source === "unsplash" ? "Unsplash" : "Pexels"}</T>
             </Pressable>
           </View>
         ) : null}
@@ -65,33 +66,33 @@ export default function RecipeScreen() {
             {data.nutrition && <T variant="small">{num(data.nutrition.kcal)} kcal / portion</T>}
           </View>
           <View style={{ flexDirection: "row", gap: space.sm }}>
-            <Button small variant={data.rating === "liked" ? "primary" : "secondary"} onPress={() => rate("liked")} icon={<ThumbsUp size={16} color={data.rating === "liked" ? c.surface : c.encre} />}>J'aime</Button>
-            <Button small variant={data.rating === "disliked" ? "danger" : "secondary"} onPress={() => rate("disliked")} icon={<ThumbsDown size={16} color={data.rating === "disliked" ? c.surface : c.encre} />}>Pas pour moi</Button>
+            <Button small variant={data.rating === "liked" ? "primary" : "secondary"} onPress={() => rate("liked")} icon={<ThumbsUp size={16} color={data.rating === "liked" ? c.surface : c.encre} />}>{t("J'aime", "I like it")}</Button>
+            <Button small variant={data.rating === "disliked" ? "danger" : "secondary"} onPress={() => rate("disliked")} icon={<ThumbsDown size={16} color={data.rating === "disliked" ? c.surface : c.encre} />}>{t("Pas pour moi", "Not for me")}</Button>
           </View>
         </View>
 
-        {data.disliked.length > 0 && <Notice>Contient un aliment que tu ne manges pas : {data.disliked.join(", ")}.</Notice>}
-        {data.omitted.length > 0 && <Notice tone="basilic">Adaptée pour toi : sans {data.omitted.join(", ")}. Passe simplement les étapes qui en parlent.</Notice>}
+        {data.disliked.length > 0 && <Notice>{t(`Contient un aliment que tu ne manges pas : ${data.disliked.join(", ")}.`, `Contains a food you don't eat: ${data.disliked.join(", ")}.`)}</Notice>}
+        {data.omitted.length > 0 && <Notice tone="basilic">{t(`Adaptée pour toi : sans ${data.omitted.join(", ")}. Passe simplement les étapes qui en parlent.`, `Adapted for you: without ${data.omitted.join(", ")}. Just skip the steps that mention it.`)}</Notice>}
 
         <Card>
           <SectionTitle
             action={
               <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
-                <Pressable accessibilityLabel="Une portion de moins" onPress={() => setServings(Math.max(1, servings - 1))} style={{ padding: 6 }}><Minus size={18} color={c.encre} /></Pressable>
-                <T variant="h3">{servings} {servings > 1 ? "portions" : "portion"}</T>
-                <Pressable accessibilityLabel="Une portion de plus" onPress={() => setServings(Math.min(12, servings + 1))} style={{ padding: 6 }}><Plus size={18} color={c.encre} /></Pressable>
+                <Pressable accessibilityLabel={t("Une portion de moins", "One serving less")} onPress={() => setServings(Math.max(1, servings - 1))} style={{ padding: 6 }}><Minus size={18} color={c.encre} /></Pressable>
+                <T variant="h3">{servings} {plural(servings, ["portion", "portions"], ["serving", "servings"])}</T>
+                <Pressable accessibilityLabel={t("Une portion de plus", "One serving more")} onPress={() => setServings(Math.min(12, servings + 1))} style={{ padding: 6 }}><Plus size={18} color={c.encre} /></Pressable>
               </View>
             }
           >
-            Ingrédients
+            {t("Ingrédients", "Ingredients")}
           </SectionTitle>
           {main.map((i) => <T key={i.id}>• {quantity(i.qty, i.unit, i.name, i.plural, servings)}</T>)}
-          {staples.length > 0 && <T variant="small">Placard : {staples.map((i) => i.name.toLowerCase()).join(", ")}</T>}
-          {data.allergens.length > 0 && <T variant="small">Allergènes : {data.allergens.join(", ")}</T>}
+          {staples.length > 0 && <T variant="small">{t("Placard :", "Cupboard:")} {staples.map((i) => i.name.toLowerCase()).join(", ")}</T>}
+          {data.allergens.length > 0 && <T variant="small">{t("Allergènes :", "Allergens:")} {data.allergens.join(", ")}</T>}
         </Card>
 
         <Card>
-          <SectionTitle>Préparation</SectionTitle>
+          <SectionTitle>{t("Préparation", "Method")}</SectionTitle>
           {data.steps.map((s, i) => (
             <View key={i} style={{ flexDirection: "row", gap: space.md }}>
               <View style={{ width: 26, height: 26, borderRadius: 13, backgroundColor: c.basilicSoft, alignItems: "center", justifyContent: "center" }}>
@@ -104,22 +105,22 @@ export default function RecipeScreen() {
 
         {data.nutrition && (
           <Card>
-            <SectionTitle>Valeurs par portion</SectionTitle>
+            <SectionTitle>{t("Valeurs par portion", "Per serving")}</SectionTitle>
             {[
-              ["Énergie", `${num(data.nutrition.kcal)} kcal`],
-              ["Protéines", `${num(data.nutrition.protein, 1)} g`],
-              ["Glucides", `${num(data.nutrition.carbs, 1)} g`],
-              ["dont sucres", `${num(data.nutrition.sugars, 1)} g`],
-              ["Lipides", `${num(data.nutrition.fat, 1)} g`],
-              ["Fibres", `${num(data.nutrition.fiber, 1)} g`],
-              ["Sel", `${num(data.nutrition.salt, 1)} g`],
+              [t("Énergie", "Energy"), `${num(data.nutrition.kcal)} kcal`],
+              [t("Protéines", "Protein"), `${num(data.nutrition.protein, 1)} g`],
+              [t("Glucides", "Carbs"), `${num(data.nutrition.carbs, 1)} g`],
+              [t("dont sucres", "of which sugars"), `${num(data.nutrition.sugars, 1)} g`],
+              [t("Lipides", "Fat"), `${num(data.nutrition.fat, 1)} g`],
+              [t("Fibres", "Fibre"), `${num(data.nutrition.fiber, 1)} g`],
+              [t("Sel", "Salt"), `${num(data.nutrition.salt, 1)} g`],
             ].map(([k, v]) => (
               <View key={k} style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <T variant="small">{k}</T>
                 <T variant="small" tone="encre" style={{ fontWeight: "700" }}>{v}</T>
               </View>
             ))}
-            <T variant="small">Calculées à partir de la table CIQUAL (ANSES).</T>
+            <T variant="small">{t("Calculées à partir de la table CIQUAL (ANSES).", "Calculated from the CIQUAL table (ANSES).")}</T>
           </Card>
         )}
       </Screen>

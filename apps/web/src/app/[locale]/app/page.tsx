@@ -1,3 +1,4 @@
+import { requestLocale, tr } from "@/lib/locale";
 import { ArrowRight, Clock, Dumbbell, Footprints, Wallet } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { EatenToggle, GenerateWeekButton, QuickAdjust, WaterTracker } from "@/components/app-client";
@@ -18,6 +19,7 @@ export async function generateMetadata() {
 }
 
 export default async function TodayPage() {
+  const loc = await requestLocale();
   const { userId, uc } = await requireContext();
   const t = await getTranslations("today");
   const e = await getTranslations("enums");
@@ -82,7 +84,7 @@ export default async function TodayPage() {
                         {m.kind === "leftover" && <Badge tone="miel" className="ml-2 normal-case tracking-normal">{t("leftover")}</Badge>}
                       </p>
                       {recipe ? (
-                        <Link href={`/app/recipes/${recipe.id}`} className="line-clamp-2 font-semibold hover:text-basilic">{recipe.name.fr}</Link>
+                        <Link href={`/app/recipes/${recipe.id}`} className="line-clamp-2 font-semibold hover:text-basilic">{tr(recipe.name, loc)}</Link>
                       ) : (
                         <p className="font-semibold">{m.external?.label ?? t("nothingPlanned")}</p>
                       )}
@@ -122,7 +124,7 @@ export default async function TodayPage() {
             <Link href={`/app/sport/${day}`} className="flex items-center gap-3 rounded-2xl bg-basilic-soft p-4 hover:bg-basilic-soft/70">
               <Dumbbell className="size-6 text-basilic" aria-hidden />
               <div className="min-w-0 flex-1">
-                <p className="font-bold">{session.title.fr}</p>
+                <p className="font-bold">{tr(session.title, loc)}</p>
                 <p className="text-sm text-muted num">{t("sessionMeta", { minutes: session.minutes, kcal: session.kcal })}</p>
               </div>
               {sessionDone ? <Badge tone="basilic">{t("done")}</Badge> : <ArrowRight className="size-5 text-basilic" aria-hidden />}

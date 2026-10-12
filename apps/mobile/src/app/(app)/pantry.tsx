@@ -5,6 +5,7 @@ import { Keyboard, Pressable, TextInput, View } from "react-native";
 import { Button, Card, EmptyState, ErrorView, Field, Loading, Screen, SectionTitle, T } from "@/components/ui";
 import { api, useApi } from "@/lib/api";
 import { radius, space, useColors } from "@/lib/theme";
+import { t } from "@/lib/i18n";
 
 type Unit = "g" | "ml" | "pc";
 
@@ -14,7 +15,7 @@ interface Pantry {
   options: { id: string; name: string; unit: Unit }[];
 }
 
-const UNIT: Record<Unit, string> = { g: "g", ml: "ml", pc: "pièce(s)" };
+const UNIT: Record<Unit, string> = { g: "g", ml: "ml", pc: t("pièce(s)", "piece(s)") };
 const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 /** "Garde-manger": what is already at home is taken off the grocery list and cooked first. */
@@ -27,11 +28,11 @@ export default function PantryScreen() {
   const [busy, setBusy] = useState(false);
 
   if (loading && !data) return <Loading />;
-  if (!data) return <ErrorView message={error?.code === "network" ? "Pas de connexion internet." : "Le chargement a échoué."} onRetry={reload} />;
+  if (!data) return <ErrorView message={error?.code === "network" ? t("Pas de connexion internet.", "No internet connection.") : t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
   if (!data.allowed) {
     return (
       <Screen padTop={false}>
-        <EmptyState title="Ton garde-manger" text="Avec Sorloo Premium, indique ce que tu as déjà chez toi : Sorloo le retire de ta liste de courses et le cuisine en priorité, pour dépenser moins et gaspiller moins." />
+        <EmptyState title={t("Ton garde-manger", "Your pantry")} text={t("Avec Sorloo Premium, indique ce que tu as déjà chez toi : Sorloo le retire de ta liste de courses et le cuisine en priorité, pour dépenser moins et gaspiller moins.", "With Sorloo Premium, tell Sorloo what you already have at home: it's taken off your shopping list and cooked first, so you spend less and waste less.")} />
       </Screen>
     );
   }
@@ -47,15 +48,15 @@ export default function PantryScreen() {
 
   return (
     <Screen padTop={false} refreshing={refreshing} onRefresh={refresh}>
-      <T variant="small">Ce que tu as déjà est retiré de ta liste de courses et cuisiné en priorité.</T>
+      <T variant="small">{t("Ce que tu as déjà est retiré de ta liste de courses et cuisiné en priorité.", "What you already have is taken off your shopping list and cooked first.")}</T>
       <Card>
-        <SectionTitle>Ajouter un produit</SectionTitle>
+        <SectionTitle>{t("Ajouter un produit", "Add an item")}</SectionTitle>
         {picked ? (
           <>
             <T variant="h3">{picked.name}</T>
-            <Field label={`Quantité (${UNIT[picked.unit]})`} value={qty} onChangeText={setQty} keyboardType="decimal-pad" autoFocus selectTextOnFocus />
+            <Field label={t(`Quantité (${UNIT[picked.unit]})`, `Amount (${UNIT[picked.unit]})`)} value={qty} onChangeText={setQty} keyboardType="decimal-pad" autoFocus selectTextOnFocus />
             <View style={{ flexDirection: "row", gap: space.sm }}>
-              <Button variant="ghost" onPress={() => setPicked(undefined)}>Retour</Button>
+              <Button variant="ghost" onPress={() => setPicked(undefined)}>{t("Retour", "Back")}</Button>
               <Button
                 style={{ flex: 1 }}
                 loading={busy}
@@ -66,14 +67,14 @@ export default function PantryScreen() {
                   setQuery("");
                 }}
               >
-                Ajouter
+                {t("Ajouter", "Add")}
               </Button>
             </View>
           </>
         ) : (
           <>
             <View>
-              <Field label="Produit" value={query} onChangeText={setQuery} placeholder="ex. riz, tomates, œufs…" autoCorrect={false} style={{ paddingLeft: 40 }} />
+              <Field label={t("Produit", "Item")} value={query} onChangeText={setQuery} placeholder={t("ex. riz, tomates, œufs…", "e.g. rice, tomatoes, eggs…")} autoCorrect={false} style={{ paddingLeft: 40 }} />
               <View pointerEvents="none" style={{ position: "absolute", left: 12, bottom: 14 }}><Search size={18} color={c.muted} /></View>
             </View>
             {hits.map((o) => (
@@ -93,7 +94,7 @@ export default function PantryScreen() {
         )}
       </Card>
       {data.items.length === 0 ? (
-        <EmptyState title="Ton garde-manger est vide" text="Ajoute ce qu'il te reste (un paquet de pâtes entamé, des œufs…) : ta prochaine semaine en tiendra compte." />
+        <EmptyState title={t("Ton garde-manger est vide", "Your pantry is empty")} text={t("Ajoute ce qu'il te reste (un paquet de pâtes entamé, des œufs…) : ta prochaine semaine en tiendra compte.", "Add what you have left (an opened pack of pasta, some eggs…): your next week will take it into account.")} />
       ) : (
         <Card style={{ gap: 0 }}>
           {data.items.map((i, k) => (
@@ -119,16 +120,16 @@ function PantryRow({ item, first, onSave }: { item: Pantry["items"][number]; fir
         onChangeText={setValue}
         keyboardType="decimal-pad"
         selectTextOnFocus
-        accessibilityLabel={`Quantité de ${item.name}`}
+        accessibilityLabel={t(`Quantité de ${item.name}`, `${item.name} amount`)}
         style={{ width: 72, height: 40, borderRadius: radius.sm, borderWidth: 1, borderColor: changed ? c.basilic : c.line, paddingHorizontal: space.sm, color: c.encre, backgroundColor: c.surface, textAlign: "right" }}
       />
       <T variant="small" style={{ width: 52 }}>{UNIT[item.unit]}</T>
       {changed ? (
-        <Pressable accessibilityRole="button" accessibilityLabel={`Enregistrer la quantité de ${item.name}`} hitSlop={8} onPress={() => { Keyboard.dismiss(); onSave(q); }}>
+        <Pressable accessibilityRole="button" accessibilityLabel={t(`Enregistrer la quantité de ${item.name}`, `Save the ${item.name} amount`)} hitSlop={8} onPress={() => { Keyboard.dismiss(); onSave(q); }}>
           <Check size={20} color={c.basilic} />
         </Pressable>
       ) : (
-        <Pressable accessibilityRole="button" accessibilityLabel={`Retirer ${item.name}`} hitSlop={8} onPress={() => onSave(0)}>
+        <Pressable accessibilityRole="button" accessibilityLabel={t(`Retirer ${item.name}`, `Remove ${item.name}`)} hitSlop={8} onPress={() => onSave(0)}>
           <X size={18} color={c.muted} />
         </Pressable>
       )}

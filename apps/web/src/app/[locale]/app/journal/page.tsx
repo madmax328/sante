@@ -1,9 +1,11 @@
+import { requestLocale } from "@/lib/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { MEAL_TYPES, type MealType } from "@weeko/engine";
 import { WaterTracker } from "@/components/app-client";
+import { isPremium } from "@/lib/premium";
 import { AddFood, FavoriteEntry, MealTools, RemoveEntry } from "@/components/journal-client";
-import { favorites, inputFromLog, keyOf } from "@/lib/journal";
+import { entryName, favorites, inputFromLog, keyOf } from "@/lib/journal";
 import { Badge, Card, PageHeader, Progress } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { requireContext } from "@/lib/app-user";
@@ -24,6 +26,7 @@ function currentMeal(hour: number): MealType {
 
 export default async function JournalPage({ searchParams }: PageProps<"/[locale]/app/journal">) {
   const { userId, uc } = await requireContext();
+  const loc = await requestLocale();
   const sp = await searchParams;
   const date = typeof sp.date === "string" && isValidDate(sp.date) && sp.date <= uc.today ? sp.date : uc.today;
   const t = await getTranslations("journal");
@@ -76,7 +79,7 @@ export default async function JournalPage({ searchParams }: PageProps<"/[locale]
 
       <Card className="grid gap-3">
         <h2 className="text-lg font-bold">{t("addTitle")}</h2>
-        <AddFood date={date} defaultMeal={date === uc.today ? currentMeal(hour) : "dinner"} />
+        <AddFood date={date} defaultMeal={date === uc.today ? currentMeal(hour) : "dinner"} premium={isPremium(uc.profile)} />
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -96,14 +99,14 @@ export default async function JournalPage({ searchParams }: PageProps<"/[locale]
                   {entries.map((x) => (
                     <li key={x.id} className="flex items-center gap-2 py-2">
                       <div className="min-w-0 flex-1">
-                        <p className="truncate font-semibold">{x.name}</p>
+                        <p className="truncate font-semibold">{entryName(x, loc)}</p>
                         <p className="text-xs text-muted num">
                           {x.kind === "planned" && <Badge tone="basilic" className="mr-1">{t("fromPlan")}</Badge>}
                           {x.kind === "ingredient" || x.kind === "barcode" ? `${x.amount} g · ` : x.kind === "recipe" ? `${t("servingsCount", { n: x.amount })} · ` : ""}
                           {!hidden && `${x.kcal} kcal · ${x.protein} g prot.`}
                         </p>
                       </div>
-                      {x.kind !== "planned" && <FavoriteEntry date={date} id={x.id} name={x.name} initial={isFavorite(x)} />}
+                      {x.kind !== "planned" && <FavoriteEntry date={date} id={x.id} name={entryName(x, loc)} initial={isFavorite(x)} />}
                       <RemoveEntry date={date} id={x.id} />
                     </li>
                   ))}

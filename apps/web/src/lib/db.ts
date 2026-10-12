@@ -29,6 +29,7 @@ export function ensureIndexes(): Promise<void> {
       db.collection("plans").createIndex({ userId: 1, weekStart: -1 }, { unique: true }),
       db.collection("food_logs").createIndex({ userId: 1, date: -1 }, { unique: true }),
       db.collection("measurements").createIndex({ userId: 1, date: -1 }, { unique: true }),
+      db.collection("progress_photos").createIndex({ userId: 1, date: -1 }),
       db.collection("workouts").createIndex({ userId: 1, weekStart: -1 }, { unique: true }),
       db.collection("recipe_events").createIndex({ userId: 1, at: -1 }),
       db.collection("coach_messages").createIndex({ userId: 1, at: -1 }),

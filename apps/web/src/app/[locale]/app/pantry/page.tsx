@@ -1,3 +1,4 @@
+import { requestLocale, tr } from "@/lib/locale";
 import { getTranslations } from "next-intl/server";
 import { PantryAdd, PantryRow } from "@/components/pantry-client";
 import { Card, EmptyState, LinkButton, PageHeader } from "@/components/ui";
@@ -11,6 +12,7 @@ export async function generateMetadata() {
 }
 
 export default async function PantryPage() {
+  const loc = await requestLocale();
   const { userId, uc } = await requireContext();
   const t = await getTranslations("pantry");
   const c = uc.ctx.catalog;
@@ -23,7 +25,7 @@ export default async function PantryPage() {
     );
   }
   const items = (await getPantry(userId)).filter((i) => c.ingredients.has(i.ingredientId));
-  const options = [...c.ingredients.values()].filter((i) => !i.staple).map((i) => ({ id: i.id, name: i.name.fr, unit: i.unit })).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+  const options = [...c.ingredients.values()].filter((i) => !i.staple).map((i) => ({ id: i.id, name: tr(i.name, loc), unit: i.unit })).sort((a, b) => a.name.localeCompare(b.name, loc));
   return (
     <div className="grid gap-6">
       <PageHeader title={t("title")} subtitle={t("subtitle")} />
@@ -38,9 +40,9 @@ export default async function PantryPage() {
         <Card>
           <ul className="divide-y divide-line/70">
             {items
-              .sort((a, b) => c.ingredient(a.ingredientId).name.fr.localeCompare(c.ingredient(b.ingredientId).name.fr, "fr"))
+              .sort((a, b) => tr(c.ingredient(a.ingredientId).name, loc).localeCompare(tr(c.ingredient(b.ingredientId).name, loc), loc))
               .map((i) => (
-                <PantryRow key={i.ingredientId} id={i.ingredientId} name={c.ingredient(i.ingredientId).name.fr} qty={Math.round(i.qty)} unit={c.ingredient(i.ingredientId).unit} />
+                <PantryRow key={i.ingredientId} id={i.ingredientId} name={tr(c.ingredient(i.ingredientId).name, loc)} qty={Math.round(i.qty)} unit={c.ingredient(i.ingredientId).unit} />
               ))}
           </ul>
         </Card>

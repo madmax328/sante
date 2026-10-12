@@ -7,8 +7,9 @@ import { DAY_LABEL } from "@/lib/format";
 import { L } from "@/lib/labels";
 import { space, useColors } from "@/lib/theme";
 import type { SportSettings } from "./(tabs)/sport";
+import { t } from "@/lib/i18n";
 
-const EQUIPMENT: Record<string, string> = { mat: "Tapis", ...L.sportEquipment };
+const EQUIPMENT: Record<string, string> = { mat: t("Tapis", "Mat"), ...L.sportEquipment };
 const MINUTES = [15, 20, 30, 45, 60];
 
 function Group({ label, children }: { label: string; children: React.ReactNode }) {
@@ -33,7 +34,7 @@ export default function SportSettingsScreen() {
   }, [data, s]);
 
   if (loading && !data) return <Loading />;
-  if (!data || !s) return <ErrorView message="Le chargement a échoué." onRetry={reload} />;
+  if (!data || !s) return <ErrorView message={t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
 
   const save = async () => {
     setBusy(true);
@@ -50,44 +51,44 @@ export default function SportSettingsScreen() {
       <Card>
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: space.md }}>
           <View style={{ flex: 1 }}>
-            <T variant="h3">Programme sportif</T>
-            <T variant="small">Des séances préparées chaque semaine.</T>
+            <T variant="h3">{t("Programme sportif", "Workout programme")}</T>
+            <T variant="small">{t("Des séances préparées chaque semaine.", "Workouts prepared every week.")}</T>
           </View>
-          <Switch value={s.enabled} onValueChange={(enabled) => setS({ ...s, enabled })} trackColor={{ true: c.basilic }} accessibilityLabel="Activer le programme sportif" />
+          <Switch value={s.enabled} onValueChange={(enabled) => setS({ ...s, enabled })} trackColor={{ true: c.basilic }} accessibilityLabel={t("Activer le programme sportif", "Turn on the workout programme")} />
         </View>
       </Card>
       {s.enabled && (
         <Card>
-          <Group label="Niveau">
+          <Group label={t("Niveau", "Level")}>
             {(Object.keys(L.level) as SportSettings["level"][]).map((k) => (
               <Chip key={k} label={L.level[k]} active={s.level === k} onPress={() => setS({ ...s, level: k })} />
             ))}
           </Group>
-          <Group label="Jours disponibles">
+          <Group label={t("Jours disponibles", "Available days")}>
             {DAY_LABEL.map((d, i) => (
               <Chip key={d} label={d.slice(0, 3)} active={s.availableDays.includes(i)} onPress={() => setS({ ...s, availableDays: toggle(s.availableDays, i).sort() })} />
             ))}
           </Group>
-          <Group label="Durée d'une séance">
+          <Group label={t("Durée d'une séance", "Workout length")}>
             {MINUTES.map((m) => (
               <Chip key={m} label={`${m} min`} active={s.minutesPerSession === m} onPress={() => setS({ ...s, minutesPerSession: m })} />
             ))}
           </Group>
-          <Group label="Matériel">
+          <Group label={t("Matériel", "Equipment")}>
             {Object.entries(EQUIPMENT).map(([k, label]) => (
               <Chip key={k} label={label} active={s.equipment.includes(k)} onPress={() => setS({ ...s, equipment: toggle(s.equipment, k) })} />
             ))}
           </Group>
-          <Group label="Douleurs ou fragilités">
+          <Group label={t("Douleurs ou fragilités", "Pain or weak spots")}>
             {Object.entries(L.limitation).map(([k, label]) => (
               <Chip key={k} label={label} active={s.limitations.includes(k)} onPress={() => setS({ ...s, limitations: toggle(s.limitations, k) })} />
             ))}
           </Group>
-          <T variant="small">Les exercices qui sollicitent une zone fragile sont remplacés.</T>
+          <T variant="small">{t("Les exercices qui sollicitent une zone fragile sont remplacés.", "Exercises that load a weak spot are replaced.")}</T>
         </Card>
       )}
-      {failed && <Notice tone="danger">L'enregistrement a échoué. Choisis au moins un jour et réessaie.</Notice>}
-      <Button onPress={save} loading={busy}>Enregistrer</Button>
+      {failed && <Notice tone="danger">{t("L'enregistrement a échoué. Choisis au moins un jour et réessaie.", "Saving failed. Pick at least one day and try again.")}</Notice>}
+      <Button onPress={save} loading={busy}>{t("Enregistrer", "Save")}</Button>
     </Screen>
   );
 }

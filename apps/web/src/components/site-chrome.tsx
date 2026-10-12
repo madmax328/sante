@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { LanguageSwitch } from "./language-switch";
 import { LinkButton, Logo } from "./ui";
 
 export async function SiteHeader() {
@@ -68,7 +69,10 @@ export async function SiteFooter() {
           <Link href="/contact" className="text-muted hover:text-encre">{t("contact")}</Link>
         </div>
       </div>
-      <p className="mx-auto max-w-6xl px-4 pb-8 text-xs text-muted">{t("disclaimer")}</p>
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 pb-8">
+        <p className="text-xs text-muted">{t("disclaimer")}</p>
+        <LanguageSwitch />
+      </div>
     </footer>
   );
 }

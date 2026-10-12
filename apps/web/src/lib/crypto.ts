@@ -41,3 +41,17 @@ export function unseal<T>(sealed: Sealed): T {
   const out = Buffer.concat([decipher.update(Buffer.from(sealed.data, "base64")), decipher.final()]);
   return JSON.parse(out.toString("utf8")) as T;
 }
+
+/** Same encryption for binary content (progress photos). */
+export function sealBytes(bytes: Buffer): { iv: Buffer; tag: Buffer; data: Buffer } {
+  const iv = randomBytes(12);
+  const cipher = createCipheriv("aes-256-gcm", key(), iv);
+  const data = Buffer.concat([cipher.update(bytes), cipher.final()]);
+  return { iv, tag: cipher.getAuthTag(), data };
+}
+
+export function unsealBytes(sealed: { iv: Buffer; tag: Buffer; data: Buffer }): Buffer {
+  const decipher = createDecipheriv("aes-256-gcm", key(), sealed.iv);
+  decipher.setAuthTag(sealed.tag);
+  return Buffer.concat([decipher.update(sealed.data), decipher.final()]);
+}

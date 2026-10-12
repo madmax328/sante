@@ -1,3 +1,4 @@
+import { requestLocale, tr } from "@/lib/locale";
 import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { MEAL_ORDER } from "@weeko/engine";
@@ -18,6 +19,7 @@ export async function generateMetadata() {
 }
 
 export default async function WeekPage({ searchParams }: PageProps<"/[locale]/app/week">) {
+  const loc = await requestLocale();
   const { userId, uc } = await requireContext();
   const sp = await searchParams;
   const requested = typeof sp.week === "string" && isValidDate(sp.week) ? weekStartOf(sp.week) : uc.weekStart;
@@ -138,7 +140,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/[locale]/ap
                           <Link href={`/app/recipes/${recipe.id}`} tabIndex={-1} aria-hidden className="col-start-1 row-span-4 row-start-1 md:col-start-auto md:row-span-1 md:row-start-auto">
                             <RecipeImage photo={photos.get(recipe.id)} meal={m.meal} thumb className="aspect-square w-full rounded-xl md:aspect-[16/9]" sizes="(max-width: 768px) 64px, 25vw" />
                           </Link>
-                          <Link href={`/app/recipes/${recipe.id}`} className="col-start-2 line-clamp-2 font-semibold leading-snug hover:text-basilic md:col-start-auto">{recipe.name.fr}</Link>
+                          <Link href={`/app/recipes/${recipe.id}`} className="col-start-2 line-clamp-2 font-semibold leading-snug hover:text-basilic md:col-start-auto">{tr(recipe.name, loc)}</Link>
                         </>
                       ) : (
                         <p className="col-start-2 font-semibold md:col-start-auto">{m.kind === "external" ? m.external?.label : t("nothing")}</p>
