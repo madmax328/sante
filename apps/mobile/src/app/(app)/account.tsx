@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { BellRing, ChevronRight, Dumbbell, HeartPulse, LogOut, Mail, MessageCircle, Refrigerator, SlidersHorizontal, TrendingUp, Users } from "lucide-react-native";
 import { useState } from "react";
 import { Alert, Pressable, View } from "react-native";
+import { AppVersion } from "@/components/app-version";
 import { Badge, Button, Card, Field, Notice, Screen, SectionTitle, T } from "@/components/ui";
 import { api } from "@/lib/api";
 import { authClient } from "@/lib/auth";
@@ -126,6 +127,7 @@ export default function AccountScreen() {
         )}
       </Card>
       <T variant="small" style={{ textAlign: "center" }}>{t("Sorloo est une application de bien-être et d'organisation. Elle ne remplace pas un avis médical.", "Sorloo is a wellbeing and organisation app. It doesn't replace medical advice.")}</T>
+      <AppVersion />
     </Screen>
   );
 }

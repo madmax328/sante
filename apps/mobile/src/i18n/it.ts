@@ -1,5 +1,11 @@
 /** The app in italiano: translations of the French texts (keys). Generated from the t() calls; keep the {0} placeholders. */
 export const it: Record<string, string> = {
+  "Sorloo est à jour": "Sorloo è aggiornato",
+  "Recherche impossible": "Ricerca non riuscita",
+  "Vérifie ta connexion et réessaie.": "Controlla la connessione e riprova.",
+  "Rechercher une mise à jour": "Cerca aggiornamenti",
+  "version d'origine": "versione originale",
+  "mise à jour du {0}": "aggiornamento del {0}",
   "Journal": "Diario",
   "Sport": "Sport",
   "Photo": "Foto",
