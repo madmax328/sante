@@ -12,10 +12,6 @@
     {
       "path": "/api/cron/prices",
       "schedule": "41 3 * * *"
-    },
-    {
-      "path": "/api/cron/translations",
-      "schedule": "23 5 * * *"
     }
   ]
 }

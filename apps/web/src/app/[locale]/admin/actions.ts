@@ -2,9 +2,7 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
-import { adminSignIn, adminSignOut, isAdmin } from "@/lib/admin-auth";
-import { stepCatalogTranslation } from "@/lib/catalog-i18n";
+import { adminSignIn, adminSignOut } from "@/lib/admin-auth";
 
 const MESSAGES = {
   invalid: "E-mail ou mot de passe incorrect.",
@@ -24,9 +22,3 @@ export async function adminLogoutAction(): Promise<void> {
   redirect("/admin/login");
 }
 
-/** Starts the translation of the catalog, or collects a finished batch. */
-export async function translateRecipesAction(): Promise<void> {
-  if (!(await isAdmin())) redirect("/admin/login");
-  await stepCatalogTranslation();
-  revalidatePath("/admin");
-}

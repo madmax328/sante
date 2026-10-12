@@ -4,9 +4,9 @@ const out: R[] = [];
 const fresh = (Object.values(F) as Fruit[]).filter((f) => f.key !== "compote");
 
 const nuts = [
-  { key: "amandes", id: "almonds", label: "amandes", en: "almonds" },
-  { key: "noix", id: "walnuts", label: "noix", en: "walnuts" },
-  { key: "cajou", id: "cashews", label: "noix de cajou", en: "cashews" },
+  { key: "amandes", id: "almonds", label: "amandes", de: "d'amandes", en: "almonds" },
+  { key: "noix", id: "walnuts", label: "noix", de: "de noix", en: "walnuts" },
+  { key: "cajou", id: "cashews", label: "noix de cajou", de: "de noix de cajou", en: "cashews" },
 ];
 
 for (const f of fresh) {
@@ -16,7 +16,7 @@ for (const f of fresh) {
       name: `${capitalize(f.name)} et ${n.label}`,
       meals: SNACK,
       ing: [...f.ing, [n.id, 15]],
-      steps: [f.prep, `Servez avec une petite poignée de ${n.label} (environ 15 g).`],
+      steps: [f.prep, `Servez avec une petite poignée ${n.de} (environ 15 g).`],
       prep: 2,
       cook: 0,
       tags: ["no-cook", "quick", "lunchbox"],
@@ -96,10 +96,10 @@ for (const f of [F.apple, F.pear, F.banana, F.orange] as Fruit[]) {
 }
 
 const veggies = [
-  { key: "carottes", id: "carrot", label: "carottes", en: "carrot sticks" },
-  { key: "concombre", id: "cucumber", label: "concombre", en: "cucumber sticks" },
-  { key: "poivron", id: "bell_pepper", label: "poivron", en: "bell pepper sticks" },
-  { key: "radis", id: "radish", label: "radis", en: "radishes" },
+  { key: "carottes", id: "carrot", label: "carottes", the: "les carottes", en: "carrot sticks" },
+  { key: "concombre", id: "cucumber", label: "concombre", the: "le concombre", en: "cucumber sticks" },
+  { key: "poivron", id: "bell_pepper", label: "poivron", the: "le poivron", en: "bell pepper sticks" },
+  { key: "radis", id: "radish", label: "radis", the: "les radis", en: "radishes" },
 ];
 for (const v of veggies) {
   out.push({
@@ -107,7 +107,7 @@ for (const v of veggies) {
     name: `Bâtonnets de ${v.label} et houmous`,
     meals: SNACK,
     ing: [[v.id, 150], ["hummus", 40]],
-    steps: [`Lavez et coupez les ${v.label} en bâtonnets.`, "Servez avec le houmous."],
+    steps: [`Lavez et coupez ${v.the} en bâtonnets.`, "Servez avec le houmous."],
     prep: 5,
     cook: 0,
     tags: ["no-cook", "quick", "lunchbox", "light"],

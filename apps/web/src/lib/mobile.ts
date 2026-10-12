@@ -1,8 +1,7 @@
 import "server-only";
 import { NextResponse } from "next/server";
 import { auth } from "./auth";
-import { ensureCatalogTranslations } from "./catalog-i18n";
-import { localeOf } from "./locale";
+import "./locale";
 import { UnauthorizedError } from "./session";
 import { NoProfileError } from "./week-service";
 
@@ -13,7 +12,7 @@ import { NoProfileError } from "./week-service";
 export function mobileRoute<T>(handler: (req: Request, userId: string) => Promise<T>) {
   return async (req: Request): Promise<Response> => {
     try {
-      const [session] = await Promise.all([auth.api.getSession({ headers: req.headers }), ensureCatalogTranslations(localeOf(req))]);
+      const session = await auth.api.getSession({ headers: req.headers });
       if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
       const data = await handler(req, session.user.id);
       return NextResponse.json(data, { headers: { "Cache-Control": "no-store" } });

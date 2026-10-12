@@ -1,7 +1,7 @@
 import "server-only";
 import { headers } from "next/headers";
 import { LOCALES, type Locale } from "@weeko/engine";
-import { ensureCatalogTranslations } from "./catalog-i18n";
+import "./catalog-i18n";
 
 export { LOCALES, type Locale };
 
@@ -29,9 +29,7 @@ export function localeFromHeader(value: string | null | undefined): Locale {
 export async function requestLocale(): Promise<Locale> {
   const h = await headers();
   const site = h.get("x-next-intl-locale");
-  const locale = isLocale(site) ? site : localeFromHeader(h.get("accept-language"));
-  await ensureCatalogTranslations(locale);
-  return locale;
+  return isLocale(site) ? site : localeFromHeader(h.get("accept-language"));
 }
 
 type Text = { fr: string } & Partial<Record<Locale, string>>;

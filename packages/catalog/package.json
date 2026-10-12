@@ -8,13 +8,15 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json",
-    "stats": "tsx scripts/stats.ts"
+    "stats": "tsx scripts/stats.ts",
+    "i18n": "tsx scripts/i18n-missing.ts"
   },
   "dependencies": {
     "@weeko/engine": "workspace:*"
   },
   "exports": {
     ".": "./src/index.ts",
-    "./demos": "./src/demos.ts"
+    "./demos": "./src/demos.ts",
+    "./i18n": "./src/i18n.ts"
   }
 }

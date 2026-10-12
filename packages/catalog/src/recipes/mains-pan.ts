@@ -82,7 +82,7 @@ for (const p of panP)
         name: `${capitalize(p.name)} ${v.label}, ${s.name}`,
         meals: MAIN,
         ing: [...p.ing, ...v.ing, ...s.ing, ["olive_oil", 10], ["herbes_provence", 1]],
-        steps: [s.cook, p.prep, `Dans une poêle avec la moitié de l'huile, ${lower(p.sear)} Réservez.`, `Dans la même poêle avec le reste de l'huile : ${lower(v.step)}`, "Remettez la garniture, ajoutez les herbes, salez, poivrez et servez avec l'accompagnement."],
+        steps: [s.cook, p.prep, `Dans une poêle avec la moitié de l'huile, ${lower(p.sear)}${/réservez/i.test(p.sear) ? "" : " Réservez."}`, `Dans la même poêle avec le reste de l'huile : ${lower(v.step)}`, "Remettez la garniture, ajoutez les herbes, salez, poivrez et servez avec l'accompagnement."],
         prep: 10,
         cook: Math.max(15, s.min),
         tags: s.key === "riz" || s.key === "pommes-de-terre" ? ["budget"] : [],
@@ -132,20 +132,20 @@ for (const f of fishes)
     }
 
 // ------------------------------------------------------------------ Plaque au four (sheet pan)
-const sheetP: { key: string; label: string; adj: string; ing: Ing[]; img: string; time: number }[] = [
-  { key: "cuisses-poulet", label: "Cuisses de poulet", adj: "rôties", ing: [["chicken_whole_legs", 250]], img: "chicken legs", time: 40 },
-  { key: "pilons", label: "Pilons de poulet", adj: "rôtis", ing: [["chicken_drumstick", 220]], img: "chicken drumsticks", time: 35 },
-  { key: "saucisses", label: "Saucisses", adj: "rôties", ing: [["sausage", 120]], img: "sausages", time: 30 },
-  { key: "saumon", label: "Saumon", adj: "rôti", ing: [["salmon", 120]], img: "salmon", time: 15 },
-  { key: "tofu", label: "Tofu", adj: "rôti", ing: [["tofu", 150]], img: "tofu", time: 25 },
-  { key: "pois-chiches", label: "Pois chiches", adj: "rôtis", ing: [["chickpeas", 140]], img: "chickpeas", time: 30 },
+const sheetP: { key: string; label: string; the: string; adj: string; ing: Ing[]; img: string; time: number; bone?: boolean }[] = [
+  { key: "cuisses-poulet", label: "Cuisses de poulet", the: "les cuisses de poulet", adj: "rôties", bone: true, ing: [["chicken_whole_legs", 250]], img: "chicken legs", time: 40 },
+  { key: "pilons", label: "Pilons de poulet", the: "les pilons de poulet", adj: "rôtis", bone: true, ing: [["chicken_drumstick", 220]], img: "chicken drumsticks", time: 35 },
+  { key: "saucisses", label: "Saucisses", the: "les saucisses", adj: "rôties", ing: [["sausage", 120]], img: "sausages", time: 30 },
+  { key: "saumon", label: "Saumon", the: "le saumon", adj: "rôti", ing: [["salmon", 120]], img: "salmon", time: 15 },
+  { key: "tofu", label: "Tofu", the: "le tofu", adj: "rôti", ing: [["tofu", 150]], img: "tofu", time: 25 },
+  { key: "pois-chiches", label: "Pois chiches", the: "les pois chiches", adj: "rôtis", ing: [["chickpeas", 140]], img: "chickpeas", time: 30 },
 ];
-const sheetVeg: { key: string; label: string; ing: Ing[]; img: string }[] = [
-  { key: "pdt-carottes", label: "pommes de terre et carottes", ing: [["potato", 220], ["carrot", 100], ["onion", 40]], img: "potatoes carrots" },
-  { key: "patate-brocoli", label: "patate douce et brocoli", ing: [["sweet_potato", 220], ["broccoli", 100]], img: "sweet potato broccoli" },
-  { key: "courge-oignon", label: "courge butternut et oignon rouge", ing: [["butternut", 250], ["red_onion", 50], ["potato", 100]], img: "butternut squash" },
-  { key: "soleil", label: "légumes du soleil", ing: [["zucchini", 120], ["bell_pepper", 80], ["eggplant", 100], ["potato", 150]], img: "roasted vegetables" },
-  { key: "chou-fleur", label: "chou-fleur et pommes de terre au curry", ing: [["cauliflower", 180], ["potato", 180], ["curry", 2]], img: "roasted cauliflower" },
+const sheetVeg: { key: string; label: string; the: string; ing: Ing[]; img: string }[] = [
+  { key: "pdt-carottes", label: "pommes de terre et carottes", the: "les pommes de terre et les carottes", ing: [["potato", 220], ["carrot", 100], ["onion", 40]], img: "potatoes carrots" },
+  { key: "patate-brocoli", label: "patate douce et brocoli", the: "la patate douce et le brocoli", ing: [["sweet_potato", 220], ["broccoli", 100]], img: "sweet potato broccoli" },
+  { key: "courge-oignon", label: "courge butternut et oignon rouge", the: "la courge, l'oignon rouge et la pomme de terre", ing: [["butternut", 250], ["red_onion", 50], ["potato", 100]], img: "butternut squash" },
+  { key: "soleil", label: "légumes du soleil", the: "la courgette, le poivron, l'aubergine et les pommes de terre", ing: [["zucchini", 120], ["bell_pepper", 80], ["eggplant", 100], ["potato", 150]], img: "roasted vegetables" },
+  { key: "chou-fleur", label: "chou-fleur et pommes de terre au curry", the: "le chou-fleur et les pommes de terre", ing: [["cauliflower", 180], ["potato", 180], ["curry", 2]], img: "roasted cauliflower" },
 ];
 for (const p of sheetP)
   for (const v of sheetVeg) {
@@ -157,10 +157,10 @@ for (const p of sheetP)
       ing: [...p.ing, ...v.ing, ["olive_oil", 12], ["paprika", 1], ["herbes_provence", 1], ["garlic", 1]],
       steps: [
         "Préchauffez le four à 210 °C.",
-        `Coupez les légumes (${v.label}) en morceaux de même taille.`,
+        `Coupez ${v.the} en morceaux de même taille.`,
         "Mélangez-les sur une plaque avec l'huile, le paprika, les herbes, l'ail écrasé, sel et poivre. Enfournez 15 min.",
-        `Ajoutez ${p.label.toLowerCase()} sur la plaque et poursuivez la cuisson ${p.time === 15 ? "15 min" : `${p.time - 10} à ${p.time} min`}, en retournant à mi-cuisson.`,
-        "Vérifiez la cuisson (la viande ne doit plus être rosée près de l'os) et servez.",
+        `Ajoutez ${p.the} sur la plaque et poursuivez la cuisson ${p.time === 15 ? "15 min" : `${p.time - 10} à ${p.time} min`}, en retournant à mi-cuisson.`,
+        p.bone ? "Vérifiez la cuisson (la viande ne doit plus être rosée près de l'os) et servez." : "Vérifiez la cuisson et servez.",
       ],
       prep: 15,
       cook: p.time + 15,
@@ -182,7 +182,7 @@ for (const p of skewerP)
       meals: MAIN,
       ing: [...p.ing, ...s.ing, ["bell_pepper", 80], ["red_onion", 40], ["lemon", 0.25], ["olive_oil", 8], ["paprika", 1], ["cumin", 1], ["yogurt", 50], ["cucumber", 50], ["mint", 2]],
       steps: [
-        `${p.prep} Faites-le mariner 15 min avec l'huile, le citron, le paprika et le cumin.`,
+        `${p.prep} Faites mariner 15 min avec l'huile, le citron, le paprika et le cumin.`,
         "Coupez le poivron et l'oignon en morceaux et enfilez-les sur les piques en alternance.",
         "Faites cuire les brochettes 10 à 12 min à la poêle-gril ou au four, en les retournant.",
         s.cook,

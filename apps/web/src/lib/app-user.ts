@@ -1,4 +1,3 @@
-import { ensureCatalogTranslations } from "./catalog-i18n";
 import { isLocale } from "./locale";
 import "server-only";
 import { getLocale } from "next-intl/server";
@@ -20,7 +19,6 @@ export interface AppUser {
 /** Signed-in user for app pages; redirects to the login page otherwise. */
 export async function requireAppUser(): Promise<AppUser> {
   const locale = await getLocale();
-  if (isLocale(locale)) await ensureCatalogTranslations(locale);
   const session = await getSession();
   if (!session) return redirect({ href: "/login", locale });
   let profile = await getProfile(session.user.id);

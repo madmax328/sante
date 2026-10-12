@@ -97,7 +97,7 @@ for (const v of risottoV)
   for (const p of risottoP) {
     add({
       id: `risotto-${v.key}-${p.key}`,
-      name: `Risotto ${v.label}${p.label}`,
+      name: `Risotto ${p.label ? v.label.replace(" et ", ", ") : v.label}${p.label}`,
       ing: [["risotto_rice", 75], ["onion", 30], ["stock_cube", 0.5], ["olive_oil", 6], ["butter", 5], ...v.ing, ...p.ing],
       steps: [
         "Faites chauffer 300 ml d'eau avec le bouillon.",
@@ -126,7 +126,7 @@ const onePotP: { key: string; au: string; ing: Ing[]; img: string }[] = [
 const onePotV: { key: string; label: string; ing: Ing[] }[] = [
   { key: "soleil", label: "et légumes du soleil", ing: [["zucchini", 100], ["bell_pepper", 70], ["canned_tomato", 100]] },
   { key: "epinards", label: "et épinards", ing: [["frozen_spinach", 120], ["onion", 30]] },
-  { key: "carottes-cumin", label: "carottes et cumin", ing: [["carrot", 120], ["onion", 30], ["cumin", 1]] },
+  { key: "carottes-cumin", label: ", carottes et cumin", ing: [["carrot", 120], ["onion", 30], ["cumin", 1]] },
   { key: "champignons", label: "et champignons", ing: [["mushroom", 120], ["shallot", 15]] },
 ];
 for (const p of onePotP)
@@ -137,7 +137,7 @@ for (const p of onePotP)
     ]) {
       add({
         id: `one-pot-${s.key}-${p.key}-${v.key}`,
-        name: `${s.name} one-pot ${p.au} ${v.label}`.replace(" et et ", " et "),
+        name: `${s.name} one-pot ${p.au} ${v.label}`.replace(" ,", ","),
         desc: "Tout cuit dans la même casserole.",
         ing: [...s.ing, ...p.ing, ...v.ing, ["stock_cube", 0.5], ["olive_oil", 8], ["garlic", 1]],
         steps: [
@@ -168,7 +168,7 @@ for (const v of dhalV)
   for (const s of [S.basmati, S.brownRice] as Starch[]) {
     add({
       id: `dhal-${v.key}-${s.key}`,
-      name: `Dhal de lentilles corail ${v.label}, ${s.name}`.replace("  ", " "),
+      name: `Dhal de lentilles corail ${v.label}, ${s.name}`.replace(" ,", ","),
       desc: "Un plat végétal complet, économique et rassasiant.",
       ing: [["red_lentils", 70], ...s.ing, ...v.ing, ["onion", 40], ["garlic", 1], ["ginger", 4], ["coconut_milk", 50], ["curry", 2], ["turmeric", 0.5], ["neutral_oil", 5], ["coriander", 3]],
       steps: [
@@ -217,7 +217,7 @@ for (const m of mincers) {
   for (const s of [S.pasta, S.wholePasta] as Starch[]) {
     add({
       id: `bolognaise-${m.key}-${s.key}`,
-      name: `${capitalize(s.name)} à la bolognaise ${m.label}`.trim(),
+      name: `${capitalize(s.name)} à la bolognaise ${m.label.replace("végétarien", "végétarienne")}`.trim(),
       ing: [...m.ing, ...s.ing, ["passata", 150], ["onion", 40], ["carrot", 60], ["garlic", 1], ["oregano", 0.5], ["olive_oil", 6], ["parmesan", 8]],
       steps: [
         "Faites revenir l'oignon, la carotte et l'ail finement hachés 5 min dans l'huile.",
@@ -289,7 +289,7 @@ const soups: { key: string; name: string; ing: Ing[]; steps: string[]; img: stri
   { key: "butternut", name: "Velouté de butternut", ing: [["butternut", 300], ["onion", 40], ["light_cream", 15], ["nutmeg", 0.1], ["stock_cube", 0.5]], steps: ["Épluchez et coupez la courge en cubes.", "Faites-la cuire 25 min avec l'oignon dans l'eau et le bouillon.", "Mixez avec la crème et la muscade."], img: "butternut soup" },
   { key: "brocoli", name: "Velouté de brocoli", ing: [["broccoli", 250], ["onion", 30], ["potato", 80], ["stock_cube", 0.5], ["light_cream", 15]], steps: ["Faites cuire le brocoli, l'oignon et la pomme de terre 20 min dans l'eau avec le bouillon.", "Mixez avec la crème."], img: "broccoli soup" },
   { key: "poireaux-pdt", name: "Soupe poireaux-pommes de terre", ing: [["leek", 200], ["potato", 150], ["butter", 5], ["stock_cube", 0.5], ["milk", 50]], steps: ["Faites suer les poireaux émincés dans le beurre 5 min.", "Ajoutez les pommes de terre en dés, couvrez d'eau avec le bouillon et laissez cuire 25 min.", "Mixez avec le lait."], img: "leek potato soup" },
-  { key: "lentilles-carotte", name: "Soupe de lentilles corail et carottes", ing: [["red_lentils", 50], ["carrot", 150], ["onion", 40], ["coconut_milk", 30], ["cumin", 1], ["stock_cube", 0.5]], steps: ["Faites revenir l'oignon avec le cumin.", "Ajoutez les lentilles, les carottes, le bouillon et 500 ml d'eau. Laissez cuire 20 min.", "Mixez avec le lait de coco."], img: "red lentil soup" },
+  { key: "lentilles-carotte", name: "Soupe de lentilles corail aux carottes", ing: [["red_lentils", 50], ["carrot", 150], ["onion", 40], ["coconut_milk", 30], ["cumin", 1], ["stock_cube", 0.5]], steps: ["Faites revenir l'oignon avec le cumin.", "Ajoutez les lentilles, les carottes, le bouillon et 500 ml d'eau. Laissez cuire 20 min.", "Mixez avec le lait de coco."], img: "red lentil soup" },
   { key: "minestrone", name: "Minestrone", ing: [["zucchini", 80], ["carrot", 70], ["celery", 40], ["white_beans", 70], ["canned_tomato", 100], ["pasta", 25], ["stock_cube", 0.5], ["olive_oil", 5], ["parmesan", 8]], steps: ["Faites revenir les légumes coupés en petits dés dans l'huile 5 min.", "Ajoutez les tomates, le bouillon et 500 ml d'eau, laissez cuire 15 min.", "Ajoutez les pâtes et les haricots blancs et poursuivez 10 min. Servez avec le parmesan."], img: "minestrone" },
   { key: "tomate", name: "Soupe de tomates rôties", ing: [["tomato", 300], ["onion", 40], ["garlic", 1], ["olive_oil", 8], ["basil", 3], ["stock_cube", 0.3]], steps: ["Faites rôtir les tomates, l'oignon et l'ail 25 min à 200 °C avec l'huile.", "Mixez avec 200 ml de bouillon chaud et le basilic."], img: "tomato soup" },
   { key: "chou-fleur", name: "Velouté de chou-fleur", ing: [["cauliflower", 300], ["onion", 30], ["milk", 80], ["nutmeg", 0.1], ["stock_cube", 0.5]], steps: ["Faites cuire le chou-fleur et l'oignon 20 min dans l'eau avec le bouillon.", "Mixez avec le lait et la muscade."], img: "cauliflower soup" },
@@ -359,10 +359,10 @@ for (const o of omelettes)
 const tarts: { key: string; name: string; ing: Ing[]; img: string }[] = [
   { key: "lorraine", name: "Quiche lorraine", ing: [["bacon", 40], ["emmental", 15]], img: "quiche lorraine" },
   { key: "poireaux", name: "Quiche aux poireaux", ing: [["leek", 130], ["emmental", 15]], img: "leek quiche" },
-  { key: "saumon-epinards", name: "Quiche saumon et épinards", ing: [["salmon", 70], ["frozen_spinach", 80]], img: "salmon spinach quiche" },
-  { key: "chevre-courgette", name: "Tarte chèvre et courgette", ing: [["zucchini", 120], ["goat_cheese", 35]], img: "goat cheese zucchini tart" },
-  { key: "thon-tomate", name: "Tarte thon, tomate et moutarde", ing: [["tuna_can", 60], ["tomato", 100], ["mustard", 8], ["emmental", 10]], img: "tuna tomato tart" },
-  { key: "brocoli-comte", name: "Quiche brocoli et comté", ing: [["broccoli", 120], ["comte", 20]], img: "broccoli quiche" },
+  { key: "saumon-epinards", name: "Quiche saumon-épinards", ing: [["salmon", 70], ["frozen_spinach", 80]], img: "salmon spinach quiche" },
+  { key: "chevre-courgette", name: "Tarte chèvre-courgette", ing: [["zucchini", 120], ["goat_cheese", 35]], img: "goat cheese zucchini tart" },
+  { key: "thon-tomate", name: "Tarte thon-tomate à la moutarde", ing: [["tuna_can", 60], ["tomato", 100], ["mustard", 8], ["emmental", 10]], img: "tuna tomato tart" },
+  { key: "brocoli-comte", name: "Quiche brocoli-comté", ing: [["broccoli", 120], ["comte", 20]], img: "broccoli quiche" },
 ];
 for (const t of tarts)
   for (const side of [
@@ -378,7 +378,7 @@ for (const t of tarts)
         "Préparez la garniture : coupez les légumes, faites-les revenir 5 min (les lardons à sec), émiettez le poisson ou le fromage.",
         "Battez les œufs avec le lait et la crème, salez (peu si lardons), poivrez.",
         "Répartissez la garniture sur la pâte, versez l'appareil et enfournez 35 min.",
-        `Servez avec la ${side.label} assaisonnée.`,
+        side.label === "salade verte" ? "Servez avec la salade verte assaisonnée." : "Servez avec les carottes râpées assaisonnées.",
       ],
       prep: 20,
       cook: 35,
@@ -528,9 +528,9 @@ for (const g of [
 }
 
 for (const v of [
-  { key: "tomates", label: "Tomates", ing: [["tomato", 300]] as Ing[] },
-  { key: "courgettes", label: "Courgettes", ing: [["zucchini", 300]] as Ing[] },
-  { key: "poivrons", label: "Poivrons", ing: [["bell_pepper", 250]] as Ing[] },
+  { key: "tomates", label: "Tomates", fem: true, ing: [["tomato", 300]] as Ing[] },
+  { key: "courgettes", label: "Courgettes", fem: true, ing: [["zucchini", 300]] as Ing[] },
+  { key: "poivrons", label: "Poivrons", fem: false, ing: [["bell_pepper", 250]] as Ing[] },
 ])
   for (const f of [
     { key: "boeuf", label: "farcis au bœuf", ing: [["ground_beef", 100]] as Ing[] },
@@ -538,7 +538,7 @@ for (const v of [
   ]) {
     add({
       id: `farcis-${v.key}-${f.key}`,
-      name: `${v.label} ${f.label}, ${f.key === "boeuf" ? "riz" : "boulgour"}`,
+      name: `${v.label} ${v.fem ? f.label.replace("farcis", "farcies") : f.label}, ${f.key === "boeuf" ? "riz" : "boulgour"}`,
       ing: [...v.ing, ...f.ing, [f.key === "boeuf" ? "rice" : "bulgur", 60], ["onion", 30], ["garlic", 1], ["parsley", 4], ["olive_oil", 6]],
       steps: [
         "Préchauffez le four à 190 °C.",
