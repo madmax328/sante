@@ -5,7 +5,7 @@ import { z } from "zod";
 import { MEAL_TYPES, type MealType, type PlanAction } from "@weeko/engine";
 import { dayIndex } from "./dates";
 import { env } from "./env";
-import type { Locale } from "./locale";
+import { LANGUAGE_NAME, type Locale } from "./locale";
 import type { UserContext } from "./planning";
 import type { StoredPlan } from "./types";
 
@@ -143,7 +143,7 @@ export async function askCoach(
     ...history.slice(-10).map((h) => ({ role: h.role, content: h.content })),
     {
       role: "user",
-      content: `<contexte>\n${describeContext(uc, stored)}\n</contexte>\n${locale === "en" ? "<langue>Réponds en anglais (reply and action labels in English).</langue>\n" : ""}\n${message}`,
+      content: `<contexte>\n${describeContext(uc, stored)}\n</contexte>\n${locale === "fr" ? "" : `<langue>Réponds en ${LANGUAGE_NAME[locale]}, réponse et libellés des actions compris.</langue>\n`}\n${message}`,
     },
   ];
 

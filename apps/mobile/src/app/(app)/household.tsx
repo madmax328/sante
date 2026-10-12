@@ -68,7 +68,7 @@ export default function HouseholdScreen() {
   if (!data) return <ErrorView message={error?.code === "network" ? t("Pas de connexion internet.", "No internet connection.") : t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
 
   const remove = (m: Member) =>
-    Alert.alert(t(`Retirer ${m.name} du foyer ?`, `Remove ${m.name} from the household?`), undefined, [
+    Alert.alert(t("Retirer {0} du foyer ?", "Remove {0} from the household?", [m.name]), undefined, [
       { text: t("Annuler", "Cancel"), style: "cancel" },
       {
         text: t("Retirer", "Remove"),
@@ -96,15 +96,15 @@ export default function HouseholdScreen() {
           <Card key={m.id}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
               <View style={{ flex: 1, gap: 2 }}>
-                <T variant="h3">{m.name}{m.self ? t(" (toi)", " (you)") : ""} <T variant="small">· {t(`${m.age} ans`, `${m.age} years old`)}</T></T>
+                <T variant="h3">{m.name}{m.self ? t(" (toi)", " (you)") : ""} <T variant="small">· {t("{0} ans", "{0} years old", [m.age])}</T></T>
                 <T variant="small">{MEAL_ORDER.filter((k) => m.eats[k]).map((k) => MEAL_LABEL[k]).join(", ") || t("Aucun repas à la maison", "No meals at home")}</T>
                 <T variant="small">{t("Allergies :", "Allergies:")} {m.allergies.length ? m.allergies.map((a) => L.allergen[a]).join(", ") : t("aucune", "none")}</T>
               </View>
-              <Pressable accessibilityRole="button" accessibilityLabel={t(`Modifier ${m.name}`, `Edit ${m.name}`)} hitSlop={8} onPress={() => setEditing(m.id)} style={{ padding: 6 }}>
+              <Pressable accessibilityRole="button" accessibilityLabel={t("Modifier {0}", "Edit {0}", [m.name])} hitSlop={8} onPress={() => setEditing(m.id)} style={{ padding: 6 }}>
                 <Pencil size={18} color={c.basilic} />
               </Pressable>
               {!m.self && (
-                <Pressable accessibilityRole="button" accessibilityLabel={t(`Retirer ${m.name}`, `Remove ${m.name}`)} hitSlop={8} onPress={() => remove(m)} style={{ padding: 6 }}>
+                <Pressable accessibilityRole="button" accessibilityLabel={t("Retirer {0}", "Remove {0}", [m.name])} hitSlop={8} onPress={() => remove(m)} style={{ padding: 6 }}>
                   <Trash2 size={18} color={c.muted} />
                 </Pressable>
               )}

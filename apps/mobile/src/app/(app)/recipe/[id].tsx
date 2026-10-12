@@ -71,8 +71,8 @@ export default function RecipeScreen() {
           </View>
         </View>
 
-        {data.disliked.length > 0 && <Notice>{t(`Contient un aliment que tu ne manges pas : ${data.disliked.join(", ")}.`, `Contains a food you don't eat: ${data.disliked.join(", ")}.`)}</Notice>}
-        {data.omitted.length > 0 && <Notice tone="basilic">{t(`Adaptée pour toi : sans ${data.omitted.join(", ")}. Passe simplement les étapes qui en parlent.`, `Adapted for you: without ${data.omitted.join(", ")}. Just skip the steps that mention it.`)}</Notice>}
+        {data.disliked.length > 0 && <Notice>{t("Contient un aliment que tu ne manges pas : {0}.", "Contains a food you don't eat: {0}.", [data.disliked.join(", ")])}</Notice>}
+        {data.omitted.length > 0 && <Notice tone="basilic">{t("Adaptée pour toi : sans {0}. Passe simplement les étapes qui en parlent.", "Adapted for you: without {0}. Just skip the steps that mention it.", [data.omitted.join(", ")])}</Notice>}
 
         <Card>
           <SectionTitle

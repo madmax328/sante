@@ -69,7 +69,7 @@ export function SubscribeForm(props: Props) {
         // Must match the server side exactly (card, incl. Apple Pay / Google Pay).
         allowedPaymentMethodTypes: ["card"],
         appearance: weekoAppearance(dark),
-        locale: locale === "en" ? "en" : "fr",
+        locale: locale === "pt" ? "pt-BR" : (locale as "fr" | "en" | "de" | "es" | "it"),
         fonts: [{ cssSrc: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&display=swap" }],
       }}
     >

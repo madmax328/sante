@@ -7,15 +7,15 @@ import { Badge, Button, Card, Notice, Screen, SectionTitle, T } from "@/componen
 import { connectAppleHealth, disconnectAppleHealth, healthAvailable, healthEnabled, syncAppleHealth, type SyncResult } from "@/lib/health";
 import { useMe } from "@/lib/me";
 import { space, useColors } from "@/lib/theme";
-import { intlLocale, plural, t } from "@/lib/i18n";
+import { intlLocale, plural, t, tn } from "@/lib/i18n";
 
 const dateTime = (iso: string) => new Intl.DateTimeFormat(intlLocale, { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
 
 function summary(r: SyncResult): string {
-  const parts = [t(`pas de ${r.steps} ${r.steps > 1 ? "jours" : "jour"}`, `steps for ${r.steps} ${r.steps === 1 ? "day" : "days"}`)];
+  const parts = [tn(r.steps, ["pas de {0} jour", "pas de {0} jours"], ["steps for {0} day", "steps for {0} days"])];
   if (r.weights) parts.push(`${r.weights} ${plural(r.weights, ["pesée", "pesées"], ["weigh-in", "weigh-ins"])}`);
   if (r.sessions) parts.push(`${r.sessions} ${plural(r.sessions, ["séance cochée", "séances cochées"], ["workout ticked", "workouts ticked"])}`);
-  return t(`Importé : ${parts.join(", ")}.`, `Imported: ${parts.join(", ")}.`);
+  return t("Importé : {0}.", "Imported: {0}.", [parts.join(", ")]);
 }
 
 /** "Appareils et santé": Apple Santé today, Health Connect with the Android app. */

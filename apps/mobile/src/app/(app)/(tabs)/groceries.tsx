@@ -98,7 +98,7 @@ export default function GroceriesScreen() {
       <Card>
         <SectionTitle>{t("Courses faites ?", "Shopping done?")}</SectionTitle>
         {data.shopped ? (
-          <Notice tone="basilic">{t("Courses faites, bravo !", "Shopping done, well done!")}{data.actualSpent ? t(` Montant réel : ${euro(data.actualSpent)}.`, ` Actual amount: ${euro(data.actualSpent)}.`) : ""}</Notice>
+          <Notice tone="basilic">{t("Courses faites, bravo !", "Shopping done, well done!")}{data.actualSpent ? t(" Montant réel : {0}.", " Actual amount: {0}.", [euro(data.actualSpent)]) : ""}</Notice>
         ) : (
           <>
             <Field label={t("Montant réel (facultatif)", "Actual amount (optional)")} value={spent} onChangeText={setSpent} keyboardType="decimal-pad" placeholder={String(Math.round(data.total))} />
@@ -115,7 +115,7 @@ function Stores({ stores }: { stores: NonNullable<Groceries["stores"]> }) {
   const c = useColors();
   const gap = (index: number) => {
     const pct = Math.round(Math.abs(1 - index) * 100);
-    return pct === 0 ? t("dans la moyenne des enseignes", "around the average of the chains") : index < 1 ? t(`${pct} % moins cher que la moyenne`, `${pct}% cheaper than average`) : t(`${pct} % plus cher que la moyenne`, `${pct}% more expensive than average`);
+    return pct === 0 ? t("dans la moyenne des enseignes", "around the average of the chains") : index < 1 ? t("{0} % moins cher que la moyenne", "{0}% cheaper than average", [pct]) : t("{0} % plus cher que la moyenne", "{0}% more expensive than average", [pct]);
   };
   return (
     <Card>
@@ -133,7 +133,7 @@ function Stores({ stores }: { stores: NonNullable<Groceries["stores"]> }) {
                   <T style={{ fontWeight: "700" }}>{s.brand}</T>
                   {i === 0 && stores.list.length > 1 && <Badge>{t("Le moins cher", "Cheapest")}</Badge>}
                 </View>
-                <T variant="small">{gap(s.index)} · {t(`prix relevés pour ${s.measured}/${stores.items} produits`, `prices recorded for ${s.measured}/${stores.items} items`)}</T>
+                <T variant="small">{gap(s.index)} · {t("prix relevés pour {0}/{1} produits", "prices recorded for {0}/{1} items", [s.measured, stores.items])}</T>
               </View>
               <T variant="h3">{euro(s.total)}</T>
             </View>

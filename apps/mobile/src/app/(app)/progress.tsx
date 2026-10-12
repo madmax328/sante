@@ -117,7 +117,7 @@ export default function ProgressScreen() {
             <View key={m.date} style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
               <T style={{ width: 80 }} variant="small">{shortDate(m.date)}</T>
               <T style={{ flex: 1 }}>{m.kg !== null ? `${num(m.kg, 1)} kg` : "—"}{m.waistCm !== null ? ` · ${num(m.waistCm)} cm` : ""}</T>
-              <Pressable accessibilityRole="button" accessibilityLabel={t(`Supprimer la mesure du ${shortDate(m.date)}`, `Delete the ${shortDate(m.date)} measurement`)} hitSlop={8} onPress={() => remove(m.date)}>
+              <Pressable accessibilityRole="button" accessibilityLabel={t("Supprimer la mesure du {0}", "Delete the {0} measurement", [shortDate(m.date)])} hitSlop={8} onPress={() => remove(m.date)}>
                 <X size={18} color={c.muted} />
               </Pressable>
             </View>
@@ -146,7 +146,7 @@ function ReviewCard({ title, r }: { title: string; r: Review }) {
         {r.trendChangeKg !== null && <Stat label={t("Tendance du poids", "Weight trend")} value={`${r.trendChangeKg > 0 ? "+" : ""}${num(r.trendChangeKg, 2)} kg`} />}
         {r.adherence !== null && <Stat label={t("Repas suivis", "Meals followed")} value={`${Math.round(r.adherence * 100)} %`} />}
         <Stat label={t("Séances", "Workouts")} value={`${r.sessionsDone} / ${r.sessionsPlanned}`} />
-        {r.budgetPlanned !== null && <Stat label="Budget" value={`${r.budgetActual !== null ? euro(r.budgetActual) : "—"} / ${euro(r.budgetPlanned)}`} />}
+        {r.budgetPlanned !== null && <Stat label={t("Budget", "Budget")} value={`${r.budgetActual !== null ? euro(r.budgetActual) : "—"} / ${euro(r.budgetPlanned)}`} />}
         {r.avgKcal !== null && <Stat label={t("Moyenne", "Average")} value={`${num(r.avgKcal)} kcal`} />}
         <Stat label={t("Jours notés", "Days logged")} value={`${r.daysLogged} / 7`} />
       </View>
@@ -182,7 +182,7 @@ function WeightChart({ entries, goal }: { entries: { date: string; kg: number }[
   const line = trend.map((kg, i) => `${i ? "L" : "M"}${x(pts[i]!.date).toFixed(1)},${y(kg).toFixed(1)}`).join(" ");
   const ticks = [min, Math.round((min + max) / 2), max];
   return (
-    <Svg width={width} height={height} accessibilityLabel={t(`Courbe de poids : dernière pesée ${num(pts[pts.length - 1]!.kg, 1)} kg`, `Weight curve: last weigh-in ${num(pts[pts.length - 1]!.kg, 1)} kg`)}>
+    <Svg width={width} height={height} accessibilityLabel={t("Courbe de poids : dernière pesée {0} kg", "Weight curve: last weigh-in {0} kg", [num(pts[pts.length - 1]!.kg, 1)])}>
       {ticks.map((v) => (
         <Line key={v} x1={pad.left} x2={width - pad.right} y1={y(v)} y2={y(v)} stroke={c.line} strokeWidth={1} />
       ))}

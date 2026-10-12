@@ -18,8 +18,8 @@ export default function TabsLayout() {
       <Tabs.Screen name="index" options={{ title: t("Aujourd'hui", "Today"), tabBarIcon: ({ color, size }) => <House color={color} size={size} /> }} />
       <Tabs.Screen name="week" options={{ title: t("Semaine", "Week"), tabBarIcon: ({ color, size }) => <CalendarDays color={color} size={size} /> }} />
       <Tabs.Screen name="groceries" options={{ title: t("Courses", "Groceries"), tabBarIcon: ({ color, size }) => <ShoppingBasket color={color} size={size} /> }} />
-      <Tabs.Screen name="journal" options={{ title: "Journal", tabBarIcon: ({ color, size }) => <NotebookPen color={color} size={size} /> }} />
-      <Tabs.Screen name="sport" options={{ title: "Sport", tabBarIcon: ({ color, size }) => <Dumbbell color={color} size={size} /> }} />
+      <Tabs.Screen name="journal" options={{ title: t("Journal", "Journal"), tabBarIcon: ({ color, size }) => <NotebookPen color={color} size={size} /> }} />
+      <Tabs.Screen name="sport" options={{ title: t("Sport", "Sport"), tabBarIcon: ({ color, size }) => <Dumbbell color={color} size={size} /> }} />
     </Tabs>
   );
 }

@@ -1,3 +1,4 @@
+import { DELETE_WORDS } from "@/lib/locale";
 import { z } from "zod";
 import * as app from "@/app/[locale]/app/actions";
 import * as account from "@/app/[locale]/app/account/actions";
@@ -76,7 +77,7 @@ const ACTIONS: Record<string, Handler> = {
 
   // Store rules: an account created in the app must be deletable in the app.
   deleteAccount: async (i, req, userId) => {
-    if (!["SUPPRIMER", "DELETE"].includes(String(i?.confirm ?? "").trim().toUpperCase())) return { ok: false };
+    if (!DELETE_WORDS.includes(String(i?.confirm ?? "").trim().toUpperCase())) return { ok: false };
     await cancelSubscriptionNow(userId);
     await auth.api.signOut({ headers: req.headers }).catch(() => undefined);
     await deleteAllData(userId);

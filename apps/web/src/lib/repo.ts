@@ -1,3 +1,4 @@
+import { localizeSessionTitle, type Locale } from "@weeko/engine";
 import "server-only";
 import type { PantryItem, WeekPlan, WorkoutWeek } from "@weeko/engine";
 import { seal, unseal, type Sealed } from "./crypto";
@@ -36,7 +37,7 @@ export async function getProfile(userId: string): Promise<Profile | null> {
   return profiles().findOne({ _id: userId });
 }
 
-export async function ensureProfile(userId: string, locale: "fr" | "en" = "fr"): Promise<Profile> {
+export async function ensureProfile(userId: string, locale: Locale = "fr"): Promise<Profile> {
   const now = new Date();
   const existing = await getProfile(userId);
   if (existing) return existing;
@@ -191,7 +192,10 @@ export async function deleteMeasurement(userId: string, date: string): Promise<v
 // ---------------------------------------------------------------- Workouts
 
 export async function getWorkoutWeek(userId: string, weekStart: string): Promise<StoredWorkoutWeek | null> {
-  return workouts().findOne({ userId, weekStart }, { projection: { _id: 0 } });
+  const w = await workouts().findOne({ userId, weekStart }, { projection: { _id: 0 } });
+  // Weeks saved before some languages existed get their titles in every language.
+  if (w) w.week.sessions = w.week.sessions.map((s) => ({ ...s, title: localizeSessionTitle(s.title) }));
+  return w;
 }
 
 export async function saveWorkoutWeek(userId: string, weekStart: string, week: WorkoutWeek): Promise<void> {

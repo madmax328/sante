@@ -9,7 +9,7 @@ import { authClient } from "@/lib/auth";
 import { sitePage } from "@/lib/config";
 import { useMe } from "@/lib/me";
 import { space, useColors } from "@/lib/theme";
-import { intlLocale, lang, t } from "@/lib/i18n";
+import { intlLocale, t } from "@/lib/i18n";
 
 const longDate = (iso: string) => new Intl.DateTimeFormat(intlLocale, { day: "numeric", month: "long", year: "numeric" }).format(new Date(iso));
 
@@ -25,7 +25,10 @@ export default function AccountScreen() {
   const cancel = (value: boolean) =>
     Alert.alert(
       value ? t("Résilier l'abonnement", "Cancel subscription") : t("Réactiver l'abonnement", "Reactivate subscription"),
-      value ? t(`Ton abonnement ne sera pas renouvelé : tu gardes Premium${end ? ` jusqu'au ${end}` : " jusqu'à la fin de la période payée"}. Aucun autre prélèvement.`, `Your subscription won't renew: you keep Premium${end ? ` until ${end}` : " until the end of the paid period"}. No further charges.`) : t("Ton abonnement reprendra normalement à la prochaine échéance.", "Your subscription will resume normally at the next renewal."),
+      value
+        ? end
+          ? t("Ton abonnement ne sera pas renouvelé : tu gardes Premium jusqu'au {0}. Aucun autre prélèvement.", "Your subscription won't renew: you keep Premium until {0}. No further charges.", [end])
+          : t("Ton abonnement ne sera pas renouvelé : tu gardes Premium jusqu'à la fin de la période payée. Aucun autre prélèvement.", "Your subscription won't renew: you keep Premium until the end of the paid period. No further charges.") : t("Ton abonnement reprendra normalement à la prochaine échéance.", "Your subscription will resume normally at the next renewal."),
       [
         { text: value ? t("Garder Premium", "Keep Premium") : t("Annuler", "Cancel"), style: "cancel" },
         {
@@ -84,7 +87,7 @@ export default function AccountScreen() {
         <SectionTitle action={me.premium ? <Badge>Premium</Badge> : <Badge tone="miel">{t("Gratuit", "Free")}</Badge>}>{t("Abonnement", "Subscription")}</SectionTitle>
         {me.premium ? (
           <>
-            {end && <T variant="small">{sub?.cancelAtPeriodEnd ? t(`Premium jusqu'au ${end}, sans renouvellement.`, `Premium until ${end}, not renewing.`) : t(`Prochain renouvellement le ${end}.`, `Next renewal on ${end}.`)}</T>}
+            {end && <T variant="small">{sub?.cancelAtPeriodEnd ? t("Premium jusqu'au {0}, sans renouvellement.", "Premium until {0}, not renewing.", [end]) : t("Prochain renouvellement le {0}.", "Next renewal on {0}.", [end])}</T>}
             <Button variant="secondary" small style={{ alignSelf: "flex-start" }} loading={busy} onPress={() => cancel(!sub?.cancelAtPeriodEnd)}>
               {sub?.cancelAtPeriodEnd ? t("Réactiver mon abonnement", "Reactivate my subscription") : t("Résilier mon abonnement", "Cancel my subscription")}
             </Button>
@@ -92,7 +95,7 @@ export default function AccountScreen() {
         ) : (
           <T variant="small">{t("Tu utilises la version gratuite de Sorloo. L'abonnement se gère depuis ton compte sur le site Sorloo, avec les mêmes identifiants.", "You're using the free version of Sorloo. The subscription is managed from your account on the Sorloo website, with the same login.")}</T>
         )}
-        {me.ai && me.premium && <T variant="small">{t(`Coach IA : ${me.ai.left} messages restants ce mois-ci.`, `AI coach: ${me.ai.left} messages left this month.`)}</T>}
+        {me.ai && me.premium && <T variant="small">{t("Coach IA : {0} messages restants ce mois-ci.", "AI coach: {0} messages left this month.", [me.ai.left])}</T>}
       </Card>
 
       <Card>
@@ -118,7 +121,7 @@ export default function AccountScreen() {
           <>
             <Notice tone="danger">{t("Toutes tes données seront supprimées définitivement et ton abonnement résilié. Cette action est irréversible.", "All your data will be permanently deleted and your subscription cancelled. This can't be undone.")}</Notice>
             <Field label={t("Écris SUPPRIMER pour confirmer", "Type DELETE to confirm")} value={confirm} onChangeText={setConfirm} autoCapitalize="characters" />
-            <Button variant="danger" onPress={remove} loading={busy} disabled={confirm.trim().toUpperCase() !== (lang === "en" ? "DELETE" : "SUPPRIMER")}>{t("Supprimer définitivement", "Delete permanently")}</Button>
+            <Button variant="danger" onPress={remove} loading={busy} disabled={confirm.trim().toUpperCase() !== t("SUPPRIMER", "DELETE")}>{t("Supprimer définitivement", "Delete permanently")}</Button>
           </>
         )}
       </Card>

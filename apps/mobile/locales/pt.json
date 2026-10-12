@@ -1,0 +1,9 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Sorloo",
+    "NSCameraUsageDescription": "O Sorloo usa a câmera para escanear códigos de barras, fotografar suas refeições e, se você quiser, tirar suas fotos de progresso.",
+    "NSPhotoLibraryUsageDescription": "O Sorloo só acessa suas fotos quando você escolhe uma foto de refeição ou de progresso.",
+    "NSHealthShareUsageDescription": "O Sorloo lê seus passos, pesagens e treinos para acompanhar sua meta de passos, sua curva de peso e marcar seus treinos.",
+    "NSHealthUpdateUsageDescription": "O Sorloo não grava nada no app Saúde: ele só lê seus passos, pesagens e treinos para o seu acompanhamento."
+  }
+}

@@ -1,0 +1,1121 @@
+{
+  "meta": {
+    "title": "Sorloo – deine Woche, organisiert",
+    "description": "Wochenmenüs, Rezepte, Einkaufsliste, Budget und Training: Sorloo organisiert deine Woche und passt sich an, wenn das echte Leben dazwischenkommt."
+  },
+  "site": {
+    "pricing": "Preise",
+    "openApp": "App öffnen",
+    "login": "Anmelden",
+    "start": "Kostenlos starten",
+    "footerTagline": "Nenne uns dein Ziel, dein Budget, deinen Geschmack und deinen Zeitplan. Wir organisieren deine Woche.",
+    "product": "Produkt",
+    "legal": "Rechtliches",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "notice": "Impressum",
+    "disclaimer": "Sorloo ist eine App für Wohlbefinden und Organisation. Sie ersetzt keinen ärztlichen Rat. Nährwertdaten: CIQUAL-Tabelle (ANSES).",
+    "contact": "Kontakt"
+  },
+  "home": {
+    "eyebrow": "Mahlzeiten, Einkauf, Budget und Training",
+    "title": "Deine Woche, organisiert.",
+    "subtitle": "Nenne uns dein Ziel, dein Budget, deinen Geschmack und deinen Zeitplan. Sorloo plant 7 Tage Mahlzeiten, die Einkaufsliste und dein Trainingsprogramm und passt alles an, wenn das echte Leben dazwischenkommt.",
+    "cta": "Meine Woche planen",
+    "seePricing": "Preise ansehen",
+    "ctaNote": "Kostenlos starten. Ohne Kreditkarte.",
+    "compareOthers": "Eine klassische Tracking-App",
+    "compareOthersQuote": "Sag mir, was du gegessen hast, und ich messe es.",
+    "compareUsQuote": "Sag mir dein Ziel, dein Budget, deinen Geschmack und deinen Zeitplan. Ich organisiere deine Woche.",
+    "loopTitle": "Ein kompletter Kreislauf, nicht nur eine weitere App",
+    "loopSubtitle": "Vom Profil bis zum Sonntagsrückblick: Jeder Schritt bereitet den nächsten vor.",
+    "loop": {
+      "profile": {
+        "title": "Profil",
+        "text": "Alter, Größe, Vorlieben, Allergien, Haushalt, Kochzeit."
+      },
+      "goal": {
+        "title": "Ziel",
+        "text": "Abnehmen, halten, Muskeln aufbauen, besser essen oder weniger ausgeben."
+      },
+      "budget": {
+        "title": "Budget",
+        "text": "„Ich habe diese Woche 70 €“: Das Menü passt sich an."
+      },
+      "week": {
+        "title": "Woche",
+        "text": "7 Tage Mahlzeiten mit den richtigen Mengen, mit einem Klick."
+      },
+      "groceries": {
+        "title": "Einkauf",
+        "text": "Eine Liste nach Regalen, ohne das, was du schon hast."
+      },
+      "sport": {
+        "title": "Training",
+        "text": "Ein realistisches Programm für dein Niveau und deine Zeit."
+      },
+      "adapt": {
+        "title": "Änderungen",
+        "text": "Restaurant, Gäste, kein Hähnchen mehr: Die Woche organisiert sich neu."
+      },
+      "review": {
+        "title": "Rückblick",
+        "text": "Jeden Sonntag: Fortschritt, Budget und eine neue Woche."
+      }
+    },
+    "features": {
+      "week": {
+        "title": "Automatische Menüs",
+        "text": "Frühstück, Mittag-, Abendessen und Snacks, mit Portionen für alle berechnet."
+      },
+      "budget": {
+        "title": "Budget eingehalten",
+        "text": "Geschätzte Ausgaben und Restbudget immer im Blick. Sparmodus mit einem Tipp."
+      },
+      "groceries": {
+        "title": "Smarter Einkauf",
+        "text": "Zusammengefasste Mengen, echte Packungsgrößen, Vorrat abgezogen und Reste verwertet."
+      },
+      "recipes": {
+        "title": "Über 1.500 Rezepte",
+        "text": "Ausführliche Schritte, Zeit, Makros und Kosten pro Portion. Über 600 vegetarische Rezepte."
+      },
+      "sport": {
+        "title": "Trainingsprogramm",
+        "text": "Angeleitete Einheiten mit Wiederholungen, Pausen und Tipps, ohne Geräte."
+      },
+      "coach": {
+        "title": "KI-Coach",
+        "text": "Schreib „Ich habe heute Abend nur 15 Minuten“: Er schlägt vor, du bestätigst."
+      }
+    },
+    "safetyTitle": "Verlässliche Zahlen, ein freundlicher Ton",
+    "safetyText": "Kalorien, Makros und Mengen werden von einer getesteten Engine aus offiziellen Daten berechnet, nie von einer KI erfunden. Gefährliche Ziele werden abgelehnt, mit eigenen Wegen für Minderjährige, Schwangerschaft und bestimmte medizinische Situationen.",
+    "safety": {
+      "engine": "Berechnungen: Mifflin-St-Jeor-Formel und CIQUAL-Tabelle der ANSES",
+      "kind": "Kein schlechtes Gewissen: Eine Pizza passt rein, die Woche passt sich sanft an",
+      "privacy": "Gesundheitsdaten verschlüsselt und getrennt gespeichert, Export und Löschung mit einem Klick"
+    },
+    "faqTitle": "Häufige Fragen",
+    "faq": {
+      "what": {
+        "q": "Was unterscheidet Sorloo von einem Kalorienzähler?",
+        "a": "Sorloo zeichnet nicht nur auf, es organisiert. Aus deinem Ziel, Budget, Geschmack und deiner Zeit baut es die ganze Woche (Menüs, Rezepte, Einkauf, Training) und plant neu, wenn sich etwas ändert."
+      },
+      "budget": {
+        "q": "Wie wird das Budget berechnet?",
+        "a": "Jede Zutat hat einen beobachteten Durchschnittspreis und echte Packungsgrößen. Die Engine berechnet, was du an der Kasse zahlst, verwertet angebrochene Packungen und zieht deinen Vorrat ab. Die tatsächlichen Preise variieren je nach Geschäft."
+      },
+      "family": {
+        "q": "Funktioniert es für Familien?",
+        "a": "Ja. Dasselbe Abendessen für alle, mit Portionen für jede Person. Kinder werden nie auf Diät gesetzt."
+      },
+      "ai": {
+        "q": "Was macht die KI genau?",
+        "a": "Sie versteht deine Anfragen in normaler Sprache und schlägt Änderungen vor. Jede Zahl wird von der Engine neu berechnet, und nichts ändert sich ohne deine Zustimmung."
+      },
+      "data": {
+        "q": "Was passiert mit meinen Daten?",
+        "a": "Sie werden in Europa gehostet, Gesundheitsdaten sind verschlüsselt, und du kannst jederzeit alles in deinem Konto exportieren oder löschen."
+      },
+      "price": {
+        "q": "Was kostet es?",
+        "a": "Der kostenlose Plan deckt das Wesentliche ab. Premium schaltet Budget, Vorrat, KI-Coach, Training und Familienmodus frei."
+      }
+    },
+    "preview": {
+      "label": "Vorschau des Startbildschirms, Beispielwerte",
+      "date": "Mi. 2. Okt.",
+      "dinnerLabel": "Was gibt es zum Abendessen?",
+      "dinner": "Brathähnchen, Süßkartoffeln und grüne Bohnen",
+      "dinnerMeta": "520 kcal · 38 g Eiweiß · 25 Min. · 2,90 €",
+      "todoLabel": "Was steht heute an?",
+      "todo": "Zügiges Gehen 30 Min.",
+      "progressLabel": "Wo ich stehe",
+      "budgetLabel": "Restbudget",
+      "cta": "Heute Abend auswärts essen"
+    }
+  },
+  "pricing": {
+    "title": "Einfache Preise",
+    "subtitle": "Starte kostenlos. Wechsle zu Premium, wenn Sorloo sich um alles kümmern soll: Budget, Vorrat, Coach und Training.",
+    "free": "Kostenlos",
+    "freeNote": "Zum Kennenlernen und für das Wesentliche",
+    "startFree": "Kostenlos starten",
+    "popular": "Am vollständigsten",
+    "monthlyPrice": "6,99 €",
+    "month": "Monat",
+    "yearlyOffer": "oder 49,99 € pro Jahr (4,17 € / Monat)",
+    "goPremium": "Zu Premium wechseln",
+    "paymentNote": "Sichere Zahlung über Stripe auf unserer Website. Jederzeit kündbar.",
+    "freeItems": {
+      "profile": "Persönliches Profil und Ziele",
+      "targets": "Berechneter Kalorien- und Makrobedarf",
+      "simpleWeek": "Wochenmenü für eine Person",
+      "recipes": "Zugang zu über 1.500 Rezepten",
+      "list": "Einkaufsliste nach Regalen",
+      "journal": "Ernährungstagebuch",
+      "water": "Wasser-Tracking",
+      "weight": "Gewichtskurve"
+    },
+    "premiumItems": {
+      "everythingFree": "Alles aus Kostenlos, plus:",
+      "budget": "Budget und Sparmodus",
+      "pantry": "Vorrat und Anti-Verschwendung",
+      "unlimitedSwaps": "Unbegrenzt Mahlzeiten tauschen",
+      "ai": "Anpassungen in normaler Sprache",
+      "coach": "KI-Coach, der dein Programm kennt",
+      "sport": "Persönliches Trainingsprogramm",
+      "family": "Familienmodus, Portionen für alle",
+      "review": "Wochenrückblick und Analysen"
+    }
+  },
+  "auth": {
+    "loginTitle": "Willkommen zurück!",
+    "loginCta": "Anmelden",
+    "signupTitle": "Konto erstellen",
+    "signupSubtitle": "2 Minuten für dein Profil, dann deine erste Woche.",
+    "signupCta": "Konto erstellen",
+    "name": "Vorname",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "passwordHint": "Mindestens 10 Zeichen",
+    "newPassword": "Neues Passwort",
+    "pending": "Einen Moment…",
+    "google": "Weiter mit Google",
+    "forgot": "Passwort vergessen?",
+    "noAccount": "Konto erstellen",
+    "haveAccount": "Ich habe schon ein Konto",
+    "acceptTerms": "Ich akzeptiere die <terms>Nutzungsbedingungen</terms> und die <privacy>Datenschutzerklärung</privacy>.",
+    "forgotTitle": "Passwort vergessen",
+    "sendLink": "Link senden",
+    "resetSent": "Wenn es ein Konto mit dieser Adresse gibt, ist eine E-Mail unterwegs. Schau auch im Spam-Ordner nach.",
+    "backToLogin": "Zurück zur Anmeldung",
+    "resetTitle": "Neues Passwort",
+    "resetCta": "Speichern",
+    "errors": {
+      "invalid": "E-Mail oder Passwort falsch.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "exists": "Mit dieser Adresse gibt es schon ein Konto. Melde dich stattdessen an.",
+      "short": "Das Passwort muss mindestens 10 Zeichen haben.",
+      "terms": "Bitte akzeptiere die Bedingungen, um fortzufahren.",
+      "resetInvalid": "Dieser Link ist nicht mehr gültig. Fordere einen neuen an."
+    }
+  },
+  "nav": {
+    "label": "Hauptnavigation",
+    "today": "Heute",
+    "week": "Woche",
+    "groceries": "Einkauf",
+    "recipes": "Rezepte",
+    "pantry": "Vorrat",
+    "journal": "Tagebuch",
+    "sport": "Training",
+    "progress": "Fortschritt",
+    "coach": "Coach",
+    "account": "Konto",
+    "upgrade": "Zu Premium wechseln"
+  },
+  "onboarding": {
+    "metaTitle": "Willkommen",
+    "progress": "Schritt {step} von {total}",
+    "back": "Zurück",
+    "next": "Weiter",
+    "create": "Meine Woche planen",
+    "creating": "Deine Woche wird vorbereitet…",
+    "you": {
+      "title": "Lernen wir uns kennen",
+      "subtitle": "Diese Angaben dienen zur Berechnung deines Bedarfs. Sie bleiben verschlüsselt und privat.",
+      "name": "Vorname",
+      "sex": "Geschlecht",
+      "sexHint": "Nur für die Berechnung des Energiebedarfs.",
+      "birthDate": "Geburtsdatum",
+      "height": "Größe",
+      "weight": "Gewicht"
+    },
+    "goal": {
+      "title": "Dein Ziel",
+      "subtitle": "Du kannst es jederzeit ändern.",
+      "target": "Zielgewicht (optional)",
+      "pace": "Tempo",
+      "gentle": "Sanft (empfohlen)",
+      "moderate": "Moderat",
+      "activity": "Alltagsaktivität (ohne Sport)",
+      "hints": {
+        "lose_weight": "Ein moderates Defizit, ohne Verzicht.",
+        "maintain": "Gewicht halten und ausgewogen essen.",
+        "gain_muscle": "Mehr Eiweiß und ein leichter Überschuss.",
+        "eat_better": "Mehr Gemüse, Ballaststoffe und Selbstgekochtes.",
+        "save_money": "Gut essen und weniger ausgeben.",
+        "family_meals": "Die Mahlzeiten der ganzen Familie organisieren."
+      }
+    },
+    "health": {
+      "title": "Deine Gesundheit zuerst",
+      "subtitle": "Manche Situationen brauchen professionelle Begleitung: Wir passen das Programm entsprechend an.",
+      "pregnancy": "Schwangerschaft oder Stillzeit",
+      "medical": "Besondere Situationen (optional)",
+      "medicalHint": "Wenn du eine Situation ankreuzt, bleibt Sorloo vorsichtig und empfiehlt dir, mit einer Fachperson zu sprechen.",
+      "allergies": "Allergien und Unverträglichkeiten",
+      "consent": "Ich bin damit einverstanden, dass Sorloo meine Gesundheitsdaten (Gewicht, Größe, Allergien, angegebene Situationen) verarbeitet, um meine Menüs und mein Programm zu personalisieren. Diese Daten sind verschlüsselt, werden nie verkauft, und ich kann meine Einwilligung jederzeit widerrufen oder sie löschen."
+    },
+    "food": {
+      "title": "Deine Gewohnheiten",
+      "subtitle": "Für Menüs, die du wirklich kochen möchtest.",
+      "diet": "Ernährungsweise",
+      "avoid": "Vermeiden",
+      "weekday": "Kochzeit unter der Woche",
+      "weekend": "Kochzeit am Wochenende",
+      "equipment": "Ausstattung",
+      "leftovers": "Einmal kochen, zweimal essen",
+      "leftoversHint": "Das Abendessen am Montag, Mittwoch und Freitag ist auch das Mittagessen am nächsten Tag.",
+      "snacks": "Snacks einplanen",
+      "dislikes": "Lebensmittel, die ich nicht esse",
+      "dislikesHint": "Kein Rezept, das sie enthält, wird vorgeschlagen. Knoblauch, Kräuter und Gewürze werden einfach weggelassen.",
+      "dislikesSearch": "Ein anderes Lebensmittel… (z. B. Fenchel)",
+      "dislikesNone": "Kein Lebensmittel gefunden.",
+      "dislikesOthers": "Weitere ausgeschlossene Lebensmittel",
+      "dislikesRemove": "{name} von der Liste entfernen",
+      "flexiHint": "Höchstens 3-mal pro Woche Fleisch; sonst Fisch, Eier und vegetarische Gerichte.",
+      "veggies": "Gemüse",
+      "veggiesOptions": {
+        "more": "Liebe ich",
+        "normal": "Normal",
+        "less": "Nicht zu viel"
+      },
+      "veggiesLessHint": "Wir bevorzugen Gerichte, in denen Gemüse dezent bleibt (Aufläufe, Saucen, Suppen, Pfannengerichte) und in kleinen Mengen. Ein wenig bleibt drin: Es ist wichtig für Ballaststoffe und Sättigung."
+    },
+    "household": {
+      "title": "Dein Haushalt",
+      "subtitle": "Dieselbe Mahlzeit für alle, mit Portionen für jede Person.",
+      "selfMeals": "Die Mahlzeiten, die du zu Hause isst",
+      "member": "Person {n}",
+      "add": "Person hinzufügen",
+      "remove": "Entfernen",
+      "premiumNote": "Die Planung für mehrere Personen ist Teil von Premium. Du kannst deinen Haushalt schon eintragen."
+    },
+    "budget": {
+      "title": "Dein Einkaufsbudget",
+      "subtitle": "Optional, aber sehr nützlich: Wir planen die Woche so, dass sie hineinpasst.",
+      "enable": "Ein Wochenbudget festlegen",
+      "hint": "die Engine wählt Rezepte, die diesen Betrag einhalten.",
+      "amount": "Budget pro Woche",
+      "note": "Die Preise sind in Frankreich beobachtete Durchschnittswerte. Die tatsächlichen Preise variieren je nach Geschäft."
+    },
+    "sport": {
+      "title": "Deine körperliche Aktivität",
+      "subtitle": "Ein realistisches Programm, das sich an deinen Zeitplan anpasst.",
+      "enable": "Ich möchte ein Trainingsprogramm",
+      "days": "Verfügbare Tage",
+      "minutes": "Dauer einer Einheit",
+      "equipment": "Vorhandene Geräte (optional)",
+      "limitations": "Schmerzen oder zu schonende Bereiche",
+      "levelHints": {
+        "beginner": "Ich fange an oder steige wieder ein.",
+        "intermediate": "Ich trainiere 1–2-mal pro Woche.",
+        "advanced": "Ich trainiere regelmäßig."
+      }
+    },
+    "summary": {
+      "title": "Dein Programm",
+      "subtitle": "Hier ist dein berechneter Bedarf. Wir können deine erste Woche erstellen.",
+      "computing": "Wird berechnet…",
+      "explain": "Berechnung: Grundumsatz {bmr} kcal (Mifflin-St-Jeor-Formel), geschätzter Verbrauch {tdee} kcal mit deiner Aktivität."
+    },
+    "errors": {
+      "invalid": "Einige Angaben fehlen. Prüfe die vorherigen Schritte.",
+      "too_young": "Sorloo ist für Personen ab 15 Jahren.",
+      "consent": "Die Einwilligung zur Verarbeitung der Gesundheitsdaten ist nötig, um dein Programm zu personalisieren.",
+      "server": "Speichern fehlgeschlagen. Bitte versuche es erneut."
+    }
+  },
+  "enums": {
+    "sex": {
+      "female": "Weiblich",
+      "male": "Männlich"
+    },
+    "goal": {
+      "lose_weight": "Abnehmen",
+      "maintain": "Gewicht halten",
+      "gain_muscle": "Muskeln aufbauen",
+      "eat_better": "Besser essen",
+      "save_money": "Kleines Budget",
+      "family_meals": "Familienessen"
+    },
+    "activity": {
+      "sedentary": "Sitzend (Büro, wenig Gehen)",
+      "light": "Leicht (tägliches Gehen)",
+      "moderate": "Mäßig (viel auf den Beinen)",
+      "active": "Aktiv (körperliche Arbeit)",
+      "very_active": "Sehr aktiv (sehr körperliche Arbeit)"
+    },
+    "pregnancy": {
+      "none": "Nicht zutreffend",
+      "pregnant_t1": "Schwanger, 1. Trimester",
+      "pregnant_t2": "Schwanger, 2. Trimester",
+      "pregnant_t3": "Schwanger, 3. Trimester",
+      "breastfeeding": "Ich stille"
+    },
+    "medical": {
+      "diabetes": "Diabetes",
+      "kidney_disease": "Nierenerkrankung",
+      "heart_disease": "Herz-Kreislauf-Erkrankung",
+      "eating_disorder_history": "Frühere Essstörung",
+      "bariatric_surgery": "Bariatrische Operation",
+      "other": "Andere ärztlich begleitete Situation"
+    },
+    "allergen": {
+      "gluten": "Gluten",
+      "dairy": "Milch / Laktose",
+      "egg": "Eier",
+      "peanut": "Erdnüsse",
+      "nuts": "Schalenfrüchte",
+      "fish": "Fisch",
+      "seafood": "Krebs- und Weichtiere",
+      "soy": "Soja",
+      "sesame": "Sesam",
+      "celery": "Sellerie",
+      "mustard": "Senf",
+      "sulphites": "Sulfite",
+      "lupin": "Lupinen"
+    },
+    "diet": {
+      "omnivore": "Ich esse alles",
+      "flexitarian": "Flexitarisch",
+      "pescatarian": "Pescetarisch",
+      "vegetarian": "Vegetarisch",
+      "vegan": "Vegan"
+    },
+    "avoid": {
+      "pork": "Schwein",
+      "beef": "Rind",
+      "lamb": "Lamm",
+      "alcohol": "Alkohol",
+      "fish": "Fisch",
+      "seafood": "Meeresfrüchte"
+    },
+    "equipment": {
+      "oven": "Backofen",
+      "microwave": "Mikrowelle",
+      "blender": "Mixer",
+      "airfryer": "Heißluftfritteuse",
+      "slowcooker": "Schongarer"
+    },
+    "meal": {
+      "breakfast": "Frühstück",
+      "lunch": "Mittagessen",
+      "dinner": "Abendessen",
+      "snack": "Snack"
+    },
+    "level": {
+      "beginner": "Anfänger",
+      "intermediate": "Fortgeschritten",
+      "advanced": "Erfahren"
+    },
+    "dayShort": {
+      "0": "Mo",
+      "1": "Di",
+      "2": "Mi",
+      "3": "Do",
+      "4": "Fr",
+      "5": "Sa",
+      "6": "So"
+    },
+    "day": {
+      "0": "Montag",
+      "1": "Dienstag",
+      "2": "Mittwoch",
+      "3": "Donnerstag",
+      "4": "Freitag",
+      "5": "Samstag",
+      "6": "Sonntag"
+    },
+    "sportEquipment": {
+      "dumbbells": "Kurzhanteln",
+      "band": "Widerstandsband",
+      "kettlebell": "Kettlebell",
+      "pullup_bar": "Klimmzugstange",
+      "bike": "Fahrrad",
+      "pool": "Schwimmbad"
+    },
+    "limitation": {
+      "knees": "Knie",
+      "back": "Rücken",
+      "shoulders": "Schultern",
+      "wrists": "Handgelenke"
+    },
+    "nutrient": {
+      "kcal": "Energie",
+      "protein": "Eiweiß",
+      "carbs": "Kohlenhydrate",
+      "fat": "Fett",
+      "fiber": "Ballaststoffe",
+      "sugars": "Zucker",
+      "satFat": "Gesättigte Fettsäuren",
+      "salt": "Salz"
+    },
+    "aisle": {
+      "produce": "Obst und Gemüse",
+      "meat": "Fleisch und Geflügel",
+      "fish": "Fischtheke",
+      "dairy": "Milchprodukte und Eier",
+      "bakery": "Bäckerei",
+      "grocery": "Vorratsartikel",
+      "sweet": "Süßwaren",
+      "frozen": "Tiefkühl",
+      "spices": "Öle, Gewürze, Würzmittel",
+      "drinks": "Getränke",
+      "plant": "Pflanzlich"
+    },
+    "safety": {
+      "under_min_age": {
+        "title": "Ab 15 Jahren",
+        "text": "Sorloo ist unter 15 Jahren nicht geeignet. Sprich mit deinen Eltern und deinem Arzt über deine Ernährung."
+      },
+      "minor_no_deficit": {
+        "title": "Keine Diät unter 18",
+        "text": "Dein Körper wächst noch: Wir bieten eine ausgewogene Ernährung ohne Einschränkung. Bei Fragen zum Gewicht sprich mit deinem Arzt."
+      },
+      "pregnancy_no_deficit": {
+        "title": "Schwangerschaft: kein Abnehmen",
+        "text": "In der Schwangerschaft passen wir die Zufuhr an deinen Bedarf an, ohne Einschränkung, und vermeiden nicht empfohlene Lebensmittel (roher Fisch, Rohmilchkäse…). Deine Hebamme oder dein Arzt bleibt die Referenz."
+      },
+      "breastfeeding_mild_deficit_only": {
+        "title": "Stillzeit: ganz sanftes Tempo",
+        "text": "In der Stillzeit ist der Gewichtsverlust auf höchstens 0,5 kg pro Woche begrenzt, um die Milchbildung zu schützen."
+      },
+      "underweight_no_loss": {
+        "title": "Abnehmen nicht empfohlen",
+        "text": "Dein BMI ist bereits niedrig: Wir bieten kein Abnehmen an. Ziel: gut essen und deine Energie bewahren."
+      },
+      "target_weight_too_low": {
+        "title": "Zielgewicht zu niedrig",
+        "text": "Dieses Gewicht entspricht einem BMI unter 18,5. Wir halten ein sicheres Tempo, aber bitte besprich dieses Ziel mit einer Fachperson."
+      },
+      "pace_too_fast": {
+        "title": "Tempo angepasst",
+        "text": "Mehr als 1 % des Körpergewichts pro Woche zu verlieren führt zu Muskelabbau und Jo-Jo-Effekt. Wir begrenzen das Tempo."
+      },
+      "gain_too_fast": {
+        "title": "Tempo angepasst",
+        "text": "Über 0,5 % pro Woche ist die Zunahme vor allem Fett. Wir bleiben vernünftig."
+      },
+      "medical_supervision": {
+        "title": "Angegebene medizinische Situation",
+        "text": "Sorloo bleibt vorsichtig (begrenztes Tempo, bei Bedarf angepasstes Eiweiß). Lass dein Programm von deinem Arzt oder einer Ernährungsfachkraft prüfen."
+      },
+      "eating_disorder_history": {
+        "title": "Ein Programm ohne Zahlen",
+        "text": "Kalorien und Gewicht werden ausgeblendet, und es gibt keine Einschränkung. Wenn es dir gerade schwerfällt, können dein Arzt oder eine Beratungsstelle für Essstörungen helfen."
+      },
+      "kcal_floor": {
+        "title": "Mindestzufuhr",
+        "text": "Dein Kalorienziel fällt nie unter eine Sicherheitsschwelle."
+      }
+    }
+  },
+  "errors": {
+    "premium": "Diese Funktion ist Teil von Premium.",
+    "quota": "Du hast deine 3 kostenlosen Wechsel dieser Woche verbraucht.",
+    "invalid": "Diese Anfrage ist ungültig.",
+    "no_plan": "Erstelle zuerst deine Woche.",
+    "server": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "seePremium": "Premium entdecken"
+  },
+  "today": {
+    "hello": "Hallo {name}!",
+    "noPlanTitle": "Deine Woche ist noch nicht fertig",
+    "noPlanText": "Mit einem Klick plant Sorloo deine Mahlzeiten der nächsten 7 Tage, deine Einkaufsliste und dein Trainingsprogramm.",
+    "createWeek": "Meine Woche planen",
+    "whatToEat": "Was esse ich heute?",
+    "seeWeek": "Ganze Woche",
+    "leftover": "Reste",
+    "nothingPlanned": "Nichts geplant",
+    "portion": "{n} Portion",
+    "markEaten": "Als gegessen markieren",
+    "eaten": "Gegessen",
+    "adjustTitle": "Planänderung?",
+    "whatToDo": "Was steht heute an?",
+    "sportDisabled": "Das Trainingsprogramm ist ausgeschaltet. Du kannst es im Tab Training einschalten.",
+    "sportPremium": "Mit Premium wartet ein persönliches Trainingsprogramm auf dich: angeleitete Einheiten für dein Niveau und deine Zeit.",
+    "discoverPremium": "Premium entdecken",
+    "sessionMeta": "{minutes} Min. · etwa {kcal} kcal",
+    "done": "Erledigt",
+    "restDay": "Ruhetag. Ein kleiner Spaziergang ist trotzdem eine gute Idee!",
+    "stepsGoal": "Schrittziel: {steps}",
+    "whereAmI": "Wo stehe ich?",
+    "logHint": "Hake deine Mahlzeiten ab oder trage ein, was du gegessen hast.",
+    "remaining": "Heute noch etwa {kcal} kcal.",
+    "openJournal": "Tagebuch öffnen",
+    "noNumbers": "Hier keine Zahlen: Achte auf abwechslungsreiche Mahlzeiten, iss nach Hunger und achte auf dein Wohlbefinden.",
+    "water": "Trinken",
+    "waterLess": "Ein Glas entfernen",
+    "waterMore": "Ein Glas hinzufügen",
+    "glass": "Ein Glas",
+    "glasses": "{count, plural, =0 {Noch kein Glas} one {# Glas} other {# Gläser}}",
+    "seeGroceries": "Einkaufsliste",
+    "budgetTitle": "Wie viel bleibt übrig?",
+    "budgetOf": "{cost} von {budget}",
+    "budgetOver": "Budget überschritten: Sieh dir die Vorschläge auf der Wochenseite an.",
+    "estimated": "Geschätzter Einkauf diese Woche: {cost}.",
+    "setBudget": "Budget festlegen",
+    "budgetPremium": "Budget festlegen (Premium)",
+    "estimatedWithLeftovers": "Geschätzter Einkauf diese Woche: {cost}, davon {eaten} diese Woche gegessen und {kept} an Produkten, die dir bleiben (angebrochene Packungen, Vorrat)."
+  },
+  "adjust": {
+    "label": "Beschreibe die Änderung",
+    "placeholder": "Z. B. heute Abend Restaurant",
+    "submit": "Anpassen",
+    "suggestions": {
+      "restaurant": "Heute Abend esse ich im Restaurant",
+      "guests": "Heute Abend sind wir zu fünft",
+      "quick": "Ich habe heute Abend nur 15 Minuten",
+      "missing": "Ich habe kein Hähnchen mehr"
+    },
+    "premiumNote": "Automatische Anpassungen sind Teil von Premium.",
+    "apply": "Übernehmen",
+    "dismiss": "Verwerfen"
+  },
+  "week": {
+    "title": "Meine Woche",
+    "previous": "Vorherige Woche",
+    "next": "Nächste Woche",
+    "thisWeek": "Diese Woche",
+    "emptyTitle": "Noch kein Menü für diese Woche",
+    "emptyText": "Sorloo plant 7 Tage Mahlzeiten nach deinem Ziel, Budget, Geschmack und deiner Zeit.",
+    "create": "Meine Woche planen",
+    "groceriesCost": "Geschätzter Einkauf",
+    "leftoverValue": "davon {value} an Produkten für später",
+    "avgPerDay": "Durchschnitt pro Tag",
+    "regenerate": "Neues Menü",
+    "regenerateConfirm": "Das ganze Menü wird neu erstellt (Mahlzeiten auswärts bleiben erhalten).",
+    "confirmRegenerate": "Neu erstellen",
+    "cancel": "Abbrechen",
+    "budget": "Budget",
+    "budgetLine": "Budget {budget} · {left} übrig",
+    "budgetOverTitle": "Budget schwer einzuhalten",
+    "budgetOverText": "Mit deinen Vorgaben kostet das günstigste gefundene Menü {min}. Du kannst deine Vorlieben lockern (Zeit, zu vermeidende Lebensmittel) oder das Budget etwas erhöhen.",
+    "budgetTitle": "Wochenbudget",
+    "budgetPremium": "Lege ein Budget fest und lass Sorloo eine Woche planen, die es einhält.",
+    "discover": "Premium entdecken",
+    "budgetEnable": "Ein Budget einhalten",
+    "budgetAmount": "Betrag",
+    "perWeek": "Woche",
+    "budgetRebuild": "Menü mit diesem Budget neu erstellen",
+    "budgetSaveOnly": "Speichern, ohne das Menü zu ändern",
+    "freeNote": "Kostenlose Version: Menü nur für dich, ohne Budget und Vorrat, 3 Wechsel pro Woche.",
+    "today": "Heute",
+    "replace": "Tauschen",
+    "replaceTitle": "Diese Mahlzeit tauschen",
+    "close": "Schließen",
+    "search": "Suchen",
+    "searchPlaceholder": "Rezept suchen (z. B. Curry)",
+    "surprise": "Überrasch mich",
+    "loading": "Die besten Optionen werden gesucht…",
+    "noAlternative": "Keine passende Alternative gefunden.",
+    "sameCost": "gleiche Kosten",
+    "usesLeftovers": "verwertet deine Reste",
+    "more": "Weitere Optionen",
+    "eatOut": "Ich esse auswärts",
+    "guests": "Es kommen Gäste",
+    "lessTime": "Ich habe weniger Zeit",
+    "skip": "Ich lasse diese Mahlzeit aus",
+    "eatOutLabel": "Was isst du?",
+    "eatOutDefault": "Essen auswärts",
+    "guestsLabel": "Wie viele Personen insgesamt?",
+    "timeLabel": "Wie viele Minuten zum Kochen?",
+    "validate": "Bestätigen",
+    "nothing": "Nichts geplant",
+    "leftoverOf": "Reste von {day}",
+    "cookDouble": "Doppelte Menge kochen",
+    "outside": "Auswärts",
+    "someOutside": "Ein Teil des Haushalts auswärts",
+    "withGuests": "+{n} Gäste",
+    "serving": "Portion"
+  },
+  "recipes": {
+    "title": "Rezepte",
+    "subtitle": "{count} Rezepte",
+    "search": "Rezept oder Zutat suchen",
+    "meal": "Mahlzeit",
+    "allMeals": "Alle Mahlzeiten",
+    "diet": "Ernährung",
+    "time": "Zeit",
+    "anyTime": "Beliebig",
+    "maxTime": "≤ {m} Min.",
+    "filter": "Filtern",
+    "filteredMine": "Rezepte, die zu deinen Allergien und Vorlieben passen.",
+    "showingAll": "Alle Rezepte der gewählten Ernährungsweise.",
+    "showAll": "Alle anzeigen",
+    "showMine": "Nur meine",
+    "none": "Kein Rezept gefunden",
+    "noneText": "Versuche ein anderes Wort oder entferne einen Filter.",
+    "batch": "Vorkochen",
+    "protein": "Eiweißreich",
+    "pagination": "Seiten",
+    "prev": "Zurück",
+    "next": "Weiter",
+    "page": "Seite {page} von {pages}"
+  },
+  "recipe": {
+    "back": "Alle Rezepte",
+    "photoBy": "Foto:",
+    "batch": "Zum Vorkochen",
+    "time": "Gesamtzeit",
+    "difficulty": "Schwierigkeit",
+    "level1": "Einfach",
+    "level2": "Mittel",
+    "level3": "Aufwendig",
+    "cost": "Kosten / Portion",
+    "energy": "Energie / Portion",
+    "prepCook": "Vorbereitung {prep} Min. · Garen {cook} Min.",
+    "keeps": "Hält sich {days} Tage im Kühlschrank",
+    "like": "Gefällt mir",
+    "dislike": "Nichts für mich",
+    "meal": "Mahlzeit",
+    "addToJournal": "Ins Tagebuch",
+    "added": "Hinzugefügt",
+    "warningTitle": "Achtung",
+    "warningText": "Dieses Rezept enthält: {list}. Es wird in deinen Menüs nicht vorgeschlagen.",
+    "ingredients": "Zutaten",
+    "servings": "Portionen",
+    "less": "Weniger",
+    "more": "Mehr",
+    "staples": "Vorratsschrank",
+    "allergens": "Allergene",
+    "steps": "Zubereitung",
+    "nutrition": "Nährwerte pro Portion",
+    "nutritionNote": "Berechnet aus der CIQUAL-Tabelle (ANSES) für rohe Zutaten.",
+    "omitted": "Für dich angepasst: ohne {list}. Überspringe einfach die Schritte, in denen es vorkommt.",
+    "containsDisliked": "Enthält ein Lebensmittel, das du nicht isst: {list}. Es wird in deinen Menüs nicht vorgeschlagen."
+  },
+  "groceries": {
+    "title": "Einkaufsliste",
+    "subtitle": "{count} Produkte · {total}",
+    "emptyTitle": "Noch keine Liste",
+    "emptyText": "Erstelle deine Woche: Die Einkaufsliste entsteht von selbst.",
+    "create": "Meine Woche planen",
+    "copy": "Liste kopieren",
+    "copied": "Kopiert!",
+    "print": "Drucken",
+    "estimated": "Geschätzte Summe",
+    "budget": "Budget: {budget}",
+    "actualSpent": "Tatsächlicher Betrag (optional)",
+    "shopped": "Einkauf erledigt",
+    "shoppedDone": "Einkauf erledigt, gut gemacht!",
+    "priceNote": "In Frankreich beobachtete Durchschnittspreise, nach echten Packungsgrößen. Die Preise variieren je nach Geschäft.",
+    "pantryTitle": "Was du schon hast",
+    "pantryPremium": "Mit Premium trägst du deinen Vorrat ein: Er wird von der Liste abgezogen, und Reste werden verwertet.",
+    "discover": "Entdecken",
+    "fromPantry": "Schon im Vorrat",
+    "staples": "Im Vorratsschrank prüfen",
+    "staplesText": "Salz, Öl, Gewürze… werden als vorhanden angenommen.",
+    "leftoversTitle": "Das bleibt dir übrig",
+    "leftoversText": "Übrige frische Produkte: verwerte sie (Omelett, Salat, Suppe) oder friere sie ein."
+  },
+  "pantry": {
+    "title": "Vorrat",
+    "subtitle": "Was du schon hast: wird vom Einkauf abgezogen und in den Menüs zuerst verwendet.",
+    "premiumTitle": "Der Vorrat ist Teil von Premium",
+    "premiumText": "Trage ein, was du zu Hause hast: Sorloo streicht es von deiner Einkaufsliste und kocht es zuerst, damit du weniger ausgibst und weniger wegwirfst.",
+    "discover": "Premium entdecken",
+    "addTitle": "Produkt hinzufügen",
+    "ingredient": "Produkt (z. B. Langkornreis)",
+    "quantity": "Menge",
+    "add": "Hinzufügen",
+    "unknown": "Wähle ein Produkt aus den Vorschlägen.",
+    "premium": "Premium-Funktion.",
+    "remove": "Entfernen",
+    "hint": "Mengen in Gramm, Millilitern oder Stück. Wenn du deinen Einkauf bestätigst, werden übrige Trockenwaren automatisch hinzugefügt.",
+    "emptyTitle": "Dein Vorrat ist leer",
+    "emptyText": "Trage ein, was du noch hast (Nudeln, Reis, Konserven…), um beim nächsten Einkauf zu sparen."
+  },
+  "journal": {
+    "title": "Tagebuch",
+    "previous": "Vorheriger Tag",
+    "next": "Nächster Tag",
+    "today": "Heute",
+    "addTitle": "Lebensmittel hinzufügen",
+    "meal": "Mahlzeit",
+    "tabs": {
+      "search": "Suchen",
+      "custom": "Freie Eingabe",
+      "barcode": "Barcode",
+      "quick": "Favoriten",
+      "photo": "Foto"
+    },
+    "searchPlaceholder": "Z. B. Apfel, Joghurt, Hähnchen…",
+    "perServing": "Portion",
+    "servings": "Portionen",
+    "pieces": "Stück",
+    "grams": "Gramm",
+    "add": "Hinzufügen",
+    "cancel": "Abbrechen",
+    "added": "Zum Tagebuch hinzugefügt.",
+    "customName": "Name (z. B. Sandwich vom Bäcker)",
+    "proteinShort": "Eiw. (g)",
+    "carbsShort": "KH (g)",
+    "fatShort": "Fett (g)",
+    "barcodePlaceholder": "Barcode (8 bis 14 Ziffern)",
+    "lookup": "Suchen",
+    "scan": "Scannen",
+    "stopCamera": "Stopp",
+    "notFound": "Produkt nicht gefunden. Nutze die freie Eingabe.",
+    "offCredit": "Produktdaten: Open Food Facts, eine offene, gemeinschaftliche Datenbank.",
+    "nothing": "Noch nichts.",
+    "remove": "Entfernen",
+    "fromPlan": "Menü",
+    "servingsCount": "{n} Portion(en)",
+    "water": "Trinken",
+    "quick": {
+      "favorites": "Favoriten",
+      "recents": "Zuletzt",
+      "meals": "Gespeicherte Mahlzeiten",
+      "empty": "Deine Favoriten, zuletzt gegessenen Lebensmittel und gespeicherten Mahlzeiten erscheinen hier. Tippe im Tagebuch auf den Stern eines Lebensmittels, um es zu den Favoriten hinzuzufügen.",
+      "star": "{name} zu den Favoriten hinzufügen",
+      "unstar": "{name} aus den Favoriten entfernen",
+      "addOne": "{name} hinzufügen",
+      "addMeal": "Hinzufügen",
+      "deleteMeal": "Mahlzeit {name} löschen",
+      "deleteConfirm": "Die gespeicherte Mahlzeit „{name}“ löschen?",
+      "copyYesterday": "Von gestern kopieren",
+      "saveMeal": "Diese Mahlzeit speichern",
+      "savePrompt": "Name der Mahlzeit (z. B. Mein übliches Frühstück)",
+      "saved": "Mahlzeit „{name}“ gespeichert: Du findest sie im Tab Favoriten.",
+      "saveError": "Diese Mahlzeit konnte nicht gespeichert werden (höchstens 50 Mahlzeiten).",
+      "copied": "{n} Lebensmittel von gestern kopiert.",
+      "nothingYesterday": "Nichts zu kopieren: Diese Mahlzeit war gestern leer."
+    },
+    "photo": {
+      "intro": "Fotografiere deinen Teller (am besten von oben): Sorloo erkennt die Lebensmittel und schätzt die Mengen. Du prüfst, dann kommt alles in dein Tagebuch.",
+      "choose": "Foto aufnehmen oder auswählen",
+      "retake": "Anderes Foto",
+      "analyzing": "Wird analysiert…",
+      "photoAlt": "Foto der Mahlzeit",
+      "check": "Prüfen und korrigieren",
+      "toCheck": "bitte prüfen",
+      "gramsOf": "Menge {name} in Gramm",
+      "remove": "{name} entfernen",
+      "estimates": "Die Mengen sind Schätzungen: Passe sie bei Bedarf an.",
+      "addAll": "{n, plural, one {# Lebensmittel} other {# Lebensmittel}} hinzufügen · {kcal} kcal",
+      "premiumTitle": "Fotografiere deinen Teller, Sorloo trägt den Rest ein",
+      "premiumText": "Die Erkennung von Mahlzeiten per Foto ist Teil von Premium.",
+      "premiumLink": "Premium ansehen",
+      "errors": {
+        "not_food": "Ich sehe auf diesem Foto keine Mahlzeit. Versuche es noch einmal mit gut sichtbarem Teller, von oben.",
+        "unclear": "Das Foto ist nicht scharf genug, um die Lebensmittel zu erkennen. Versuche es mit mehr Licht.",
+        "unavailable": "Die Analyse ist gerade nicht verfügbar. Versuche es gleich noch einmal oder trage deine Lebensmittel von Hand ein.",
+        "premium": "Die Erkennung von Mahlzeiten per Foto ist Teil von Premium.",
+        "quota": "Du hast alle KI-Analysen dieses Monats verbraucht. Sie stehen ab dem 1. wieder zur Verfügung.",
+        "invalid": "Dieses Foto konnte nicht gesendet werden. Versuche ein anderes (JPEG oder PNG).",
+        "add": "Hinzufügen fehlgeschlagen. Bitte versuche es erneut."
+      }
+    }
+  },
+  "sport": {
+    "title": "Training",
+    "subtitle": "Woche {week} des Programms · {done}/{total} Einheiten erledigt",
+    "premiumTitle": "Dein persönliches Trainingsprogramm",
+    "premiumText": "Mit Premium erstellt Sorloo Einheiten für dein Niveau, dein Ziel, deine Geräte und deine Zeit, mit angeleiteten Übungen.",
+    "discover": "Premium entdecken",
+    "today": "Heute",
+    "meta": "{minutes} Min. · etwa {kcal} kcal",
+    "open": "Starten",
+    "done": "Erledigt",
+    "markDone": "Als erledigt markieren",
+    "stepsTitle": "Schritte heute",
+    "stepsText": "Ziel dieser Woche: {goal} Schritte pro Tag.",
+    "stepsToday": "Schritte heute",
+    "save": "Speichern",
+    "saved": "Gespeichert",
+    "devicesSoon": "Verbinde auf dem iPhone Apple Health in der Sorloo-App (Mein Konto → Geräte und Gesundheit): Schritte, Wiegungen und Trainings kommen automatisch, auch von einer verbundenen Uhr oder Waage. Android (Health Connect) folgt mit der Android-App.",
+    "disabledTitle": "Programm ausgeschaltet",
+    "disabledText": "Schalte es unten ein, um deine Einheiten zu bekommen.",
+    "settings": "Programmeinstellungen",
+    "back": "Programm dieser Woche",
+    "sessionSubtitle": "{minutes} Min. · {rounds} Runden",
+    "safety": "Wärm dich auf, atme und hör auf, wenn etwas wehtut. Für jede Übung gibt es eine leichtere Variante.",
+    "warmup": "Aufwärmen",
+    "reps": "{n} Wdh.",
+    "restShort": "Pause {s} s",
+    "tip": "Tipp",
+    "easier": "Zu schwer? Probier: {name}.",
+    "start": "Einheit starten",
+    "rest": "Pause",
+    "roundOf": "Runde {round}/{rounds}",
+    "breathe": "Atmen",
+    "pause": "Pause",
+    "resume": "Weiter",
+    "next": "Nächste",
+    "skipRest": "Überspringen",
+    "upNext": "Als Nächstes: {name}",
+    "bravo": "Einheit geschafft, super!",
+    "bravoText": "Sie ist in deinem Programm eingetragen.",
+    "demo": "Animierte Vorführung: {name}"
+  },
+  "progress": {
+    "title": "Fortschritt",
+    "subtitle": "Deine Fortschritte, ganz ohne Druck.",
+    "weightTitle": "Gewicht",
+    "chartLabel": "Gewicht und geglätteter Trend",
+    "goal": "Ziel",
+    "weighIn": "Wiegung am",
+    "needTwo": "Füge mindestens zwei Wiegungen hinzu, um deine Kurve zu sehen.",
+    "trendNote": "Die Linie zeigt den geglätteten Trend: Schwankungen von Tag zu Tag (Wasser, Salz) zählen kaum.",
+    "date": "Datum",
+    "weight": "Gewicht (kg)",
+    "waist": "Taillenumfang (cm)",
+    "add": "Speichern",
+    "invalid": "Gib mindestens ein gültiges Gewicht oder einen Taillenumfang ein.",
+    "history": "Verlauf",
+    "delete": "Löschen",
+    "photos": {
+      "title": "Fortschrittsfotos",
+      "privacy": "Freiwillig und privat: Sie sind verschlüsselt und nur für dich sichtbar. Ein Foto pro Woche, gleicher Ort, gleiches Licht, reicht, um die Veränderung zu sehen.",
+      "before": "Vorher",
+      "now": "Jetzt",
+      "alt": "Foto vom {date}",
+      "add": "Foto hinzufügen",
+      "close": "Schließen",
+      "delete": "Dieses Foto löschen",
+      "deleteConfirm": "Das Foto vom {date} löschen?",
+      "limit": "Du hast 100 Fotos erreicht. Lösche eines, um ein neues hinzuzufügen.",
+      "error": "Dieses Foto konnte nicht gespeichert werden. Versuche ein anderes."
+    }
+  },
+  "review": {
+    "lastWeek": "Rückblick letzte Woche",
+    "thisWeek": "Diese Woche (läuft)",
+    "weightTrend": "Gewichtstrend",
+    "adherence": "Befolgte Mahlzeiten",
+    "sessions": "Einheiten",
+    "budget": "Einkauf tatsächlich / geplant",
+    "avgKcal": "Tagesdurchschnitt",
+    "daysLogged": "Eingetragene Tage",
+    "nextTitle": "Und nächste Woche?",
+    "nextText": "Sorloo berücksichtigt deinen Geschmack (gemochte und getauschte Rezepte), um eine neue Woche vorzuschlagen.",
+    "seeNext": "Nächste Woche ansehen",
+    "createNext": "Nächste Woche vorbereiten",
+    "premiumTitle": "Wochenrückblick",
+    "premiumText": "Mit Premium jedes Wochenende: Fortschritt, Einheiten, eingehaltene Mahlzeiten, geplantes und tatsächliches Budget sowie konkrete Empfehlungen.",
+    "discover": "Premium entdecken",
+    "recs": {
+      "keep_going": {
+        "title": "Weiter so",
+        "text": "Deine Woche ist ausgewogen, dein Programm bleibt gleich."
+      },
+      "simplify_meals": {
+        "title": "Wir vereinfachen",
+        "text": "Weniger als die Hälfte der geplanten Mahlzeiten wurde befolgt. Nächste Woche setzen wir auf schnellere Rezepte und Reste."
+      },
+      "plateau_adjust": {
+        "title": "Kleine Anpassung",
+        "text": "Dein Gewicht ist trotz guter Umsetzung seit zwei Wochen stabil: Wir ziehen etwa {value} kcal pro Tag ab, ohne beim Eiweiß zu sparen."
+      },
+      "slow_down_loss": {
+        "title": "Langsamer",
+        "text": "Du verlierst mehr als 1 % deines Gewichts pro Woche: Wir fügen etwa {value} kcal pro Tag hinzu, um deine Energie und Muskeln zu schützen."
+      },
+      "more_protein": {
+        "title": "Mehr Eiweiß",
+        "text": "Dir fehlen etwa {value} g Eiweiß pro Tag: Eier, Skyr, Hülsenfrüchte oder Fisch helfen."
+      },
+      "lighter_training": {
+        "title": "Leichteres Programm",
+        "text": "Weniger als die Hälfte der Einheiten wurde gemacht: Wir wechseln zu kürzeren Einheiten. 15 gemachte Minuten sind besser als 45 geplante."
+      },
+      "more_training": {
+        "title": "Bereit für mehr?",
+        "text": "Alle Einheiten erledigt, bravo! Du kannst in den Einstellungen einen Trainingstag hinzufügen."
+      },
+      "budget_check": {
+        "title": "Budget überschritten",
+        "text": "Der Einkauf hat {value} € mehr gekostet als geplant. Aktiviere den Vorrat und prüfe die Preise deines Geschäfts."
+      },
+      "log_more": {
+        "title": "Mehr Daten",
+        "text": "Trage deine Mahlzeiten an mindestens 3 Tagen pro Woche ein (ein Haken reicht) für einen genaueren Rückblick."
+      },
+      "hydrate": {
+        "title": "Ans Trinken denken",
+        "text": "Du trinkst weniger als dein Ziel: Halte eine Flasche griffbereit."
+      }
+    }
+  },
+  "coach": {
+    "title": "Coach",
+    "subtitle": "Stell eine Frage oder beschreibe eine Änderung: Er kennt dein Programm.",
+    "premiumTitle": "Dein persönlicher Coach",
+    "premiumText": "Mit Premium beantwortet der Coach deine Fragen und schlägt Änderungen an Menüs, Einkauf und Training vor. Du bestätigst jede Änderung.",
+    "discover": "Premium entdecken",
+    "noAi": "Der KI-Assistent ist noch nicht eingerichtet: Es werden nur einfache Anfragen verstanden (Restaurant, Gäste, Zeit, fehlende Zutat).",
+    "intro": "Hallo! Ich kenne deine Woche. Zum Beispiel:",
+    "examples": {
+      "q1": "Heute Abend esse ich Pizza",
+      "q2": "Ich habe kein Hähnchen mehr",
+      "q3": "Wie bekomme ich mehr Eiweiß zum Frühstück?",
+      "q4": "Am Samstag sind wir zu sechst zum Abendessen"
+    },
+    "apply": "Diese Änderungen übernehmen",
+    "applied": "Änderungen übernommen ✓",
+    "thinking": "Der Coach denkt nach…",
+    "placeholder": "Schreib deine Nachricht…",
+    "send": "Senden",
+    "clear": "Unterhaltung löschen",
+    "disclaimer": "Der Coach ersetzt keinen ärztlichen Rat. Die Zahlen werden immer von der Sorloo-Engine neu berechnet.",
+    "actions": {
+      "eat_out": "{day}, {meal} auswärts: „{label}“. Die folgenden Tage werden etwas leichter.",
+      "guests": "{day}, {meal}: {total} Personen am Tisch.",
+      "time_limit": "{day}, {meal}: ein Rezept, das in höchstens {minutes} Min. fertig ist.",
+      "missing_ingredient": "Mahlzeiten mit {ingredient} ab {day} ersetzen.",
+      "replace_meal": "{day}: neues {meal}.",
+      "skip_meal": "{day}: kein {meal}.",
+      "regenerate": "Menüs ab {day} neu erstellen."
+    },
+    "quotaLow": "Du hast diesen Monat noch {left, plural, one {# Nachricht} other {# Nachrichten}} mit dem KI-Coach. Danach arbeitet der Coach bis zum 1. im vereinfachten Modus weiter.",
+    "quotaReached": "Du hast deine 150 Nachrichten mit dem KI-Coach diesen Monat verbraucht. Der Coach arbeitet bis zum 1. des nächsten Monats im vereinfachten Modus weiter (er versteht häufige Anfragen: auswärts essen, Gäste, fehlende Zutat…)."
+  },
+  "account": {
+    "title": "Mein Konto",
+    "thanksTitle": "Willkommen bei Premium!",
+    "thanksText": "Danke für dein Vertrauen. Alle Funktionen sind freigeschaltet.",
+    "cancelled": "Die Zahlung wurde abgebrochen. Es wurde nichts belastet.",
+    "subscription": "Abonnement",
+    "endsOn": "Premium bis {date}, ohne Verlängerung.",
+    "renewsOn": "Nächste Verlängerung am {date}.",
+    "upgradeText": "Wechsle zu Premium für {monthly} pro Monat oder {yearly} pro Jahr.",
+    "monthly": "Monatlich – 6,99 €/Monat",
+    "yearly": "Jährlich – 49,99 €/Jahr",
+    "stripeErrors": {
+      "not_configured": "Die Zahlung ist noch nicht eingerichtet.",
+      "server": "Die Zahlung konnte nicht gestartet werden. Bitte versuche es erneut.",
+      "auth": "Bitte melde dich erneut an.",
+      "invalid": "Ungültiger Plan."
+    },
+    "body": "Mein Körper und mein Ziel",
+    "goal": "Ziel",
+    "food": "Ernährungsvorlieben",
+    "household": "Mein Haushalt",
+    "you": "du",
+    "redoProfile": "Mein ganzes Profil neu ausfüllen",
+    "privacy": "Daten und Datenschutz",
+    "privacyText": "Deine Gesundheitsdaten sind verschlüsselt und getrennt von den übrigen Daten gespeichert. Du kannst sie jederzeit exportieren oder alles löschen.",
+    "export": "Meine Daten exportieren (JSON)",
+    "logout": "Abmelden",
+    "withdrawTitle": "Gesundheits-Einwilligung widerrufen",
+    "withdrawText": "Deine Gesundheitsdaten (Gewicht, Maße, Allergien, angegebene Situationen) werden gelöscht. Ohne sie kann Sorloo deine Menüs nicht mehr personalisieren.",
+    "withdraw": "Meine Einwilligung widerrufen",
+    "withdrawConfirm": "Meine Gesundheitsdaten löschen",
+    "cancel": "Abbrechen",
+    "deleteTitle": "Mein Konto löschen",
+    "deleteText": "Alle deine Daten werden endgültig gelöscht und dein Abonnement gekündigt. Das kann nicht rückgängig gemacht werden.",
+    "delete": "Mein Konto löschen",
+    "deletePlaceholder": "Tippe LÖSCHEN",
+    "deleteWord": "LÖSCHEN",
+    "deleteConfirm": "Endgültig löschen",
+    "saved": "Gespeichert",
+    "saveError": "Speichern fehlgeschlagen",
+    "save": "Speichern",
+    "saveAndRebuild": "Speichern und Programm neu erstellen",
+    "prefsNote": "Neue Vorlieben gelten ab der nächsten Menüerstellung.",
+    "pending": "Zahlung erhalten: Premium ist gleich aktiv. Lade die Seite in einer Minute neu.",
+    "cancelSub": "Mein Abonnement kündigen",
+    "cancelConfirm": "Dein Abonnement wird nicht verlängert: Du behältst Premium bis {date} und wechselst dann zur kostenlosen Version. Keine weiteren Abbuchungen.",
+    "cancelConfirmNoDate": "Dein Abonnement wird nicht verlängert: Du behältst Premium bis zum Ende des bezahlten Zeitraums. Keine weiteren Abbuchungen.",
+    "cancelYes": "Kündigung bestätigen",
+    "cancelNo": "Premium behalten",
+    "resume": "Mein Abonnement reaktivieren",
+    "cancelError": "Das hat nicht geklappt. Bitte versuche es gleich noch einmal.",
+    "supportNote": "Eine Frage zu deinem Abonnement? <link>Schreib uns</link>."
+  },
+  "checkout": {
+    "title": "Zu Premium wechseln",
+    "subtitle": "Sichere Zahlung, ohne Sorloo zu verlassen.",
+    "back": "Mein Konto",
+    "month": "Monat",
+    "year": "Jahr",
+    "yearlyNote": "Das sind 4,17 € pro Monat: 2 Monate geschenkt im Vergleich zum Monatsabo.",
+    "trialNote": "{days} Tage kostenlos testen, danach automatische Abrechnung.",
+    "cancelAnytime": "Ohne Bindung: jederzeit in deinem Konto kündbar, Premium bleibt bis zum Ende des bezahlten Zeitraums aktiv.",
+    "planLabel": "Plan",
+    "monthly": "Monatlich",
+    "yearly": "Jährlich · -40 %",
+    "loading": "Das sichere Formular wird geladen…",
+    "processing": "Zahlung wird verarbeitet…",
+    "pay": "{price} bezahlen",
+    "startTrial": "Meine {days} kostenlosen Tage starten",
+    "secure": "Verschlüsselte Zahlung über Stripe. Sorloo sieht deine Kartennummer nie.",
+    "genericError": "Die Zahlung ist nicht durchgegangen. Prüfe deine Angaben oder versuche eine andere Karte.",
+    "notConfigured": "Die Zahlung ist noch nicht eingerichtet.",
+    "startError": "Wir konnten die Zahlung gerade nicht vorbereiten. Bitte versuche es gleich noch einmal.",
+    "legal": "Mit der Bestätigung akzeptierst du die <terms>Verkaufsbedingungen</terms> und verlangst den sofortigen Zugang zu Premium, womit du für den laufenden Zeitraum auf dein Widerrufsrecht verzichtest. Das Abonnement verlängert sich automatisch.",
+    "errorRef": "Fehlerreferenz: {ref}"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Eine Frage, ein Problem, eine Idee? Schreib uns, wir antworten per E-Mail innerhalb von 48 Stunden (Werktage).",
+    "accountSubtitle": "Eine Frage oder ein Problem mit deinem Konto oder Abonnement? Wir antworten per E-Mail innerhalb von 48 Stunden.",
+    "name": "Dein Vorname",
+    "email": "Deine E-Mail",
+    "topic": "Betreff",
+    "message": "Nachricht",
+    "messageHint": "Gib uns so viele Details wie möglich, damit wir schneller helfen können.",
+    "send": "Senden",
+    "sentTitle": "Nachricht gesendet!",
+    "sentText": "Danke. Wir antworten so schnell wie möglich an {email}.",
+    "another": "Weitere Nachricht senden",
+    "topics": {
+      "question": "Allgemeine Frage",
+      "subscription": "Abonnement oder Zahlung",
+      "technical": "Technisches Problem",
+      "privacy": "Meine persönlichen Daten (DSGVO)",
+      "idea": "Vorschlag"
+    },
+    "errors": {
+      "invalid": "Prüfe die Felder: Deine Nachricht muss mindestens 10 Zeichen haben.",
+      "rate": "Zu viele Nachrichten gesendet. Versuche es in einer Stunde erneut.",
+      "server": "Die Nachricht konnte nicht gesendet werden. Bitte versuche es gleich noch einmal."
+    }
+  },
+  "household": {
+    "text": "Dieselbe Mahlzeit für alle, mit Portionen für jede Person und ohne die Allergene von irgendjemandem.",
+    "you": "du",
+    "age": "{n} Jahre",
+    "edit": "Bearbeiten",
+    "add": "Person hinzufügen",
+    "remove": "Aus dem Haushalt entfernen",
+    "removeConfirm": "{name} aus dem Haushalt entfernen?",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "meals": "Mahlzeiten zu Hause",
+    "allergies": "Allergien",
+    "none": "Keine",
+    "premiumNote": "Die Planung für mehrere Personen ist Teil von Premium: Ohne Abonnement werden nur deine Mahlzeiten berechnet.",
+    "regenerate": "Um diese Änderungen auf die Menüs dieser Woche anzuwenden, erstelle deine Woche auf der Wochenseite neu.",
+    "errors": {
+      "invalid": "Prüfe die eingegebenen Angaben.",
+      "limit": "Der Haushalt ist auf 9 Personen begrenzt.",
+      "future": "Das Geburtsdatum darf nicht in der Zukunft liegen."
+    }
+  },
+  "verify": {
+    "text": "Bestätige deine E-Mail-Adresse: Wir haben einen Link an {email} geschickt. So kannst du dein Konto wiederherstellen, falls du dein Passwort vergisst.",
+    "resend": "E-Mail erneut senden",
+    "sent": "E-Mail gesendet. Schau auch im Spam-Ordner nach.",
+    "error": "Senden fehlgeschlagen. Versuche es in ein paar Minuten erneut."
+  },
+  "stores": {
+    "title": "Supermärkte vergleichen",
+    "subtitle": "Deine Wochenliste geschätzt in jeder Kette, nach Ladenpreisen, die von Open-Prices-Nutzern erfasst wurden.",
+    "cheapest": "Am günstigsten",
+    "measured": "{n} von {total} Produkten mit erfassten Preisen",
+    "index": "{pct} im Vergleich zu den Durchschnittspreisen",
+    "none": "Noch nicht genug erfasste Preise, um die Ketten für deine Liste zu vergleichen. Die Datenbank wächst jeden Tag.",
+    "note": "Schätzung: Medianpreise der letzten 12 Monate in Frankreich, ohne Aktionen und Bio-Produkte (außer Biocoop). Jede Kette wird mit den anderen bei denselben Produkten verglichen; für Produkte ohne Preis wird ihr üblicher Abstand angewendet. Die Preise variieren je nach Filiale.",
+    "contribute": "Du kannst helfen, indem du deine Kassenbons bei Open Prices hinzufügst.",
+    "premium": "Mit Premium vergleichst du die Kosten deiner Liste in jeder Kette (Leclerc, Carrefour, Lidl…).",
+    "cheaper": "{pct} % günstiger als der Durchschnitt",
+    "dearer": "{pct} % teurer als der Durchschnitt",
+    "same": "im Schnitt der anderen Ketten"
+  }
+}

@@ -159,7 +159,8 @@ const en: Record<LegalDoc, Doc> = {
 };
 
 export function legalDoc(locale: string, doc: LegalDoc): Doc {
-  return (locale === "en" ? en : fr)[doc];
+  // In French, else in English (the other languages read the English version).
+  return (locale === "fr" ? fr : en)[doc];
 }
 
 export const LEGAL_DOCS: LegalDoc[] = ["privacy", "terms", "notice"];

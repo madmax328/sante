@@ -86,8 +86,32 @@ export function sessionKcal(met: number, weightKg: number, minutes: number): num
   return Math.round((met * weightKg * minutes) / 60);
 }
 
-function title(fr: string, en: string): Localized {
-  return { fr, en };
+function title(fr: string, en: string, de: string, es: string, it: string, pt: string): Localized {
+  return { fr, en, de, es, it, pt };
+}
+
+/**
+ * Session titles saved before a language existed: rebuilt from the French
+ * title (the titles are a short fixed list), unchanged otherwise.
+ */
+export function localizeSessionTitle(t: Localized): Localized {
+  if (t.de) return t;
+  const walk = t.fr.match(/^Marche active (\d+) min$/);
+  if (walk) {
+    const m = walk[1];
+    return title(t.fr, `Brisk walk ${m} min`, `Zügiges Gehen ${m} Min.`, `Caminata rápida ${m} min`, `Camminata veloce ${m} min`, `Caminhada rápida ${m} min`);
+  }
+  const known: Record<string, Localized> = Object.fromEntries(
+    [
+      title("Repos", "Rest", "Ruhetag", "Descanso", "Riposo", "Descanso"),
+      title("Renforcement bas du corps", "Lower body strength", "Kräftigung Unterkörper", "Fuerza tren inferior", "Rinforzo parte inferiore", "Fortalecimento de membros inferiores"),
+      title("Renforcement haut du corps", "Upper body strength", "Kräftigung Oberkörper", "Fuerza tren superior", "Rinforzo parte superiore", "Fortalecimento de membros superiores"),
+      title("Renforcement complet", "Full body strength", "Ganzkörperkräftigung", "Fuerza cuerpo completo", "Rinforzo total body", "Fortalecimento de corpo inteiro"),
+      title("Cardio en intervalles", "Interval cardio", "Intervall-Cardio", "Cardio por intervalos", "Cardio a intervalli", "Cardio intervalado"),
+      title("Mobilité et étirements", "Mobility and stretching", "Mobilität und Dehnen", "Movilidad y estiramientos", "Mobilità e stretching", "Mobilidade e alongamento"),
+    ].map((x) => [x.fr, x]),
+  );
+  return known[t.fr] ?? t;
 }
 
 /**
@@ -120,7 +144,7 @@ export function generateWorkoutWeek(p: SportProfile, library: Exercise[]): Worko
   for (let day = 0; day < 7; day++) {
     const idx = chosen.indexOf(day);
     if (idx < 0) {
-      sessions.push({ day, type: "rest", title: title("Repos", "Rest"), minutes: 0, warmup: [], blocks: [], rounds: 0, kcal: 0 });
+      sessions.push({ day, type: "rest", title: title("Repos", "Rest", "Ruhetag", "Descanso", "Riposo", "Descanso"), minutes: 0, warmup: [], blocks: [], rounds: 0, kcal: 0 });
       continue;
     }
     const type = types[idx]!;
@@ -187,7 +211,7 @@ function strengthSession(p: SportProfile, library: Exercise[], day: number, n: n
   return {
     day,
     type: "strength",
-    title: p.level === "advanced" ? (n % 2 === 0 ? title("Renforcement bas du corps", "Lower body strength") : title("Renforcement haut du corps", "Upper body strength")) : title("Renforcement complet", "Full body strength"),
+    title: p.level === "advanced" ? (n % 2 === 0 ? title("Renforcement bas du corps", "Lower body strength", "Kräftigung Unterkörper", "Fuerza tren inferior", "Rinforzo parte inferiore", "Fortalecimento de membros inferiores") : title("Renforcement haut du corps", "Upper body strength", "Kräftigung Oberkörper", "Fuerza tren superior", "Rinforzo parte superiore", "Fortalecimento de membros superiores")) : title("Renforcement complet", "Full body strength", "Ganzkörperkräftigung", "Fuerza cuerpo completo", "Rinforzo total body", "Fortalecimento de corpo inteiro"),
     minutes,
     warmup: warmup(library, p),
     blocks,
@@ -213,7 +237,7 @@ function cardioSession(p: SportProfile, library: Exercise[], day: number, rng: R
   return {
     day,
     type: "cardio",
-    title: title("Cardio en intervalles", "Interval cardio"),
+    title: title("Cardio en intervalles", "Interval cardio", "Intervall-Cardio", "Cardio por intervalos", "Cardio a intervalli", "Cardio intervalado"),
     minutes,
     warmup: warmup(library, p),
     blocks: picked.map((e) => ({ exerciseId: e.id, sets: 1, amount: work, restSec: rest })),
@@ -227,7 +251,7 @@ function walkSession(p: SportProfile, day: number): WorkoutSession {
   return {
     day,
     type: "walk",
-    title: title(`Marche active ${minutes} min`, `Brisk walk ${minutes} min`),
+    title: title(`Marche active ${minutes} min`, `Brisk walk ${minutes} min`, `Zügiges Gehen ${minutes} Min.`, `Caminata rápida ${minutes} min`, `Camminata veloce ${minutes} min`, `Caminhada rápida ${minutes} min`),
     minutes,
     warmup: [],
     blocks: [],
@@ -242,7 +266,7 @@ function mobilitySession(p: SportProfile, library: Exercise[], day: number): Wor
   return {
     day,
     type: "mobility",
-    title: title("Mobilité et étirements", "Mobility and stretching"),
+    title: title("Mobilité et étirements", "Mobility and stretching", "Mobilität und Dehnen", "Movilidad y estiramientos", "Mobilità e stretching", "Mobilidade e alongamento"),
     minutes,
     warmup: [],
     blocks: pool.map((e) => ({ exerciseId: e.id, sets: 1, amount: 40, restSec: 10 })),

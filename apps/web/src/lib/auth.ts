@@ -1,3 +1,4 @@
+import { localeFromHeader, type Locale } from "./locale";
 import "server-only";
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
@@ -60,23 +61,17 @@ export const auth = betterAuth({
     minPasswordLength: 10,
     autoSignIn: true,
     requireEmailVerification: false,
-    sendResetPassword: async ({ user, url }) => {
-      await sendSafely(
-        user.email,
-        "Réinitialiser ton mot de passe Sorloo",
-        `<p>Bonjour,</p><p>Pour choisir un nouveau mot de passe, ouvre ce lien (valable 1 heure) :</p><p><a href="${url}">${url}</a></p><p>Si tu n'es pas à l'origine de cette demande, ignore cet e-mail.</p>`,
-      );
+    sendResetPassword: async ({ user, url }, request) => {
+      const m = EMAILS[localeFromHeader(request?.headers.get("accept-language"))].reset;
+      await sendSafely(user.email, m.subject, `<p>${m.hello}</p><p>${m.text}</p><p><a href="${url}">${url}</a></p><p>${m.ignore}</p>`);
     },
   },
   emailVerification: {
     sendOnSignUp: features.email(),
     autoSignInAfterVerification: true,
-    sendVerificationEmail: async ({ user, url }) => {
-      await sendSafely(
-        user.email,
-        "Confirme ton adresse e-mail",
-        `<p>Bienvenue sur Sorloo !</p><p>Confirme ton adresse en ouvrant ce lien :</p><p><a href="${url}">${url}</a></p>`,
-      );
+    sendVerificationEmail: async ({ user, url }, request) => {
+      const m = EMAILS[localeFromHeader(request?.headers.get("accept-language"))].verify;
+      await sendSafely(user.email, m.subject, `<p>${m.hello}</p><p>${m.text}</p><p><a href="${url}">${url}</a></p>`);
     },
   },
   socialProviders: features.google()
@@ -91,5 +86,33 @@ export const auth = betterAuth({
   advanced: { useSecureCookies: env.appUrl.startsWith("https://") },
   plugins: [expo(), nextCookies()],
 });
+
+/** Account emails, in the language of the browser or phone that asked for them. */
+const EMAILS: Record<Locale, { reset: { subject: string; hello: string; text: string; ignore: string }; verify: { subject: string; hello: string; text: string } }> = {
+  fr: {
+    reset: { subject: "Réinitialiser ton mot de passe Sorloo", hello: "Bonjour,", text: "Pour choisir un nouveau mot de passe, ouvre ce lien (valable 1 heure) :", ignore: "Si tu n'es pas à l'origine de cette demande, ignore cet e-mail." },
+    verify: { subject: "Confirme ton adresse e-mail", hello: "Bienvenue sur Sorloo !", text: "Confirme ton adresse en ouvrant ce lien :" },
+  },
+  en: {
+    reset: { subject: "Reset your Sorloo password", hello: "Hello,", text: "To choose a new password, open this link (valid for 1 hour):", ignore: "If you didn't ask for this, you can ignore this email." },
+    verify: { subject: "Confirm your email address", hello: "Welcome to Sorloo!", text: "Confirm your address by opening this link:" },
+  },
+  de: {
+    reset: { subject: "Dein Sorloo-Passwort zurücksetzen", hello: "Hallo,", text: "Um ein neues Passwort zu wählen, öffne diesen Link (1 Stunde gültig):", ignore: "Wenn du das nicht angefordert hast, ignoriere diese E-Mail einfach." },
+    verify: { subject: "Bestätige deine E-Mail-Adresse", hello: "Willkommen bei Sorloo!", text: "Bestätige deine Adresse, indem du diesen Link öffnest:" },
+  },
+  es: {
+    reset: { subject: "Restablece tu contraseña de Sorloo", hello: "Hola:", text: "Para elegir una nueva contraseña, abre este enlace (válido durante 1 hora):", ignore: "Si no has pedido esto, ignora este correo." },
+    verify: { subject: "Confirma tu correo electrónico", hello: "¡Te damos la bienvenida a Sorloo!", text: "Confirma tu dirección abriendo este enlace:" },
+  },
+  it: {
+    reset: { subject: "Reimposta la password di Sorloo", hello: "Ciao,", text: "Per scegliere una nuova password, apri questo link (valido 1 ora):", ignore: "Se non hai fatto tu questa richiesta, ignora questa e-mail." },
+    verify: { subject: "Conferma il tuo indirizzo e-mail", hello: "Benvenuto su Sorloo!", text: "Conferma il tuo indirizzo aprendo questo link:" },
+  },
+  pt: {
+    reset: { subject: "Redefinir sua senha do Sorloo", hello: "Olá,", text: "Para escolher uma nova senha, abra este link (válido por 1 hora):", ignore: "Se você não fez este pedido, ignore este e-mail." },
+    verify: { subject: "Confirme seu e-mail", hello: "Boas-vindas ao Sorloo!", text: "Confirme seu endereço abrindo este link:" },
+  },
+};
 
 export type Session = typeof auth.$Infer.Session;

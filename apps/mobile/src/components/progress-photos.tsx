@@ -39,7 +39,7 @@ function usePhotoSource() {
 function Thumb({ photo, source, onPress, label }: { photo: ProgressPhoto; source: ReturnType<typeof usePhotoSource>; onPress: () => void; label?: string }) {
   const c = useColors();
   return (
-    <Pressable accessibilityRole="imagebutton" accessibilityLabel={t(`Photo du ${longDate(photo.date)}`, `Photo from ${longDate(photo.date)}`)} onPress={onPress} style={{ flex: 1, gap: 4 }}>
+    <Pressable accessibilityRole="imagebutton" accessibilityLabel={t("Photo du {0}", "Photo from {0}", [longDate(photo.date)])} onPress={onPress} style={{ flex: 1, gap: 4 }}>
       <Image source={source(photo, "thumb")} style={{ width: "100%", aspectRatio: 3 / 4, borderRadius: radius.md, backgroundColor: c.riz }} contentFit="cover" cachePolicy="disk" />
       <T variant="small" style={{ textAlign: "center" }}>{label ? `${label} · ${shortDate(photo.date)}` : shortDate(photo.date)}</T>
     </Pressable>
@@ -127,7 +127,7 @@ export function ProgressPhotos({ today }: { today: string }) {
       {list.length > 0 && (
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
           {list.slice(0, 24).map((p) => (
-            <Pressable key={p.id} accessibilityRole="imagebutton" accessibilityLabel={t(`Photo du ${longDate(p.date)}`, `Photo from ${longDate(p.date)}`)} onPress={() => setOpen(p)} style={{ width: "23%" }}>
+            <Pressable key={p.id} accessibilityRole="imagebutton" accessibilityLabel={t("Photo du {0}", "Photo from {0}", [longDate(p.date)])} onPress={() => setOpen(p)} style={{ width: "23%" }}>
               <Image source={source(p, "thumb")} style={{ width: "100%", aspectRatio: 3 / 4, borderRadius: radius.sm, backgroundColor: c.riz }} contentFit="cover" cachePolicy="disk" />
             </Pressable>
           ))}

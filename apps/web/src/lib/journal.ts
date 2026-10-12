@@ -3,7 +3,7 @@ import { z } from "zod";
 import { getCatalog } from "@weeko/catalog";
 import type { MealType } from "@weeko/engine";
 import { db } from "./db";
-import { tr, type Locale } from "./locale";
+import { tr, word, type Locale } from "./locale";
 import type { LogEntry } from "./types";
 
 /** What can be added to the journal (also what favorites and saved meals store). */
@@ -94,14 +94,13 @@ export interface QuickFood {
 export function quickFood(e: EntryInput, favorite: boolean, locale: Locale = "fr"): QuickFood | null {
   const line = buildLogEntry(e, "lunch");
   if (!line) return null;
-  const en = locale === "en";
-  const many = (n: number) => (en ? n !== 1 : n > 1);
+  const many = (n: number) => (locale === "fr" ? n > 1 : n !== 1);
   const qty =
     e.kind === "recipe"
-      ? `${e.amount} ${en ? "serving" : "portion"}${many(e.amount) ? "s" : ""}`
+      ? `${e.amount} ${word(many(e.amount) ? "servings" : "serving", locale)}`
       : e.kind === "ingredient"
         ? getCatalog().ingredient(e.id).unit === "pc"
-          ? `${e.amount} ${en ? "piece" : "pièce"}${many(e.amount) ? "s" : ""}`
+          ? `${e.amount} ${word(many(e.amount) ? "pieces" : "piece", locale)}`
           : `${e.amount} g`
         : e.kind === "barcode"
           ? `${e.grams} g`

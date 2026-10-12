@@ -54,7 +54,7 @@ export default function PantryScreen() {
         {picked ? (
           <>
             <T variant="h3">{picked.name}</T>
-            <Field label={t(`Quantité (${UNIT[picked.unit]})`, `Amount (${UNIT[picked.unit]})`)} value={qty} onChangeText={setQty} keyboardType="decimal-pad" autoFocus selectTextOnFocus />
+            <Field label={t("Quantité ({0})", "Amount ({0})", [UNIT[picked.unit]])} value={qty} onChangeText={setQty} keyboardType="decimal-pad" autoFocus selectTextOnFocus />
             <View style={{ flexDirection: "row", gap: space.sm }}>
               <Button variant="ghost" onPress={() => setPicked(undefined)}>{t("Retour", "Back")}</Button>
               <Button
@@ -120,16 +120,16 @@ function PantryRow({ item, first, onSave }: { item: Pantry["items"][number]; fir
         onChangeText={setValue}
         keyboardType="decimal-pad"
         selectTextOnFocus
-        accessibilityLabel={t(`Quantité de ${item.name}`, `${item.name} amount`)}
+        accessibilityLabel={t("Quantité de {0}", "{0} amount", [item.name])}
         style={{ width: 72, height: 40, borderRadius: radius.sm, borderWidth: 1, borderColor: changed ? c.basilic : c.line, paddingHorizontal: space.sm, color: c.encre, backgroundColor: c.surface, textAlign: "right" }}
       />
       <T variant="small" style={{ width: 52 }}>{UNIT[item.unit]}</T>
       {changed ? (
-        <Pressable accessibilityRole="button" accessibilityLabel={t(`Enregistrer la quantité de ${item.name}`, `Save the ${item.name} amount`)} hitSlop={8} onPress={() => { Keyboard.dismiss(); onSave(q); }}>
+        <Pressable accessibilityRole="button" accessibilityLabel={t("Enregistrer la quantité de {0}", "Save the {0} amount", [item.name])} hitSlop={8} onPress={() => { Keyboard.dismiss(); onSave(q); }}>
           <Check size={20} color={c.basilic} />
         </Pressable>
       ) : (
-        <Pressable accessibilityRole="button" accessibilityLabel={t(`Retirer ${item.name}`, `Remove ${item.name}`)} hitSlop={8} onPress={() => onSave(0)}>
+        <Pressable accessibilityRole="button" accessibilityLabel={t("Retirer {0}", "Remove {0}", [item.name])} hitSlop={8} onPress={() => onSave(0)}>
           <X size={18} color={c.muted} />
         </Pressable>
       )}

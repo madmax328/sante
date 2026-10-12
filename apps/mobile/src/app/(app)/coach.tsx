@@ -58,7 +58,7 @@ export default function CoachScreen() {
     const p = res.proposal;
     setMessages((m) => [...(m ?? []), { role: "assistant", content: p.reply, actions: p.actions, labels: p.labels }]);
     if (p.aiExhausted) setNote(t("Tes 150 messages IA du mois sont utilisés : le coach répond en mode simplifié jusqu'au 1er du mois.", "Your 150 AI messages for the month are used up: the coach answers in simple mode until the 1st."));
-    else if (p.aiLeft !== undefined && p.aiLeft <= 20) setNote(t(`Il te reste ${p.aiLeft} messages IA ce mois-ci.`, `You have ${p.aiLeft} AI messages left this month.`));
+    else if (p.aiLeft !== undefined && p.aiLeft <= 20) setNote(t("Il te reste {0} messages IA ce mois-ci.", "You have {0} AI messages left this month.", [p.aiLeft]));
     void reloadMe();
   };
 

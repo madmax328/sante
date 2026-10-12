@@ -133,7 +133,7 @@ export function Onboarding() {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <Screen>
         <View style={{ gap: space.sm }}>
-          <T variant="label">{t(`Étape ${index + 1} sur ${STEPS.length}`, `Step ${index + 1} of ${STEPS.length}`)}</T>
+          <T variant="label">{t("Étape {0} sur {1}", "Step {0} of {1}", [index + 1, STEPS.length])}</T>
           <ProgressBar value={index + 1} max={STEPS.length} />
         </View>
 

@@ -84,7 +84,7 @@ export default function AddFoodScreen() {
         options={[
           { key: "quick", label: t("Favoris", "Saved") },
           { key: "search", label: t("Chercher", "Search") },
-          { key: "photo", label: "Photo" },
+          { key: "photo", label: t("Photo", "Photo") },
           { key: "barcode", label: t("Scanner", "Scan") },
           { key: "custom", label: t("Manuel", "Manual") },
         ]}
@@ -131,7 +131,7 @@ function SearchFood({ busy, onAdd }: { busy: boolean; onAdd: (entry: unknown) =>
     return (
       <Card>
         <T variant="h2">{picked.name}</T>
-        <Field label={t(`Quantité (${unit})`, `Amount (${unit})`)} value={amount} onChangeText={setAmount} keyboardType="decimal-pad" autoFocus selectTextOnFocus />
+        <Field label={t("Quantité ({0})", "Amount ({0})", [unit])} value={amount} onChangeText={setAmount} keyboardType="decimal-pad" autoFocus selectTextOnFocus />
         {value > 0 && <T variant="small">≈ {num(kcal)} kcal</T>}
         <View style={{ flexDirection: "row", gap: space.sm }}>
           <Button variant="ghost" onPress={() => setPicked(undefined)}>{t("Retour", "Back")}</Button>
@@ -244,7 +244,7 @@ function ScanFood({ busy, onAdd }: { busy: boolean; onAdd: (entry: unknown) => v
         </Card>
       )}
       {looking && <T variant="small">{t("Recherche du produit…", "Looking up the product…")}</T>}
-      {product === null && !looking && <Notice>{t(`Produit introuvable (${code}). Essaie la recherche ou l'ajout manuel.`, `Product not found (${code}). Try searching or adding it manually.`)}</Notice>}
+      {product === null && !looking && <Notice>{t("Produit introuvable ({0}). Essaie la recherche ou l'ajout manuel.", "Product not found ({0}). Try searching or adding it manually.", [code])}</Notice>}
       <View style={{ flexDirection: "row", gap: space.sm, alignItems: "flex-end" }}>
         <View style={{ flex: 1 }}>
           <Field label={t("Ou tape le code-barres", "Or type the barcode")} value={code} onChangeText={setCode} keyboardType="number-pad" maxLength={14} />
@@ -294,20 +294,20 @@ function QuickAdd({ busy, onAdd, onAddMeal }: { busy: boolean; onAdd: (entry: un
     await load();
   };
   const removeMeal = (m: QuickFoods["meals"][number]) =>
-    Alert.alert(t(`Supprimer « ${m.name} » ?`, `Delete "${m.name}"?`), undefined, [
+    Alert.alert(t("Supprimer « {0} » ?", "Delete \"{0}\"?", [m.name]), undefined, [
       { text: t("Annuler", "Cancel"), style: "cancel" },
       { text: t("Supprimer", "Delete"), style: "destructive", onPress: async () => { await api.action("deleteSavedMeal", { id: m.id }).catch(() => undefined); await load(); } },
     ]);
   const row = (f: QuickFood) => (
     <View key={f.key} style={{ flexDirection: "row", alignItems: "center", gap: space.sm, paddingVertical: 8 }}>
-      <Pressable accessibilityRole="button" accessibilityLabel={f.favorite ? t(`Retirer ${f.name} des favoris`, `Remove ${f.name} from favourites`) : t(`Ajouter ${f.name} aux favoris`, `Add ${f.name} to favourites`)} hitSlop={8} onPress={() => star(f)}>
+      <Pressable accessibilityRole="button" accessibilityLabel={f.favorite ? t("Retirer {0} des favoris", "Remove {0} from favourites", [f.name]) : t("Ajouter {0} aux favoris", "Add {0} to favourites", [f.name])} hitSlop={8} onPress={() => star(f)}>
         <Star size={20} color={f.favorite ? c.miel : c.muted} fill={f.favorite ? c.miel : "transparent"} />
       </Pressable>
       <View style={{ flex: 1 }}>
         <T numberOfLines={1} style={{ fontWeight: "600" }}>{f.name}</T>
         <T variant="small">{f.detail}</T>
       </View>
-      <Button small variant="secondary" disabled={busy} onPress={() => onAdd(f.entry)} icon={<Plus size={16} color={c.encre} />} accessibilityLabel={t(`Ajouter ${f.name}`, `Add ${f.name}`)} />
+      <Button small variant="secondary" disabled={busy} onPress={() => onAdd(f.entry)} icon={<Plus size={16} color={c.encre} />} accessibilityLabel={t("Ajouter {0}", "Add {0}", [f.name])} />
     </View>
   );
 
@@ -325,7 +325,7 @@ function QuickAdd({ busy, onAdd, onAddMeal }: { busy: boolean; onAdd: (entry: un
                 <T numberOfLines={1} style={{ fontWeight: "600" }}>{m.name}</T>
                 <T variant="small" numberOfLines={1}>{m.kcal} kcal · {m.names.join(", ")}</T>
               </View>
-              <Pressable accessibilityRole="button" accessibilityLabel={t(`Supprimer ${m.name}`, `Delete ${m.name}`)} hitSlop={8} onPress={() => removeMeal(m)} style={{ padding: 4 }}>
+              <Pressable accessibilityRole="button" accessibilityLabel={t("Supprimer {0}", "Delete {0}", [m.name])} hitSlop={8} onPress={() => removeMeal(m)} style={{ padding: 4 }}>
                 <Trash2 size={18} color={c.muted} />
               </Pressable>
               <Button small disabled={busy} onPress={() => onAddMeal(m.id)}>{t("Ajouter", "Add")}</Button>

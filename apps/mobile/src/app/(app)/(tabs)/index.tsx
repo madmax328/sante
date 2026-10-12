@@ -60,7 +60,7 @@ export default function TodayScreen() {
     <Screen refreshing={refreshing} onRefresh={refresh}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
         <View style={{ flex: 1 }}>
-          <T variant="title">{t(`Bonjour ${data.name} !`, `Hello ${data.name}!`)}</T>
+          <T variant="title">{t("Bonjour {0} !", "Hello {0}!", [data.name])}</T>
           <T variant="small">{longDate(data.date)}</T>
         </View>
         <IconButton label="Coach" icon={<MessageCircle size={20} color={c.basilic} />} onPress={() => router.push("/coach")} />
@@ -107,7 +107,7 @@ export default function TodayScreen() {
                   onPress={() => toggle(m.meal)}
                   accessibilityRole="checkbox"
                   accessibilityState={{ checked: m.eaten }}
-                  accessibilityLabel={t(`${MEAL_LABEL[m.meal]} mangé`, `${MEAL_LABEL[m.meal]} eaten`)}
+                  accessibilityLabel={t("{0} mangé", "{0} eaten", [MEAL_LABEL[m.meal]])}
                   hitSlop={8}
                   style={{ width: 34, height: 34, borderRadius: 17, borderWidth: 2, borderColor: m.eaten ? c.basilic : c.line, backgroundColor: m.eaten ? c.basilic : "transparent", alignItems: "center", justifyContent: "center" }}
                 >
@@ -183,13 +183,13 @@ export default function TodayScreen() {
           {data.budget.budget ? (
             <View style={{ gap: space.sm }}>
               <T variant="big">{euro(Math.max(0, data.budget.budget - (data.budget.actualSpent ?? data.budget.cost)))}</T>
-              <T variant="small">{t(`${euro(data.budget.actualSpent ?? data.budget.cost)} sur ${euro(data.budget.budget)} cette semaine`, `${euro(data.budget.actualSpent ?? data.budget.cost)} of ${euro(data.budget.budget)} this week`)}</T>
+              <T variant="small">{t("{0} sur {1} cette semaine", "{0} of {1} this week", [euro(data.budget.actualSpent ?? data.budget.cost), euro(data.budget.budget)])}</T>
               <ProgressBar value={data.budget.actualSpent ?? data.budget.cost} max={data.budget.budget} tone="miel" />
             </View>
           ) : (
             <T variant="small">
-              {t(`Courses estimées : ${euro(data.budget.cost)}`, `Estimated groceries: ${euro(data.budget.cost)}`)}
-              {data.budget.kept >= 5 ? t(`, dont ${euro(data.budget.eaten)} consommés cette semaine et ${euro(data.budget.kept)} de produits qui te resteront.`, `, including ${euro(data.budget.eaten)} eaten this week and ${euro(data.budget.kept)} of food you'll have left.`) : "."}
+              {t("Courses estimées : {0}", "Estimated groceries: {0}", [euro(data.budget.cost)])}
+              {data.budget.kept >= 5 ? t(", dont {0} consommés cette semaine et {1} de produits qui te resteront.", ", including {0} eaten this week and {1} of food you'll have left.", [euro(data.budget.eaten), euro(data.budget.kept)]) : "."}
             </T>
           )}
         </Card>
@@ -208,7 +208,7 @@ function VerifyEmail({ email }: { email: string }) {
   };
   return (
     <Notice>
-      {t(`Confirme ton adresse e-mail : nous t'avons envoyé un lien à ${email}.`, `Confirm your email address: we sent a link to ${email}.`)}{" "}
+      {t("Confirme ton adresse e-mail : nous t'avons envoyé un lien à {0}.", "Confirm your email address: we sent a link to {0}.", [email])}{" "}
       {state === "sent" ? (
         <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>{t("E-mail renvoyé, pense à regarder dans les indésirables.", "Email sent again, check your spam folder.")}</T>
       ) : state === "error" ? (

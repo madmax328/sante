@@ -38,13 +38,14 @@ export default function proxy(req: NextRequest) {
 }
 
 /**
- * The site exists in French and English: French for French speakers,
- * English for everyone else (German, Italian… speakers rather read English),
- * like the app. Only the first visit is concerned: the choice is then kept.
+ * The site exists in six languages; for any other language (Dutch, Polish…)
+ * English rather than French, like the app. Only the first visit is
+ * concerned: the choice is then kept.
  */
 function withLanguageFallback(req: NextRequest): NextRequest {
   const accept = req.headers.get("accept-language");
-  if (!accept || /(^|[\s,])(fr|en)\b/i.test(accept) || req.cookies.has("NEXT_LOCALE")) return req;
+  const supported = new RegExp(`(^|[\\s,])(${routing.locales.join("|")})\\b`, "i");
+  if (!accept || supported.test(accept) || req.cookies.has("NEXT_LOCALE")) return req;
   const headers = new Headers(req.headers);
   headers.set("accept-language", "en");
   return new NextRequest(req.url, { headers, method: req.method });

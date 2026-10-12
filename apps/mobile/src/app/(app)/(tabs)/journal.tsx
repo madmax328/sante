@@ -87,10 +87,10 @@ export default function JournalScreen() {
     const save = async (name: string) => {
       if (!name.trim()) return;
       const res = await api.action<{ ok: boolean }>("saveMeal", { date: data.date, meal, name: name.trim() }).catch(() => null);
-      Alert.alert(res?.ok ? t("Repas enregistré", "Meal saved") : t("Enregistrement impossible", "Couldn't save"), res?.ok ? t(`Retrouve « ${name.trim()} » dans l'onglet Favoris quand tu ajoutes un aliment.`, `Find "${name.trim()}" in the Favourites tab when you add a food.`) : t("50 repas enregistrés au maximum.", "50 saved meals at most."));
+      Alert.alert(res?.ok ? t("Repas enregistré", "Meal saved") : t("Enregistrement impossible", "Couldn't save"), res?.ok ? t("Retrouve « {0} » dans l'onglet Favoris quand tu ajoutes un aliment.", "Find \"{0}\" in the Favourites tab when you add a food.", [name.trim()]) : t("50 repas enregistrés au maximum.", "50 saved meals at most."));
     };
     if (Platform.OS === "ios") Alert.prompt(t("Enregistrer ce repas", "Save this meal"), t("Donne-lui un nom (ex. Mon petit-déjeuner habituel).", "Give it a name (e.g. My usual breakfast)."), (name) => void save(name ?? ""), "plain-text", MEAL_LABEL[meal]);
-    else void save(t(`${MEAL_LABEL[meal]} du ${longDate(data.date)}`, `${MEAL_LABEL[meal]}, ${longDate(data.date)}`));
+    else void save(t("{0} du {1}", "{0}, {1}", [MEAL_LABEL[meal], longDate(data.date)]));
   };
   const meals = [...data.meals].sort((a, b) => MEAL_ORDER.indexOf(a.meal as never) - MEAL_ORDER.indexOf(b.meal as never));
 
@@ -141,11 +141,11 @@ export default function JournalScreen() {
                   </View>
                 </View>
                 {e.kind !== "planned" && (
-                  <Pressable accessibilityRole="button" accessibilityLabel={e.favorite ? t(`Retirer ${e.name} des favoris`, `Remove ${e.name} from favourites`) : t(`Ajouter ${e.name} aux favoris`, `Add ${e.name} to favourites`)} hitSlop={8} onPress={() => star(e)} style={{ padding: 6 }}>
+                  <Pressable accessibilityRole="button" accessibilityLabel={e.favorite ? t("Retirer {0} des favoris", "Remove {0} from favourites", [e.name]) : t("Ajouter {0} aux favoris", "Add {0} to favourites", [e.name])} hitSlop={8} onPress={() => star(e)} style={{ padding: 6 }}>
                     <Star size={18} color={e.favorite ? c.miel : c.muted} fill={e.favorite ? c.miel : "transparent"} />
                   </Pressable>
                 )}
-                <Pressable accessibilityRole="button" accessibilityLabel={t(`Retirer ${e.name}`, `Remove ${e.name}`)} hitSlop={8} onPress={() => remove(e)} style={{ padding: 6 }}>
+                <Pressable accessibilityRole="button" accessibilityLabel={t("Retirer {0}", "Remove {0}", [e.name])} hitSlop={8} onPress={() => remove(e)} style={{ padding: 6 }}>
                   <X size={18} color={c.muted} />
                 </Pressable>
               </View>

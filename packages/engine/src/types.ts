@@ -1,13 +1,15 @@
 // Core domain types shared by the engine, the catalog and the apps.
 
-export const LOCALES = ["fr", "en"] as const;
+/** French first (the catalog is written in French), then the other languages of the apps. */
+export const LOCALES = ["fr", "en", "de", "es", "it", "pt"] as const;
 export type Locale = (typeof LOCALES)[number];
 
-/** French is always present; other locales fall back to it. */
+/** French is always present; other locales fall back to English, then French. */
 export type Localized = { fr: string } & Partial<Record<Locale, string>>;
 
+/** The text in the language, else in English (read by more people than French), else in French. */
 export function t(text: Localized, locale: Locale): string {
-  return text[locale] ?? text.fr;
+  return text[locale] ?? (locale === "fr" ? undefined : text.en) ?? text.fr;
 }
 
 export const MARKETS = ["FR"] as const;

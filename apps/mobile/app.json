@@ -94,7 +94,11 @@
     },
     "locales": {
       "fr": "./locales/fr.json",
-      "en": "./locales/en.json"
+      "en": "./locales/en.json",
+      "de": "./locales/de.json",
+      "es": "./locales/es.json",
+      "it": "./locales/it.json",
+      "pt": "./locales/pt.json"
     }
   }
 }

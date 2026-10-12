@@ -1,6 +1,6 @@
 import "server-only";
 import { DISLIKE_GROUPS, getCatalog } from "@weeko/catalog";
-import { t as tr, type Locale } from "@weeko/engine";
+import { LOCALES, t as tr, type Locale } from "@weeko/engine";
 
 export interface DislikeOptions {
   groups: { id: string; label: string; ingredients: string[] }[];
@@ -9,7 +9,7 @@ export interface DislikeOptions {
 
 /** Choices for the "foods I don't eat" picker, small enough to send to the browser. */
 export function dislikeOptions(locale: string): DislikeOptions {
-  const loc = (locale === "en" ? "en" : "fr") as Locale;
+  const loc: Locale = (LOCALES as readonly string[]).includes(locale) ? (locale as Locale) : "fr";
   const catalog = getCatalog();
   return {
     groups: DISLIKE_GROUPS.map((g) => ({ id: g.id, label: tr(g.name, loc), ingredients: g.ingredients })),

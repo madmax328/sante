@@ -52,7 +52,7 @@ export default function SessionScreen() {
               {x.restSec ? ` · ${t("repos", "rest")} ${x.restSec} s` : ""}
             </T>
           </View>
-          <ExerciseDemo exerciseId={x.id} label={t(`Démonstration : ${x.name}`, `Demonstration: ${x.name}`)} style={{ maxHeight: 220 }} />
+          <ExerciseDemo exerciseId={x.id} label={t("Démonstration : {0}", "Demonstration: {0}", [x.name])} style={{ maxHeight: 220 }} />
           {x.steps.map((s, k) => (
             <T key={k} variant="small" tone="encre">{k + 1}. {s}</T>
           ))}
@@ -62,7 +62,7 @@ export default function SessionScreen() {
               {x.tips.join(" ")}
             </Notice>
           )}
-          {x.easier && <T variant="small">{t(`Trop difficile ? Remplace par : ${x.easier}.`, `Too hard? Swap for: ${x.easier}.`)}</T>}
+          {x.easier && <T variant="small">{t("Trop difficile ? Remplace par : {0}.", "Too hard? Swap for: {0}.", [x.easier])}</T>}
         </Card>
       ))}
     </Screen>
@@ -143,9 +143,9 @@ function GuidedSession({ steps, day }: { steps: Step[]; day: number }) {
       </T>
       <T variant="title" style={{ textAlign: "center" }}>{phase === "rest" ? t("Respire", "Breathe") : current!.name}</T>
       {phase === "work" ? (
-        <ExerciseDemo key={index} exerciseId={current!.exerciseId} label={t(`Démonstration : ${current!.name}`, `Demonstration: ${current!.name}`)} background={c.surface} style={{ maxWidth: 300 }} />
+        <ExerciseDemo key={index} exerciseId={current!.exerciseId} label={t("Démonstration : {0}", "Demonstration: {0}", [current!.name])} background={c.surface} style={{ maxWidth: 300 }} />
       ) : (
-        upcoming && <ExerciseDemo key={`next-${index}`} exerciseId={upcoming.exerciseId} label={t(`Démonstration : ${upcoming.name}`, `Demonstration: ${upcoming.name}`)} background={c.surface} style={{ maxWidth: 180, opacity: 0.8 }} />
+        upcoming && <ExerciseDemo key={`next-${index}`} exerciseId={upcoming.exerciseId} label={t("Démonstration : {0}", "Demonstration: {0}", [upcoming.name])} background={c.surface} style={{ maxWidth: 180, opacity: 0.8 }} />
       )}
       <T style={{ fontSize: 56, fontWeight: "800", fontVariant: ["tabular-nums"], lineHeight: 64 }}>
         {phase === "rest" || current!.unit === "seconds" ? `${left}s` : `× ${current!.amount}`}
@@ -153,7 +153,7 @@ function GuidedSession({ steps, day }: { steps: Step[]; day: number }) {
       <View style={{ flexDirection: "row", gap: space.sm }}>
         {(phase === "rest" || current!.unit === "seconds") && (
           <Button variant="secondary" onPress={() => setRunning(!running)} icon={running ? <Pause size={16} color={c.encre} /> : <Play size={16} color={c.encre} />}>
-            {running ? "Pause" : t("Reprendre", "Resume")}
+            {running ? t("Pause", "Pause") : t("Reprendre", "Resume")}
           </Button>
         )}
         <Button onPress={() => { setRunning(false); setLeft(0); next(); }} icon={<SkipForward size={16} color={c.surface} />}>

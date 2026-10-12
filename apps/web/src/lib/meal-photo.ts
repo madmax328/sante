@@ -4,7 +4,7 @@ import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
 import { getCatalog } from "@weeko/catalog";
 import { env } from "./env";
-import type { Locale } from "./locale";
+import { LANGUAGE_NAME, tr, type Locale } from "./locale";
 
 /**
  * Meal photo → the foods on the plate with an estimated weight. The person
@@ -89,7 +89,7 @@ export async function analyzeMealPhoto(base64: string, mediaType: PhotoMedia, lo
           role: "user",
           content: [
             { type: "image", source: { type: "base64", media_type: mediaType, data: base64 } },
-            { type: "text", text: locale === "en" ? "Write the food names in English." : "Écris les noms des aliments en français." },
+            { type: "text", text: `Écris les noms des aliments en ${LANGUAGE_NAME[locale]}.` },
           ],
         },
       ],
@@ -106,7 +106,7 @@ export async function analyzeMealPhoto(base64: string, mediaType: PhotoMedia, lo
         const id = f.ingredient_id && catalog.ingredients.has(f.ingredient_id) ? f.ingredient_id : null;
         const ing = id ? catalog.ingredient(id) : null;
         return {
-          name: (ing ? (ing.name[locale] ?? ing.name.fr) : f.name).trim().slice(0, 80),
+          name: (ing ? tr(ing.name, locale) : f.name).trim().slice(0, 80),
           grams: Math.round(Math.min(2000, f.grams)),
           ingredientId: id,
           per100: ing

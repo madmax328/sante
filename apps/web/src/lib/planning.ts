@@ -1,4 +1,3 @@
-import { ensureRecipeTranslations } from "./recipe-i18n";
 import "server-only";
 import {
   computeTargets,
@@ -67,7 +66,7 @@ export interface UserContext {
  * account owner only, without budget nor pantry optimisation.
  */
 export async function loadUserContext(userId: string): Promise<UserContext | null> {
-  const [profile, health] = await Promise.all([getProfile(userId), getHealth(userId), ensureRecipeTranslations()]);
+  const [profile, health] = await Promise.all([getProfile(userId), getHealth(userId)]);
   if (!profile || !health || health.members.length === 0) return null;
   const today = todayIn(profile.timeZone);
   const weekStart = weekStartOf(today);

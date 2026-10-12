@@ -1,4 +1,4 @@
-import { localeOf, tr } from "@/lib/locale";
+import { localeOf, tr, word } from "@/lib/locale";
 import { exercises } from "@weeko/catalog";
 import { contextFor, MobileError, mobileRoute } from "@/lib/mobile";
 import { can } from "@/lib/premium";
@@ -22,7 +22,7 @@ export const GET = mobileRoute(async (req, userId) => {
   const steps: { exerciseId: string; name: string; amount: number; unit: "reps" | "seconds"; restSec: number; round: number; rounds: number }[] = [];
   for (const w of session.warmup) {
     const x = byId.get(w.exerciseId);
-    if (x) steps.push({ exerciseId: x.id, name: `${loc === "en" ? "Warm-up" : "Échauffement"} · ${tr(x.name, loc)}`, amount: w.amount, unit: "seconds", restSec: 0, round: 1, rounds: 1 });
+    if (x) steps.push({ exerciseId: x.id, name: `${word("warmup", loc)} · ${tr(x.name, loc)}`, amount: w.amount, unit: "seconds", restSec: 0, round: 1, rounds: 1 });
   }
   for (let r = 1; r <= session.rounds; r++) {
     for (const b of session.blocks) {

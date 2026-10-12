@@ -50,7 +50,7 @@ export default function SportScreen() {
   const header = (
     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
       <View style={{ flex: 1 }}>
-        <T variant="title">Sport</T>
+        <T variant="title">{t("Sport", "Sport")}</T>
         {data.week && (
           <T variant="small">
             {t("Semaine", "Week")} {data.week.number} · {data.week.sessions.filter((s) => s.done).length} / {data.week.sessions.filter((s) => s.type !== "rest").length} {t("séances", "workouts")}
@@ -108,7 +108,7 @@ export default function SportScreen() {
                   onPress={() => toggle(s.day, !s.done)}
                   accessibilityRole="checkbox"
                   accessibilityState={{ checked: s.done }}
-                  accessibilityLabel={t(`Séance de ${DAY_LABEL[s.day]} faite`, `${DAY_LABEL[s.day]} workout done`)}
+                  accessibilityLabel={t("Séance de {0} faite", "{0} workout done", [DAY_LABEL[s.day]])}
                   hitSlop={8}
                   style={{ width: 34, height: 34, borderRadius: 17, borderWidth: 2, borderColor: s.done ? c.basilic : c.line, backgroundColor: s.done ? c.basilic : "transparent", alignItems: "center", justifyContent: "center" }}
                 >
@@ -168,7 +168,7 @@ function Steps({ date, goal, initial, onSynced }: { date: string; goal: number; 
         </>
       ) : (
         <>
-          <T variant="small">{t(`Objectif : ${num(goal)} pas par jour.`, `Goal: ${num(goal)} steps a day.`)}</T>
+          <T variant="small">{t("Objectif : {0} pas par jour.", "Goal: {0} steps a day.", [num(goal)])}</T>
           {healthAvailable() && synced === false && (
             <Pressable accessibilityRole="button" onPress={() => router.push("/devices")}>
               <T variant="small" tone="basilic" style={{ fontWeight: "700" }}>{t("Connecte Apple Santé pour les compter automatiquement →", "Connect Apple Health to count them automatically →")}</T>

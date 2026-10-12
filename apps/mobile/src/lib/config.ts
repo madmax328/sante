@@ -4,5 +4,5 @@ import { lang } from "./i18n";
 export const API_URL = (process.env.EXPO_PUBLIC_API_URL ?? "https://sorloo.com").replace(/\/$/, "");
 export const WEBSITE_URL = API_URL;
 
-/** A website page in the app's language ("/en/…" in English). */
-export const sitePage = (path: string) => `${WEBSITE_URL}${lang === "en" ? "/en" : ""}${path}`;
+/** A website page in the app's language ("/en/…", "/de/…"; French at the root). */
+export const sitePage = (path: string) => `${WEBSITE_URL}${lang === "fr" ? "" : `/${lang}`}${path}`;

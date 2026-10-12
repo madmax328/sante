@@ -93,7 +93,7 @@ export default function WeekScreen() {
                   </View>
                 )}
               </View>
-              {data.summary.kept >= 5 && <T variant="small">{t(`dont ${euro(data.summary.kept)} de produits qui te resteront pour la suite`, `including ${euro(data.summary.kept)} of food you'll have left for later`)}</T>}
+              {data.summary.kept >= 5 && <T variant="small">{t("dont {0} de produits qui te resteront pour la suite", "including {0} of food you'll have left for later", [euro(data.summary.kept)])}</T>}
               <Button small variant="secondary" onPress={generate} loading={busy === "all"} icon={<RefreshCw size={16} color={c.encre} />} style={{ alignSelf: "flex-start" }}>{t("Nouveau menu", "New menu")}</Button>
             </Card>
           )}
@@ -117,17 +117,17 @@ export default function WeekScreen() {
                           <T variant="label">{MEAL_LABEL[m.meal]}</T>
                           <T variant="h3" numberOfLines={2}>{m.name ?? t("Rien de prévu", "Nothing planned")}</T>
                           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
-                            {m.kind === "leftover" && m.leftoverOf !== null && <Badge tone="miel">{t(`Restes de ${DAY_LABEL[m.leftoverOf]}`, `${DAY_LABEL[m.leftoverOf]}'s leftovers`)}</Badge>}
+                            {m.kind === "leftover" && m.leftoverOf !== null && <Badge tone="miel">{t("Restes de {0}", "{0}'s leftovers", [DAY_LABEL[m.leftoverOf]])}</Badge>}
                             {m.cookDouble && <Badge>{t("Cuisiner en double", "Cook a double batch")}</Badge>}
                             {m.kind === "external" && <Badge tone="eau">{t("Dehors", "Eating out")}</Badge>}
-                            {m.guests > 0 && <Badge tone="abricot">{t(`+${m.guests} invités`, `+${m.guests} guests`)}</Badge>}
+                            {m.guests > 0 && <Badge tone="abricot">{t("+{0} invités", "+{0} guests", [m.guests])}</Badge>}
                             {m.minutes !== null && <T variant="small">{m.minutes} min{m.cost !== null ? ` · ${euro(m.cost)}` : ""}</T>}
                           </View>
                         </View>
                       </Pressable>
                     </Link>
                     {m.kind === "recipe" && (
-                      <Pressable accessibilityLabel={t(`Remplacer ${MEAL_LABEL[m.meal]}`, `Replace ${MEAL_LABEL[m.meal]}`)} hitSlop={8} onPress={() => replace(d.day, m.meal)} disabled={!!busy} style={{ padding: 6, opacity: busy === `${d.day}:${m.meal}` ? 0.4 : 1 }}>
+                      <Pressable accessibilityLabel={t("Remplacer {0}", "Replace {0}", [MEAL_LABEL[m.meal]])} hitSlop={8} onPress={() => replace(d.day, m.meal)} disabled={!!busy} style={{ padding: 6, opacity: busy === `${d.day}:${m.meal}` ? 0.4 : 1 }}>
                         <RefreshCw size={18} color={c.muted} />
                       </Pressable>
                     )}

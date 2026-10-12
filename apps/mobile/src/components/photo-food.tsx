@@ -6,7 +6,7 @@ import { ActivityIndicator, Pressable, TextInput, View } from "react-native";
 import { Badge, Button, Card, Notice, T } from "@/components/ui";
 import { api } from "@/lib/api";
 import { num } from "@/lib/format";
-import { t } from "@/lib/i18n";
+import { t, tn } from "@/lib/i18n";
 import { useMe } from "@/lib/me";
 import { pickPhoto } from "@/lib/photo";
 import { radius, space, useColors } from "@/lib/theme";
@@ -119,12 +119,12 @@ export function PhotoFood({ date, meal, onDone }: { date?: string; meal: string;
                   value={f.text}
                   onChangeText={(text) => setFoods(foods.map((x, j) => (j === i ? { ...x, text } : x)))}
                   keyboardType="number-pad"
-                  accessibilityLabel={t(`Quantité de ${f.name} en grammes`, `${f.name} amount in grams`)}
+                  accessibilityLabel={t("Quantité de {0} en grammes", "{0} amount in grams", [f.name])}
                   style={{ width: 64, borderWidth: 1, borderColor: c.line, borderRadius: radius.sm, paddingVertical: 6, paddingHorizontal: 8, color: c.encre, backgroundColor: c.surface, textAlign: "right", fontSize: 16 }}
                 />
                 <T variant="small">g</T>
               </View>
-              <Pressable accessibilityRole="button" accessibilityLabel={t(`Retirer ${f.name}`, `Remove ${f.name}`)} hitSlop={8} onPress={() => setFoods(foods.filter((_, j) => j !== i))} style={{ padding: 4 }}>
+              <Pressable accessibilityRole="button" accessibilityLabel={t("Retirer {0}", "Remove {0}", [f.name])} hitSlop={8} onPress={() => setFoods(foods.filter((_, j) => j !== i))} style={{ padding: 4 }}>
                 <Trash2 size={18} color={c.muted} />
               </Pressable>
             </View>
@@ -133,8 +133,8 @@ export function PhotoFood({ date, meal, onDone }: { date?: string; meal: string;
           <T variant="small">{t("Les quantités sont des estimations : ajuste-les si besoin.", "Amounts are estimates: adjust them if needed.")}</T>
           <Button variant="accent" loading={adding} disabled={!valid.length} onPress={add}>
             {me.numbersHidden
-              ? t(`Ajouter ${valid.length} aliment${valid.length > 1 ? "s" : ""}`, `Add ${valid.length} food${valid.length > 1 ? "s" : ""}`)
-              : t(`Ajouter ${valid.length} aliment${valid.length > 1 ? "s" : ""} · ${num(total)} kcal`, `Add ${valid.length} food${valid.length > 1 ? "s" : ""} · ${num(total)} kcal`)}
+              ? tn(valid.length, ["Ajouter {0} aliment", "Ajouter {0} aliments"], ["Add {0} food", "Add {0} foods"])
+              : tn(valid.length, ["Ajouter {0} aliment · {1} kcal", "Ajouter {0} aliments · {1} kcal"], ["Add {0} food · {1} kcal", "Add {0} foods · {1} kcal"], [num(total)])}
           </Button>
         </Card>
       )}
@@ -147,7 +147,7 @@ export function PhotoFood({ date, meal, onDone }: { date?: string; meal: string;
           <Button variant="secondary" icon={<ImageIcon size={18} color={c.encre} />} accessibilityLabel={t("Choisir dans mes photos", "Choose from my photos")} onPress={() => start("library")} />
         </View>
       )}
-      {me.ai && <T variant="small" style={{ textAlign: "center" }}>{t(`${me.ai.left} analyses IA restantes ce mois-ci`, `${me.ai.left} AI analyses left this month`)}</T>}
+      {me.ai && <T variant="small" style={{ textAlign: "center" }}>{t("{0} analyses IA restantes ce mois-ci", "{0} AI analyses left this month", [me.ai.left])}</T>}
     </>
   );
 }

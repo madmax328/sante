@@ -38,8 +38,8 @@ export async function searchFoodsAction(query: string): Promise<FoodHit[]> {
   const words = q.split(/\s+/);
   const catalog = getCatalog();
   const loc = await requestLocale();
-  // Both languages are searched; results are shown in the person's language.
-  const hay = (t: { fr: string; en?: string }) => norm(`${t.fr} ${t.en ?? ""}`);
+  // French, English and the person's language are searched; results are shown in their language.
+  const hay = (t: { fr: string; en?: string } & Partial<Record<string, string>>) => norm(`${t.fr} ${t.en ?? ""} ${loc === "fr" || loc === "en" ? "" : (t[loc] ?? "")}`);
   const ingredients: FoodHit[] = [...catalog.ingredients.values()]
     .filter((i) => words.every((w) => hay(i.name).includes(w)))
     .slice(0, 12)

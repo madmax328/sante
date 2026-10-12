@@ -2,7 +2,7 @@ import { Badge, Card, PageHeader } from "@/components/ui";
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/admin-auth";
 import { adminLogoutAction, translateRecipesAction } from "./actions";
-import { translationStatus } from "@/lib/recipe-i18n";
+import { translationStatus } from "@/lib/catalog-i18n";
 import { db } from "@/lib/db";
 import { env, features } from "@/lib/env";
 import { recentErrors } from "@/lib/errors";
@@ -14,6 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Administration", robots: { index: false } };
 
 const DAY = 86400_000;
+const LANG_NAMES: Record<string, string> = { en: "Anglais", de: "Allemand", es: "Espagnol", it: "Italien", pt: "Portugais" };
 const fmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Paris" });
 const eur = (n: number) => new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(n);
 
@@ -141,27 +142,32 @@ export default async function AdminPage() {
       </Card>
 
       <Card className="grid gap-3">
-        <h2 className="text-lg font-bold">Recettes en anglais</h2>
+        <h2 className="text-lg font-bold">Traductions du catalogue</h2>
         {!i18n ? (
           <p className="text-sm text-muted">État indisponible.</p>
         ) : (
           <>
-            <p className="text-sm text-muted">
-              {i18n.done} recettes traduites sur {i18n.total}
-              {i18n.batch ? ` · traduction en cours (${i18n.batch.status === "ended" ? "terminée, à relever" : `${i18n.batch.processing} lots restants`}), lancée le ${fmt.format(i18n.batch.createdAt)}` : ""}
-            </p>
+            <p className="text-sm text-muted">Recettes, ingrédients, exercices et familles d&apos;aliments, traduits par langue :</p>
+            <div className="flex flex-wrap gap-2">
+              {i18n.languages.map((l) => <Badge key={l.lang}>{LANG_NAMES[l.lang]} · {Math.floor((l.done / l.total) * 100)} %</Badge>)}
+            </div>
+            {i18n.batch && (
+              <p className="text-sm text-muted">
+                Traduction en cours, lancée le {fmt.format(i18n.batch.createdAt)} : {i18n.batch.status === "ended" ? "terminée, à relever" : `${i18n.batch.processing} lots restants`} ({i18n.batch.succeeded} terminés, {i18n.batch.errored} en erreur).
+              </p>
+            )}
             {!i18n.configured ? (
-              <p className="text-sm text-muted">Ajoute ANTHROPIC_API_KEY sur Vercel pour traduire les recettes.</p>
+              <p className="text-sm text-muted">Ajoute ANTHROPIC_API_KEY sur Vercel pour traduire le catalogue.</p>
             ) : (
-              i18n.done < i18n.total && (
+              (i18n.batch || i18n.languages.some((l) => l.done < l.total)) && (
                 <form action={translateRecipesAction}>
                   <button type="submit" className="rounded-full bg-basilic px-4 py-2 text-sm font-semibold text-surface">
-                    {i18n.batch ? "Relever les traductions" : "Traduire les recettes manquantes"}
+                    {i18n.batch ? "Relever les traductions" : "Traduire ce qui manque"}
                   </button>
                 </form>
               )
             )}
-            <p className="text-xs text-muted">{"La traduction passe par l'API Batch d'Anthropic (moitié prix, résultat en général en moins d'une heure). Le relevé est aussi fait chaque nuit automatiquement."}</p>
+            <p className="text-xs text-muted">{"La traduction passe par l'API Batch d'Anthropic (moitié prix, résultat en général en moins d'une heure). Le relevé est aussi fait chaque nuit automatiquement. Tant qu'un texte n'est pas traduit, l'anglais (ou le français) s'affiche à la place."}</p>
           </>
         )}
       </Card>

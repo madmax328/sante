@@ -1,3 +1,5 @@
+import { ensureCatalogTranslations } from "./catalog-i18n";
+import { isLocale } from "./locale";
 import "server-only";
 import { getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
@@ -18,6 +20,7 @@ export interface AppUser {
 /** Signed-in user for app pages; redirects to the login page otherwise. */
 export async function requireAppUser(): Promise<AppUser> {
   const locale = await getLocale();
+  if (isLocale(locale)) await ensureCatalogTranslations(locale);
   const session = await getSession();
   if (!session) return redirect({ href: "/login", locale });
   let profile = await getProfile(session.user.id);
@@ -27,7 +30,7 @@ export async function requireAppUser(): Promise<AppUser> {
     const id = session.user.id;
     const exists = await db.collection("user").countDocuments({ _id: (ObjectId.isValid(id) ? new ObjectId(id) : id) as never }, { limit: 1 });
     if (!exists) return redirect({ href: "/login", locale });
-    profile = await ensureProfile(id, locale === "en" ? "en" : "fr");
+    profile = await ensureProfile(id, isLocale(locale) ? locale : "fr");
   }
   return { userId: session.user.id, name: session.user.name, email: session.user.email, emailVerified: !!session.user.emailVerified, profile };
 }

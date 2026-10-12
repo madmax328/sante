@@ -103,7 +103,7 @@ export function plan(s: ReminderSettings, d: ReminderData, now = new Date()): Pl
     const today = i === 0;
     if (s.workout) {
       const w = d.workouts.find((x) => x.date === date);
-      if (w && !w.done) out.push({ date: at(date, s.workoutTime), title: t("Ta séance du jour", "Today's workout"), body: t(`${w.title} · ${w.minutes} min. On s'y met ?`, `${w.title} · ${w.minutes} min. Ready?`), url: "/sport" });
+      if (w && !w.done) out.push({ date: at(date, s.workoutTime), title: t("Ta séance du jour", "Today's workout"), body: t("{0} · {1} min. On s'y met ?", "{0} · {1} min. Ready?", [w.title, w.minutes]), url: "/sport" });
     }
     if (s.meals) {
       if (!(today && d.loggedToday.includes("lunch"))) out.push({ date: at(date, "13:45"), title: t("Ton déjeuner", "Your lunch"), body: t("Note-le en quelques secondes dans ton journal.", "Log it in a few seconds in your journal."), url: "/journal" });

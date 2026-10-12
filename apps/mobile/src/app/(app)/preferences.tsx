@@ -7,7 +7,7 @@ import { api, useApi } from "@/lib/api";
 import { L } from "@/lib/labels";
 import { useMe } from "@/lib/me";
 import { radius, space, useColors } from "@/lib/theme";
-import { t } from "@/lib/i18n";
+import { t, tn } from "@/lib/i18n";
 
 interface Prefs {
   diet: keyof typeof L.diet;
@@ -179,14 +179,14 @@ function Dislikes({ value, onChange, options }: { value: string[]; onChange: (v:
       )}
       {value.length > 0 && (
         <View style={{ gap: space.sm }}>
-          <T variant="small">{t(`${value.length} ${value.length > 1 ? "ingrédients exclus" : "ingrédient exclu"} :`, `${value.length} ${value.length === 1 ? "ingredient" : "ingredients"} excluded:`)}</T>
+          <T variant="small">{tn(value.length, ["{0} ingrédient exclu :", "{0} ingrédients exclus :"], ["{0} ingredient excluded:", "{0} ingredients excluded:"])}</T>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
             {value.map((id) => (
               <Pressable
                 key={id}
                 onPress={() => onChange(value.filter((x) => x !== id))}
                 accessibilityRole="button"
-                accessibilityLabel={t(`Retirer ${names.get(id) ?? id}`, `Remove ${names.get(id) ?? id}`)}
+                accessibilityLabel={t("Retirer {0}", "Remove {0}", [names.get(id) ?? id])}
                 style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: c.abricotSoft, borderRadius: radius.full, paddingHorizontal: 10, paddingVertical: 4 }}
               >
                 <T variant="small" tone="encre">{names.get(id) ?? id}</T>

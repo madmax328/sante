@@ -1,5 +1,6 @@
 "use server";
 
+import { DELETE_WORDS } from "@/lib/locale";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -172,7 +173,7 @@ export async function withdrawHealthConsentAction(): Promise<{ ok: boolean }> {
 
 export async function deleteAccountAction(confirm: string): Promise<{ ok: boolean }> {
   const userId = await requireUserId();
-  if (!["SUPPRIMER", "DELETE"].includes(confirm.trim().toUpperCase())) return { ok: false };
+  if (!DELETE_WORDS.includes(confirm.trim().toUpperCase())) return { ok: false };
   await cancelSubscriptionNow(userId);
   await auth.api.signOut({ headers: await headers() }).catch(() => undefined);
   await deleteAllData(userId);
