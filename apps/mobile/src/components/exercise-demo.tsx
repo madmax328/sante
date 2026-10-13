@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { AccessibilityInfo, View, type StyleProp, type ViewStyle } from "react-native";
 import Svg, { Circle, Line, Path, Rect } from "react-native-svg";
 import { Image } from "expo-image";
-import { drawMotion, exerciseVideo, motions, MOTION_VIEW, type Shape, type Tone } from "@weeko/catalog/demos";
+import { drawMotion, exerciseVideos, motions, MOTION_VIEW, type Shape, type Tone } from "@weeko/catalog/demos";
 import { WEBSITE_URL } from "@/lib/config";
 import { radius, useColors } from "@/lib/theme";
 
@@ -24,11 +24,37 @@ function Shapes({ shapes }: { shapes: Shape[] }) {
 }
 
 /**
+ * Exercises with a video: the list built into the app, then the website's
+ * (read once per launch), so new videos show up without an app update.
+ */
+let videoIds: ReadonlySet<string> = exerciseVideos;
+let videoIdsLoad: Promise<void> | null = null;
+
+function useVideoIds(): ReadonlySet<string> {
+  const [ids, setIds] = useState(videoIds);
+  useEffect(() => {
+    let live = true;
+    videoIdsLoad ??= fetch(`${WEBSITE_URL}/api/exercises/videos`)
+      .then((r) => (r.ok ? (r.json() as Promise<unknown>) : null))
+      .then((list) => {
+        if (Array.isArray(list) && list.every((x) => typeof x === "string")) videoIds = new Set(list);
+      })
+      .catch(() => undefined);
+    void videoIdsLoad.then(() => live && setIds(videoIds));
+    return () => {
+      live = false;
+    };
+  }, []);
+  return ids;
+}
+
+/**
  * Demo of an exercise: the real video (an animated image served by the
  * website) when there is one, the drawn animation otherwise or on error.
  */
 export function ExerciseDemo(props: { exerciseId: string; label: string; style?: StyleProp<ViewStyle>; background?: string }) {
-  const video = exerciseVideo(props.exerciseId);
+  const ids = useVideoIds();
+  const video = ids.has(props.exerciseId) ? { webp: `/exercises/${props.exerciseId}.webp`, poster: `/exercises/${props.exerciseId}.jpg` } : null;
   const [failed, setFailed] = useState(false);
   const [reduced, setReduced] = useState(false);
   const c = useColors();
