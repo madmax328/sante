@@ -3,7 +3,20 @@
  * .webp and .jpg, made with apps/web/scripts/exercise-video.sh). The others
  * keep the drawn animation.
  */
-export const exerciseVideos: ReadonlySet<string> = new Set(["squat", "fentes"]);
+export const exerciseVideos: ReadonlySet<string> = new Set([
+  "squat",
+  "fentes",
+  "squat-chaise",
+  "pont-fessier",
+  "pompes",
+  "superman",
+  "bird-dog",
+  "elastique-ecartes",
+  "marche-sur-place",
+  "jacks-sans-saut",
+  "pas-chasses",
+  "boxe-air",
+]);
 
 /** Paths of the video files, relative to the website root. */
 export function exerciseVideo(id: string): { mp4: string; webp: string; poster: string } | null {

@@ -217,3 +217,127 @@ bassin qui ne bascule pas.
 > descendre jusqu'à ce que les bras forment un angle droit, puis remonte en tendant les bras.
 
 **À vérifier :** dos proche de la chaise, coudes vers l'arrière (pas écartés), épaules basses.
+
+---
+
+# 2e série : les 9 vidéos à refaire
+
+Bilan de la 1re série : 11 vidéos sont bonnes et intégrées (assis-debout, pont fessier,
+pompes, superman, bird dog, écartés à l'élastique, marche sur place, jacks sans saut,
+pas chassés, boxe, squat et fentes déjà faits). Les 9 ci-dessous sont à refaire.
+
+**Ce qui a coincé :** quand l'image de référence montre la coach debout, bras tendus,
+l'outil a tendance à garder cette pose (mollets, rotations des bras, pompes contre le mur)
+ou à inventer un autre exercice (dips → squat avec deux chaises). Pour ces vidéos :
+
+1. Donne l'image de référence comme **référence de personnage** (pas comme première image),
+   si l'outil le permet.
+2. Sinon, crée d'abord une **image de départ** de la coach dans la position de départ
+   (le prompt « Image de départ » de chaque exercice), puis fais la vidéo à partir de cette image.
+3. Garde le bloc commun et le prompt négatif, et ajoute au prompt négatif :
+   « bras tendus devant elle immobiles, pose de l'image de référence, deux chaises,
+   troisième jambe, membres en trop ».
+
+## Dead bug — `dead-bug`
+**Problème :** les deux bras partent ensemble vers l'arrière ; il faut UN bras et la jambe OPPOSÉE.
+
+> Image de départ : allongée sur le dos sur un tapis gris, vue de profil, bras tendus vers le
+> plafond, hanches et genoux pliés à 90°, tibias parallèles au sol, tête posée sur le tapis.
+>
+> Vidéo : vue de profil, caméra fixe à hauteur du sol. Elle reste allongée sur le dos, tête
+> posée. Seuls DEUX membres bougent : son bras droit descend lentement vers l'arrière au-dessus
+> de sa tête et, en même temps, sa jambe gauche se tend vers l'avant jusqu'à frôler le sol.
+> Son bras gauche reste pointé vers le plafond et sa jambe droite reste pliée à 90°, immobiles.
+> Puis le bras droit et la jambe gauche reviennent à la position de départ. Le bas du dos reste
+> collé au tapis.
+
+## Dips sur chaise — `dips-chaise`
+**Problème :** elle fait un squat en se tenant à deux chaises. Il faut une seule chaise,
+derrière elle, et les mains sur l'assise.
+
+> Image de départ : vue de profil. Une seule chaise en bois, stable. Elle est dos à la chaise, les deux mains posées sur le bord
+> avant de l'assise de chaque côté des hanches, doigts vers l'avant, fesses dans le vide juste
+> devant la chaise, bras tendus, jambes pliées à 90° devant elle, pieds à plat au sol.
+>
+> Vidéo : vue de profil, caméra fixe à hauteur de hanches. Elle plie les coudes vers l'arrière
+> pour faire descendre son corps vers le sol, jusqu'à ce que ses bras forment un angle droit,
+> puis elle pousse sur ses mains pour remonter jusqu'aux bras tendus. Les pieds ne bougent pas,
+> ses fesses restent près du bord de la chaise. Une seule chaise dans toute la vidéo.
+
+## Élévations des mollets — `mollets`
+**Problème :** elle reste bras tendus, les talons ne montent pas.
+
+> Image de départ : vue de profil, debout à côté d'un mur blanc, main droite posée à plat sur
+> le mur à hauteur d'épaule, bras gauche le long du corps, pieds parallèles à plat.
+>
+> Vidéo : vue de profil, caméra fixe à hauteur de genoux, ses pieds et ses chevilles bien
+> visibles au premier plan. Elle monte lentement sur la pointe des pieds, les talons se
+> soulèvent nettement d'environ dix centimètres, elle tient une seconde en haut, puis redescend
+> lentement jusqu'à poser les talons. Corps droit, la main reste sur le mur.
+
+## Gainage planche — `planche`
+**Problème :** ce n'est pas la même femme (brassière, legging marron, autre décor).
+Le mouvement était bon : seul le personnage est à corriger.
+
+> Image de départ : la coach de l'image de référence, même t-shirt vert sauge à manches courtes,
+> même legging noir, mêmes baskets blanches, même pièce, en planche sur les avant-bras sur un
+> tapis gris, vue de profil.
+>
+> Vidéo : (reprendre le prompt n° 15 tel quel, avec l'image de départ ci-dessus.)
+
+## Gainage latéral — `planche-laterale`
+**Problème :** elle est en appui sur la main, bras tendu ; l'app décrit l'appui sur l'avant-bras.
+
+> Image de départ : vue de face, allongée sur le côté droit sur un tapis gris, en appui sur
+> l'avant-bras droit posé à plat au sol, coude juste sous l'épaule, jambes tendues, pieds
+> superposés, main gauche sur la hanche.
+>
+> Vidéo : vue de face, caméra fixe à hauteur du sol. En appui sur l'AVANT-BRAS (coude et
+> avant-bras posés au sol, jamais la main seule, bras jamais tendu), elle soulève le bassin
+> jusqu'à ce que chevilles, hanches et épaules forment une ligne droite, tient trois secondes,
+> puis repose doucement la hanche au sol.
+
+## Pompes sur les genoux — `pompes-genoux`
+**Problème :** elle part à quatre pattes, fesses en l'air, et la répétition n'est pas propre.
+
+> Image de départ : vue de profil, sur un tapis gris, en appui sur les mains et les genoux,
+> genoux bien en arrière des hanches, pieds levés et croisés, corps en ligne droite des genoux
+> à la tête (pas de fesses en l'air), bras tendus, mains un peu plus larges que les épaules.
+>
+> Vidéo : vue de profil, caméra fixe à hauteur du sol. Sans bouger les genoux, elle plie les
+> coudes pour descendre la poitrine presque jusqu'au tapis, le corps restant droit comme une
+> planche des genoux à la tête, puis elle pousse pour remonter bras tendus. Une seule répétition.
+
+## Pompes contre le mur — `pompes-murales`
+**Problème :** il n'y a pas de mur, elle fait des mouvements de bras dans le vide.
+
+> Image de départ : vue de profil, debout face à un mur blanc à environ un mètre de distance,
+> penchée vers le mur, les deux mains posées à plat SUR le mur à hauteur des épaules, bras
+> tendus, corps droit et incliné de la tête aux talons, talons au sol.
+>
+> Vidéo : vue de profil, caméra fixe à hauteur de poitrine, le mur bien visible sur le côté de
+> l'image. Ses mains restent collées au mur. Elle plie les coudes pour rapprocher sa poitrine du
+> mur, puis repousse jusqu'aux bras tendus. Les pieds ne bougent pas.
+
+## Pont fessier sur une jambe — `pont-une-jambe`
+**Problème :** corps déformé, elle a deux jambes en l'air plus une au sol.
+
+> Image de départ : vue de profil, allongée sur le dos sur un tapis gris, genou gauche plié,
+> pied gauche à plat, jambe droite tendue vers le haut à 45°, bras le long du corps. Elle a
+> exactement deux jambes.
+>
+> Vidéo : vue de profil, caméra fixe à hauteur du sol. Elle pousse sur son talon gauche pour
+> monter le bassin jusqu'à aligner épaules, hanches et genou gauche, la jambe droite restant
+> tendue dans le prolongement de la cuisse, puis elle redescend lentement. Une seule jambe
+> au sol, une seule jambe en l'air, du début à la fin.
+
+## Rotations des bras — `rotations-bras`
+**Problème :** les bras font des allers-retours devant elle, pas des cercles.
+
+> Image de départ : vue de face, debout, pieds écartés à la largeur des hanches, les deux bras
+> tendus à l'horizontale sur les côtés, en croix.
+>
+> Vidéo : vue de face, caméra fixe à hauteur de poitrine. Ses bras restent tendus sur les côtés
+> à hauteur d'épaules et ses mains dessinent de grands cercles d'environ trente centimètres de
+> diamètre, les deux bras en même temps, vers l'avant. Les bras ne passent jamais devant elle.
+> Quatre secondes de cercles continus.
