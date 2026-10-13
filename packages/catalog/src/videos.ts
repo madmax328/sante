@@ -16,6 +16,12 @@ export const exerciseVideos: ReadonlySet<string> = new Set([
   "jacks-sans-saut",
   "pas-chasses",
   "boxe-air",
+  "dead-bug",
+  "planche",
+  "planche-laterale",
+  "pompes-murales",
+  "pont-une-jambe",
+  "mollets",
 ]);
 
 /** Paths of the video files, relative to the website root. */

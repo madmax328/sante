@@ -341,3 +341,49 @@ Le mouvement était bon : seul le personnage est à corriger.
 > à hauteur d'épaules et ses mains dessinent de grands cercles d'environ trente centimètres de
 > diamètre, les deux bras en même temps, vers l'avant. Les bras ne passent jamais devant elle.
 > Quatre secondes de cercles continus.
+
+---
+
+# 3e série : les 3 dernières
+
+Bilan de la 2e série : 6 vidéos bonnes et intégrées (dead bug, planche, gainage latéral, pompes
+contre le mur, pont sur une jambe, mollets). Le gainage latéral est sur la main, bras tendu :
+j'ai adapté le texte de l'exercice à la vidéo (l'avant-bras devient la version plus facile).
+
+Restent 3 exercices que l'outil n'arrive pas à faire. Un dernier essai avec ces prompts,
+plus courts et en anglais (les outils vidéo comprennent souvent mieux l'anglais pour les
+termes de fitness). Si ça ne marche toujours pas, ces 3 exercices gardent l'animation dessinée,
+qui reste correcte.
+
+## Dips sur chaise — `dips-chaise`
+**Problème (2 fois) :** l'outil en fait un squat derrière la chaise.
+
+> Image de départ : side view. A woman sits on the front edge of a wooden chair, hands gripping
+> the edge of the seat next to her hips, knees bent at 90°, feet flat on the floor.
+>
+> Vidéo : side view, static camera. Chair triceps dips (bench dips). She slides her hips
+> forward off the seat, keeping her hands on the edge of the seat behind her, then bends her
+> elbows straight back to lower her hips towards the floor, and pushes back up until her arms
+> are straight. Her back stays close to the chair. Her hands never leave the seat.
+> She is in front of the chair, facing away from it, the whole time.
+
+## Pompes sur les genoux — `pompes-genoux`
+**Problème :** la 2e fois, elle était sur la pointe des pieds (vraies pompes), pas sur les genoux.
+
+> Image de départ : side view. Kneeling push-up position on a grey mat: both KNEES on the mat,
+> lower legs raised with ankles crossed, hands on the mat under the shoulders, arms straight,
+> straight line from knees to head.
+>
+> Vidéo : side view, static camera at floor level. Modified push-up ON HER KNEES. Her knees stay
+> on the mat the whole time and her feet stay in the air, crossed. She bends her elbows to lower
+> her chest close to the mat, then pushes back up to straight arms. One repetition.
+
+## Rotations des bras — `rotations-bras`
+**Problème (2 fois) :** elle ramène les bras devant elle au lieu de faire des cercles.
+
+> Image de départ : front view. Standing, feet hip-width apart, both arms straight out to the
+> sides at shoulder height, like a T.
+>
+> Vidéo : front view, static camera. Arm circles: her arms stay straight out to the sides at
+> shoulder height the whole time, and her hands draw small circles in the air (about 30 cm wide),
+> both arms together, continuously, for 4 seconds. Her arms never come in front of her body.

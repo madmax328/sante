@@ -101,8 +101,8 @@ export const EXERCISES_EN: Record<string, { steps: string[]; tips: string[] }> =
     tips: ["Put your knees down if needed."],
   },
   "planche-laterale": {
-    steps: ["On your side, resting on one forearm.", "Lift your hips to straighten your body.", "Hold, then switch sides."],
-    tips: ["Knee on the floor for an easier version."],
+    steps: ["On your side, resting on one hand, arm straight under your shoulder.", "Lift your hips to straighten your body.", "Hold, then switch sides."],
+    tips: ["On your forearm, or with your knee down, for an easier version."],
   },
   "dead-bug": {
     steps: ["On your back, arms towards the ceiling, knees at 90°.", "Slowly extend one arm and the opposite leg without lifting your lower back.", "Return and alternate."],
