@@ -94,7 +94,7 @@ export default function AccountScreen() {
             </Button>
           </>
         ) : (
-          <T variant="small">{t("Tu utilises la version gratuite de Sorloo. L'abonnement se gère depuis ton compte sur le site Sorloo, avec les mêmes identifiants.", "You're using the free version of Sorloo. The subscription is managed from your account on the Sorloo website, with the same login.")}</T>
+          <T variant="small">{t("Tu utilises la version gratuite de Sorloo.", "You're using the free version of Sorloo.")}</T>
         )}
         {me.ai && me.premium && <T variant="small">{t("Coach IA : {0} messages restants ce mois-ci.", "AI coach: {0} messages left this month.", [me.ai.left])}</T>}
       </Card>

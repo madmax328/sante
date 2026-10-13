@@ -46,7 +46,7 @@ export function PhotoFood({ date, meal, onDone }: { date?: string; meal: string;
       <Card>
         <Sparkles size={24} color={c.basilic} />
         <T variant="h3">{t("Photographie ton assiette, Sorloo note le reste", "Snap your plate, Sorloo logs the rest")}</T>
-        <T variant="small">{t("Les aliments et leurs quantités sont reconnus en quelques secondes ; tu vérifies, puis tout s'ajoute à ton journal. Cette fonction fait partie de Premium, à activer depuis ton compte sur le site Sorloo.", "Foods and portions are recognised in seconds; you check, then everything goes into your journal. This feature is part of Premium, available from your account on the Sorloo website.")}</T>
+        <T variant="small">{t("Les aliments et leurs quantités sont reconnus en quelques secondes ; tu vérifies, puis tout s'ajoute à ton journal. Cette fonction fait partie de Premium.", "Foods and portions are recognised in seconds; you check, then everything goes into your journal. This feature is part of Premium.")}</T>
       </Card>
     );
   }

@@ -82,10 +82,25 @@ export const auth = betterAuth({
     updateAge: 60 * 60 * 24,
     cookieCache: { enabled: true, maxAge: 5 * 60 },
   },
-  rateLimit: { enabled: true, storage: "database", window: 60, max: 60 },
+  // Sign-ups: at most 5 an hour from the same address (bots).
+  rateLimit: { enabled: true, storage: "database", window: 60, max: 60, customRules: { "/sign-up/email": { window: 3600, max: 5 } } },
+  databaseHooks: {
+    user: {
+      create: {
+        // Spam bots put links or long texts in the name, so that our confirmation email carries them.
+        before: async (user) => (isSpamName(user.name) ? false : { data: user }),
+      },
+    },
+  },
   advanced: { useSecureCookies: env.appUrl.startsWith("https://") },
   plugins: [expo(), nextCookies()],
 });
+
+/** A name no person would type: a link, an address, or a long text. */
+export function isSpamName(name: string | undefined): boolean {
+  const n = (name ?? "").trim();
+  return n.length > 60 || /https?:|www\.|\.(com|ru|cn|xyz|top|info|net|org|io|link|click|site|online)\b|@|<|>|\$|₿|€\s*\d|\d{5,}|telegram|t\.me|whatsapp|bitcoin|crypto|casino|loan/i.test(n);
+}
 
 /** Account emails, in the language of the browser or phone that asked for them. */
 const EMAILS: Record<Locale, { reset: { subject: string; hello: string; text: string; ignore: string }; verify: { subject: string; hello: string; text: string } }> = {

@@ -69,6 +69,11 @@ export function SignupForm({ google }: { google: boolean }) {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    // Hidden field only robots fill in: they get nowhere.
+    if (fd.get("company")) {
+      setPending(true);
+      return;
+    }
     if (!fd.get("terms")) {
       setError(t("errors.terms"));
       return;
@@ -102,6 +107,7 @@ export function SignupForm({ google }: { google: boolean }) {
       <Field label={t("password")} htmlFor="password" hint={t("passwordHint")}>
         <Input id="password" name="password" type="password" autoComplete="new-password" minLength={10} required />
       </Field>
+      <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
       <label className="flex items-start gap-2 text-sm">
         <input type="checkbox" name="terms" className="mt-1 size-4 accent-[var(--basilic)]" />
         <span>

@@ -2,7 +2,9 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { adminSignIn, adminSignOut } from "@/lib/admin-auth";
+import { revalidatePath } from "next/cache";
+import { adminSignIn, adminSignOut, isAdmin } from "@/lib/admin-auth";
+import { deleteUsers } from "@/lib/admin-users";
 
 const MESSAGES = {
   invalid: "E-mail ou mot de passe incorrect.",
@@ -22,3 +24,12 @@ export async function adminLogoutAction(): Promise<void> {
   redirect("/admin/login");
 }
 
+
+/** Deletes the selected accounts (never subscribers). */
+export async function deleteUsersAction(ids: string[]): Promise<{ deleted: number; skipped: number }> {
+  if (!(await isAdmin())) redirect("/admin/login");
+  if (!Array.isArray(ids) || ids.some((id) => typeof id !== "string")) return { deleted: 0, skipped: 0 };
+  const result = await deleteUsers(ids);
+  revalidatePath("/admin", "layout");
+  return result;
+}

@@ -1,4 +1,5 @@
 import { Badge, Card, PageHeader } from "@/components/ui";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/admin-auth";
 import { adminLogoutAction } from "./actions";
@@ -101,7 +102,10 @@ export default async function AdminPage() {
       </div>
 
       <Card className="grid gap-3">
-        <h2 className="text-lg font-bold">Dernières inscriptions</h2>
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-lg font-bold">Dernières inscriptions</h2>
+          <Link href="/admin/users" className="text-sm font-semibold text-basilic">Voir tous les inscrits ({total}) et supprimer →</Link>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[40rem] text-sm">
             <thead>
