@@ -387,3 +387,5 @@ qui reste correcte.
 > Vidéo : front view, static camera. Arm circles: her arms stay straight out to the sides at
 > shoulder height the whole time, and her hands draw small circles in the air (about 30 cm wide),
 > both arms together, continuously, for 4 seconds. Her arms never come in front of her body.
+
+**Résultat de la 3e série :** les 3 sont bonnes et intégrées. Les 20 exercices de la liste ont leur vidéo.
