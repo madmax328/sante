@@ -65,6 +65,8 @@ export interface WeekPlan {
   budget?: number;
   meals: PlannedMeal[];
   adjustments: KcalAdjustment[];
+  /** Countries chosen for lunches and dinners (recipe origins); none = every cuisine */
+  cuisines?: string[];
 }
 
 export interface PlanContext {
@@ -92,6 +94,7 @@ export interface DayTotals {
 export type PlanNoteCode =
   | "budget_over"
   | "budget_tight"
+  | "cuisine_relaxed"
   | "no_candidate"
   | "relaxed_time"
   | "repeated_recipe";
@@ -455,13 +458,16 @@ function candidatesFor(
   req: SlotRequest,
   relaxTime = false,
   used?: { recipes: Map<string, number>; families: Map<string, number> },
+  anyCuisine = false,
 ): RecipeInfo[] {
+  const origins = anyCuisine ? undefined : cuisinesFor(plan, req.meal);
   const avoid = [...new Set([...req.eaters, ...(req.leftoverEaters ?? [])].flatMap((e) => e.avoid))];
   const weekend = isWeekend(plan.startDate, req.day);
   const defaultMax = weekend ? ctx.prefs.maxMinutesWeekend : ctx.prefs.maxMinutesWeekday;
   const maxMinutes = relaxTime ? undefined : (req.maxMinutes ?? defaultMax);
   return ctx.catalog.allRecipes().filter((r) => {
     if (!isCompatible(r, { prefs: ctx.prefs, avoid, meal: req.meal, maxMinutes })) return false;
+    if (origins && !origins.includes(r.origin ?? "")) return false;
     if (req.excludeIngredients && r.ingredients.some((i) => req.excludeIngredients!.includes(i.id))) return false;
     if (req.leftoverEaters && req.leftoverEaters.length > 0 && r.keepsDays < 1) return false;
     if (used && (used.recipes.get(r.id) ?? 0) >= MAX_USES[req.meal]) return false;
@@ -472,6 +478,11 @@ function candidatesFor(
   });
 }
 
+/** The chosen countries apply to lunches and dinners; breakfasts and snacks stay common. */
+function cuisinesFor(plan: WeekPlan, meal: MealType): string[] | undefined {
+  return plan.cuisines?.length && (meal === "lunch" || meal === "dinner") ? plan.cuisines : undefined;
+}
+
 function pick(
   ctx: PlanContext,
   plan: WeekPlan,
@@ -480,10 +491,18 @@ function pick(
   rng: Rng,
   notes: PlanNote[],
 ): RecipeInfo | undefined {
-  let cands = candidatesFor(ctx, plan, req, false, { recipes: state.used, families: state.families });
+  const used = { recipes: state.used, families: state.families };
+  const chosen = !!cuisinesFor(plan, req.meal);
+  let cands = candidatesFor(ctx, plan, req, false, used);
+  if (cands.length === 0 && chosen) {
+    // Nothing left from the chosen countries (diet, time…): another cuisine rather than a repeat.
+    cands = candidatesFor(ctx, plan, req, false, used, true);
+    if (cands.length > 0) notes.push({ code: "cuisine_relaxed", day: req.day, meal: req.meal });
+  }
   if (cands.length === 0) cands = candidatesFor(ctx, plan, req, false);
+  if (cands.length === 0 && chosen) cands = candidatesFor(ctx, plan, req, false, undefined, true);
   if (cands.length === 0) {
-    cands = candidatesFor(ctx, plan, req, true);
+    cands = candidatesFor(ctx, plan, req, true, undefined, true);
     if (cands.length > 0) notes.push({ code: "relaxed_time", day: req.day, meal: req.meal });
   }
   if (cands.length === 0) {
@@ -507,6 +526,8 @@ export interface GenerateOptions {
   /** Meals to keep as they are (eating out, locked recipes...) */
   fixed?: PlannedMeal[];
   adjustments?: KcalAdjustment[];
+  /** Countries for lunches and dinners (see WeekPlan.cuisines) */
+  cuisines?: string[];
 }
 
 export function generateWeek(ctx: PlanContext, opts: GenerateOptions): PlanResult {
@@ -520,6 +541,7 @@ export function generateWeek(ctx: PlanContext, opts: GenerateOptions): PlanResul
     budget: ctx.budget,
     meals: [],
     adjustments: opts.adjustments ?? [],
+    ...(opts.cuisines?.length ? { cuisines: opts.cuisines } : {}),
   };
   const fixed = new Map((opts.fixed ?? []).map((m) => [key(m.day, m.meal), m]));
   const slots = slotsFor(ctx.prefs);

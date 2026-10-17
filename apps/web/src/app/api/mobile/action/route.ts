@@ -26,6 +26,7 @@ type Handler = (input: any, req: Request, userId: string) => Promise<unknown>;
  */
 const ACTIONS: Record<string, Handler> = {
   generateWeek: (i) => app.generateWeekAction(i),
+  cuisines: () => app.getCuisinesAction(),
   replaceMeal: (i) => app.replaceMealAction(i),
   planActions: (i) => app.planActionAction(i),
   alternatives: (i) => app.getAlternativesAction(i),

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Alert, Pressable, View, useWindowDimensions } from "react-native";
 import Svg, { Circle, Line, Path, Text as SvgText } from "react-native-svg";
 import { ProgressPhotos } from "@/components/progress-photos";
+import { useCuisineChoice } from "@/components/cuisine-picker";
 import { Button, Card, EmptyState, ErrorView, Field, Loading, Notice, Screen, SectionTitle, T } from "@/components/ui";
 import { api, useApi } from "@/lib/api";
 import { euro, num, shortDate } from "@/lib/format";
@@ -42,6 +43,7 @@ export default function ProgressScreen() {
   const [waist, setWaist] = useState("");
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
+  const { ask, sheet } = useCuisineChoice();
 
   if (loading && !data) return <Loading />;
   if (!data) return <ErrorView message={error?.code === "network" ? t("Pas de connexion internet.", "No internet connection.") : t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
@@ -66,14 +68,17 @@ export default function ProgressScreen() {
     ]);
   const createNext = async () => {
     if (!data.next) return;
+    const cuisines = await ask();
+    if (!cuisines) return;
     setBusy(true);
-    await api.action("generateWeek", { weekStart: data.next.weekStart }).catch(() => undefined);
+    await api.action("generateWeek", { weekStart: data.next.weekStart, cuisines }).catch(() => undefined);
     setBusy(false);
     await reload();
   };
 
   return (
     <Screen padTop={false} refreshing={refreshing} onRefresh={refresh}>
+      {sheet}
       {!data.hidden && (
         <Card>
           <SectionTitle>{t("Mon poids", "My weight")}</SectionTitle>

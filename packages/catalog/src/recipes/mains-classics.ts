@@ -349,7 +349,7 @@ for (const o of omelettes)
       prep: 10,
       cook: 15,
       tags: ["quick", "budget", "high-protein"],
-      cuisine: "française",
+      cuisine: o.key === "pdt" ? "espagnole" : "française",
       keeps: 1,
       img: "omelette",
     });

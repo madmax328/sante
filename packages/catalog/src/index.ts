@@ -7,6 +7,10 @@ import { asianMains } from "./recipes/mains-asian";
 import { bowlMains } from "./recipes/mains-bowls";
 import { panMains } from "./recipes/mains-pan";
 import { classicMains } from "./recipes/mains-classics";
+import { europeMains } from "./recipes/world-europe";
+import { orientMains } from "./recipes/world-orient";
+import { asiaMains } from "./recipes/world-asia";
+import { americasMains } from "./recipes/world-americas";
 
 export { ingredients };
 export { exercises } from "./exercises";
@@ -18,6 +22,10 @@ export const recipes: Recipe[] = [
   ...bowlMains,
   ...panMains,
   ...classicMains,
+  ...europeMains,
+  ...orientMains,
+  ...asiaMains,
+  ...americasMains,
 ].map(toRecipe);
 
 const cache = new Map<string, Catalog>();
@@ -45,3 +53,4 @@ export function getCatalog(market: Market = "FR", dislikes: string[] = []): Cata
 export { DISLIKE_GROUPS, type DislikeGroup } from "./dislikes";
 export { motions } from "./motions";
 export { drawMotion, poseAt, VIEW as MOTION_VIEW, type Motion, type Pose, type Shape, type Tone } from "./motion";
+export { CUISINE_COUNTRIES, CUISINE_CODES, type CuisineCountry } from "./countries";

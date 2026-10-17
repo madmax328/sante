@@ -20,9 +20,20 @@ export interface R {
   tags?: RecipeTag[];
   eq?: Equipment[];
   cuisine: string;
+  /** Country of the dish when the cuisine doesn't say it (see ORIGINS) */
+  origin?: string;
   keeps: number;
   img: string;
 }
+
+/** Country (ISO code) of each cuisine; the others (mediterranean, fusion…) belong to no country. */
+const ORIGINS: Record<string, string> = {
+  française: "fr", provençale: "fr", savoyarde: "fr", lyonnaise: "fr", niçoise: "fr", alsacienne: "fr", bretonne: "fr",
+  italienne: "it", espagnole: "es", portugaise: "pt", grecque: "gr",
+  maghrébine: "ma", marocaine: "ma", orientale: "ma", libanaise: "lb", indienne: "in",
+  asiatique: "cn", chinoise: "cn", japonaise: "jp", coréenne: "kr", thaïe: "th", vietnamienne: "vn",
+  mexicaine: "mx", "tex-mex": "mx", brésilienne: "br", américaine: "us", cajun: "us", hawaïenne: "us",
+};
 
 export const MAIN: MealType[] = ["lunch", "dinner"];
 export const BREAKFAST: MealType[] = ["breakfast"];
@@ -49,6 +60,7 @@ export function toRecipe(r: R): Recipe {
     keepsDays: r.keeps,
     imageQuery: r.img,
     family: r.id.split("-")[0],
+    origin: r.origin ?? ORIGINS[r.cuisine],
   };
 }
 
@@ -393,4 +405,39 @@ export const F = {
 
 export function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+// ---------------------------------------------------------------- Dishes with variants
+
+/** One version of a dish: its own name, extra ingredients and wording. */
+export interface Variant {
+  key: string;
+  name: string;
+  ing: Ing[];
+  img: string;
+  /** Free text for the steps (a protein to sear, a side…) */
+  step?: string;
+}
+
+export interface Dish extends Omit<R, "id" | "name" | "meals" | "steps" | "img"> {
+  /** Family id, without "-" (variants share it to avoid the same dish twice a week) */
+  id: string;
+  meals?: MealType[];
+  vs: Variant[];
+  steps: (v: Variant) => (string | false | undefined)[];
+}
+
+/** Expands a dish into its variants (`<id>-<key>`, or `<id>` for a key ""). */
+export function dishes(...list: Dish[]): R[] {
+  return list.flatMap(({ vs, steps, ing, meals, ...d }) =>
+    vs.map((v) => ({
+      ...d,
+      id: v.key ? `${d.id}-${v.key}` : d.id,
+      name: v.name,
+      meals: meals ?? MAIN,
+      ing: [...ing, ...v.ing],
+      steps: steps(v).filter((s): s is string => !!s),
+      img: v.img,
+    })),
+  );
 }

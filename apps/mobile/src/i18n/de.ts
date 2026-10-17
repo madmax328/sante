@@ -570,5 +570,10 @@ export const de: Record<string, string> = {
   "Ta semaine en un coup d'œil : repas, séances, poids et budget.": "Deine Woche auf einen Blick: Mahlzeiten, Einheiten, Gewicht und Budget.",
   "Ta nouvelle semaine t'attend": "Deine neue Woche wartet",
   "Ton bilan est prêt. Crée ta semaine suivante en un geste : menus, courses et sport.": "Dein Rückblick ist fertig. Plane deine nächste Woche mit einem Tipp: Menüs, Einkauf und Training.",
-  "SUPPRIMER": "LÖSCHEN"
+  "SUPPRIMER": "LÖSCHEN",
+  "Quelles cuisines cette semaine ?": "Welche Küchen diese Woche?",
+  "Choisis un ou plusieurs pays pour les déjeuners et les dîners, ou garde le mélange. Les petits-déjeuners et les collations ne changent pas.": "Wähle ein oder mehrere Länder für Mittag- und Abendessen oder behalte die Mischung. Frühstück und Snacks bleiben gleich.",
+  "Mélange": "Mischung",
+  "Tout le menu sera recréé (les repas à l'extérieur sont conservés).": "Das ganze Menü wird neu erstellt (auswärts gegessene Mahlzeiten bleiben erhalten).",
+  "Recréer": "Neu erstellen"
 };

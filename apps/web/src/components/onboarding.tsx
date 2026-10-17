@@ -8,6 +8,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { completeOnboarding, previewTargets, type OnboardingInput } from "@/app/[locale]/app/welcome/actions";
+import { CuisinePicker } from "./app-client";
 import { Button, Card, Field, Input, Notice, Select, cx } from "./ui";
 
 type Self = OnboardingInput["self"];
@@ -130,6 +131,7 @@ export function Onboarding({ defaultName, dislikeOptions }: { defaultName: strin
     limitations: [],
   });
   const [consent, setConsent] = useState(false);
+  const [cuisines, setCuisines] = useState<string[]>([]);
   const [preview, setPreview] = useState<Awaited<ReturnType<typeof previewTargets>>>();
 
   const index = STEPS.indexOf(step);
@@ -182,6 +184,7 @@ export function Onboarding({ defaultName, dislikeOptions }: { defaultName: strin
         prefs,
         budget,
         sport,
+        cuisines,
         consentHealth: consent as true,
       });
       if (!res.ok) {
@@ -509,6 +512,7 @@ export function Onboarding({ defaultName, dislikeOptions }: { defaultName: strin
                 {preview.safety.level !== "blocked" && (
                   <p className="text-sm text-muted">{t("summary.explain", { bmr: preview.targets.bmr, tdee: preview.targets.tdee })}</p>
                 )}
+                {preview.safety.level !== "blocked" && <CuisinePicker value={cuisines} onChange={setCuisines} />}
               </>
             )}
           </>

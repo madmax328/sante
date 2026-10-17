@@ -631,7 +631,13 @@
     "outside": "Auswärts",
     "someOutside": "Ein Teil des Haushalts auswärts",
     "withGuests": "+{n} Gäste",
-    "serving": "Portion"
+    "serving": "Portion",
+    "cuisinesTitle": "Welche Küchen diese Woche?",
+    "cuisinesHint": "Wähle ein oder mehrere Länder für Mittag- und Abendessen oder behalte die Mischung. Frühstück und Snacks bleiben gleich.",
+    "cuisinesMix": "Mischung",
+    "cuisinesLine": "Küchen:",
+    "cuisinesRelaxedTitle": "Ein paar Gerichte von anderswo",
+    "cuisinesRelaxedText": "{count, plural, one {# Gericht kommt} other {# Gerichte kommen}} aus anderen Küchen: Es gab nicht genug Rezepte aus diesen Ländern, die zu deiner Ernährung oder deiner Zeit passen."
   },
   "recipes": {
     "title": "Rezepte",
@@ -655,7 +661,9 @@
     "pagination": "Seiten",
     "prev": "Zurück",
     "next": "Weiter",
-    "page": "Seite {page} von {pages}"
+    "page": "Seite {page} von {pages}",
+    "country": "Land",
+    "allCountries": "Alle Länder"
   },
   "recipe": {
     "back": "Alle Rezepte",

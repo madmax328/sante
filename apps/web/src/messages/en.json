@@ -631,7 +631,13 @@
     "outside": "Eating out",
     "someOutside": "Part of the household out",
     "withGuests": "+{n} guests",
-    "serving": "serving"
+    "serving": "serving",
+    "cuisinesTitle": "Which cuisines this week?",
+    "cuisinesHint": "Pick one or more countries for lunches and dinners, or keep the mix. Breakfasts and snacks stay the same.",
+    "cuisinesMix": "Mix",
+    "cuisinesLine": "Cuisines:",
+    "cuisinesRelaxedTitle": "A few meals from elsewhere",
+    "cuisinesRelaxedText": "{count, plural, one {# meal comes} other {# meals come}} from other cuisines: there weren't enough recipes from these countries that fit your diet or your time."
   },
   "recipes": {
     "title": "Recipes",
@@ -655,7 +661,9 @@
     "pagination": "Pages",
     "prev": "Previous",
     "next": "Next",
-    "page": "Page {page} of {pages}"
+    "page": "Page {page} of {pages}",
+    "country": "Country",
+    "allCountries": "All countries"
   },
   "recipe": {
     "back": "All recipes",

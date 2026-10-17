@@ -182,6 +182,8 @@ export interface Recipe {
   imageQuery: string;
   /** Recipes sharing a family are variations of one dish (avoid them twice a week). */
   family?: string;
+  /** Country the dish comes from (ISO code: "fr", "jp"…); none for fusion dishes. */
+  origin?: string;
 }
 
 /** Recipe enriched by the engine with derived data. */

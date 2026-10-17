@@ -2,6 +2,7 @@ import { Link } from "expo-router";
 import { ChevronLeft, ChevronRight, RefreshCw } from "lucide-react-native";
 import { useState } from "react";
 import { Alert, Pressable, View } from "react-native";
+import { useCuisineChoice } from "@/components/cuisine-picker";
 import { Thumb } from "@/components/thumb";
 import { Badge, Button, Card, EmptyState, ErrorView, Loading, Screen, T } from "@/components/ui";
 import { api, useApi } from "@/lib/api";
@@ -33,23 +34,19 @@ export default function WeekScreen() {
   const [start, setStart] = useState<string>();
   const { data, error, loading, refreshing, refresh, reload } = useApi<Week>(start ? `/week?start=${start}` : "/week");
   const [busy, setBusy] = useState<string>();
+  const { ask, sheet } = useCuisineChoice();
 
   if (loading && !data) return <Loading />;
   if (!data) return <ErrorView message={error?.code === "network" ? t("Pas de connexion internet.", "No internet connection.") : t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
 
-  const generate = () =>
-    Alert.alert(t("Nouveau menu", "New menu"), t("Refaire tous les repas de cette semaine ? Les repas pris dehors sont conservés.", "Redo all of this week's meals? Meals eaten out are kept."), [
-      { text: t("Annuler", "Cancel"), style: "cancel" },
-      {
-        text: t("Refaire", "Redo"),
-        onPress: async () => {
-          setBusy("all");
-          await api.action("generateWeek", { weekStart: data.weekStart }).catch(() => undefined);
-          setBusy(undefined);
-          await reload();
-        },
-      },
-    ]);
+  const generate = async (redo: boolean) => {
+    const cuisines = await ask(redo);
+    if (!cuisines) return;
+    setBusy("all");
+    await api.action("generateWeek", { weekStart: data.weekStart, cuisines }).catch(() => undefined);
+    setBusy(undefined);
+    await reload();
+  };
   const replace = async (day: number, meal: string) => {
     setBusy(`${day}:${meal}`);
     const res = await api.action<{ ok: boolean; error?: string }>("replaceMeal", { day, meal, weekStart: data.weekStart }).catch(() => null);
@@ -60,6 +57,7 @@ export default function WeekScreen() {
 
   return (
     <Screen refreshing={refreshing} onRefresh={refresh}>
+      {sheet}
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
         <View>
           <T variant="title">{t("Ma semaine", "My week")}</T>
@@ -75,7 +73,7 @@ export default function WeekScreen() {
         <EmptyState
           title={t("Pas encore de menu", "No menu yet")}
           text={t("Sorloo prépare les 7 jours de repas et la liste de courses.", "Sorloo prepares 7 days of meals and the shopping list.")}
-          action={<Button variant="accent" loading={busy === "all"} onPress={async () => { setBusy("all"); await api.action("generateWeek", { weekStart: data.weekStart }).catch(() => undefined); setBusy(undefined); await reload(); }}>{t("Créer cette semaine", "Create this week")}</Button>}
+          action={<Button variant="accent" loading={busy === "all"} onPress={() => generate(false)}>{t("Créer cette semaine", "Create this week")}</Button>}
         />
       ) : (
         <>
@@ -94,7 +92,7 @@ export default function WeekScreen() {
                 )}
               </View>
               {data.summary.kept >= 5 && <T variant="small">{t("dont {0} de produits qui te resteront pour la suite", "including {0} of food you'll have left for later", [euro(data.summary.kept)])}</T>}
-              <Button small variant="secondary" onPress={generate} loading={busy === "all"} icon={<RefreshCw size={16} color={c.encre} />} style={{ alignSelf: "flex-start" }}>{t("Nouveau menu", "New menu")}</Button>
+              <Button small variant="secondary" onPress={() => generate(true)} loading={busy === "all"} icon={<RefreshCw size={16} color={c.encre} />} style={{ alignSelf: "flex-start" }}>{t("Nouveau menu", "New menu")}</Button>
             </Card>
           )}
           {data.days.map((d) => (

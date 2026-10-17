@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Check, Droplet, Loader2, Minus, Plus, RefreshCw, Sparkles, ThumbsDown, ThumbsUp } from "lucide-react";
-import type { MealType, PlanAction } from "@weeko/engine";
+import type { Locale, MealType, PlanAction } from "@weeko/engine";
+import { CUISINE_COUNTRIES } from "@weeko/catalog/countries";
 import { Link, useRouter } from "@/i18n/navigation";
 import {
   addWaterAction,
   generateWeekAction,
+  getCuisinesAction,
   planActionAction,
   rateRecipeAction,
   toggleEatenAction,
@@ -113,48 +115,74 @@ export function GenerateWeekButton({ label, variant = "accent", weekStart, confi
   const router = useRouter();
   const [pending, start] = useTransition();
   const { error, handle } = useActionError();
-  const [confirming, setConfirming] = useState(false);
+  const [choosing, setChoosing] = useState(false);
+  const [cuisines, setCuisines] = useState<string[]>([]);
   const t = useTranslations("week");
-  if (confirmText && confirming) {
+
+  const open = () =>
+    // Preselect the countries of the last week before showing the choice.
+    start(async () => {
+      const last = await getCuisinesAction().catch(() => ({ cuisines: [] }));
+      setCuisines(last.cuisines);
+      setChoosing(true);
+    });
+  const create = () =>
+    start(async () => {
+      if (handle(await generateWeekAction({ weekStart, cuisines }))) setChoosing(false);
+      router.refresh();
+    });
+
+  if (choosing) {
     return (
-      <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-miel-soft p-3 text-sm">
-        <span>{confirmText}</span>
-        <Button
-          size="sm"
-          variant="accent"
-          disabled={pending}
-          onClick={() =>
-            start(async () => {
-              if (handle(await generateWeekAction({ weekStart }))) setConfirming(false);
-              router.refresh();
-            })
-          }
-        >
-          {pending ? <Loader2 className="size-4 animate-spin" /> : null} {t("confirmRegenerate")}
-        </Button>
-        <Button size="sm" variant="ghost" onClick={() => setConfirming(false)}>{t("cancel")}</Button>
+      <div className="grid gap-3 rounded-2xl border border-line bg-surface p-4 text-left">
+        <CuisinePicker value={cuisines} onChange={setCuisines} />
+        {confirmText && <p className="rounded-xl bg-miel-soft p-2 text-sm">{confirmText}</p>}
+        <div className="flex flex-wrap items-center gap-2">
+          <Button variant="accent" disabled={pending} onClick={create}>
+            {pending ? <Loader2 className="size-4 animate-spin" /> : <Sparkles className="size-4" />} {confirmText ? t("confirmRegenerate") : label}
+          </Button>
+          <Button variant="ghost" disabled={pending} onClick={() => setChoosing(false)}>
+            {t("cancel")}
+          </Button>
+        </div>
         <ErrorLine error={error} />
       </div>
     );
   }
   return (
     <div className="grid gap-1">
-      <Button
-        variant={variant}
-        size={variant === "accent" ? "lg" : "md"}
-        disabled={pending}
-        onClick={() => {
-          if (confirmText) return setConfirming(true);
-          start(async () => {
-            handle(await generateWeekAction({ weekStart }));
-            router.refresh();
-          });
-        }}
-      >
+      <Button variant={variant} size={variant === "accent" ? "lg" : "md"} disabled={pending} onClick={open}>
         {pending ? <Loader2 className="size-4 animate-spin" /> : <RefreshCw className="size-4" />} {label}
       </Button>
-      <ErrorLine error={error} />
     </div>
+  );
+}
+
+/** Countries of the week: none selected means a mix of every cuisine. */
+export function CuisinePicker({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) {
+  const t = useTranslations("week");
+  const locale = useLocale() as Locale;
+  const chip = (on: boolean) =>
+    cx(
+      "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors",
+      on ? "border-basilic bg-basilic-soft text-basilic-strong" : "border-line bg-surface hover:border-basilic",
+    );
+  const toggle = (code: string) => onChange(value.includes(code) ? value.filter((c) => c !== code) : [...value, code]);
+  return (
+    <fieldset className="grid gap-2">
+      <legend className="text-sm font-semibold">{t("cuisinesTitle")}</legend>
+      <p className="text-xs text-muted">{t("cuisinesHint")}</p>
+      <div className="flex flex-wrap gap-2">
+        <button type="button" aria-pressed={value.length === 0} onClick={() => onChange([])} className={chip(value.length === 0)}>
+          <span aria-hidden>🌍</span> {t("cuisinesMix")}
+        </button>
+        {CUISINE_COUNTRIES.map((c) => (
+          <button key={c.code} type="button" aria-pressed={value.includes(c.code)} onClick={() => toggle(c.code)} className={chip(value.includes(c.code))}>
+            <span aria-hidden>{c.flag}</span> {c.name[locale] ?? c.name.fr}
+          </button>
+        ))}
+      </div>
+    </fieldset>
   );
 }
 

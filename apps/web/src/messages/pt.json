@@ -631,7 +631,13 @@
     "outside": "Fora",
     "someOutside": "Parte da casa fora",
     "withGuests": "+{n} convidados",
-    "serving": "porção"
+    "serving": "porção",
+    "cuisinesTitle": "Que cozinhas esta semana?",
+    "cuisinesHint": "Escolha um ou mais países para os almoços e jantares, ou mantenha a mistura. Os pequenos-almoços e lanches não mudam.",
+    "cuisinesMix": "Mistura",
+    "cuisinesLine": "Cozinhas:",
+    "cuisinesRelaxedTitle": "Algumas refeições de outros lados",
+    "cuisinesRelaxedText": "{count, plural, one {# refeição vem} other {# refeições vêm}} de outras cozinhas: não havia receitas suficientes destes países compatíveis com a sua dieta ou o seu tempo."
   },
   "recipes": {
     "title": "Receitas",
@@ -655,7 +661,9 @@
     "pagination": "Páginas",
     "prev": "Anterior",
     "next": "Próxima",
-    "page": "Página {page} de {pages}"
+    "page": "Página {page} de {pages}",
+    "country": "País",
+    "allCountries": "Todos os países"
   },
   "recipe": {
     "back": "Todas as receitas",

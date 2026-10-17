@@ -4,6 +4,7 @@ import { Check, Clock, Droplet, MessageCircle, Minus, Plus, TrendingUp, UserRoun
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 import { Badge, Button, Card, EmptyState, ErrorView, IconButton, Loading, Notice, ProgressBar, Ring, Screen, SectionTitle, T } from "@/components/ui";
+import { useCuisineChoice } from "@/components/cuisine-picker";
 import { QuickAdjust } from "@/components/quick-adjust";
 import { RemindersPrompt } from "@/components/reminders-prompt";
 import { Thumb } from "@/components/thumb";
@@ -33,6 +34,7 @@ export default function TodayScreen() {
   const { me } = useMe();
   const { data, error, loading, refreshing, refresh, reload, setData } = useApi<Today>("/today");
   const [generating, setGenerating] = useState(false);
+  const { ask, sheet } = useCuisineChoice();
 
   if (loading && !data) return <Loading />;
   if (!data) return <ErrorView message={error?.code === "network" ? t("Pas de connexion internet.", "No internet connection.") : t("Le chargement a échoué.", "Loading failed.")} onRetry={reload} />;
@@ -50,14 +52,17 @@ export default function TodayScreen() {
     await api.action("addWater", { ml, date: data.date }).catch(() => undefined);
   };
   const generate = async () => {
+    const cuisines = await ask();
+    if (!cuisines) return;
     setGenerating(true);
-    await api.action("generateWeek").catch(() => undefined);
+    await api.action("generateWeek", { cuisines }).catch(() => undefined);
     setGenerating(false);
     await reload();
   };
 
   return (
     <Screen refreshing={refreshing} onRefresh={refresh}>
+      {sheet}
       <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
         <View style={{ flex: 1 }}>
           <T variant="title">{t("Bonjour {0} !", "Hello {0}!", [data.name])}</T>

@@ -2,6 +2,7 @@
 
 import { ALLERGENS, MIN_SIGNUP_AGE, type FoodTag, type MealType } from "@weeko/engine";
 import { z } from "zod";
+import { CUISINE_CODES } from "@weeko/catalog/countries";
 import { ageFrom, todayIn } from "@/lib/dates";
 import { memberTargets } from "@/lib/planning";
 import { ensureProfile, saveHealth, updateProfile } from "@/lib/repo";
@@ -57,6 +58,8 @@ const schema = z.object({
     equipment: z.array(z.enum(["dumbbells", "band", "kettlebell", "pullup_bar", "bike", "pool"])),
     limitations: z.array(z.enum(["knees", "back", "shoulders", "wrists"])),
   }),
+  /** Countries of the first week ([] or absent = every cuisine) */
+  cuisines: z.array(z.enum(CUISINE_CODES as [string, ...string[]])).max(CUISINE_CODES.length).optional(),
   consentHealth: z.literal(true),
 });
 
@@ -121,13 +124,14 @@ export async function completeOnboarding(input: OnboardingInput): Promise<Onboar
         dislikedRecipes: [],
       },
       budget: data.budget,
+      cuisines: data.cuisines ?? [],
       sport: { ...data.sport, startedAt: today },
       consents: {
         terms: { at: consentAt, version: CONSENT_VERSION },
         health: { at: consentAt, version: CONSENT_VERSION },
       },
     });
-    await generateForUser(userId);
+    await generateForUser(userId, undefined, undefined, data.cuisines ?? []);
   } catch (e) {
     console.error("onboarding failed", e);
     return { ok: false, error: "server" };

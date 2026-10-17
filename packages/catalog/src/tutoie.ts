@@ -45,6 +45,8 @@ const IRREGULAR: Record<string, string> = {
   amenez: "amène",
   ramenez: "ramène",
   pouvez: "peux",
+  prévoyez: "prévois",
+  réduisez: "réduis",
 };
 
 /** Words ending in "ez" that are not verbs. */

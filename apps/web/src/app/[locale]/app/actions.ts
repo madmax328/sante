@@ -4,6 +4,7 @@ import { requestLocale, tr } from "@/lib/locale";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { MEAL_TYPES, alternatives as engineAlternatives, type MealType, type PlanAction } from "@weeko/engine";
+import { CUISINE_CODES } from "@weeko/catalog/countries";
 import { addDays, todayIn, weekStartOf } from "@/lib/dates";
 import { FREE_LIMITS, can, isPremium } from "@/lib/premium";
 import {
@@ -40,18 +41,29 @@ async function bumpUsage(userId: string, field: "replacements" | "aiMessages"): 
   return usage[field];
 }
 
-export async function generateWeekAction(input?: { weekStart?: string }): Promise<ActionResult> {
+export async function generateWeekAction(input?: { weekStart?: string; cuisines?: string[] }): Promise<ActionResult> {
   const userId = await requireUserId();
-  const parsed = weekStart.safeParse(input?.weekStart);
+  const parsed = z
+    .object({ weekStart, cuisines: z.array(z.enum(CUISINE_CODES as [string, ...string[]])).max(CUISINE_CODES.length).optional() })
+    .safeParse(input ?? {});
   if (!parsed.success) return { ok: false, error: "invalid" };
+  const { cuisines } = parsed.data;
   try {
-    await generateForUser(userId, parsed.data, Math.floor(Math.random() * 2 ** 31));
+    // The choice is remembered for the next week.
+    if (cuisines) await updateProfile(userId, { cuisines: [...new Set(cuisines)] });
+    await generateForUser(userId, parsed.data.weekStart, Math.floor(Math.random() * 2 ** 31), cuisines);
   } catch (e) {
     console.error(e);
     return { ok: false, error: "server" };
   }
   refresh();
   return { ok: true };
+}
+
+/** Countries chosen for the last week (to preselect them). */
+export async function getCuisinesAction(): Promise<{ cuisines: string[] }> {
+  const userId = await requireUserId();
+  return { cuisines: (await getProfile(userId))?.cuisines ?? [] };
 }
 
 export async function replaceMealAction(input: { day: number; meal: MealType; recipeId?: string; weekStart?: string }): Promise<ActionResult> {

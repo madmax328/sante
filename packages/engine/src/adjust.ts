@@ -247,6 +247,8 @@ export function alternatives(
   const stockWithout = simulate(ctx.catalog, others, ctx.pantry);
   const used = new Set(plan.meals.map((x) => x.recipeId));
   const q = opts.query?.toLowerCase();
+  // The week's countries come first, without hiding the others.
+  const origins = meal === "lunch" || meal === "dinner" ? plan.cuisines : undefined;
 
   const cands = ctx.catalog.allRecipes().filter(
     (r) =>
@@ -277,7 +279,8 @@ export function alternatives(
     const proteinGap = target
       ? Math.max(0, (target.protein * 4) / target.kcal - (r.nutrition.protein * 4) / Math.max(1, r.nutrition.kcal))
       : 0;
-    const score = costDelta * 0.3 - reuse * 1.2 + proteinGap * 4 + (used.has(r.id) ? 1 : 0) - (ctx.affinity?.[r.id] ?? 0) * 0.3;
+    const score = costDelta * 0.3 - reuse * 1.2 + proteinGap * 4 + (used.has(r.id) ? 1 : 0) - (ctx.affinity?.[r.id] ?? 0) * 0.3 -
+      (origins?.includes(r.origin ?? "") ? 0.6 : 0);
     return { recipe: r, costDelta, kcal: r.nutrition.kcal, reuse: Math.round(reuse * 100) / 100, score };
   });
   return scored

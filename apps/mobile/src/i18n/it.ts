@@ -570,5 +570,10 @@ export const it: Record<string, string> = {
   "Ta semaine en un coup d'œil : repas, séances, poids et budget.": "La tua settimana in un colpo d'occhio: pasti, sessioni, peso e budget.",
   "Ta nouvelle semaine t'attend": "La tua nuova settimana ti aspetta",
   "Ton bilan est prêt. Crée ta semaine suivante en un geste : menus, courses et sport.": "Il tuo bilancio è pronto. Crea la settimana successiva con un tocco: menù, spesa e sport.",
-  "SUPPRIMER": "ELIMINA"
+  "SUPPRIMER": "ELIMINA",
+  "Quelles cuisines cette semaine ?": "Quali cucine questa settimana?",
+  "Choisis un ou plusieurs pays pour les déjeuners et les dîners, ou garde le mélange. Les petits-déjeuners et les collations ne changent pas.": "Scegli uno o più paesi per pranzi e cene, oppure tieni il mix. Colazioni e spuntini non cambiano.",
+  "Mélange": "Mix",
+  "Tout le menu sera recréé (les repas à l'extérieur sont conservés).": "Tutto il menu verrà ricreato (i pasti fuori casa vengono mantenuti).",
+  "Recréer": "Ricrea"
 };

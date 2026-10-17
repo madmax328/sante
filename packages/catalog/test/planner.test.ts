@@ -219,3 +219,22 @@ describe("diet nuances", () => {
     expect(less).toBeGreaterThan(30);
   });
 });
+
+describe("world cuisines", () => {
+  const mainsOf = (p: ReturnType<typeof generateWeek>["plan"]) =>
+    p.meals.filter((m) => (m.meal === "lunch" || m.meal === "dinner") && m.kind === "recipe").map((m) => catalog.recipe(m.recipeId!));
+
+  it("plans lunches and dinners from the chosen countries only", () => {
+    for (const c of ["jp", "pt", "mx", "lb"]) {
+      const res = generateWeek(ctx, { startDate: START, seed: 1, cuisines: [c] });
+      expect(res.plan.cuisines).toEqual([c]);
+      for (const r of mainsOf(res.plan)) expect(r.origin, `${c}: ${r.id}`).toBe(c);
+    }
+  });
+
+  it("falls back to other cuisines rather than leaving a meal empty", () => {
+    const res = generateWeek({ ...ctx, prefs: { ...prefs, diet: "vegan" } }, { startDate: START, seed: 1, cuisines: ["pt"] });
+    expect(res.summary.notes.some((n) => n.code === "no_candidate")).toBe(false);
+    expect(mainsOf(res.plan).length).toBeGreaterThan(8);
+  });
+});

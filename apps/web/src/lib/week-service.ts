@@ -25,14 +25,24 @@ async function context(userId: string): Promise<UserContext> {
   return uc;
 }
 
-/** Creates (or recreates) the meal plan of a week and its workout plan. */
-export async function generateForUser(userId: string, weekStart?: string, seed?: number): Promise<PlanResult> {
+/**
+ * Creates (or recreates) the meal plan of a week and its workout plan.
+ * `cuisines`: countries for lunches and dinners ([] = every cuisine); by
+ * default those of the week being recreated, else the last ones chosen.
+ */
+export async function generateForUser(userId: string, weekStart?: string, seed?: number, cuisines?: string[]): Promise<PlanResult> {
   const uc = await context(userId);
   const start = weekStart ?? uc.weekStart;
   const existing = await getPlan(userId, start);
   // Keep meals the user already declared (restaurant...) when regenerating.
   const fixed = existing?.plan.meals.filter((m) => m.kind === "external" || m.locked) ?? [];
-  const result = generateWeek(uc.ctx, { startDate: start, seed, fixed, adjustments: existing?.plan.adjustments });
+  const result = generateWeek(uc.ctx, {
+    startDate: start,
+    seed,
+    fixed,
+    adjustments: existing?.plan.adjustments,
+    cuisines: cuisines ?? existing?.plan.cuisines ?? uc.profile.cuisines,
+  });
   await savePlan(userId, start, result.plan, true);
   if (uc.profile.sport.enabled && !(await getWorkoutWeek(userId, start))) {
     await saveWorkoutWeek(userId, start, workoutWeekFor(uc, start));

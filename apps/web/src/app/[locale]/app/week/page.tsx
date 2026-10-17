@@ -2,6 +2,7 @@ import { requestLocale, tr } from "@/lib/locale";
 import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { MEAL_ORDER } from "@weeko/engine";
+import { CUISINE_COUNTRIES } from "@weeko/catalog/countries";
 import { GenerateWeekButton } from "@/components/app-client";
 import { RecipeImage } from "@/components/recipe-image";
 import { Badge, Card, EmptyState, Notice, PageHeader, Progress } from "@/components/ui";
@@ -63,6 +64,17 @@ export default async function WeekPage({ searchParams }: PageProps<"/[locale]/ap
   const s = result.summary;
   const selfDaily = s.daily[uc.self.member.id] ?? [];
   const avgKcal = Math.round(selfDaily.reduce((a, d) => a + d.kcal, 0) / Math.max(1, selfDaily.length));
+  const chosen = CUISINE_COUNTRIES.filter((c) => result.plan.cuisines?.includes(c.code));
+  // Lunches and dinners taken from other cuisines (not enough recipes for the diet or time).
+  const elsewhere = chosen.length
+    ? result.plan.meals.filter(
+        (m) =>
+          (m.meal === "lunch" || m.meal === "dinner") &&
+          m.kind === "recipe" &&
+          m.recipeId &&
+          !result.plan.cuisines!.includes(uc.ctx.catalog.recipe(m.recipeId).origin ?? ""),
+      ).length
+    : 0;
 
   return (
     <div className="grid gap-6">
@@ -90,6 +102,13 @@ export default async function WeekPage({ searchParams }: PageProps<"/[locale]/ap
               <p className="text-sm text-muted num">{t("budgetLine", { budget: money(s.budget), left: money(Math.max(0, s.budget - s.cost)) })}</p>
             </>
           )}
+          <p className="text-sm text-muted">
+            {t("cuisinesLine")}{" "}
+            <span className="font-semibold text-encre">
+              {chosen.length ? chosen.map((c) => `${c.flag} ${c.name[loc] ?? c.name.fr}`).join(" · ") : `🌍 ${t("cuisinesMix")}`}
+            </span>
+          </p>
+          {elsewhere > 0 && <Notice tone="miel" title={t("cuisinesRelaxedTitle")}>{t("cuisinesRelaxedText", { count: elsewhere })}</Notice>}
           {s.notes.some((n) => n.code === "budget_over") && (
             <Notice tone="miel" title={t("budgetOverTitle")}>{t("budgetOverText", { min: money(s.cost) })}</Notice>
           )}

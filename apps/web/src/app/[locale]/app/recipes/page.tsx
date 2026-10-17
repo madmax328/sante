@@ -2,6 +2,7 @@ import { requestLocale, tr } from "@/lib/locale";
 import { Clock, Search } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { isCompatible, MEAL_TYPES, type Diet, type MealType, type RecipeInfo } from "@weeko/engine";
+import { CUISINE_COUNTRIES } from "@weeko/catalog/countries";
 import { RecipeImage } from "@/components/recipe-image";
 import { Badge, Card, EmptyState, Input, PageHeader, Select, buttonClass } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
@@ -31,6 +32,7 @@ export default async function RecipesPage({ searchParams }: PageProps<"/[locale]
   const meal = MEAL_TYPES.includes(sp.meal as MealType) ? (sp.meal as MealType) : undefined;
   const diet = DIETS.includes(sp.diet as Diet) ? (sp.diet as Diet) : uc.ctx.prefs.diet;
   const max = Number(sp.max) > 0 ? Number(sp.max) : undefined;
+  const country = CUISINE_COUNTRIES.find((c) => c.code === sp.country);
   const onlyMine = sp.all !== "1";
   const page = Math.max(1, Number(sp.page) || 1);
   const hidden = !!uc.health.numbersHidden;
@@ -41,6 +43,7 @@ export default async function RecipesPage({ searchParams }: PageProps<"/[locale]
     if (meal && !r.meals.includes(meal)) return false;
     if (!r.diets.includes(diet)) return false;
     if (max && r.totalMin > max) return false;
+    if (country && r.origin !== country.code) return false;
     if (onlyMine && !isCompatible(r, { prefs: { ...uc.ctx.prefs, diet, equipment: ["oven", "microwave", "blender", "airfryer", "slowcooker"] }, avoid })) return false;
     if (terms.length) {
       const hay = norm(tr(r.name, loc) + " " + r.ingredients.map((i) => tr(uc.ctx.catalog.ingredient(i.id).name, loc)).join(" "));
@@ -53,7 +56,7 @@ export default async function RecipesPage({ searchParams }: PageProps<"/[locale]
   const photos = await getPhotoMap(shown.map((r) => r.id));
   const qs = (patch: Record<string, string | number | undefined>) => {
     const p = new URLSearchParams();
-    const all = { q, meal, diet, max, all: onlyMine ? undefined : "1", page, ...patch };
+    const all = { q, meal, diet, max, country: country?.code, all: onlyMine ? undefined : "1", page, ...patch };
     for (const [k, v] of Object.entries(all)) if (v !== undefined && v !== "") p.set(k, String(v));
     return `/app/recipes?${p.toString()}`;
   };
@@ -61,7 +64,7 @@ export default async function RecipesPage({ searchParams }: PageProps<"/[locale]
   return (
     <div className="grid gap-6">
       <PageHeader title={t("title")} subtitle={t("subtitle", { count: format.number(list.length) })} />
-      <form className="grid gap-3 rounded-2xl border border-line bg-surface p-4 md:grid-cols-[2fr_1fr_1fr_1fr_auto]" action="">
+      <form className="grid gap-3 rounded-2xl border border-line bg-surface p-4 md:grid-cols-[2fr_1fr_1fr_1fr_1fr_auto]" action="">
         <div className="relative">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" aria-hidden />
           <Input name="q" defaultValue={q} placeholder={t("search")} aria-label={t("search")} className="pl-9" />
@@ -76,6 +79,10 @@ export default async function RecipesPage({ searchParams }: PageProps<"/[locale]
         <Select name="max" defaultValue={max ? String(max) : ""} aria-label={t("time")}>
           <option value="">{t("anyTime")}</option>
           {[15, 20, 30, 45].map((m) => <option key={m} value={m}>{t("maxTime", { m })}</option>)}
+        </Select>
+        <Select name="country" defaultValue={country?.code ?? ""} aria-label={t("country")}>
+          <option value="">{t("allCountries")}</option>
+          {CUISINE_COUNTRIES.map((c) => <option key={c.code} value={c.code}>{c.flag} {c.name[loc] ?? c.name.fr}</option>)}
         </Select>
         <button type="submit" className={buttonClass("primary")}>{t("filter")}</button>
       </form>

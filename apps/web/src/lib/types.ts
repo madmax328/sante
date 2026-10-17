@@ -71,6 +71,8 @@ export interface Profile {
   onboarded: boolean;
   prefs: FoodPreferences;
   budget: { enabled: boolean; weekly: number };
+  /** Countries chosen for the last week created (empty or absent = every cuisine) */
+  cuisines?: string[];
   sport: SportSettings;
   consents: {
     terms?: { at: Date; version: string };

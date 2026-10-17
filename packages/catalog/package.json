@@ -17,6 +17,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./demos": "./src/demos.ts",
-    "./i18n": "./src/i18n.ts"
+    "./i18n": "./src/i18n.ts",
+    "./countries": "./src/countries.ts"
   }
 }

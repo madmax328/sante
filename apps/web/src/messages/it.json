@@ -631,7 +631,13 @@
     "outside": "Fuori",
     "someOutside": "Parte della famiglia fuori",
     "withGuests": "+{n} ospiti",
-    "serving": "porzione"
+    "serving": "porzione",
+    "cuisinesTitle": "Quali cucine questa settimana?",
+    "cuisinesHint": "Scegli uno o più paesi per pranzi e cene, oppure tieni il mix. Colazioni e spuntini non cambiano.",
+    "cuisinesMix": "Mix",
+    "cuisinesLine": "Cucine:",
+    "cuisinesRelaxedTitle": "Qualche pasto da altrove",
+    "cuisinesRelaxedText": "{count, plural, one {# pasto viene} other {# pasti vengono}} da altre cucine: non c'erano abbastanza ricette di questi paesi adatte alla tua dieta o al tuo tempo."
   },
   "recipes": {
     "title": "Ricette",
@@ -655,7 +661,9 @@
     "pagination": "Pagine",
     "prev": "Precedente",
     "next": "Successiva",
-    "page": "Pagina {page} di {pages}"
+    "page": "Pagina {page} di {pages}",
+    "country": "Paese",
+    "allCountries": "Tutti i paesi"
   },
   "recipe": {
     "back": "Tutte le ricette",

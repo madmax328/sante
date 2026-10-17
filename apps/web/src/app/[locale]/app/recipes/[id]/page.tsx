@@ -7,6 +7,7 @@ import { ALLERGENS } from "@weeko/engine";
 import { RateRecipe } from "@/components/app-client";
 import { AddRecipeToJournal, IngredientScaler, type IngredientLine } from "@/components/recipe-client";
 import { PhotoCredit, RecipeImage } from "@/components/recipe-image";
+import { CUISINE_COUNTRIES } from "@weeko/catalog/countries";
 import { Badge, Card, Notice } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { requireContext } from "@/lib/app-user";
@@ -25,6 +26,7 @@ export default async function RecipePage({ params }: PageProps<"/[locale]/app/re
   const { uc } = await requireContext();
   const recipe = uc.ctx.catalog.recipes.get(id);
   if (!recipe) notFound();
+  const country = CUISINE_COUNTRIES.find((c) => c.code === recipe.origin);
   const t = await getTranslations("recipe");
   const e = await getTranslations("enums");
   const format = await getFormatter();
@@ -55,6 +57,7 @@ export default async function RecipePage({ params }: PageProps<"/[locale]/app/re
         <div className="grid content-start gap-4">
           <div className="flex flex-wrap gap-1.5">
             {recipe.meals.map((m) => <Badge key={m} tone="neutral">{e(`meal.${m}`)}</Badge>)}
+            {country && <Badge tone="neutral">{country.flag} {country.name[loc] ?? country.name.fr}</Badge>}
             {recipe.diets.includes("vegan") ? <Badge tone="basilic">{e("diet.vegan")}</Badge> : recipe.diets.includes("vegetarian") ? <Badge tone="basilic">{e("diet.vegetarian")}</Badge> : null}
             {recipe.tags.includes("batch") && <Badge tone="miel">{t("batch")}</Badge>}
           </div>

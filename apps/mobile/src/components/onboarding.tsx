@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { KeyboardAvoidingView, Platform, Switch, View } from "react-native";
+import { useCuisineChoice } from "./cuisine-picker";
 import { Button, Card, Chip, Field, Notice, ProgressBar, Screen, T } from "./ui";
 import { api } from "@/lib/api";
 import { L } from "@/lib/labels";
@@ -55,6 +56,7 @@ export function Onboarding() {
   const [step, setStep] = useState<Step>("you");
   const [error, setError] = useState<string>();
   const [pending, setPending] = useState(false);
+  const { ask, sheet } = useCuisineChoice();
 
   const [sex, setSex] = useState<"female" | "male">();
   const [birth, setBirth] = useState("");
@@ -97,6 +99,9 @@ export function Onboarding() {
     if (problem) return setError(problem);
     setError(undefined);
     if (index < STEPS.length - 1) return setStep(STEPS[index + 1]!);
+    // Countries of the first week, chosen just before it is created.
+    const cuisines = await ask();
+    if (!cuisines) return;
     setPending(true);
     const res = await api
       .action<{ ok: boolean; error?: string }>("completeOnboarding", {
@@ -119,6 +124,7 @@ export function Onboarding() {
         prefs: { diet, veggies, avoid, dislikedIngredients: [], maxMinutesWeekday: Number(weekday) || 30, maxMinutesWeekend: 60, equipment, leftovers, snacks: true },
         budget: { enabled: false, weekly: 70 },
         sport: { enabled: sport, level, availableDays: days, minutesPerSession: minutes, equipment: [], limitations: [] },
+        cuisines,
         consentHealth: true,
       })
       .catch(() => null);
@@ -132,6 +138,7 @@ export function Onboarding() {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <Screen>
+        {sheet}
         <View style={{ gap: space.sm }}>
           <T variant="label">{t("Étape {0} sur {1}", "Step {0} of {1}", [index + 1, STEPS.length])}</T>
           <ProgressBar value={index + 1} max={STEPS.length} />
