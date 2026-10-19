@@ -1034,7 +1034,10 @@
     "cancelNo": "Premium behalten",
     "resume": "Mein Abonnement reaktivieren",
     "cancelError": "Das hat nicht geklappt. Bitte versuche es gleich noch einmal.",
-    "supportNote": "Eine Frage zu deinem Abonnement? <link>Schreib uns</link>."
+    "supportNote": "Eine Frage zu deinem Abonnement? <link>Schreib uns</link>.",
+    "storeApple": "Dein Premium-Abo wurde in der iPhone-App abgeschlossen: Du verwaltest (oder kündigst) es in deinen Apple-Account-Einstellungen unter Abonnements.",
+    "storeGoogle": "Dein Premium-Abo wurde in der Android-App abgeschlossen: Du verwaltest (oder kündigst) es in Google Play unter Abos.",
+    "storeGift": "Premium wurde dir geschenkt."
   },
   "checkout": {
     "title": "Zu Premium wechseln",

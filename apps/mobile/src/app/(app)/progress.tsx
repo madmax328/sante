@@ -10,6 +10,7 @@ import { api, useApi } from "@/lib/api";
 import { euro, num, shortDate } from "@/lib/format";
 import { radius, space, useColors } from "@/lib/theme";
 import { t } from "@/lib/i18n";
+import { PremiumButton } from "@/components/premium-button";
 
 interface Review {
   trendChangeKg: number | null;
@@ -112,7 +113,7 @@ export default function ProgressScreen() {
           )}
         </>
       ) : (
-        <EmptyState title={t("Ton bilan de la semaine", "Your weekly review")} text={t("Avec Sorloo Premium, tu reçois chaque semaine un bilan (poids, repas suivis, séances, budget) et des conseils pour la suite.", "With Sorloo Premium, you get a weekly review (weight, meals followed, workouts, budget) and tips for what's next.")} />
+        <EmptyState title={t("Ton bilan de la semaine", "Your weekly review")} action={<PremiumButton />} text={t("Avec Sorloo Premium, tu reçois chaque semaine un bilan (poids, repas suivis, séances, budget) et des conseils pour la suite.", "With Sorloo Premium, you get a weekly review (weight, meals followed, workouts, budget) and tips for what's next.")} />
       )}
 
       {!data.hidden && data.measurements.length > 0 && (

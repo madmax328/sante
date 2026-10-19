@@ -8,6 +8,7 @@ import { L } from "@/lib/labels";
 import { useMe } from "@/lib/me";
 import { radius, space, useColors } from "@/lib/theme";
 import { t, tn } from "@/lib/i18n";
+import { PremiumButton } from "@/components/premium-button";
 
 interface Prefs {
   diet: keyof typeof L.diet;
@@ -213,6 +214,7 @@ function Budget({ initial }: { initial: Preferences["budget"] }) {
       <Card>
         <SectionTitle>{t("Mon budget courses", "My grocery budget")}</SectionTitle>
         <T variant="small">{t("Avec Sorloo Premium, fixe un budget par semaine : Sorloo construit des menus qui le respectent.", "With Sorloo Premium, set a weekly budget: Sorloo builds menus that stay within it.")}</T>
+        <PremiumButton />
       </Card>
     );
   }

@@ -6,6 +6,7 @@ import { Button, Card, EmptyState, ErrorView, Field, Loading, Screen, SectionTit
 import { api, useApi } from "@/lib/api";
 import { radius, space, useColors } from "@/lib/theme";
 import { t } from "@/lib/i18n";
+import { PremiumButton } from "@/components/premium-button";
 
 type Unit = "g" | "ml" | "pc";
 
@@ -32,7 +33,7 @@ export default function PantryScreen() {
   if (!data.allowed) {
     return (
       <Screen padTop={false}>
-        <EmptyState title={t("Ton garde-manger", "Your pantry")} text={t("Avec Sorloo Premium, indique ce que tu as déjà chez toi : Sorloo le retire de ta liste de courses et le cuisine en priorité, pour dépenser moins et gaspiller moins.", "With Sorloo Premium, tell Sorloo what you already have at home: it's taken off your shopping list and cooked first, so you spend less and waste less.")} />
+        <EmptyState title={t("Ton garde-manger", "Your pantry")} action={<PremiumButton />} text={t("Avec Sorloo Premium, indique ce que tu as déjà chez toi : Sorloo le retire de ta liste de courses et le cuisine en priorité, pour dépenser moins et gaspiller moins.", "With Sorloo Premium, tell Sorloo what you already have at home: it's taken off your shopping list and cooked first, so you spend less and waste less.")} />
       </Screen>
     );
   }

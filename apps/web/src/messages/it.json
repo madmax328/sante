@@ -1034,7 +1034,10 @@
     "cancelNo": "Mantieni Premium",
     "resume": "Riattiva il mio abbonamento",
     "cancelError": "Non ha funzionato. Riprova tra un attimo.",
-    "supportNote": "Una domanda sul tuo abbonamento? <link>Scrivici</link>."
+    "supportNote": "Una domanda sul tuo abbonamento? <link>Scrivici</link>.",
+    "storeApple": "Il tuo abbonamento Premium è stato attivato nell'app per iPhone: gestiscilo (o disdicilo) nelle impostazioni del tuo account Apple, alla voce Abbonamenti.",
+    "storeGoogle": "Il tuo abbonamento Premium è stato attivato nell'app Android: gestiscilo (o disdicilo) su Google Play, alla voce Abbonamenti.",
+    "storeGift": "Premium ti è stato regalato."
   },
   "checkout": {
     "title": "Passa a Premium",

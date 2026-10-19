@@ -10,8 +10,10 @@ import * as sport from "@/app/[locale]/app/sport/actions";
 import * as welcome from "@/app/[locale]/app/welcome/actions";
 import { auth } from "@/lib/auth";
 import { MobileError, mobileRoute } from "@/lib/mobile";
-import { deleteAllData } from "@/lib/repo";
+import { deleteAllData, getProfile } from "@/lib/repo";
 import { cancelSubscriptionNow } from "@/lib/stripe";
+import { deleteStoreCustomer, syncStoreSubscription } from "@/lib/revenuecat";
+import { isPremium } from "@/lib/premium";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -74,12 +76,23 @@ const ACTIONS: Record<string, Handler> = {
   withdrawHealthConsent: () => account.withdrawHealthConsentAction(),
 
   completeOnboarding: (i) => welcome.completeOnboarding(i),
+
+  // After a purchase or a restore in the app: ask RevenueCat (never trust the phone).
+  syncPurchases: async (_i, _req, userId) => {
+    try {
+      await syncStoreSubscription(userId);
+    } catch (e) {
+      console.error("RevenueCat sync failed", e);
+    }
+    return { premium: isPremium(await getProfile(userId)) };
+  },
   previewTargets: (i) => welcome.previewTargets(i),
 
   // Store rules: an account created in the app must be deletable in the app.
   deleteAccount: async (i, req, userId) => {
     if (!DELETE_WORDS.includes(String(i?.confirm ?? "").trim().toUpperCase())) return { ok: false };
     await cancelSubscriptionNow(userId);
+    await deleteStoreCustomer(userId);
     await auth.api.signOut({ headers: req.headers }).catch(() => undefined);
     await deleteAllData(userId);
     return { ok: true };

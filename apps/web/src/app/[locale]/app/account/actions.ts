@@ -13,6 +13,7 @@ import { deleteAllData, getHealth, getProfile, saveHealth, saveMeasurement, upda
 import { getSession, requireUserId } from "@/lib/session";
 import { cancelSubscriptionNow, prepareCheckout, refreshSubscription, setCancelAtPeriodEnd, startTrial, type Plan, type PreparedPayment } from "@/lib/stripe";
 import { isPremium } from "@/lib/premium";
+import { deleteStoreCustomer } from "@/lib/revenuecat";
 import { db } from "@/lib/db";
 import { cleanDislikes } from "@/lib/dislikes";
 import { ALLERGENS } from "@weeko/engine";
@@ -175,6 +176,7 @@ export async function deleteAccountAction(confirm: string): Promise<{ ok: boolea
   const userId = await requireUserId();
   if (!DELETE_WORDS.includes(confirm.trim().toUpperCase())) return { ok: false };
   await cancelSubscriptionNow(userId);
+  await deleteStoreCustomer(userId);
   await auth.api.signOut({ headers: await headers() }).catch(() => undefined);
   await deleteAllData(userId);
   // Leave the app area right away: re-rendering it would recreate a profile.

@@ -6,6 +6,8 @@ export interface Me {
   onboarded: boolean;
   premium: boolean;
   subscription: { status: string; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean } | null;
+  /** Premium bought in the app (managed in the App Store / Google Play) */
+  store?: { source: string; expiresAt: string | null; willRenew: boolean; billingIssue: boolean } | null;
   numbersHidden: boolean;
   sportEnabled: boolean;
   budget: { enabled: boolean; weekly: number };

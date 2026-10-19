@@ -1034,7 +1034,10 @@
     "cancelNo": "Manter o Premium",
     "resume": "Reativar minha assinatura",
     "cancelError": "Não deu certo. Tente de novo em instantes.",
-    "supportNote": "Alguma dúvida sobre a sua assinatura? <link>Escreva para nós</link>."
+    "supportNote": "Alguma dúvida sobre a sua assinatura? <link>Escreva para nós</link>.",
+    "storeApple": "A sua subscrição Premium foi feita na app para iPhone: gira-a (ou cancele-a) nas definições da sua conta Apple, em Subscrições.",
+    "storeGoogle": "A sua subscrição Premium foi feita na app Android: gira-a (ou cancele-a) no Google Play, em Subscrições.",
+    "storeGift": "O Premium foi-lhe oferecido."
   },
   "checkout": {
     "title": "Assinar o Premium",

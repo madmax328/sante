@@ -61,6 +61,19 @@ export interface Subscription {
   hasPaymentMethod?: boolean;
 }
 
+/** Premium bought in the app (App Store, Google Play), as RevenueCat reports it. */
+export interface StoreSubscription {
+  /** "app_store", "play_store", or "promotional" (granted from the RevenueCat dashboard) */
+  source: string;
+  productId: string;
+  /** End of the paid period (grace period included); null = never expires */
+  expiresAt: Date | null;
+  willRenew: boolean;
+  billingIssue: boolean;
+  sandbox: boolean;
+  updatedAt: Date;
+}
+
 export type HealthSource = "apple_health" | "health_connect";
 
 export interface Profile {
@@ -80,6 +93,8 @@ export interface Profile {
     marketing?: boolean;
   };
   subscription?: Subscription;
+  /** Premium bought in the iOS / Android app */
+  store?: StoreSubscription | null;
   usage?: { weekStart: string; replacements: number; aiMessages: number };
   /** AI coach messages used in the current calendar month ("2026-10") */
   aiUsage?: { month: string; count: number };

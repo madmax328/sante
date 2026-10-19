@@ -2,7 +2,7 @@ import { aiMessagesLeft } from "@/lib/ai-quota";
 import { auth } from "@/lib/auth";
 import { features } from "@/lib/env";
 import { mobileRoute } from "@/lib/mobile";
-import { isPremium } from "@/lib/premium";
+import { hasStorePremium, isPremium } from "@/lib/premium";
 import { localeOf } from "@/lib/locale";
 import { ensureProfile, getHealth, updateProfile } from "@/lib/repo";
 
@@ -23,6 +23,10 @@ export const GET = mobileRoute(async (req, userId) => {
     premium: isPremium(profile),
     subscription: sub?.status
       ? { status: sub.status, currentPeriodEnd: sub.currentPeriodEnd ?? null, cancelAtPeriodEnd: !!sub.cancelAtPeriodEnd }
+      : null,
+    // Premium bought in the app: managed in the App Store / Google Play settings.
+    store: hasStorePremium(profile) && profile.store
+      ? { source: profile.store.source, expiresAt: profile.store.expiresAt, willRenew: profile.store.willRenew, billingIssue: profile.store.billingIssue }
       : null,
     numbersHidden: !!health?.numbersHidden,
     sportEnabled: profile.sport.enabled,

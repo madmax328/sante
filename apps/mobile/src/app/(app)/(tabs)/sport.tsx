@@ -9,6 +9,7 @@ import { healthAvailable, healthEnabled, syncAppleHealth } from "@/lib/health";
 import { DAY_LABEL, num } from "@/lib/format";
 import { space, useColors } from "@/lib/theme";
 import { t } from "@/lib/i18n";
+import { PremiumButton } from "@/components/premium-button";
 
 export interface SportSettings {
   enabled: boolean;
@@ -65,7 +66,7 @@ export default function SportScreen() {
     return (
       <Screen>
         {header}
-        <EmptyState title={t("Ton programme sportif", "Your workout programme")} text={t("Avec Sorloo Premium, tu reçois des séances adaptées à ton niveau, ton matériel et tes disponibilités, avec des exercices guidés et animés.", "With Sorloo Premium, you get workouts suited to your level, equipment and schedule, with guided, animated exercises.")} />
+        <EmptyState title={t("Ton programme sportif", "Your workout programme")} action={<PremiumButton />} text={t("Avec Sorloo Premium, tu reçois des séances adaptées à ton niveau, ton matériel et tes disponibilités, avec des exercices guidés et animés.", "With Sorloo Premium, you get workouts suited to your level, equipment and schedule, with guided, animated exercises.")} />
       </Screen>
     );
   }

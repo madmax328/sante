@@ -33,7 +33,7 @@ const fr: Record<LegalDoc, Doc> = {
           "Données de profil : préférences alimentaires, budget, temps disponible, matériel, disponibilités sportives.",
           "Données de santé : âge, sexe, taille, poids, mensurations, objectif, allergies, grossesse ou allaitement, situations médicales déclarées, données des membres du foyer que vous ajoutez.",
           "Données d'usage : menus générés, repas enregistrés, hydratation, séances réalisées, échanges avec l'assistant.",
-          "Données de paiement : gérées exclusivement par Stripe. Nous ne voyons ni ne stockons votre numéro de carte.",
+          "Données de paiement : gérées exclusivement par Stripe (sur le site) ou par Apple et Google (dans l'application). Nous ne voyons ni ne stockons votre numéro de carte. Pour les achats dans l'application, RevenueCat nous transmet l'état de votre abonnement (offre, dates, renouvellement).",
         ],
       },
       {
@@ -60,7 +60,7 @@ const fr: Record<LegalDoc, Doc> = {
       {
         h: "Sous-traitants",
         p: [
-          "Vercel (hébergement de l'application, région Europe), MongoDB Atlas (base de données, région Europe), Stripe (paiements), Anthropic (assistant IA : seules les informations nécessaires à la demande sont transmises, sans votre nom ni votre e-mail), Hostinger (e-mails transactionnels), Unsplash et Pexels (photos de recettes, aucune donnée personnelle transmise ; les photos Unsplash sont chargées depuis leurs serveurs).",
+          "Vercel (hébergement de l'application, région Europe), MongoDB Atlas (base de données, région Europe), Stripe (paiements sur le site), RevenueCat (suivi des abonnements achetés dans l'application, via Apple et Google), Anthropic (assistant IA : seules les informations nécessaires à la demande sont transmises, sans votre nom ni votre e-mail), Hostinger (e-mails transactionnels), Unsplash et Pexels (photos de recettes, aucune donnée personnelle transmise ; les photos Unsplash sont chargées depuis leurs serveurs).",
           "Certains sous-traitants peuvent traiter des données hors de l'Union européenne ; ces transferts sont encadrés par les clauses contractuelles types de la Commission européenne.",
         ],
       },
@@ -101,7 +101,8 @@ const fr: Record<LegalDoc, Doc> = {
         h: "Offre gratuite et abonnement Premium",
         p: [
           "L'offre gratuite donne accès aux fonctions essentielles. L'abonnement Premium, mensuel ou annuel, donne accès à l'ensemble des fonctions décrites sur la page Tarifs.",
-          "Le paiement s'effectue sur notre site web via Stripe. L'abonnement est renouvelé automatiquement et peut être résilié à tout moment depuis votre compte ; il reste actif jusqu'à la fin de la période payée.",
+          "Le paiement s'effectue soit sur notre site web via Stripe, soit dans l'application iPhone ou Android via votre compte Apple ou Google. L'abonnement est renouvelé automatiquement à la fin de chaque période, au même prix, sauf résiliation au moins 24 heures avant son terme ; il reste actif jusqu'à la fin de la période payée.",
+          "Un abonnement pris sur le site se résilie depuis votre compte Sorloo. Un abonnement pris dans l'application se gère et se résilie dans les réglages de votre compte Apple (Abonnements) ou dans Google Play (Abonnements) : Sorloo ne peut pas le résilier à votre place, et les demandes de remboursement de ces achats sont traitées par Apple ou Google selon leurs conditions. Premium est lié à votre compte Sorloo et vaut sur le site comme dans l'application.",
           "Conformément à l'article L221-28 du Code de la consommation, en demandant l'accès immédiat au service, vous renoncez à votre droit de rétractation pour la période en cours.",
         ],
       },
@@ -127,11 +128,11 @@ const en: Record<LegalDoc, Doc> = {
     intro: "Sorloo helps you organise meals, groceries and exercise. To do so we process personal data, some of which is health data. This page explains what we collect, why, and your rights.",
     sections: [
       { h: "Controller", p: ["[Company name], [address], registration [number]. Data protection contact: rgpd@sorloo.com."] },
-      { h: "Data we process", p: ["Account data (name, email, hashed password); profile data (food preferences, budget, time, equipment, availability); health data (age, sex, height, weight, measurements, goal, allergies, pregnancy, declared medical situations, household members you add); usage data (plans, logged meals, water, workouts, assistant conversations). Payment data is handled by Stripe only."] },
+      { h: "Data we process", p: ["Account data (name, email, hashed password); profile data (food preferences, budget, time, equipment, availability); health data (age, sex, height, weight, measurements, goal, allergies, pregnancy, declared medical situations, household members you add); usage data (plans, logged meals, water, workouts, assistant conversations). Payment data is handled by Stripe (website) or Apple and Google (app) only; for in-app purchases, RevenueCat sends us your subscription status (plan, dates, renewal)."] },
       { h: "Legal basis", p: ["Health data is processed only with your explicit consent (GDPR art. 9.2.a), which you can withdraw at any time from your account. Other data is processed to provide the service and to meet legal obligations."] },
       { h: "Security", p: ["Health data is stored separately and encrypted with AES-256-GCM using a key that never leaves our servers. All traffic uses HTTPS."] },
       { h: "Apple Health and connected devices", p: ["If you connect Apple Health in the iPhone app, Sorloo only reads your daily steps, weigh-ins and workout durations (including those from a watch or scale that feeds Apple Health). Sorloo never writes to Apple Health.", "This data is only used for your tracking in Sorloo (step goal, weight curve, ticked sessions). It is never sold, used for advertising or shared with third parties. You can remove access at any time in Settings → Health → Data Access → Sorloo."] },
-      { h: "Processors", p: ["Vercel (hosting, EU region), MongoDB Atlas (database, EU region), Stripe (payments), Anthropic (AI assistant, only the data needed for each request, without your name or email), Hostinger (emails), Unsplash and Pexels (recipe photos, no personal data; Unsplash photos load from their servers). Transfers outside the EU rely on standard contractual clauses."] },
+      { h: "Processors", p: ["Vercel (hosting, EU region), MongoDB Atlas (database, EU region), Stripe (website payments), RevenueCat (tracking of subscriptions bought in the app through Apple and Google), Anthropic (AI assistant, only the data needed for each request, without your name or email), Hostinger (emails), Unsplash and Pexels (recipe photos, no personal data; Unsplash photos load from their servers). Transfers outside the EU rely on standard contractual clauses."] },
       { h: "Retention", p: ["Data is kept while your account is active; inactive accounts are deleted after 3 years with prior notice. Billing records are kept 10 years."] },
       { h: "Your rights", p: ["Access, rectification, export (JSON download from your account), consent withdrawal and one-click deletion of your account and data. Contact rgpd@sorloo.com; you may also complain to your data protection authority."] },
       { h: "Disclaimer", p: ["Sorloo is a wellness and organisation app, not medical advice."] },
@@ -143,7 +144,7 @@ const en: Record<LegalDoc, Doc> = {
     sections: [
       { h: "Service", p: ["Sorloo is an online service to plan meals, groceries and exercise, published by [Company name]. Accounts are for people aged 15 and over."] },
       { h: "Nature of the service", p: ["Menus, quantities, budgets and workouts are suggestions based on the information you provide and reference data. Sorloo is not a medical device. Always check labels for allergens."] },
-      { h: "Free plan and Premium", p: ["Premium is billed monthly or yearly on our website through Stripe, renews automatically and can be cancelled at any time from your account; it stays active until the end of the paid period."] },
+      { h: "Free plan and Premium", p: ["Premium is billed monthly or yearly, either on our website through Stripe or in the iPhone / Android app through your Apple or Google account. It renews automatically at the end of each period at the same price unless cancelled at least 24 hours before it ends, and stays active until the end of the paid period. A website subscription is cancelled from your Sorloo account; an in-app subscription is managed and cancelled in your Apple account settings or Google Play (Subscriptions): Sorloo cannot cancel it for you, and refunds for these purchases are handled by Apple or Google under their terms. Premium is tied to your Sorloo account and works on the website and in the app."] },
       { h: "Governing law", p: ["French law applies."] },
     ],
   },

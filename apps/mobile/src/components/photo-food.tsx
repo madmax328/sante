@@ -10,6 +10,7 @@ import { t, tn } from "@/lib/i18n";
 import { useMe } from "@/lib/me";
 import { pickPhoto } from "@/lib/photo";
 import { radius, space, useColors } from "@/lib/theme";
+import { PremiumButton } from "@/components/premium-button";
 
 interface Food {
   name: string;
@@ -47,6 +48,7 @@ export function PhotoFood({ date, meal, onDone }: { date?: string; meal: string;
         <Sparkles size={24} color={c.basilic} />
         <T variant="h3">{t("Photographie ton assiette, Sorloo note le reste", "Snap your plate, Sorloo logs the rest")}</T>
         <T variant="small">{t("Les aliments et leurs quantités sont reconnus en quelques secondes ; tu vérifies, puis tout s'ajoute à ton journal. Cette fonction fait partie de Premium.", "Foods and portions are recognised in seconds; you check, then everything goes into your journal. This feature is part of Premium.")}</T>
+        <PremiumButton />
       </Card>
     );
   }

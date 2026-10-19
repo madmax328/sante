@@ -5,6 +5,7 @@ import { Button, Chip, Notice, T } from "./ui";
 import { api } from "@/lib/api";
 import { radius, space, useColors } from "@/lib/theme";
 import { t } from "@/lib/i18n";
+import { PremiumButton } from "@/components/premium-button";
 
 const SUGGESTIONS = [t("Ce soir je mange au restaurant", "I'm eating out tonight"), t("Nous serons 5 à dîner ce soir", "There will be 5 of us for dinner tonight"), t("Je n'ai que 15 minutes ce soir", "I only have 15 minutes tonight"), t("Je n'ai plus de poulet", "I'm out of chicken")];
 
@@ -24,7 +25,7 @@ export function QuickAdjust({ premium, onApplied }: { premium: boolean; onApplie
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string>();
 
-  if (!premium) return <T variant="small">{t("Avec Sorloo Premium, écris ce qui change (« ce soir je mange au restaurant ») : la semaine s'adapte toute seule.", "With Sorloo Premium, write what changes (\"I'm eating out tonight\"): your week adapts by itself.")}</T>;
+  if (!premium) return <View style={{ gap: 8 }}><T variant="small">{t("Avec Sorloo Premium, écris ce qui change (« ce soir je mange au restaurant ») : la semaine s'adapte toute seule.", "With Sorloo Premium, write what changes (\"I'm eating out tonight\"): your week adapts by itself.")}</T><PremiumButton /></View>;
 
   const ask = async (value: string) => {
     setPending(true);

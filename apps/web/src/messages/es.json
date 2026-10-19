@@ -1034,7 +1034,10 @@
     "cancelNo": "Mantener Premium",
     "resume": "Reactivar mi suscripción",
     "cancelError": "No ha funcionado. Inténtalo de nuevo en un momento.",
-    "supportNote": "¿Alguna pregunta sobre tu suscripción? <link>Escríbenos</link>."
+    "supportNote": "¿Alguna pregunta sobre tu suscripción? <link>Escríbenos</link>.",
+    "storeApple": "Tu suscripción Premium se contrató en la app de iPhone: gestiónala (o cancélala) en los ajustes de tu cuenta de Apple, en Suscripciones.",
+    "storeGoogle": "Tu suscripción Premium se contrató en la app de Android: gestiónala (o cancélala) en Google Play, en Suscripciones.",
+    "storeGift": "Premium te ha sido regalado."
   },
   "checkout": {
     "title": "Pasar a Premium",

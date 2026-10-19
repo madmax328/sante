@@ -5,7 +5,7 @@ import { BodyForm, DangerZone, FoodPrefsForm, SubscriptionButtons } from "@/comp
 import { Badge, Card, Notice, PageHeader } from "@/components/ui";
 import { requireAppUser } from "@/lib/app-user";
 import { features } from "@/lib/env";
-import { isPremium } from "@/lib/premium";
+import { hasStorePremium, isPremium } from "@/lib/premium";
 import { getHealth } from "@/lib/repo";
 import { dislikeOptions } from "@/lib/dislikes";
 import { ContactForm } from "@/components/contact-form";
@@ -29,6 +29,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
   const format = await getFormatter();
   const premium = isPremium(user.profile);
   const sub = user.profile.subscription;
+  const store = hasStorePremium(user.profile) ? user.profile.store : null;
   const health = await getHealth(user.userId);
   const self = health?.members.find((m) => m.self);
   const today = todayIn(user.profile.timeZone);
@@ -46,7 +47,14 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
           <h2 className="text-xl font-bold">{t("subscription")}</h2>
           {premium ? <Badge tone="basilic">Premium</Badge> : <Badge tone="neutral">{p("free")}</Badge>}
         </div>
-        {premium && sub?.currentPeriodEnd && (
+        {store && (
+          <p className="text-sm text-muted">
+            {t(store.source === "play_store" ? "storeGoogle" : store.source === "app_store" ? "storeApple" : "storeGift")}{" "}
+            {store.expiresAt &&
+              t(store.willRenew ? "renewsOn" : "endsOn", { date: format.dateTime(new Date(store.expiresAt), { dateStyle: "long" }) })}
+          </p>
+        )}
+        {premium && !store && sub?.currentPeriodEnd && (
           <p className="text-sm text-muted">
             {sub.cancelAtPeriodEnd ? t("endsOn", { date: format.dateTime(new Date(sub.currentPeriodEnd), { dateStyle: "long" }) }) : t("renewsOn", { date: format.dateTime(new Date(sub.currentPeriodEnd), { dateStyle: "long" }) })}
           </p>
@@ -59,12 +67,12 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
             </ul>
           </>
         )}
-        <SubscriptionButtons
+        {!store && <SubscriptionButtons
           premium={premium}
           cancelling={!!sub?.cancelAtPeriodEnd}
           endDate={sub?.currentPeriodEnd ? format.dateTime(new Date(sub.currentPeriodEnd), { dateStyle: "long" }) : undefined}
           configured={features.stripe()}
-        />
+        />}
         <p className="text-xs text-muted">{p("paymentNote")}</p>
         <p className="text-xs text-muted">
           {t.rich("supportNote", { link: (c) => <a href="#contact" className="font-semibold underline">{c}</a> })}

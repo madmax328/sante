@@ -1034,7 +1034,10 @@
     "cancelNo": "Keep Premium",
     "resume": "Reactivate my subscription",
     "cancelError": "That didn't work. Please try again in a moment.",
-    "supportNote": "A question about your subscription? <link>Write to us</link>."
+    "supportNote": "A question about your subscription? <link>Write to us</link>.",
+    "storeApple": "Your Premium subscription was bought in the iPhone app: manage (or cancel) it in your Apple account settings, under Subscriptions.",
+    "storeGoogle": "Your Premium subscription was bought in the Android app: manage (or cancel) it in Google Play, under Subscriptions.",
+    "storeGift": "Premium was given to you."
   },
   "checkout": {
     "title": "Go Premium",

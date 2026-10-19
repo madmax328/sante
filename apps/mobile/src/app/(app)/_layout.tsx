@@ -9,6 +9,7 @@ import { useColors } from "@/lib/theme";
 import { syncAppleHealth } from "@/lib/health";
 import { t } from "@/lib/i18n";
 import { scheduleReminders } from "@/lib/reminders";
+import { resetPurchases, setupPurchases } from "@/lib/purchases";
 
 if (Platform.OS !== "web") {
   // A reminder arriving while the app is open is not shown: the person is already in it.
@@ -55,8 +56,13 @@ export default function AppLayout() {
   const { data: me, error, loading, reload } = useMeQuery();
   useHealthSync(!!me?.onboarded);
   useReminders(!!me?.onboarded);
+  const userId = me?.user.id;
+  useEffect(() => {
+    if (userId) void setupPurchases(userId);
+  }, [userId]);
   if (loading && !me) return <Loading />;
   if (error?.status === 401) {
+    void resetPurchases();
     void authClient.signOut();
     return <Loading />;
   }
@@ -68,6 +74,7 @@ export default function AppLayout() {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="recipe/[id]" options={{ ...header, title: "" }} />
           <Stack.Screen name="account" options={{ ...header, title: t("Mon compte", "My account") }} />
+          <Stack.Screen name="premium" options={{ ...header, title: "Premium" }} />
           <Stack.Screen name="preferences" options={{ ...header, title: t("Mes préférences", "My preferences") }} />
           <Stack.Screen name="progress" options={{ ...header, title: t("Mes progrès", "My progress") }} />
           <Stack.Screen name="household" options={{ ...header, title: t("Mon foyer", "My household") }} />

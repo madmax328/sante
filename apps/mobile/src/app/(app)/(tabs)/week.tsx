@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { ChevronLeft, ChevronRight, RefreshCw } from "lucide-react-native";
 import { useState } from "react";
 import { Alert, Pressable, View } from "react-native";
@@ -6,6 +6,7 @@ import { useCuisineChoice } from "@/components/cuisine-picker";
 import { Thumb } from "@/components/thumb";
 import { Badge, Button, Card, EmptyState, ErrorView, Loading, Screen, T } from "@/components/ui";
 import { api, useApi } from "@/lib/api";
+import { purchasesAvailable } from "@/lib/purchases";
 import { DAY_LABEL, euro, MEAL_LABEL, num, shortDate } from "@/lib/format";
 import { radius, space, useColors } from "@/lib/theme";
 import { t } from "@/lib/i18n";
@@ -51,7 +52,14 @@ export default function WeekScreen() {
     setBusy(`${day}:${meal}`);
     const res = await api.action<{ ok: boolean; error?: string }>("replaceMeal", { day, meal, weekStart: data.weekStart }).catch(() => null);
     setBusy(undefined);
-    if (res?.error === "quota") Alert.alert(t("Remplacements gratuits utilisés", "Free replacements used"), t("Tu as utilisé tes 3 remplacements gratuits de la semaine. Ils sont illimités avec Sorloo Premium.", "You've used your 3 free replacements this week. They're unlimited with Sorloo Premium."));
+    if (res?.error === "quota")
+      Alert.alert(
+        t("Remplacements gratuits utilisés", "Free replacements used"),
+        t("Tu as utilisé tes 3 remplacements gratuits de la semaine. Ils sont illimités avec Sorloo Premium.", "You've used your 3 free replacements this week. They're unlimited with Sorloo Premium."),
+        purchasesAvailable()
+          ? [{ text: t("Plus tard", "Later"), style: "cancel" }, { text: t("Découvrir Premium", "Discover Premium"), onPress: () => router.push("/premium") }]
+          : undefined,
+      );
     await reload();
   };
 

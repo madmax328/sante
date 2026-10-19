@@ -8,6 +8,7 @@ import { api, useApi } from "@/lib/api";
 import { euro } from "@/lib/format";
 import { space, useColors } from "@/lib/theme";
 import { t } from "@/lib/i18n";
+import { PremiumButton } from "@/components/premium-button";
 
 interface Groceries {
   hasPlan: boolean;
@@ -121,7 +122,10 @@ function Stores({ stores }: { stores: NonNullable<Groceries["stores"]> }) {
     <Card>
       <SectionTitle>{t("Comparer les enseignes", "Compare supermarkets")}</SectionTitle>
       {!stores.premium ? (
+        <>
         <T variant="small">{t("Avec Sorloo Premium, compare le coût de ta liste dans chaque enseigne (Leclerc, Carrefour, Lidl…).", "With Sorloo Premium, compare the cost of your list at each supermarket chain (Leclerc, Carrefour, Lidl…).")}</T>
+        <PremiumButton />
+        </>
       ) : stores.list.length === 0 ? (
         <T variant="small">{t("Pas encore assez de prix relevés pour comparer les enseignes sur ta liste. La base s'enrichit chaque jour.", "Not enough prices recorded yet to compare chains for your list. The data grows every day.")}</T>
       ) : (

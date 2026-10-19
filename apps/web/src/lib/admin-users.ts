@@ -3,6 +3,8 @@ import { isSpamName } from "./auth";
 import { db } from "./db";
 import { deleteAllData } from "./repo";
 import { cancelSubscriptionNow } from "./stripe";
+import { hasStorePremium } from "./premium";
+import { deleteStoreCustomer } from "./revenuecat";
 import type { Profile } from "./types";
 
 export interface AdminUser {
@@ -90,12 +92,13 @@ export async function deleteUsers(ids: string[]): Promise<{ deleted: number; ski
   let deleted = 0;
   let skipped = 0;
   for (const id of [...new Set(ids)].slice(0, 500)) {
-    const p = await db.collection<Profile>("profiles").findOne({ _id: id }, { projection: { subscription: 1 } });
-    if (p?.subscription?.status && PAYING.includes(p.subscription.status)) {
+    const p = await db.collection<Profile>("profiles").findOne({ _id: id }, { projection: { subscription: 1, store: 1 } });
+    if ((p?.subscription?.status && PAYING.includes(p.subscription.status)) || hasStorePremium(p)) {
       skipped++;
       continue;
     }
     await cancelSubscriptionNow(id);
+    await deleteStoreCustomer(id);
     await deleteAllData(id);
     deleted++;
   }

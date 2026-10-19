@@ -2,13 +2,15 @@ import * as WebBrowser from "expo-web-browser";
 import { router } from "expo-router";
 import { BellRing, ChevronRight, Dumbbell, HeartPulse, LogOut, Mail, MessageCircle, Refrigerator, SlidersHorizontal, TrendingUp, Users } from "lucide-react-native";
 import { useState } from "react";
-import { Alert, Pressable, View } from "react-native";
+import { Alert, Linking, Pressable, View } from "react-native";
 import { AppVersion } from "@/components/app-version";
+import { PremiumButton } from "@/components/premium-button";
 import { Badge, Button, Card, Field, Notice, Screen, SectionTitle, T } from "@/components/ui";
 import { api } from "@/lib/api";
 import { authClient } from "@/lib/auth";
 import { sitePage } from "@/lib/config";
 import { useMe } from "@/lib/me";
+import { resetPurchases } from "@/lib/purchases";
 import { space, useColors } from "@/lib/theme";
 import { intlLocale, t } from "@/lib/i18n";
 
@@ -50,6 +52,7 @@ export default function AccountScreen() {
     const res = await api.action<{ ok: boolean }>("deleteAccount", { confirm }).catch(() => null);
     setBusy(false);
     if (!res?.ok) return Alert.alert(t("Suppression impossible", "Couldn't delete"), t("Écris SUPPRIMER pour confirmer.", "Type DELETE to confirm."));
+    await resetPurchases();
     await authClient.signOut();
   };
 
@@ -86,7 +89,25 @@ export default function AccountScreen() {
 
       <Card>
         <SectionTitle action={me.premium ? <Badge>Premium</Badge> : <Badge tone="miel">{t("Gratuit", "Free")}</Badge>}>{t("Abonnement", "Subscription")}</SectionTitle>
-        {me.premium ? (
+        {me.store ? (
+          <>
+            <T variant="small">
+              {me.store.source === "promotional"
+                ? t("Premium t'a été offert.", "Premium was given to you.")
+                : me.store.willRenew && me.store.expiresAt
+                  ? t("Prochain renouvellement le {0}.", "Next renewal on {0}.", [longDate(me.store.expiresAt)])
+                  : me.store.expiresAt
+                    ? t("Premium jusqu'au {0}, sans renouvellement.", "Premium until {0}, not renewing.", [longDate(me.store.expiresAt)])
+                    : ""}
+            </T>
+            {me.store.billingIssue && <Notice>{t("Le dernier paiement n'a pas abouti : mets à jour ton moyen de paiement dans les réglages du store pour garder Premium.", "The last payment failed: update your payment method in the store settings to keep Premium.")}</Notice>}
+            {me.store.source !== "promotional" && (
+              <Button variant="secondary" small style={{ alignSelf: "flex-start" }} onPress={() => Linking.openURL(me.store?.source === "play_store" ? "https://play.google.com/store/account/subscriptions?package=com.sorloo.app" : "https://apps.apple.com/account/subscriptions")}>
+                {t("Gérer mon abonnement", "Manage my subscription")}
+              </Button>
+            )}
+          </>
+        ) : me.premium ? (
           <>
             {end && <T variant="small">{sub?.cancelAtPeriodEnd ? t("Premium jusqu'au {0}, sans renouvellement.", "Premium until {0}, not renewing.", [end]) : t("Prochain renouvellement le {0}.", "Next renewal on {0}.", [end])}</T>}
             <Button variant="secondary" small style={{ alignSelf: "flex-start" }} loading={busy} onPress={() => cancel(!sub?.cancelAtPeriodEnd)}>
@@ -94,7 +115,10 @@ export default function AccountScreen() {
             </Button>
           </>
         ) : (
-          <T variant="small">{t("Tu utilises la version gratuite de Sorloo.", "You're using the free version of Sorloo.")}</T>
+          <>
+            <T variant="small">{t("Tu utilises la version gratuite de Sorloo.", "You're using the free version of Sorloo.")}</T>
+            <PremiumButton />
+          </>
         )}
         {me.ai && me.premium && <T variant="small">{t("Coach IA : {0} messages restants ce mois-ci.", "AI coach: {0} messages left this month.", [me.ai.left])}</T>}
       </Card>
@@ -112,7 +136,7 @@ export default function AccountScreen() {
         </View>
       </Card>
 
-      <Button variant="secondary" onPress={() => authClient.signOut()} icon={<LogOut size={18} color={c.encre} />}>{t("Se déconnecter", "Sign out")}</Button>
+      <Button variant="secondary" onPress={async () => { await resetPurchases(); await authClient.signOut(); }} icon={<LogOut size={18} color={c.encre} />}>{t("Se déconnecter", "Sign out")}</Button>
 
       <Card>
         <SectionTitle>{t("Supprimer mon compte", "Delete my account")}</SectionTitle>
@@ -121,6 +145,9 @@ export default function AccountScreen() {
         ) : (
           <>
             <Notice tone="danger">{t("Toutes tes données seront supprimées définitivement et ton abonnement résilié. Cette action est irréversible.", "All your data will be permanently deleted and your subscription cancelled. This can't be undone.")}</Notice>
+            {me.store && me.store.source !== "promotional" && me.store.willRenew && (
+              <Notice>{t("Ton abonnement pris dans l'app ne peut pas être résilié par Sorloo : résilie-le d'abord avec « Gérer mon abonnement », sinon le store continuera de le facturer.", "Your in-app subscription can't be cancelled by Sorloo: cancel it first with \"Manage my subscription\", or the store will keep charging it.")}</Notice>
+            )}
             <Field label={t("Écris SUPPRIMER pour confirmer", "Type DELETE to confirm")} value={confirm} onChangeText={setConfirm} autoCapitalize="characters" />
             <Button variant="danger" onPress={remove} loading={busy} disabled={confirm.trim().toUpperCase() !== t("SUPPRIMER", "DELETE")}>{t("Supprimer définitivement", "Delete permanently")}</Button>
           </>

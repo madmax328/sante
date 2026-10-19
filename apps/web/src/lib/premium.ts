@@ -21,7 +21,18 @@ export type Feature =
   | "weekly_review"
   | "leftovers_optimisation";
 
-export function isPremium(profile: Pick<Profile, "subscription"> | null | undefined): boolean {
+export function isPremium(profile: Pick<Profile, "subscription" | "store"> | null | undefined): boolean {
+  return hasStripePremium(profile) || hasStorePremium(profile);
+}
+
+/** Premium bought in the app: valid until the end of the period the store reports. */
+export function hasStorePremium(profile: Pick<Profile, "store"> | null | undefined): boolean {
+  const s = profile?.store;
+  if (!s) return false;
+  return !s.expiresAt || new Date(s.expiresAt).getTime() > Date.now();
+}
+
+function hasStripePremium(profile: Pick<Profile, "subscription"> | null | undefined): boolean {
   const s = profile?.subscription;
   if (!s?.status) return false;
   if (!["active", "trialing", "past_due"].includes(s.status)) return false;
@@ -33,6 +44,6 @@ export function isPremium(profile: Pick<Profile, "subscription"> | null | undefi
 /** Features open to everyone (none of the gated ones for now). */
 const FREE_FEATURES: Feature[] = [];
 
-export function can(profile: Pick<Profile, "subscription"> | null | undefined, feature: Feature): boolean {
+export function can(profile: Pick<Profile, "subscription" | "store"> | null | undefined, feature: Feature): boolean {
   return FREE_FEATURES.includes(feature) || isPremium(profile);
 }

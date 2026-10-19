@@ -8,6 +8,7 @@ import { api } from "@/lib/api";
 import { useMe } from "@/lib/me";
 import { radius, space, useColors } from "@/lib/theme";
 import { t } from "@/lib/i18n";
+import { PremiumButton } from "@/components/premium-button";
 
 interface Message {
   role: "user" | "assistant";
@@ -81,7 +82,7 @@ export default function CoachScreen() {
   if (locked) {
     return (
       <View style={{ flex: 1, backgroundColor: c.riz, padding: space.lg }}>
-        <EmptyState title={t("Ton coach personnel", "Your personal coach")} text={t("Avec Sorloo Premium, le coach répond à tes questions et adapte ta semaine (restaurant, invités, ingrédient manquant…).", "With Sorloo Premium, the coach answers your questions and adapts your week (eating out, guests, a missing ingredient…).")} />
+        <EmptyState title={t("Ton coach personnel", "Your personal coach")} action={<PremiumButton />} text={t("Avec Sorloo Premium, le coach répond à tes questions et adapte ta semaine (restaurant, invités, ingrédient manquant…).", "With Sorloo Premium, the coach answers your questions and adapts your week (eating out, guests, a missing ingredient…).")} />
       </View>
     );
   }

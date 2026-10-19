@@ -27,6 +27,11 @@ export const env = {
   adminPassword: process.env.ADMIN_PASSWORD,
   /** Where error alerts go (default: the support mailbox) */
   alertEmail: process.env.ALERT_EMAIL,
+  /** RevenueCat (purchases in the iOS / Android app): secret API key (v1, "sk_…") */
+  revenuecatSecret: process.env.REVENUECAT_SECRET_KEY,
+  /** Value of the Authorization header set on the RevenueCat webhook */
+  revenuecatWebhookAuth: process.env.REVENUECAT_WEBHOOK_AUTH,
+  revenuecatEntitlement: process.env.REVENUECAT_ENTITLEMENT ?? "premium",
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
 };
@@ -38,6 +43,7 @@ export const features = {
   smtp: () => !!env.smtpHost && !!env.smtpUser && !!env.smtpPassword,
   email: () => features.smtp() || !!env.resendKey,
   google: () => !!env.googleClientId && !!env.googleClientSecret,
+  revenuecat: () => !!env.revenuecatSecret,
 };
 
 /** Secret and publishable keys must both be test keys or both live keys. */
