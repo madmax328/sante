@@ -345,16 +345,16 @@ function scoreRecipe(
   }
   const reuse = massTotal > 0 ? Math.min(1, massFromStock / massTotal) : 0;
 
-  let costPenalty: number;
+  // Prefer what is sensible to buy (whole packs, reuse), around 3 € per adult
+  // serving as a reference.
+  let costPenalty = (cost / Math.max(1, servings * 3)) * 0.9;
   if (ctx.budget !== undefined) {
+    // The budget is a ceiling, not an amount to spend: a generous one never
+    // makes the week dearer than no budget at all.
     const remaining = Math.max(0, ctx.budget - state.spent);
     const slotBudget = (remaining * COST_WEIGHT[req.meal]) / Math.max(0.01, state.remainingWeight);
     const ratio = cost / Math.max(0.3, slotBudget);
-    costPenalty = ratio <= 1 ? ratio * 0.4 : 0.4 + (ratio - 1) * 2.5;
-  } else {
-    // No budget: still prefer what is sensible to buy (whole packs, reuse),
-    // around 3 € per adult serving as a reference.
-    costPenalty = (cost / Math.max(1, servings * 3)) * 0.9;
+    costPenalty = Math.max(costPenalty, ratio * 0.4) + Math.max(0, ratio - 1) * 2.5;
   }
 
   // 4. Variety and preferences.

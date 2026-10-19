@@ -28,6 +28,10 @@ export const GET = mobileRoute(async (req, userId) => {
       eaten: result.summary.consumedValue,
       kept: result.summary.leftoverValue,
       budget: result.summary.budget ?? null,
+      // Cheapest week found is still above the budget (household, chosen countries…)
+      budgetOver: result.summary.budgetStatus === "over",
+      people: uc.members.length,
+      countries: stored.plan.cuisines?.length ?? 0,
       avgKcal: hidden ? null : Math.round(selfDaily.reduce((s, d) => s + d.kcal, 0) / Math.max(1, selfDaily.length)),
       targetKcal: hidden ? null : uc.self.targets.kcal,
     },

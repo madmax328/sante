@@ -4,18 +4,18 @@ import { useState } from "react";
 import { Alert, Pressable, View } from "react-native";
 import { useCuisineChoice } from "@/components/cuisine-picker";
 import { Thumb } from "@/components/thumb";
-import { Badge, Button, Card, EmptyState, ErrorView, Loading, Screen, T } from "@/components/ui";
+import { Badge, Button, Card, EmptyState, ErrorView, Loading, Notice, Screen, T } from "@/components/ui";
 import { api, useApi } from "@/lib/api";
 import { purchasesAvailable } from "@/lib/purchases";
 import { DAY_LABEL, euro, MEAL_LABEL, num, shortDate } from "@/lib/format";
 import { radius, space, useColors } from "@/lib/theme";
-import { t } from "@/lib/i18n";
+import { t, tn } from "@/lib/i18n";
 
 interface Week {
   weekStart: string;
   hasPlan: boolean;
   today?: number;
-  summary?: { cost: number; eaten: number; kept: number; budget: number | null; avgKcal: number | null; targetKcal: number | null };
+  summary?: { cost: number; eaten: number; kept: number; budget: number | null; budgetOver?: boolean; people?: number; countries?: number; avgKcal: number | null; targetKcal: number | null };
   days: {
     day: number;
     date: string;
@@ -100,6 +100,27 @@ export default function WeekScreen() {
                 )}
               </View>
               {data.summary.kept >= 5 && <T variant="small">{t("dont {0} de produits qui te resteront pour la suite", "including {0} of food you'll have left for later", [euro(data.summary.kept)])}</T>}
+              {data.summary.budget !== null && !data.summary.budgetOver && (
+                <T variant="small">{t("Budget : {0}, il te reste {1}", "Budget: {0}, {1} left", [euro(data.summary.budget), euro(Math.max(0, data.summary.budget - data.summary.cost))])}</T>
+              )}
+              {data.summary.budget !== null && data.summary.budgetOver && (
+                <Notice tone="miel">
+                  {tn(
+                    data.summary.people ?? 1,
+                    [
+                      "Ton budget de {1} ne peut pas être tenu : pour une personne, le menu équilibré le moins cher trouvé revient à {2}. Pour descendre, tu peux retirer les collations, cuisiner plus de restes ou fixer un budget d'au moins {2}.",
+                      "Ton budget de {1} ne peut pas être tenu : pour {0} personnes, le menu équilibré le moins cher trouvé revient à {2}. Pour descendre, tu peux retirer les collations, cuisiner plus de restes ou fixer un budget d'au moins {2}.",
+                    ],
+                    [
+                      "Your {1} budget can't be met: for one person, the cheapest balanced menu found costs {2}. To spend less, you can drop snacks, cook more leftovers or set a budget of at least {2}.",
+                      "Your {1} budget can't be met: for {0} people, the cheapest balanced menu found costs {2}. To spend less, you can drop snacks, cook more leftovers or set a budget of at least {2}.",
+                    ],
+                    [euro(data.summary.budget), euro(data.summary.cost)],
+                  )}
+                  {(data.summary.countries ?? 0) > 0 &&
+                    ` ${t("Les cuisines choisies coûtent aussi plus cher : le mélange de tous les pays revient en général moins cher.", "The cuisines you chose also cost more: the mix of every country is usually cheaper.")}`}
+                </Notice>
+              )}
               <Button small variant="secondary" onPress={() => generate(true)} loading={busy === "all"} icon={<RefreshCw size={16} color={c.encre} />} style={{ alignSelf: "flex-start" }}>{t("Nouveau menu", "New menu")}</Button>
             </Card>
           )}

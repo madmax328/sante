@@ -102,6 +102,12 @@ describe("budget", () => {
     expect(tight).toBeLessThan(free);
   });
 
+  it("treats a generous budget as a ceiling, not an amount to spend", () => {
+    const free = generateWeek(ctx, { startDate: START, seed: 7 }).summary.cost;
+    const generous = generateWeek({ ...ctx, budget: free * 2 }, { startDate: START, seed: 7 }).summary.cost;
+    expect(generous).toBeLessThanOrEqual(free * 1.1);
+  });
+
   it("reports an impossible budget honestly", () => {
     const res = generateWeek({ ...ctx, budget: 8 }, { startDate: START, seed: 7 });
     expect(res.summary.budgetStatus).toBe("over");

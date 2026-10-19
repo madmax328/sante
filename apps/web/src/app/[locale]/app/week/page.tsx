@@ -109,8 +109,11 @@ export default async function WeekPage({ searchParams }: PageProps<"/[locale]/ap
             </span>
           </p>
           {elsewhere > 0 && <Notice tone="miel" title={t("cuisinesRelaxedTitle")}>{t("cuisinesRelaxedText", { count: elsewhere })}</Notice>}
-          {s.notes.some((n) => n.code === "budget_over") && (
-            <Notice tone="miel" title={t("budgetOverTitle")}>{t("budgetOverText", { min: money(s.cost) })}</Notice>
+          {s.budgetStatus === "over" && (
+            <Notice tone="miel" title={t("budgetOverTitle")}>
+              {t("budgetOverText", { min: money(s.cost), people: uc.members.length })}
+              {chosen.length > 0 && ` ${t("budgetOverCountries")}`}
+            </Notice>
           )}
         </Card>
         <Card className="grid content-start gap-3">
