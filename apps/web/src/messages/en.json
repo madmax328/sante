@@ -939,7 +939,7 @@
       },
       "budget_check": {
         "title": "Budget exceeded",
-        "text": "Groceries cost €{value} more than planned. Turn on the pantry and check your shop's prices."
+        "text": "Groceries cost {value} more than planned. Turn on the pantry and check your shop's prices."
       },
       "log_more": {
         "title": "More data",
@@ -1038,7 +1038,9 @@
     "supportNote": "A question about your subscription? <link>Write to us</link>.",
     "storeApple": "Your Premium subscription was bought in the iPhone app: manage (or cancel) it in your Apple account settings, under Subscriptions.",
     "storeGoogle": "Your Premium subscription was bought in the Android app: manage (or cancel) it in Google Play, under Subscriptions.",
-    "storeGift": "Premium was given to you."
+    "storeGift": "Premium was given to you.",
+    "market": "Country I shop in",
+    "marketText": "Menu prices, the budget and the supermarket comparison follow the shops of this country. Your budget is adjusted to the country's price level."
   },
   "checkout": {
     "title": "Go Premium",
@@ -1125,7 +1127,7 @@
     "none": "Not enough recorded prices yet to compare chains for your list. The database grows every day.",
     "note": "Estimate: median prices recorded over 12 months in France, excluding promotions and organic products (except Biocoop). Each chain is compared with the others on the same products; for products without a record, its usual gap is applied. Prices vary between stores.",
     "contribute": "You can help by adding your receipts on Open Prices.",
-    "premium": "With Premium, compare the cost of your list in each chain (Leclerc, Carrefour, Lidl…).",
+    "premium": "With Premium, compare the cost of your list in each chain ({examples}…).",
     "cheaper": "{pct}% cheaper than average",
     "dearer": "{pct}% dearer than average",
     "same": "in line with other chains"

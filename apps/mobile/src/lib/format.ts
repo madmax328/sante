@@ -11,7 +11,14 @@ export const DAY_LABEL = t("Lundi Mardi Mercredi Jeudi Vendredi Samedi Dimanche"
 
 const nf = (d = 0) => new Intl.NumberFormat(intlLocale, { maximumFractionDigits: d });
 export const num = (n: number, d = 0) => nf(d).format(n);
-export const euro = (n: number) => new Intl.NumberFormat(intlLocale, { style: "currency", currency: "EUR" }).format(n);
+/** Currency of the shops' country (set from the account once loaded). */
+let currency = "EUR";
+export function setCurrency(code: string | undefined): void {
+  currency = code || "EUR";
+}
+export const euro = (n: number) => new Intl.NumberFormat(intlLocale, { style: "currency", currency }).format(n);
+/** The currency sign alone ("€", "CHF", "£"). */
+export const currencySign = () => new Intl.NumberFormat(intlLocale, { style: "currency", currency, maximumFractionDigits: 0 }).format(0).replace(/[\d\s\u00a0\u202f.,]/g, "");
 
 export function longDate(iso: string): string {
   const s = new Intl.DateTimeFormat(intlLocale, { weekday: "long", day: "numeric", month: "long" }).format(new Date(`${iso}T12:00:00`));

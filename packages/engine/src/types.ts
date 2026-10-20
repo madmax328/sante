@@ -12,10 +12,28 @@ export function t(text: Localized, locale: Locale): string {
   return text[locale] ?? (locale === "fr" ? undefined : text.en) ?? text.fr;
 }
 
-export const MARKETS = ["FR"] as const;
+/** Countries whose shop prices are known (ISO 3166 codes). */
+export const MARKETS = ["FR", "BE", "LU", "CH", "DE", "AT", "NL", "IE", "GB", "ES", "IT", "PT"] as const;
 export type Market = (typeof MARKETS)[number];
 
-export const MARKET_CURRENCY: Record<Market, string> = { FR: "EUR" };
+export const MARKET_CURRENCY: Record<Market, string> = {
+  FR: "EUR",
+  BE: "EUR",
+  LU: "EUR",
+  CH: "CHF",
+  DE: "EUR",
+  AT: "EUR",
+  NL: "EUR",
+  IE: "EUR",
+  GB: "GBP",
+  ES: "EUR",
+  IT: "EUR",
+  PT: "EUR",
+};
+
+export function isMarket(code: unknown): code is Market {
+  return typeof code === "string" && (MARKETS as readonly string[]).includes(code);
+}
 
 // ---------------------------------------------------------------- Ingredients
 

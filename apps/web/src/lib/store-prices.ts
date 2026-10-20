@@ -1,15 +1,16 @@
 import "server-only";
 import { getCatalog } from "@weeko/catalog";
-import type { ShoppingList } from "@weeko/engine";
+import { MARKET_CURRENCY, MARKETS, type Market, type ShoppingList } from "@weeko/engine";
 import { db, ensureIndexes } from "./db";
-import { brandOf, PRICE_SOURCES } from "./price-sources";
+import { brandOf, isOrganicShop, PRICE_SOURCES } from "./price-sources";
 
 /**
  * Store comparison from Open Prices (Open Food Facts), the open database of
  * prices people record in shops. A daily job keeps, for each ingredient, the
- * median price per chain over the last 12 months in France. The weekly basket
- * is then estimated per chain: measured prices where there are some, and the
- * chain's usual gap to the average price for the rest.
+ * median price per chain over the last 12 months, in each country where
+ * Sorloo has users. The weekly basket is then estimated per chain: measured
+ * prices where there are some, and the chain's usual gap to the average price
+ * for the rest.
  */
 
 const API = "https://prices.openfoodfacts.org/api/v1/prices";
@@ -20,6 +21,7 @@ const MIN_ITEMS = 5;
 const VERSION = 2;
 
 interface StorePrices {
+  /** The ingredient id in France, "ES:tomato" elsewhere */
   _id: string;
   /** € per kg (or L) — or per piece for ingredients counted in pieces */
   brands: Record<string, { price: number; count: number }>;
@@ -29,6 +31,11 @@ interface StorePrices {
 }
 
 const collection = () => db.collection<StorePrices>("store_prices");
+const profiles = () => db.collection<{ market?: string }>("profiles");
+
+const docId = (market: Market, ingredientId: string) => (market === "FR" ? ingredientId : `${market}:${ingredientId}`);
+const ingredientOf = (id: string) => id.slice(id.indexOf(":") + 1);
+const marketOf = (id: string): Market => (id.includes(":") ? (id.slice(0, id.indexOf(":")) as Market) : "FR");
 
 interface OpenPrice {
   price: string | number;
@@ -46,17 +53,21 @@ const median = (xs: number[]) => {
 };
 
 async function page(params: Record<string, string>, n: number): Promise<OpenPrice[]> {
-  const url = `${API}?${new URLSearchParams({ ...params, currency: "EUR", price_is_discounted: "false", size: "100", page: String(n), order_by: "-date" })}`;
+  const url = `${API}?${new URLSearchParams({ ...params, price_is_discounted: "false", size: "100", page: String(n), order_by: "-date" })}`;
   const res = await fetch(url, { headers: { "User-Agent": "Sorloo/1.0 (contact@sorloo.com)" }, signal: AbortSignal.timeout(10_000) });
   if (!res.ok) return [];
   const body = (await res.json().catch(() => null)) as { items?: OpenPrice[] } | null;
   return body?.items ?? [];
 }
 
-/** Prices for one ingredient, converted to the reference unit, with their chain. */
-async function samplesFor(ingredientId: string): Promise<{ brand: string; price: number }[]> {
+/** Prices for one ingredient in a country, converted to the reference unit, with their chain. */
+async function samplesFor(ingredientId: string, market: Market = "FR"): Promise<{ brand: string; price: number }[]> {
   const source = PRICE_SOURCES[ingredientId];
-  const catalog = getCatalog();
+  const catalog = getCatalog(market);
+  const currency = MARKET_CURRENCY[market];
+  // Open Prices can't filter by country: euro prices of smaller countries are
+  // found among the French ones, so more pages are read for them.
+  const pages = market === "FR" || currency !== "EUR" ? 2 : 4;
   if (!source || !catalog.ingredients.has(ingredientId)) return [];
   const ing = catalog.ingredient(ingredientId);
   const perPiece = ing.unit === "pc";
@@ -65,21 +76,21 @@ async function samplesFor(ingredientId: string): Promise<{ brand: string; price:
   const out: { brand: string; price: number }[] = [];
 
   const queries = [
-    ...(source.raw ?? []).map((tag) => ({ category_tag: tag, date__gte: since })),
-    ...(source.product ?? []).map((tag) => ({ product__categories_tags__contains: tag, date__gte: since })),
+    ...(source.raw ?? []).map((tag) => ({ category_tag: tag, date__gte: since, currency })),
+    ...(source.product ?? []).map((tag) => ({ product__categories_tags__contains: tag, date__gte: since, currency })),
   ];
   for (const q of queries) {
-    for (let n = 1; n <= 2; n++) {
+    for (let n = 1; n <= pages; n++) {
       const items = await page(q, n).catch(() => []);
       for (const p of items) {
         const loc = p.location;
-        if (!loc || loc.osm_address_country_code !== "FR") continue;
-        const brand = brandOf(loc.osm_brand, loc.osm_name);
+        if (!loc || loc.osm_address_country_code !== market) continue;
+        const brand = brandOf(loc.osm_brand, loc.osm_name, market);
         const value = Number(p.price);
         if (!brand || !(value > 0)) continue;
         // Organic prices would make mainstream chains look dearer: only kept for organic shops.
         const labels = [...(p.labels_tags ?? []), ...(p.product?.labels_tags ?? [])];
-        if (brand !== "Biocoop" && labels.some((l) => /organic|biologique|\bbio\b|^fr:ab-/i.test(l))) continue;
+        if (!isOrganicShop(brand) && labels.some((l) => /organic|biologique|\bbio\b|^fr:ab-/i.test(l))) continue;
         let price: number | null = null;
         if ("category_tag" in q) {
           if (p.price_per === "KILOGRAM") price = perPiece ? (ing.pieceWeight ? (value * ing.pieceWeight) / 1000 : null) : value;
@@ -102,11 +113,22 @@ async function samplesFor(ingredientId: string): Promise<{ brand: string; price:
   return out.filter((x) => x.price > typical / 2 && x.price < typical * 2);
 }
 
+/** The countries of Sorloo's users (France always). */
+async function activeMarkets(): Promise<Market[]> {
+  let used: unknown[] = [];
+  try {
+    used = await profiles().distinct("market");
+  } catch {
+    // Without the list, France only.
+  }
+  return MARKETS.filter((m) => m === "FR" || used.includes(m));
+}
+
 /** Refreshes the oldest ingredients first, within a time budget (daily cron). */
-export async function refreshStorePrices(budgetMs = 50_000): Promise<{ updated: number; withData: number; remaining: number }> {
+export async function refreshStorePrices(budgetMs = 50_000, markets?: Market[]): Promise<{ updated: number; withData: number; remaining: number }> {
   await ensureIndexes();
   const started = Date.now();
-  const ids = Object.keys(PRICE_SOURCES);
+  const ids = (markets ?? (await activeMarkets())).flatMap((m) => Object.keys(PRICE_SOURCES).map((id) => docId(m, id)));
   // Entries imported with older rules count as never imported.
   const known = new Map((await collection().find({}, { projection: { updatedAt: 1, v: 1 } }).toArray()).map((d) => [d._id, d.v === VERSION ? d.updatedAt.getTime() : 0]));
   const queue = ids.sort((a, b) => (known.get(a) ?? 0) - (known.get(b) ?? 0));
@@ -116,7 +138,7 @@ export async function refreshStorePrices(budgetMs = 50_000): Promise<{ updated: 
   for (const id of queue) {
     if (Date.now() - started > budgetMs) break;
     if ((known.get(id) ?? 0) > fresh) continue;
-    const samples = await samplesFor(id);
+    const samples = await samplesFor(ingredientOf(id), marketOf(id));
     const byBrand = new Map<string, number[]>();
     for (const s of samples) byBrand.set(s.brand, [...(byBrand.get(s.brand) ?? []), s.price]);
     const brands: StorePrices["brands"] = {};
@@ -125,7 +147,7 @@ export async function refreshStorePrices(budgetMs = 50_000): Promise<{ updated: 
     updated++;
     if (samples.length) withData++;
   }
-  const done = await collection().countDocuments({ updatedAt: { $gt: new Date(fresh) }, v: VERSION });
+  const done = await collection().countDocuments({ _id: { $in: ids }, updatedAt: { $gt: new Date(fresh) }, v: VERSION });
   return { updated, withData, remaining: Math.max(0, ids.length - done) };
 }
 
@@ -139,6 +161,7 @@ export interface StoreEstimate {
 }
 
 export interface StoreComparison {
+  currency: string;
   reference: number;
   items: number;
   stores: StoreEstimate[];
@@ -151,10 +174,10 @@ export interface StoreComparison {
  * each chain's price is divided by the median of those chains. A chain's
  * index is the median of its ratios, used for the products it has no price for.
  */
-export async function compareStores(list: ShoppingList): Promise<StoreComparison> {
+export async function compareStores(list: ShoppingList, market: Market = "FR"): Promise<StoreComparison> {
   const items = list.aisles.flatMap((a) => a.items).filter((i) => i.cost > 0);
   const docs = await collection()
-    .find({ _id: { $in: items.map((i) => i.ingredientId) } })
+    .find({ _id: { $in: items.map((i) => docId(market, i.ingredientId)) } })
     .toArray()
     .catch(() => []);
   const ratios = new Map<string, Map<string, number>>();
@@ -164,7 +187,7 @@ export async function compareStores(list: ShoppingList): Promise<StoreComparison
     const typical = median(priced.map(([, v]) => v.price));
     for (const [brand, v] of priced) {
       if (!ratios.has(brand)) ratios.set(brand, new Map());
-      ratios.get(brand)!.set(d._id, v.price / typical);
+      ratios.get(brand)!.set(ingredientOf(d._id), v.price / typical);
     }
   }
   const stores: StoreEstimate[] = [];
@@ -179,14 +202,20 @@ export async function compareStores(list: ShoppingList): Promise<StoreComparison
   for (const x of stores) x.index = typicalTotal ? Math.round((x.total / typicalTotal) * 100) / 100 : 1;
   stores.sort((a, b) => a.total - b.total);
   const updatedAt = docs.reduce<Date | null>((d, x) => (!d || x.updatedAt > d ? x.updatedAt : d), null);
-  return { reference: Math.round(items.reduce((s, i) => s + i.cost, 0) * 100) / 100, items: items.length, stores, updatedAt };
+  return { currency: MARKET_CURRENCY[market], reference: Math.round(items.reduce((s, i) => s + i.cost, 0) * 100) / 100, items: items.length, stores, updatedAt };
 }
 
 /** Coverage of the price data, for the admin page. */
 export async function storePriceStats(): Promise<{ ingredients: number; withData: number; samples: number; brands: { brand: string; ingredients: number }[]; updatedAt: Date | null }> {
   const docs = await collection().find({}).toArray().catch(() => []);
   const perBrand = new Map<string, number>();
-  for (const d of docs) for (const [b, v] of Object.entries(d.brands)) if (v.count >= MIN_SAMPLES) perBrand.set(b, (perBrand.get(b) ?? 0) + 1);
+  for (const d of docs) {
+    const market = marketOf(d._id);
+    for (const [name, v] of Object.entries(d.brands)) {
+      const b = market === "FR" ? name : `${name} (${market})`;
+      if (v.count >= MIN_SAMPLES) perBrand.set(b, (perBrand.get(b) ?? 0) + 1);
+    }
+  }
   return {
     ingredients: Object.keys(PRICE_SOURCES).length,
     withData: docs.filter((d) => d.samples > 0).length,

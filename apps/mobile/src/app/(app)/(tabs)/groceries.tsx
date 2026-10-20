@@ -19,7 +19,7 @@ interface Groceries {
   staples: string[];
   fromPantry: { name: string; qty: string }[];
   leftovers: { name: string; qty: string }[];
-  stores?: { premium: boolean; items: number; list: { brand: string; total: number; measured: number; index: number }[] };
+  stores?: { premium: boolean; items: number; list: { brand: string; total: number; measured: number; index: number }[]; examples?: string[] };
 }
 
 export default function GroceriesScreen() {
@@ -123,7 +123,7 @@ function Stores({ stores }: { stores: NonNullable<Groceries["stores"]> }) {
       <SectionTitle>{t("Comparer les enseignes", "Compare supermarkets")}</SectionTitle>
       {!stores.premium ? (
         <>
-        <T variant="small">{t("Avec Sorloo Premium, compare le coût de ta liste dans chaque enseigne (Leclerc, Carrefour, Lidl…).", "With Sorloo Premium, compare the cost of your list at each supermarket chain (Leclerc, Carrefour, Lidl…).")}</T>
+        <T variant="small">{t("Avec Sorloo Premium, compare le coût de ta liste dans chaque enseigne ({0}…).", "With Sorloo Premium, compare the cost of your list at each supermarket chain ({0}…).", [(stores.examples ?? ["Leclerc", "Carrefour", "Lidl"]).join(", ")])}</T>
         <PremiumButton />
         </>
       ) : stores.list.length === 0 ? (

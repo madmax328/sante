@@ -4,6 +4,7 @@ import { features } from "@/lib/env";
 import { mobileRoute } from "@/lib/mobile";
 import { hasStorePremium, isPremium } from "@/lib/premium";
 import { localeOf } from "@/lib/locale";
+import { currencyOf, marketFromHeaders } from "@/lib/market";
 import { ensureProfile, getHealth, updateProfile } from "@/lib/repo";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +13,7 @@ export const dynamic = "force-dynamic";
 export const GET = mobileRoute(async (req, userId) => {
   const session = await auth.api.getSession({ headers: req.headers });
   const locale = localeOf(req);
-  const profile = await ensureProfile(userId, locale);
+  const profile = await ensureProfile(userId, locale, marketFromHeaders(req.headers));
   // The app follows the phone's language: remember it (emails, reminders).
   if (profile.locale !== locale) await updateProfile(userId, { locale });
   const health = profile.onboarded ? await getHealth(userId) : null;
@@ -31,6 +32,8 @@ export const GET = mobileRoute(async (req, userId) => {
     numbersHidden: !!health?.numbersHidden,
     sportEnabled: profile.sport.enabled,
     budget: profile.budget,
+    market: profile.market,
+    currency: currencyOf(profile.market),
     prefs: profile.prefs,
     ai: features.ai() ? { left: aiMessagesLeft(profile) } : null,
     devices: { appleHealth: profile.devices?.apple_health?.lastSync ?? null, healthConnect: profile.devices?.health_connect?.lastSync ?? null },

@@ -939,7 +939,7 @@
       },
       "budget_check": {
         "title": "Presupuesto superado",
-        "text": "La compra ha costado {value} € más de lo previsto. Activa la despensa y revisa los precios de tu tienda."
+        "text": "La compra ha costado {value} más de lo previsto. Activa la despensa y revisa los precios de tu tienda."
       },
       "log_more": {
         "title": "Más datos",
@@ -1038,7 +1038,9 @@
     "supportNote": "¿Alguna pregunta sobre tu suscripción? <link>Escríbenos</link>.",
     "storeApple": "Tu suscripción Premium se contrató en la app de iPhone: gestiónala (o cancélala) en los ajustes de tu cuenta de Apple, en Suscripciones.",
     "storeGoogle": "Tu suscripción Premium se contrató en la app de Android: gestiónala (o cancélala) en Google Play, en Suscripciones.",
-    "storeGift": "Premium te ha sido regalado."
+    "storeGift": "Premium te ha sido regalado.",
+    "market": "País de mi compra",
+    "marketText": "Los precios de los menús, el presupuesto y la comparación de supermercados siguen las tiendas de este país. Tu presupuesto se ajusta al nivel de precios del país."
   },
   "checkout": {
     "title": "Pasar a Premium",
@@ -1125,7 +1127,7 @@
     "none": "Aún no hay suficientes precios registrados para comparar las cadenas en tu lista. La base crece cada día.",
     "note": "Estimación: precios medianos registrados durante 12 meses en Francia, sin promociones ni productos ecológicos (salvo Biocoop). Cada cadena se compara con las demás en los mismos productos; para los productos sin registro, se aplica su diferencia habitual. Los precios varían según la tienda.",
     "contribute": "Puedes ayudar añadiendo tus tiques en Open Prices.",
-    "premium": "Con Premium, compara el coste de tu lista en cada cadena (Leclerc, Carrefour, Lidl…).",
+    "premium": "Con Premium, compara el coste de tu lista en cada cadena ({examples}…).",
     "cheaper": "{pct} % más barato que la media",
     "dearer": "{pct} % más caro que la media",
     "same": "en la media de las demás cadenas"

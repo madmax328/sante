@@ -8,6 +8,7 @@ import { Badge, Card, EmptyState, Input, PageHeader, Select, buttonClass } from 
 import { Link } from "@/i18n/navigation";
 import { requireContext } from "@/lib/app-user";
 import { getPhotoMap } from "@/lib/photos";
+import { currencyOf } from "@/lib/market";
 
 const PAGE = 24;
 const DIETS: Diet[] = ["omnivore", "pescatarian", "vegetarian", "vegan"];
@@ -104,7 +105,7 @@ export default async function RecipesPage({ searchParams }: PageProps<"/[locale]
                   <p className="flex flex-wrap gap-x-3 text-sm text-muted num">
                     <span className="inline-flex items-center gap-1"><Clock className="size-3.5" aria-hidden />{r.totalMin} min</span>
                     {!hidden && <span>{r.nutrition.kcal} kcal</span>}
-                    <span>{format.number(r.cost, { style: "currency", currency: "EUR" })}</span>
+                    <span>{format.number(r.cost, { style: "currency", currency: currencyOf(uc.profile.market) })}</span>
                   </p>
                   <div className="flex flex-wrap gap-1">
                     {r.diets.includes("vegan") ? <Badge tone="basilic">{e("diet.vegan")}</Badge> : r.diets.includes("vegetarian") ? <Badge tone="basilic">{e("diet.vegetarian")}</Badge> : null}

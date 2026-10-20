@@ -1,3 +1,5 @@
+import type { Market } from "@weeko/engine";
+
 /**
  * Where to look for each ingredient in Open Prices (prices.openfoodfacts.org):
  * `raw` = loose products priced per kg or per piece (category_tag),
@@ -170,30 +172,93 @@ export const PRICE_SOURCES: Record<string, PriceSource> = {
   maple_syrup: pack("maple-syrups"),
 };
 
-/** Store chains shown in the comparison, matched on the OpenStreetMap brand or name. */
-export const BRANDS: { name: string; match: RegExp }[] = [
-  { name: "E.Leclerc", match: /leclerc/i },
-  { name: "Carrefour", match: /carrefour/i },
-  { name: "Intermarché", match: /intermarch/i },
+/**
+ * Store chains shown in the comparison, matched on the OpenStreetMap brand or
+ * name, in the countries where they trade (all countries when not given).
+ * `organic`: organic shops, whose organic prices are kept.
+ */
+export const BRANDS: { name: string; match: RegExp; countries?: Market[]; organic?: boolean }[] = [
+  // Across Europe
   { name: "Lidl", match: /\blidl\b/i },
   { name: "Aldi", match: /\baldi\b/i },
-  { name: "Auchan", match: /auchan/i },
-  { name: "Système U", match: /^(super|hyper|marché)?\s*u\b|u express|système u|systeme u/i },
-  { name: "Monoprix", match: /monoprix|monop'/i },
-  { name: "Franprix", match: /franprix/i },
-  { name: "Casino", match: /casino/i },
-  { name: "Netto", match: /\bnetto\b/i },
-  { name: "Grand Frais", match: /grand frais/i },
-  { name: "Picard", match: /picard/i },
-  { name: "Biocoop", match: /biocoop/i },
-  { name: "Cora", match: /\bcora\b/i },
+  { name: "Hofer", match: /\bhofer\b/i, countries: ["AT"] },
+  { name: "Carrefour", match: /carrefour/i, countries: ["FR", "BE", "ES", "IT"] },
+  { name: "Auchan", match: /auchan/i, countries: ["FR", "LU", "PT"] },
+  { name: "Alcampo", match: /alcampo/i, countries: ["ES"] },
+  { name: "Intermarché", match: /intermarch/i, countries: ["FR", "BE", "PT"] },
+  { name: "E.Leclerc", match: /leclerc/i, countries: ["FR", "ES", "PT"] },
+  { name: "Spar", match: /\b(euro|inter)?spar\b/i, countries: ["AT", "NL", "IE", "IT", "CH", "GB"] },
+  { name: "Penny", match: /\bpenny\b/i, countries: ["DE", "AT", "IT"] },
+  { name: "Netto", match: /\bnetto\b/i, countries: ["FR", "DE"] },
+  { name: "Delhaize", match: /delhaize/i, countries: ["BE", "LU"] },
+  // France
+  { name: "Système U", match: /^(super|hyper|marché)?\s*u\b|u express|système u|systeme u/i, countries: ["FR"] },
+  { name: "Monoprix", match: /monoprix|monop'/i, countries: ["FR"] },
+  { name: "Franprix", match: /franprix/i, countries: ["FR"] },
+  { name: "Casino", match: /casino/i, countries: ["FR"] },
+  { name: "Grand Frais", match: /grand frais/i, countries: ["FR"] },
+  { name: "Picard", match: /picard/i, countries: ["FR"] },
+  { name: "Cora", match: /\bcora\b/i, countries: ["FR", "LU"] },
+  { name: "Biocoop", match: /biocoop/i, countries: ["FR"], organic: true },
+  // Belgium, Luxembourg
+  { name: "Colruyt", match: /colruyt/i, countries: ["BE", "LU"] },
+  { name: "Cactus", match: /\bcactus\b/i, countries: ["LU"] },
+  // Switzerland
+  { name: "Migros", match: /migros/i, countries: ["CH"] },
+  { name: "Coop", match: /^coop\b|\bcoop pronto\b/i, countries: ["CH", "IT"] },
+  { name: "Denner", match: /denner/i, countries: ["CH"] },
+  // Germany, Austria
+  { name: "Edeka", match: /edeka/i, countries: ["DE"] },
+  { name: "Rewe", match: /\brewe\b/i, countries: ["DE"] },
+  { name: "Kaufland", match: /kaufland/i, countries: ["DE"] },
+  { name: "Billa", match: /\bbilla\b/i, countries: ["AT"] },
+  { name: "Alnatura", match: /alnatura/i, countries: ["DE"], organic: true },
+  // Netherlands
+  { name: "Albert Heijn", match: /albert heijn|\bah to go\b/i, countries: ["NL"] },
+  { name: "Jumbo", match: /\bjumbo\b/i, countries: ["NL"] },
+  { name: "Plus", match: /^plus\b/i, countries: ["NL"] },
+  { name: "Dirk", match: /\bdirk\b/i, countries: ["NL"] },
+  // Ireland, United Kingdom
+  { name: "Tesco", match: /tesco/i, countries: ["IE", "GB"] },
+  { name: "Dunnes Stores", match: /dunnes/i, countries: ["IE"] },
+  { name: "SuperValu", match: /supervalu/i, countries: ["IE"] },
+  { name: "Sainsbury's", match: /sainsbury/i, countries: ["GB"] },
+  { name: "Asda", match: /\basda\b/i, countries: ["GB"] },
+  { name: "Morrisons", match: /morrisons/i, countries: ["GB"] },
+  { name: "Waitrose", match: /waitrose/i, countries: ["GB"] },
+  { name: "Co-op", match: /\bco-?op\b/i, countries: ["GB"] },
+  // Spain
+  { name: "Mercadona", match: /mercadona/i, countries: ["ES"] },
+  { name: "Dia", match: /^dia\b|\bdia market\b/i, countries: ["ES"] },
+  { name: "Eroski", match: /eroski/i, countries: ["ES"] },
+  { name: "Consum", match: /\bconsum\b/i, countries: ["ES"] },
+  // Italy
+  { name: "Conad", match: /conad/i, countries: ["IT"] },
+  { name: "Esselunga", match: /esselunga/i, countries: ["IT"] },
+  { name: "Eurospin", match: /eurospin/i, countries: ["IT"] },
+  // Portugal
+  { name: "Continente", match: /continente/i, countries: ["PT"] },
+  { name: "Pingo Doce", match: /pingo doce/i, countries: ["PT"] },
+  { name: "Minipreço", match: /minipre[cç]o/i, countries: ["PT"] },
 ];
 
-export function brandOf(osmBrand?: string | null, osmName?: string | null): string | null {
+const sells = (b: (typeof BRANDS)[number], market: Market) => !b.countries || b.countries.includes(market);
+
+export function brandOf(osmBrand: string | null | undefined, osmName: string | null | undefined, market: Market = "FR"): string | null {
   for (const text of [osmBrand, osmName]) {
     if (!text) continue;
-    const b = BRANDS.find((x) => x.match.test(text.trim()));
+    const b = BRANDS.find((x) => sells(x, market) && x.match.test(text.trim()));
     if (b) return b.name;
   }
   return null;
+}
+
+export function isOrganicShop(brand: string): boolean {
+  return !!BRANDS.find((b) => b.name === brand)?.organic;
+}
+
+/** A few chains of the country, for texts ("Leclerc, Carrefour, Lidl…"). */
+export function brandExamples(market: Market): string[] {
+  const local = BRANDS.filter((b) => b.countries?.includes(market) && !b.organic).map((b) => b.name);
+  return [...local, "Lidl", "Aldi"].filter((x, i, a) => a.indexOf(x) === i).slice(0, 3);
 }

@@ -4,10 +4,12 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Alert, Pressable, Switch, View } from "react-native";
 import { Button, Card, Chip, ErrorView, Field, Loading, Notice, Screen, SectionTitle, T } from "@/components/ui";
 import { api, useApi } from "@/lib/api";
+import { MARKET_LIST } from "@weeko/catalog/markets";
+import { currencySign, euro } from "@/lib/format";
 import { L } from "@/lib/labels";
 import { useMe } from "@/lib/me";
 import { radius, space, useColors } from "@/lib/theme";
-import { t, tn } from "@/lib/i18n";
+import { lang, t, tn } from "@/lib/i18n";
 import { PremiumButton } from "@/components/premium-button";
 
 interface Prefs {
@@ -75,6 +77,7 @@ export default function PreferencesScreen() {
   return (
     <Screen padTop={false}>
       <FoodPrefs initial={data.prefs} options={data.dislikeOptions} />
+      <MarketCard />
       <Budget initial={data.budget} />
       {data.body && <BodyForm initial={data.body} />}
     </Screen>
@@ -201,6 +204,32 @@ function Dislikes({ value, onChange, options }: { value: string[]; onChange: (v:
   );
 }
 
+/** Country of the shops: prices, currency and supermarkets compared. */
+function MarketCard() {
+  const { me, reload } = useMe();
+  const [busy, setBusy] = useState<string | null>(null);
+  const current = me.market ?? "FR";
+  const choose = async (market: string) => {
+    if (market === current || busy) return;
+    setBusy(market);
+    const res = await api.action<{ ok: boolean }>("setMarket", { market }).catch(() => null);
+    if (res?.ok) await reload();
+    else Alert.alert(t("Changement impossible", "Couldn't change it"), t("Vérifie ta connexion et réessaie.", "Check your connection and try again."));
+    setBusy(null);
+  };
+  return (
+    <Card>
+      <SectionTitle>{t("Pays de mes courses", "Country I shop in")}</SectionTitle>
+      <T variant="small">{t("Les prix des menus, le budget et la comparaison des enseignes suivent les magasins de ce pays.", "Menu prices, the budget and the supermarket comparison follow the shops of this country.")}</T>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
+        {MARKET_LIST.map((m) => (
+          <Chip key={m.code} label={`${m.flag} ${m.name[lang]}${busy === m.code ? "…" : ""}`} active={m.code === current} onPress={() => choose(m.code)} />
+        ))}
+      </View>
+    </Card>
+  );
+}
+
 function Budget({ initial }: { initial: Preferences["budget"] }) {
   const { reload } = useMe();
   const [enabled, setEnabled] = useState(initial.enabled);
@@ -231,8 +260,8 @@ function Budget({ initial }: { initial: Preferences["budget"] }) {
     <Card>
       <SectionTitle>{t("Mon budget courses", "My grocery budget")}</SectionTitle>
       <SwitchRow label={t("Respecter un budget", "Stick to a budget")} value={enabled} onChange={setEnabled} />
-      {enabled && <Field label={t("Budget par semaine (€)", "Weekly budget (€)")} value={weekly} onChangeText={setWeekly} keyboardType="decimal-pad" />}
-      {failed && <Notice tone="danger">{t("Le budget doit être compris entre 10 et 1 000 €.", "The budget must be between €10 and €1,000.")}</Notice>}
+      {enabled && <Field label={t("Budget par semaine ({0})", "Weekly budget ({0})", [currencySign()])} value={weekly} onChangeText={setWeekly} keyboardType="decimal-pad" />}
+      {failed && <Notice tone="danger">{t("Le budget doit être compris entre {0} et {1}.", "The budget must be between {0} and {1}.", [euro(10), euro(1000)])}</Notice>}
       <View style={{ flexDirection: "row", gap: space.sm }}>
         <Button variant="secondary" style={{ flex: 1 }} loading={busy} onPress={() => save(false)}>{t("Enregistrer", "Save")}</Button>
         {enabled && <Button style={{ flex: 1 }} loading={busy} onPress={() => save(true)}>{t("Refaire ma semaine", "Redo my week")}</Button>}

@@ -939,7 +939,7 @@
       },
       "budget_check": {
         "title": "Budget überschritten",
-        "text": "Der Einkauf hat {value} € mehr gekostet als geplant. Aktiviere den Vorrat und prüfe die Preise deines Geschäfts."
+        "text": "Der Einkauf hat {value} mehr gekostet als geplant. Aktiviere den Vorrat und prüfe die Preise deines Geschäfts."
       },
       "log_more": {
         "title": "Mehr Daten",
@@ -1038,7 +1038,9 @@
     "supportNote": "Eine Frage zu deinem Abonnement? <link>Schreib uns</link>.",
     "storeApple": "Dein Premium-Abo wurde in der iPhone-App abgeschlossen: Du verwaltest (oder kündigst) es in deinen Apple-Account-Einstellungen unter Abonnements.",
     "storeGoogle": "Dein Premium-Abo wurde in der Android-App abgeschlossen: Du verwaltest (oder kündigst) es in Google Play unter Abos.",
-    "storeGift": "Premium wurde dir geschenkt."
+    "storeGift": "Premium wurde dir geschenkt.",
+    "market": "Land meines Einkaufs",
+    "marketText": "Menüpreise, Budget und Ladenvergleich richten sich nach den Geschäften dieses Landes. Dein Budget wird an das Preisniveau des Landes angepasst."
   },
   "checkout": {
     "title": "Zu Premium wechseln",
@@ -1125,7 +1127,7 @@
     "none": "Noch nicht genug erfasste Preise, um die Ketten für deine Liste zu vergleichen. Die Datenbank wächst jeden Tag.",
     "note": "Schätzung: Medianpreise der letzten 12 Monate in Frankreich, ohne Aktionen und Bio-Produkte (außer Biocoop). Jede Kette wird mit den anderen bei denselben Produkten verglichen; für Produkte ohne Preis wird ihr üblicher Abstand angewendet. Die Preise variieren je nach Filiale.",
     "contribute": "Du kannst helfen, indem du deine Kassenbons bei Open Prices hinzufügst.",
-    "premium": "Mit Premium vergleichst du die Kosten deiner Liste in jeder Kette (Leclerc, Carrefour, Lidl…).",
+    "premium": "Mit Premium vergleichst du die Kosten deiner Liste in jeder Kette ({examples}…).",
     "cheaper": "{pct} % günstiger als der Durchschnitt",
     "dearer": "{pct} % teurer als der Durchschnitt",
     "same": "im Schnitt der anderen Ketten"

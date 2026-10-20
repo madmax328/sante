@@ -9,6 +9,7 @@ import { hasStorePremium, isPremium } from "@/lib/premium";
 import { getHealth } from "@/lib/repo";
 import { dislikeOptions } from "@/lib/dislikes";
 import { ContactForm } from "@/components/contact-form";
+import { MarketPicker } from "@/components/market-picker";
 import { HouseholdEditor } from "@/components/household-client";
 import { ageFrom, todayIn } from "@/lib/dates";
 import { paceOf } from "@/lib/planning";
@@ -89,6 +90,11 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
       <Card className="grid gap-4">
         <h2 className="text-xl font-bold">{t("food")}</h2>
         <FoodPrefsForm initial={user.profile.prefs} dislikeOptions={dislikeOptions(await getLocale())} />
+      </Card>
+
+      <Card className="grid gap-3">
+        <h2 className="text-xl font-bold">{t("market")}</h2>
+        <MarketPicker initial={user.profile.market ?? "FR"} />
       </Card>
 
       <Card className="grid gap-3">

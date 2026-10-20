@@ -1,6 +1,7 @@
 import { Catalog, type Market, type Recipe } from "@weeko/engine";
 import { toRecipe } from "./dsl";
 import { ingredients } from "./ingredients";
+import { localizePrices } from "./markets";
 import { breakfasts } from "./recipes/breakfast";
 import { snacks } from "./recipes/snacks";
 import { asianMains } from "./recipes/mains-asian";
@@ -36,7 +37,7 @@ const cache = new Map<string, Catalog>();
  * of the recipes; other disliked ingredients exclude recipes in the planner.
  */
 export function getCatalog(market: Market = "FR", dislikes: string[] = []): Catalog {
-  const base = cache.get(market) ?? new Catalog(ingredients, recipes, market);
+  const base = cache.get(market) ?? new Catalog(localizePrices(ingredients, market), recipes, market);
   cache.set(market, base);
   const omit = [...new Set(dislikes.filter((id) => base.ingredients.get(id)?.omittable))].sort();
   if (omit.length === 0) return base;
@@ -54,3 +55,4 @@ export { DISLIKE_GROUPS, type DislikeGroup } from "./dislikes";
 export { motions } from "./motions";
 export { drawMotion, poseAt, VIEW as MOTION_VIEW, type Motion, type Pose, type Shape, type Tone } from "./motion";
 export { CUISINE_COUNTRIES, CUISINE_CODES, type CuisineCountry } from "./countries";
+export { MARKET_INFO, MARKET_LIST, priceFactor, type MarketInfo } from "./markets";

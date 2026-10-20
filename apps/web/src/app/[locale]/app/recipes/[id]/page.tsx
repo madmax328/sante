@@ -12,6 +12,7 @@ import { Badge, Card, Notice } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { requireContext } from "@/lib/app-user";
 import { getPhotoMap } from "@/lib/photos";
+import { currencyOf } from "@/lib/market";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/app/recipes/[id]">) {
   const loc = await requestLocale();
@@ -66,7 +67,7 @@ export default async function RecipePage({ params }: PageProps<"/[locale]/app/re
           <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="rounded-2xl bg-surface p-3"><dt className="flex items-center gap-1 text-xs text-muted"><Clock className="size-3.5" />{t("time")}</dt><dd className="font-bold num">{recipe.totalMin} min</dd></div>
             <div className="rounded-2xl bg-surface p-3"><dt className="flex items-center gap-1 text-xs text-muted"><ChefHat className="size-3.5" />{t("difficulty")}</dt><dd className="font-bold">{t(`level${recipe.difficulty}`)}</dd></div>
-            <div className="rounded-2xl bg-surface p-3"><dt className="flex items-center gap-1 text-xs text-muted"><Wallet className="size-3.5" />{t("cost")}</dt><dd className="font-bold num">{format.number(recipe.cost, { style: "currency", currency: "EUR" })}</dd></div>
+            <div className="rounded-2xl bg-surface p-3"><dt className="flex items-center gap-1 text-xs text-muted"><Wallet className="size-3.5" />{t("cost")}</dt><dd className="font-bold num">{format.number(recipe.cost, { style: "currency", currency: currencyOf(uc.profile.market) })}</dd></div>
             {!hidden && <div className="rounded-2xl bg-surface p-3"><dt className="flex items-center gap-1 text-xs text-muted"><Flame className="size-3.5" />{t("energy")}</dt><dd className="font-bold num">{n.kcal} kcal</dd></div>}
           </dl>
           <p className="text-sm text-muted">{t("prepCook", { prep: recipe.prepMin, cook: recipe.cookMin })}{recipe.keepsDays > 0 && <> · <Snowflake className="inline size-3.5" /> {t("keeps", { days: recipe.keepsDays })}</>}</p>

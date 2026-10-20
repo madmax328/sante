@@ -12,6 +12,7 @@ import { can, isPremium } from "@/lib/premium";
 import { getLog, getWorkoutWeek } from "@/lib/repo";
 import { loadWeek } from "@/lib/week-service";
 import { MEAL_ORDER } from "@weeko/engine";
+import { currencyOf } from "@/lib/market";
 
 export async function generateMetadata() {
   const t = await getTranslations("nav");
@@ -44,7 +45,7 @@ export default async function TodayPage() {
   const eatenProtein = log.entries.reduce((s, x) => s + x.protein, 0);
   const session = workouts?.week.sessions.find((s) => s.day === day);
   const sessionDone = workouts?.done.includes(day) ?? false;
-  const money = (v: number) => format.number(v, { style: "currency", currency: stored?.plan.currency ?? "EUR" });
+  const money = (v: number) => format.number(v, { style: "currency", currency: currencyOf(uc.profile.market) });
   const notices = uc.self.safety.notices.filter((n) => n.code !== "kcal_floor");
 
   return (

@@ -2,6 +2,7 @@ import { localeOf } from "@/lib/locale";
 import { getTranslations } from "next-intl/server";
 import type { WeeklyReview } from "@weeko/engine";
 import { addDays } from "@/lib/dates";
+import { currencyOf } from "@/lib/market";
 import { contextFor, mobileRoute } from "@/lib/mobile";
 import { can } from "@/lib/premium";
 import { getMeasurements, getPlan } from "@/lib/repo";
@@ -23,6 +24,8 @@ export const GET = mobileRoute(async (req, userId) => {
     premium ? getPlan(userId, nextWeek) : Promise.resolve(null),
   ]);
   const t = await getTranslations({ locale: loc, namespace: "review" });
+  const money = (v: number) => new Intl.NumberFormat(loc, { style: "currency", currency: currencyOf(uc.profile.market) }).format(v);
+  const value = (rec: WeeklyReview["recommendations"][number]) => (rec.code === "budget_check" ? money(Math.abs(rec.value ?? 0)) : Math.abs(rec.value ?? 0));
   const review = (r: WeeklyReview | null, recs: boolean) =>
     r && {
       trendChangeKg: hidden ? null : (r.trendChangeKg ?? null),
@@ -34,7 +37,7 @@ export const GET = mobileRoute(async (req, userId) => {
       avgKcal: hidden ? null : (r.avgKcal ?? null),
       daysLogged: r.daysLogged,
       recommendations: recs
-        ? r.recommendations.map((rec) => ({ code: rec.code, title: t(`recs.${rec.code}.title`), text: t(`recs.${rec.code}.text`, { value: Math.abs(rec.value ?? 0) }) }))
+        ? r.recommendations.map((rec) => ({ code: rec.code, title: t(`recs.${rec.code}.title`), text: t(`recs.${rec.code}.text`, { value: value(rec) }) }))
         : [],
     };
   return {

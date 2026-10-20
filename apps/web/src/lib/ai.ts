@@ -2,7 +2,7 @@ import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
-import { MEAL_TYPES, type MealType, type PlanAction } from "@weeko/engine";
+import { MARKET_CURRENCY, MEAL_TYPES, type MealType, type PlanAction } from "@weeko/engine";
 import { dayIndex } from "./dates";
 import { env } from "./env";
 import { LANGUAGE_NAME, type Locale } from "./locale";
@@ -78,7 +78,7 @@ function describeContext(uc: UserContext, stored: StoredPlan | null): string {
   } else {
     lines.push("Ne parle pas de calories ni de poids avec cette personne.");
   }
-  if (uc.ctx.budget) lines.push(`Budget courses : ${uc.ctx.budget} € par semaine.`);
+  if (uc.ctx.budget) lines.push(`Budget courses : ${uc.ctx.budget} ${MARKET_CURRENCY[uc.ctx.catalog.market]} par semaine (magasins : ${uc.ctx.catalog.market}).`);
   lines.push(`Régime : ${uc.ctx.prefs.diet}. Temps de cuisine max : ${uc.ctx.prefs.maxMinutesWeekday} min en semaine.`);
   if (stored) {
     lines.push("Programme de la semaine :");

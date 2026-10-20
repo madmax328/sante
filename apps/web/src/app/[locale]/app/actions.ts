@@ -3,7 +3,8 @@
 import { requestLocale, tr } from "@/lib/locale";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { MEAL_TYPES, alternatives as engineAlternatives, type MealType, type PlanAction } from "@weeko/engine";
+import { MEAL_TYPES, alternatives as engineAlternatives, isMarket, type MealType, type PlanAction } from "@weeko/engine";
+import { priceFactor } from "@weeko/catalog/markets";
 import { CUISINE_CODES } from "@weeko/catalog/countries";
 import { addDays, todayIn, weekStartOf } from "@/lib/dates";
 import { FREE_LIMITS, can, isPremium } from "@/lib/premium";
@@ -252,6 +253,21 @@ export async function setBudgetAction(input: { enabled: boolean; weekly: number;
   if (!can(profile, "budget")) return { ok: false, error: "premium" };
   await updateProfile(userId, { budget: { enabled: parsed.data.enabled, weekly: parsed.data.weekly } });
   if (parsed.data.regenerate) await generateForUser(userId, undefined, Math.floor(Math.random() * 2 ** 31));
+  refresh();
+  return { ok: true };
+}
+
+/** Country of the shops: prices, currency and chains compared. The budget follows the price level. */
+export async function setMarketAction(input: { market: string }): Promise<ActionResult> {
+  const userId = await requireUserId();
+  const market = input?.market;
+  if (!isMarket(market)) return { ok: false, error: "invalid" };
+  const profile = await getProfile(userId);
+  if (!profile) return { ok: false, error: "server" };
+  if (profile.market === market) return { ok: true };
+  const ratio = priceFactor(market, "grocery") / priceFactor(profile.market ?? "FR", "grocery");
+  const weekly = Math.min(1000, Math.max(10, Math.round((profile.budget.weekly * ratio) / 5) * 5));
+  await updateProfile(userId, { market, budget: { ...profile.budget, weekly } });
   refresh();
   return { ok: true };
 }

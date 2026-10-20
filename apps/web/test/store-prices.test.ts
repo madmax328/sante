@@ -64,6 +64,18 @@ describe("store prices", () => {
     expect(docs.get("tomato")?.v).toBe(2);
   });
 
+  it("keeps the prices of the user's country, in its currency", async () => {
+    const api = fakeApi();
+    vi.stubGlobal("fetch", api);
+    await refreshStorePrices(20_000, ["ES"]);
+    expect(docs.get("ES:tomato")?.brands).toEqual({ Mercadona: { price: 1.2, count: 1 } });
+    expect(docs.has("tomato")).toBe(false);
+    expect(api.mock.calls.every(([url]) => new URL(url as string).searchParams.get("currency") === "EUR")).toBe(true);
+    api.mockClear();
+    await refreshStorePrices(20_000, ["GB"]);
+    expect(api.mock.calls.every(([url]) => new URL(url as string).searchParams.get("currency") === "GBP")).toBe(true);
+  });
+
   it("compares chains with each other on the same products", async () => {
     const at = new Date();
     const ids = ["tomato", "pasta", "rice", "carrot", "apple", "banana"];

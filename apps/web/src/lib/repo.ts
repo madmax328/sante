@@ -1,4 +1,4 @@
-import { localizeSessionTitle, type Locale } from "@weeko/engine";
+import { localizeSessionTitle, type Locale, type Market } from "@weeko/engine";
 import "server-only";
 import type { PantryItem, WeekPlan, WorkoutWeek } from "@weeko/engine";
 import { seal, unseal, type Sealed } from "./crypto";
@@ -37,14 +37,14 @@ export async function getProfile(userId: string): Promise<Profile | null> {
   return profiles().findOne({ _id: userId });
 }
 
-export async function ensureProfile(userId: string, locale: Locale = "fr"): Promise<Profile> {
+export async function ensureProfile(userId: string, locale: Locale = "fr", market: Market = "FR"): Promise<Profile> {
   const now = new Date();
   const existing = await getProfile(userId);
   if (existing) return existing;
   const profile: Profile = {
     _id: userId,
     locale,
-    market: "FR",
+    market,
     timeZone: "Europe/Paris",
     onboarded: false,
     prefs: DEFAULT_PREFS,

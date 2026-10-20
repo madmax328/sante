@@ -3,10 +3,10 @@ import type { StoreComparison } from "@/lib/store-prices";
 import { Badge, Card } from "./ui";
 
 /** "Comparer les enseignes": estimated cost of the week's list in each chain. */
-export async function StoreComparisonCard({ data, premium }: { data: StoreComparison | null; premium: boolean }) {
+export async function StoreComparisonCard({ data, premium, examples }: { data: StoreComparison | null; premium: boolean; examples: string[] }) {
   const t = await getTranslations("stores");
   const format = await getFormatter();
-  const money = (v: number) => format.number(v, { style: "currency", currency: "EUR" });
+  const money = (v: number) => format.number(v, { style: "currency", currency: data?.currency ?? "EUR" });
   const gap = (index: number) => {
     const pct = Math.round(Math.abs(1 - index) * 100);
     return pct === 0 ? t("same") : index < 1 ? t("cheaper", { pct }) : t("dearer", { pct });
@@ -15,7 +15,7 @@ export async function StoreComparisonCard({ data, premium }: { data: StoreCompar
     <Card className="grid gap-3">
       <div>
         <h2 className="text-lg font-bold">{t("title")}</h2>
-        <p className="text-sm text-muted">{premium ? t("subtitle") : t("premium")}</p>
+        <p className="text-sm text-muted">{premium ? t("subtitle") : t("premium", { examples: examples.join(", ") })}</p>
       </div>
       {premium && data && (
         <>

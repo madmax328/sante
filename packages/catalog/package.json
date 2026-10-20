@@ -18,6 +18,7 @@
     ".": "./src/index.ts",
     "./demos": "./src/demos.ts",
     "./i18n": "./src/i18n.ts",
-    "./countries": "./src/countries.ts"
+    "./countries": "./src/countries.ts",
+    "./markets": "./src/markets.ts"
   }
 }

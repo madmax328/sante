@@ -37,6 +37,7 @@ const ACTIONS: Record<string, Handler> = {
   markShopped: (i) => app.markShoppedAction(i),
   addWater: (i) => app.addWaterAction(i),
   setBudget: (i) => app.setBudgetAction(i),
+  setMarket: (i) => app.setMarketAction(i),
   rateRecipe: (i) => app.rateRecipeAction(i),
 
   interpret: (i) => coach.interpretAction(i),

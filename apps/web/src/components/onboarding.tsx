@@ -90,9 +90,10 @@ function NumberField({ id, label, value, onChange, min, max, step = 1, suffix }:
   );
 }
 
-export function Onboarding({ defaultName, dislikeOptions }: { defaultName: string; dislikeOptions: DislikeOptions }) {
+export function Onboarding({ defaultName, dislikeOptions, currency = "EUR" }: { defaultName: string; dislikeOptions: DislikeOptions; currency?: string }) {
   const t = useTranslations("onboarding");
   const format = useFormatter();
+  const whole = (v: number) => format.number(v, { style: "currency", currency, maximumFractionDigits: 0 });
   const e = useTranslations("enums");
   const router = useRouter();
   const [step, setStep] = useState<Step>("you");
@@ -430,9 +431,9 @@ export function Onboarding({ defaultName, dislikeOptions }: { defaultName: strin
               <div className="grid gap-3">
                 <span className="text-sm font-semibold">{t("budget.amount")}</span>
                 <div className="flex items-center gap-3">
-                  <Button type="button" variant="secondary" size="sm" onClick={() => setBudget({ ...budget, weekly: Math.max(10, budget.weekly - 5) })} aria-label="-5 €"><Minus className="size-4" /></Button>
-                  <span className="min-w-28 text-center font-display text-3xl font-extrabold num">{budget.weekly} €</span>
-                  <Button type="button" variant="secondary" size="sm" onClick={() => setBudget({ ...budget, weekly: Math.min(1000, budget.weekly + 5) })} aria-label="+5 €"><Plus className="size-4" /></Button>
+                  <Button type="button" variant="secondary" size="sm" onClick={() => setBudget({ ...budget, weekly: Math.max(10, budget.weekly - 5) })} aria-label={`-${whole(5)}`}><Minus className="size-4" /></Button>
+                  <span className="min-w-28 text-center font-display text-3xl font-extrabold num">{whole(budget.weekly)}</span>
+                  <Button type="button" variant="secondary" size="sm" onClick={() => setBudget({ ...budget, weekly: Math.min(1000, budget.weekly + 5) })} aria-label={`+${whole(5)}`}><Plus className="size-4" /></Button>
                 </div>
                 <p className="text-xs text-muted">{t("budget.note")}</p>
               </div>

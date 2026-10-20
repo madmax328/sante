@@ -34,7 +34,6 @@ export const it: Record<string, string> = {
   "{0} % moins cher que la moyenne": "{0}% più economico della media",
   "{0} % plus cher que la moyenne": "{0}% più caro della media",
   "Comparer les enseignes": "Confronta i supermercati",
-  "Avec Sorloo Premium, compare le coût de ta liste dans chaque enseigne (Leclerc, Carrefour, Lidl…).": "Con Sorloo Premium confronta il costo della tua lista in ogni catena (Leclerc, Carrefour, Lidl…).",
   "Pas encore assez de prix relevés pour comparer les enseignes sur ta liste. La base s'enrichit chaque jour.": "Non ci sono ancora abbastanza prezzi registrati per confrontare le catene sulla tua lista. Il database cresce ogni giorno.",
   "Le moins cher": "Il più economico",
   "prix relevés pour {0}/{1} produits": "prezzi registrati per {0}/{1} prodotti",
@@ -342,8 +341,6 @@ export const it: Record<string, string> = {
   "Mon budget courses": "Il mio budget per la spesa",
   "Avec Sorloo Premium, fixe un budget par semaine : Sorloo construit des menus qui le respectent.": "Con Sorloo Premium fissa un budget settimanale: Sorloo crea menù che lo rispettano.",
   "Respecter un budget": "Rispettare un budget",
-  "Budget par semaine (€)": "Budget settimanale (€)",
-  "Le budget doit être compris entre 10 et 1 000 €.": "Il budget deve essere compreso tra 10 e 1.000 €.",
   "Refaire ma semaine": "Rifai la mia settimana",
   "Mon objectif": "Il mio obiettivo",
   "Objectif": "Obiettivo",
@@ -623,5 +620,11 @@ export const it: Record<string, string> = {
   "Le coach : il répond à tes questions et adapte ta semaine": "Il coach: risponde alle tue domande e adatta la tua settimana",
   "Tes repas reconnus en photo": "I tuoi pasti riconosciuti in foto",
   "Un programme sportif guidé, adapté à ton niveau": "Un programma sportivo guidato, adatto al tuo livello",
-  "Le bilan de chaque semaine et la comparaison des prix entre enseignes": "Il resoconto di ogni settimana e il confronto dei prezzi tra supermercati"
+  "Le bilan de chaque semaine et la comparaison des prix entre enseignes": "Il resoconto di ogni settimana e il confronto dei prezzi tra supermercati",
+  "Budget par semaine ({0})": "Budget settimanale ({0})",
+  "Le budget doit être compris entre {0} et {1}.": "Il budget deve essere compreso tra {0} e {1}.",
+  "Avec Sorloo Premium, compare le coût de ta liste dans chaque enseigne ({0}…).": "Con Sorloo Premium confronta il costo della tua lista in ogni catena ({0}…).",
+  "Changement impossible": "Modifica non riuscita",
+  "Pays de mes courses": "Paese della mia spesa",
+  "Les prix des menus, le budget et la comparaison des enseignes suivent les magasins de ce pays.": "I prezzi dei menù, il budget e il confronto tra supermercati seguono i negozi di questo paese."
 };

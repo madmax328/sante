@@ -939,7 +939,7 @@
       },
       "budget_check": {
         "title": "Budget superato",
-        "text": "La spesa è costata {value} € in più del previsto. Attiva la dispensa e controlla i prezzi del tuo negozio."
+        "text": "La spesa è costata {value} in più del previsto. Attiva la dispensa e controlla i prezzi del tuo negozio."
       },
       "log_more": {
         "title": "Più dati",
@@ -1038,7 +1038,9 @@
     "supportNote": "Una domanda sul tuo abbonamento? <link>Scrivici</link>.",
     "storeApple": "Il tuo abbonamento Premium è stato attivato nell'app per iPhone: gestiscilo (o disdicilo) nelle impostazioni del tuo account Apple, alla voce Abbonamenti.",
     "storeGoogle": "Il tuo abbonamento Premium è stato attivato nell'app Android: gestiscilo (o disdicilo) su Google Play, alla voce Abbonamenti.",
-    "storeGift": "Premium ti è stato regalato."
+    "storeGift": "Premium ti è stato regalato.",
+    "market": "Paese della mia spesa",
+    "marketText": "I prezzi dei menù, il budget e il confronto tra supermercati seguono i negozi di questo paese. Il tuo budget viene adattato al livello dei prezzi del paese."
   },
   "checkout": {
     "title": "Passa a Premium",
@@ -1125,7 +1127,7 @@
     "none": "Non ci sono ancora abbastanza prezzi registrati per confrontare le catene sulla tua lista. Il database cresce ogni giorno.",
     "note": "Stima: prezzi mediani registrati in 12 mesi in Francia, esclusi promozioni e prodotti biologici (tranne Biocoop). Ogni catena è confrontata con le altre sugli stessi prodotti; per i prodotti senza prezzo si applica il suo scarto abituale. I prezzi variano da negozio a negozio.",
     "contribute": "Puoi aiutare aggiungendo i tuoi scontrini su Open Prices.",
-    "premium": "Con Premium confronta il costo della tua lista in ogni catena (Leclerc, Carrefour, Lidl…).",
+    "premium": "Con Premium confronta il costo della tua lista in ogni catena ({examples}…).",
     "cheaper": "{pct}% più economico della media",
     "dearer": "{pct}% più caro della media",
     "same": "in linea con le altre catene"

@@ -8,8 +8,10 @@ import { Link } from "@/i18n/navigation";
 import { requireContext } from "@/lib/app-user";
 import { can } from "@/lib/premium";
 import { loadWeek, shoppingFor } from "@/lib/week-service";
+import { brandExamples } from "@/lib/price-sources";
 import { compareStores } from "@/lib/store-prices";
 import { StoreComparisonCard } from "@/components/store-comparison";
+import { currencyOf } from "@/lib/market";
 
 export async function generateMetadata() {
   const t = await getTranslations("nav");
@@ -33,7 +35,7 @@ export default async function GroceriesPage() {
   }
   const c = uc.ctx.catalog;
   const list = shoppingFor(uc, result);
-  const money = (v: number) => format.number(v, { style: "currency", currency: stored.plan.currency });
+  const money = (v: number) => format.number(v, { style: "currency", currency: currencyOf(uc.profile.market) });
   const name = (id: string) => tr(c.ingredient(id).name, loc);
   const packs = (id: string, ps: number[]) => {
     const counts = new Map<number, number>();
@@ -52,7 +54,7 @@ export default async function GroceriesPage() {
     .sort((a, b) => c.price(b.ingredientId, b.leftover) - c.price(a.ingredientId, a.leftover));
   const pantryOn = can(uc.profile, "pantry");
   const storesOn = can(uc.profile, "budget");
-  const stores = storesOn ? await compareStores(list) : null;
+  const stores = storesOn ? await compareStores(list, uc.profile.market) : null;
 
   return (
     <div className="grid gap-6">
@@ -74,7 +76,7 @@ export default async function GroceriesPage() {
         <p className="text-xs text-muted">{t("priceNote")}</p>
       </Card>
 
-      <StoreComparisonCard data={stores} premium={storesOn} />
+      <StoreComparisonCard data={stores} premium={storesOn} examples={brandExamples(uc.profile.market)} />
 
       {!pantryOn && (
         <Notice tone="eau" title={t("pantryTitle")}>

@@ -3,6 +3,7 @@ import { formatQty } from "@weeko/engine";
 import { getTranslations } from "next-intl/server";
 import { mobileRoute } from "@/lib/mobile";
 import { can } from "@/lib/premium";
+import { brandExamples } from "@/lib/price-sources";
 import { compareStores } from "@/lib/store-prices";
 import { loadWeek, shoppingFor } from "@/lib/week-service";
 
@@ -17,7 +18,7 @@ export const GET = mobileRoute(async (req, userId) => {
   const c = uc.ctx.catalog;
   const list = shoppingFor(uc, result);
   const storesOn = can(uc.profile, "budget");
-  const comparison = storesOn ? await compareStores(list) : null;
+  const comparison = storesOn ? await compareStores(list, uc.profile.market) : null;
   const name = (id: string) => tr(c.ingredient(id).name, loc);
   const worthKeeping = (id: string, qty: number) =>
     c.ingredient(id).unit === "pc" ? qty >= 1 : c.grams(id, qty) >= 40 && c.price(id, qty) >= 0.15;
@@ -28,7 +29,7 @@ export const GET = mobileRoute(async (req, userId) => {
     shopped: !!stored.shoppedAt,
     actualSpent: stored.actualSpent ?? null,
     pantry: can(uc.profile, "pantry"),
-    stores: comparison ? { premium: true, items: comparison.items, list: comparison.stores } : { premium: false, items: 0, list: [] },
+    stores: { ...(comparison ? { premium: true, items: comparison.items, list: comparison.stores } : { premium: false, items: 0, list: [] }), examples: brandExamples(uc.profile.market) },
     aisles: list.aisles.map((a) => ({
       aisle: a.aisle,
       label: e(`aisle.${a.aisle}`),

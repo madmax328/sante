@@ -939,7 +939,7 @@
       },
       "budget_check": {
         "title": "Budget dépassé",
-        "text": "Les courses ont coûté {value} € de plus que prévu. Active le garde-manger et vérifie les prix de ton magasin."
+        "text": "Les courses ont coûté {value} de plus que prévu. Active le garde-manger et vérifie les prix de ton magasin."
       },
       "log_more": {
         "title": "Plus de données",
@@ -1038,7 +1038,9 @@
     "supportNote": "Une question sur ton abonnement ? <link>Écris-nous</link>.",
     "storeApple": "Ton abonnement Premium a été pris dans l'app iPhone : tu le gères (ou le résilies) dans les réglages de ton compte Apple, rubrique Abonnements.",
     "storeGoogle": "Ton abonnement Premium a été pris dans l'app Android : tu le gères (ou le résilies) dans Google Play, rubrique Abonnements.",
-    "storeGift": "Premium t'a été offert."
+    "storeGift": "Premium t'a été offert.",
+    "market": "Pays de mes courses",
+    "marketText": "Les prix des menus, le budget et la comparaison des enseignes suivent les magasins de ce pays. Ton budget est converti au niveau des prix du pays."
   },
   "checkout": {
     "title": "Passer à Premium",
@@ -1125,7 +1127,7 @@
     "none": "Pas encore assez de prix relevés pour comparer les enseignes sur ta liste. La base s'enrichit chaque jour.",
     "note": "Estimation : prix médians relevés sur 12 mois en France, hors promotions et hors bio (sauf Biocoop). Chaque enseigne est comparée aux autres sur les mêmes produits ; pour ceux sans relevé, on applique son écart habituel. Les prix varient selon les magasins.",
     "contribute": "Tu peux aider en ajoutant tes tickets sur Open Prices.",
-    "premium": "Avec Premium, compare le coût de ta liste dans chaque enseigne (Leclerc, Carrefour, Lidl…).",
+    "premium": "Avec Premium, compare le coût de ta liste dans chaque enseigne ({examples}…).",
     "cheaper": "{pct} % moins cher que la moyenne",
     "dearer": "{pct} % plus cher que la moyenne",
     "same": "dans la moyenne des enseignes"

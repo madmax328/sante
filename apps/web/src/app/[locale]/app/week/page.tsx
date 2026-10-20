@@ -13,6 +13,7 @@ import { addDays, dayIndex, isValidDate, weekStartOf } from "@/lib/dates";
 import { getPhotoMap } from "@/lib/photos";
 import { can, isPremium } from "@/lib/premium";
 import { loadWeek } from "@/lib/week-service";
+import { currencyOf } from "@/lib/market";
 
 export async function generateMetadata() {
   const t = await getTranslations("nav");
@@ -32,7 +33,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/[locale]/ap
   const hidden = !!uc.health.numbersHidden;
   const isCurrent = requested === uc.weekStart;
   const todayIdx = isCurrent ? dayIndex(uc.today) : -1;
-  const money = (v: number) => format.number(v, { style: "currency", currency: stored?.plan.currency ?? "EUR" });
+  const money = (v: number) => format.number(v, { style: "currency", currency: currencyOf(uc.profile.market) });
   const photos = await getPhotoMap((stored?.plan.meals ?? []).map((m) => m.recipeId).filter((x): x is string => !!x));
   const range = `${format.dateTime(new Date(requested + "T12:00:00"), { day: "numeric", month: "long" })} – ${format.dateTime(new Date(addDays(requested, 6) + "T12:00:00"), { day: "numeric", month: "long" })}`;
   const multi = uc.members.length > 1;
@@ -119,7 +120,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/[locale]/ap
         <Card className="grid content-start gap-3">
           <p className="font-bold">{t("budgetTitle")}</p>
           {can(uc.profile, "budget") ? (
-            <BudgetControl enabled={uc.profile.budget.enabled} weekly={uc.profile.budget.weekly} />
+            <BudgetControl enabled={uc.profile.budget.enabled} weekly={uc.profile.budget.weekly} currency={currencyOf(uc.profile.market)} />
           ) : (
             <p className="text-sm text-muted">
               {t("budgetPremium")} <Link href="/app/account" className="font-semibold text-basilic">{t("discover")}</Link>
@@ -153,7 +154,7 @@ export default async function WeekPage({ searchParams }: PageProps<"/[locale]/ap
                       <div className="col-start-2 flex items-center justify-between gap-1 md:col-start-auto">
                         <span className="min-w-0 truncate text-xs font-semibold uppercase tracking-wider text-muted">{e(`meal.${m.meal}`)}</span>
                         <div className="flex shrink-0 items-center">
-                          {m.kind === "recipe" && <ReplaceMeal day={day} meal={m.meal} weekStart={requested} hidden={hidden} />}
+                          {m.kind === "recipe" && <ReplaceMeal day={day} meal={m.meal} weekStart={requested} hidden={hidden} currency={currencyOf(uc.profile.market)} />}
                           <MealMenu day={day} meal={m.meal} weekStart={requested} />
                         </div>
                       </div>

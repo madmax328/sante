@@ -1,9 +1,11 @@
 "use server";
 
 import { ALLERGENS, MIN_SIGNUP_AGE, type FoodTag, type MealType } from "@weeko/engine";
+import { headers } from "next/headers";
 import { z } from "zod";
 import { CUISINE_CODES } from "@weeko/catalog/countries";
 import { ageFrom, todayIn } from "@/lib/dates";
+import { marketFromHeaders } from "@/lib/market";
 import { memberTargets } from "@/lib/planning";
 import { ensureProfile, saveHealth, updateProfile } from "@/lib/repo";
 import { requireUserId } from "@/lib/session";
@@ -110,7 +112,7 @@ export async function completeOnboarding(input: OnboardingInput): Promise<Onboar
   const numbersHidden = targets.safety.numbersHidden;
 
   try {
-    await ensureProfile(userId);
+    await ensureProfile(userId, undefined, marketFromHeaders(await headers()));
     await saveHealth(userId, { members: [self, ...members], numbersHidden });
     const avoid = [...new Set<FoodTag>([...data.prefs.avoid])];
     const consentAt = new Date();

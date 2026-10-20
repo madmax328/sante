@@ -1,5 +1,6 @@
 import "server-only";
 import {
+  MARKET_CURRENCY,
   applyAction,
   buildShoppingList,
   generateWeek,
@@ -62,7 +63,9 @@ export async function loadWeek(userId: string, weekStart?: string): Promise<Load
   const start = weekStart ?? uc.weekStart;
   const stored = await getPlan(userId, start);
   if (!stored) return { uc, stored: null, result: null };
-  const ctx = { ...uc.ctx, budget: stored.plan.budget ?? uc.ctx.budget };
+  // A budget in another currency (country changed since) no longer applies.
+  const sameCurrency = !stored.plan.currency || stored.plan.currency === MARKET_CURRENCY[uc.ctx.catalog.market];
+  const ctx = { ...uc.ctx, budget: sameCurrency ? (stored.plan.budget ?? uc.ctx.budget) : uc.ctx.budget };
   const { summary, stock } = summarize(ctx, stored.plan);
   return { uc, stored, result: { plan: stored.plan, summary, stock } };
 }

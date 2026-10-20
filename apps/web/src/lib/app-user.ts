@@ -1,6 +1,8 @@
 import { isLocale } from "./locale";
 import "server-only";
 import { getLocale } from "next-intl/server";
+import { headers } from "next/headers";
+import { marketFromHeaders } from "./market";
 import { redirect } from "@/i18n/navigation";
 import { loadUserContext, type UserContext } from "./planning";
 import { db } from "./db";
@@ -28,7 +30,7 @@ export async function requireAppUser(): Promise<AppUser> {
     const id = session.user.id;
     const exists = await db.collection("user").countDocuments({ _id: (ObjectId.isValid(id) ? new ObjectId(id) : id) as never }, { limit: 1 });
     if (!exists) return redirect({ href: "/login", locale });
-    profile = await ensureProfile(id, isLocale(locale) ? locale : "fr");
+    profile = await ensureProfile(id, isLocale(locale) ? locale : "fr", marketFromHeaders(await headers()));
   }
   return { userId: session.user.id, name: session.user.name, email: session.user.email, emailVerified: !!session.user.emailVerified, profile };
 }

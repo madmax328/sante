@@ -11,6 +11,7 @@ import { can } from "@/lib/premium";
 import { getMeasurements, getPlan } from "@/lib/repo";
 import { reviewFor } from "@/lib/review-service";
 import type { WeeklyReview } from "@weeko/engine";
+import { currencyOf } from "@/lib/market";
 
 export async function generateMetadata() {
   const t = await getTranslations("nav");
@@ -58,8 +59,8 @@ export default async function ProgressPage() {
       {premium && review && current ? (
         <>
           <div className="grid gap-4 lg:grid-cols-2">
-            <ReviewCard title={r("lastWeek")} data={review} hidden={hidden} />
-            <ReviewCard title={r("thisWeek")} data={current} recs={false} hidden={hidden} />
+            <ReviewCard currency={currencyOf(uc.profile.market)} title={r("lastWeek")} data={review} hidden={hidden} />
+            <ReviewCard currency={currencyOf(uc.profile.market)} title={r("thisWeek")} data={current} recs={false} hidden={hidden} />
           </div>
           <Card className="flex flex-wrap items-center justify-between gap-4">
             <div>
@@ -103,10 +104,10 @@ export default async function ProgressPage() {
   );
 }
 
-async function ReviewCard({ title, data, recs = true, hidden }: { title: string; data: WeeklyReview; recs?: boolean; hidden: boolean }) {
+async function ReviewCard({ title, data, recs = true, hidden, currency }: { title: string; data: WeeklyReview; recs?: boolean; hidden: boolean; currency: string }) {
   const r = await getTranslations("review");
   const format = await getFormatter();
-  const money = (v: number) => format.number(v, { style: "currency", currency: "EUR" });
+  const money = (v: number) => format.number(v, { style: "currency", currency });
   return (
     <Card className="grid content-start gap-4">
       <h2 className="text-lg font-bold">{title}</h2>
@@ -129,7 +130,7 @@ async function ReviewCard({ title, data, recs = true, hidden }: { title: string;
       {recs && <ul className="grid gap-2">
         {data.recommendations.map((rec) => (
           <li key={rec.code} className="rounded-2xl bg-basilic-soft p-3 text-sm">
-            <strong>{r(`recs.${rec.code}.title`)}</strong> — {r(`recs.${rec.code}.text`, { value: Math.abs(rec.value ?? 0) })}
+            <strong>{r(`recs.${rec.code}.title`)}</strong> — {r(`recs.${rec.code}.text`, { value: rec.code === "budget_check" ? money(Math.abs(rec.value ?? 0)) : Math.abs(rec.value ?? 0) })}
           </li>
         ))}
       </ul>}

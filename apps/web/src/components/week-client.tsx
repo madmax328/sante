@@ -15,7 +15,7 @@ import {
 import { ErrorLine, useActionError } from "./app-client";
 import { Button, Input, cx } from "./ui";
 
-export function ReplaceMeal({ day, meal, weekStart, hidden }: { day: number; meal: MealType; weekStart: string; hidden: boolean }) {
+export function ReplaceMeal({ day, meal, weekStart, hidden, currency = "EUR" }: { day: number; meal: MealType; weekStart: string; hidden: boolean; currency?: string }) {
   const t = useTranslations("week");
   const format = useFormatter();
   const router = useRouter();
@@ -94,7 +94,7 @@ export function ReplaceMeal({ day, meal, weekStart, hidden }: { day: number; mea
                     {!hidden && <span>{a.kcal} kcal · {a.protein} g prot.</span>}
                     <span>{a.minutes} min</span>
                     <span className={cx(a.costDelta > 0 ? "text-abricot-strong" : "text-basilic")}>
-                      {a.costDelta === 0 ? t("sameCost") : `${a.costDelta > 0 ? "+" : "−"}${format.number(Math.abs(a.costDelta), { style: "currency", currency: "EUR" })}`}
+                      {a.costDelta === 0 ? t("sameCost") : `${a.costDelta > 0 ? "+" : "−"}${format.number(Math.abs(a.costDelta), { style: "currency", currency })}`}
                     </span>
                     {a.reuse >= 0.4 && <span className="text-basilic">{t("usesLeftovers")}</span>}
                   </span>
@@ -179,8 +179,12 @@ export function MealMenu({ day, meal, weekStart }: { day: number; meal: MealType
   );
 }
 
-export function BudgetControl({ enabled, weekly }: { enabled: boolean; weekly: number }) {
+export function BudgetControl({ enabled, weekly, currency = "EUR" }: { enabled: boolean; weekly: number; currency?: string }) {
   const t = useTranslations("week");
+  const format = useFormatter();
+  const whole = (v: number) => format.number(v, { style: "currency", currency, maximumFractionDigits: 0 });
+  // The currency sign alone ("€", "CHF", "£").
+  const sign = whole(0).replace(/[\d\s\u00a0\u202f.,]/g, "");
   const router = useRouter();
   const [on, setOn] = useState(enabled);
   const [amount, setAmount] = useState(weekly);
@@ -199,10 +203,10 @@ export function BudgetControl({ enabled, weekly }: { enabled: boolean; weekly: n
       {on && (
         <div className="flex flex-wrap items-center gap-2">
           <Input type="number" min={10} max={1000} step={5} value={amount} onChange={(e) => setAmount(Number(e.target.value))} className="w-28" aria-label={t("budgetAmount")} />
-          <span className="text-sm text-muted">€ / {t("perWeek")}</span>
+          <span className="text-sm text-muted">{sign} / {t("perWeek")}</span>
           <div className="flex flex-wrap gap-2">
             {[40, 50, 70, 100].map((v) => (
-              <button key={v} type="button" onClick={() => setAmount(v)} className={cx("rounded-full border px-3 py-1 text-sm", amount === v ? "border-basilic bg-basilic-soft" : "border-line")}>{v} €</button>
+              <button key={v} type="button" onClick={() => setAmount(v)} className={cx("rounded-full border px-3 py-1 text-sm", amount === v ? "border-basilic bg-basilic-soft" : "border-line")}>{whole(v)}</button>
             ))}
           </div>
         </div>

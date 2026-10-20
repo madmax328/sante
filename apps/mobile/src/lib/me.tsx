@@ -1,5 +1,6 @@
 import { createContext, useContext, type ReactNode } from "react";
 import { useApi } from "./api";
+import { setCurrency } from "./format";
 
 export interface Me {
   user: { id: string; name: string; email: string; emailVerified?: boolean };
@@ -11,6 +12,9 @@ export interface Me {
   numbersHidden: boolean;
   sportEnabled: boolean;
   budget: { enabled: boolean; weekly: number };
+  /** Country of the shops and its currency (older servers: France, euro) */
+  market?: string;
+  currency?: string;
   ai: { left: number } | null;
   devices?: { appleHealth: string | null; healthConnect: string | null };
 }
@@ -18,6 +22,7 @@ export interface Me {
 const MeContext = createContext<{ me: Me; reload: () => Promise<void> } | null>(null);
 
 export function MeProvider({ me, reload, children }: { me: Me; reload: () => Promise<void>; children: ReactNode }) {
+  setCurrency(me.currency);
   return <MeContext.Provider value={{ me, reload }}>{children}</MeContext.Provider>;
 }
 

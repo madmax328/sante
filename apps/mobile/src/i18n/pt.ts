@@ -34,7 +34,6 @@ export const pt: Record<string, string> = {
   "{0} % moins cher que la moyenne": "{0}% mais barato que a média",
   "{0} % plus cher que la moyenne": "{0}% mais caro que a média",
   "Comparer les enseignes": "Comparar supermercados",
-  "Avec Sorloo Premium, compare le coût de ta liste dans chaque enseigne (Leclerc, Carrefour, Lidl…).": "Com o Sorloo Premium, compare o custo da sua lista em cada rede (Leclerc, Carrefour, Lidl…).",
   "Pas encore assez de prix relevés pour comparer les enseignes sur ta liste. La base s'enrichit chaque jour.": "Ainda não há preços registrados suficientes para comparar as redes na sua lista. A base cresce todo dia.",
   "Le moins cher": "O mais barato",
   "prix relevés pour {0}/{1} produits": "preços registrados para {0}/{1} produtos",
@@ -342,8 +341,6 @@ export const pt: Record<string, string> = {
   "Mon budget courses": "Meu orçamento de compras",
   "Avec Sorloo Premium, fixe un budget par semaine : Sorloo construit des menus qui le respectent.": "Com o Sorloo Premium, defina um orçamento semanal: o Sorloo monta cardápios que o respeitam.",
   "Respecter un budget": "Respeitar um orçamento",
-  "Budget par semaine (€)": "Orçamento por semana (€)",
-  "Le budget doit être compris entre 10 et 1 000 €.": "O orçamento precisa ficar entre 10 e 1.000 €.",
   "Refaire ma semaine": "Refazer minha semana",
   "Mon objectif": "Meu objetivo",
   "Objectif": "Objetivo",
@@ -623,5 +620,11 @@ export const pt: Record<string, string> = {
   "Le coach : il répond à tes questions et adapte ta semaine": "O coach: responde às suas perguntas e adapta a sua semana",
   "Tes repas reconnus en photo": "As suas refeições reconhecidas por foto",
   "Un programme sportif guidé, adapté à ton niveau": "Um programa desportivo guiado, adaptado ao seu nível",
-  "Le bilan de chaque semaine et la comparaison des prix entre enseignes": "O balanço de cada semana e a comparação de preços entre supermercados"
+  "Le bilan de chaque semaine et la comparaison des prix entre enseignes": "O balanço de cada semana e a comparação de preços entre supermercados",
+  "Budget par semaine ({0})": "Orçamento por semana ({0})",
+  "Le budget doit être compris entre {0} et {1}.": "O orçamento precisa ficar entre {0} e {1}.",
+  "Avec Sorloo Premium, compare le coût de ta liste dans chaque enseigne ({0}…).": "Com o Sorloo Premium, compare o custo da sua lista em cada rede ({0}…).",
+  "Changement impossible": "Não foi possível mudar",
+  "Pays de mes courses": "País das minhas compras",
+  "Les prix des menus, le budget et la comparaison des enseignes suivent les magasins de ce pays.": "Os preços dos cardápios, o orçamento e a comparação de supermercados seguem as lojas deste país."
 };

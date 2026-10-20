@@ -939,7 +939,7 @@
       },
       "budget_check": {
         "title": "Orçamento estourado",
-        "text": "As compras custaram {value} € a mais do que o previsto. Ative a despensa e confira os preços da sua loja."
+        "text": "As compras custaram {value} a mais do que o previsto. Ative a despensa e confira os preços da sua loja."
       },
       "log_more": {
         "title": "Mais dados",
@@ -1038,7 +1038,9 @@
     "supportNote": "Alguma dúvida sobre a sua assinatura? <link>Escreva para nós</link>.",
     "storeApple": "A sua subscrição Premium foi feita na app para iPhone: gira-a (ou cancele-a) nas definições da sua conta Apple, em Subscrições.",
     "storeGoogle": "A sua subscrição Premium foi feita na app Android: gira-a (ou cancele-a) no Google Play, em Subscrições.",
-    "storeGift": "O Premium foi-lhe oferecido."
+    "storeGift": "O Premium foi-lhe oferecido.",
+    "market": "País das minhas compras",
+    "marketText": "Os preços dos cardápios, o orçamento e a comparação de supermercados seguem as lojas deste país. Seu orçamento é ajustado ao nível de preços do país."
   },
   "checkout": {
     "title": "Assinar o Premium",
@@ -1125,7 +1127,7 @@
     "none": "Ainda não há preços registrados suficientes para comparar as redes na sua lista. A base cresce todo dia.",
     "note": "Estimativa: preços medianos registrados em 12 meses na França, sem promoções nem produtos orgânicos (exceto Biocoop). Cada rede é comparada às outras nos mesmos produtos; para os produtos sem registro, aplica-se a diferença habitual dela. Os preços variam de loja para loja.",
     "contribute": "Você pode ajudar adicionando seus cupons fiscais no Open Prices.",
-    "premium": "Com o Premium, compare o custo da sua lista em cada rede (Leclerc, Carrefour, Lidl…).",
+    "premium": "Com o Premium, compare o custo da sua lista em cada rede ({examples}…).",
     "cheaper": "{pct}% mais barato que a média",
     "dearer": "{pct}% mais caro que a média",
     "same": "na média das outras redes"

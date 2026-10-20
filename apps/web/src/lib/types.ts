@@ -1,4 +1,4 @@
-import type { Locale } from "@weeko/engine";
+import type { Locale, Market } from "@weeko/engine";
 import type {
   ActivityLevel,
   Allergen,
@@ -79,7 +79,8 @@ export type HealthSource = "apple_health" | "health_connect";
 export interface Profile {
   _id: string;
   locale: Locale;
-  market: "FR";
+  /** Country of the shops: prices and currency */
+  market: Market;
   timeZone: string;
   onboarded: boolean;
   prefs: FoodPreferences;
