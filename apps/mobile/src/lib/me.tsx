@@ -14,6 +14,9 @@ export interface Me {
   budget: { enabled: boolean; weekly: number };
   /** Country of the shops and its currency (older servers: France, euro) */
   market?: string;
+  /** Code of the creator who recommended Sorloo, and whether one can still be typed */
+  referral?: string | null;
+  referralOpen?: boolean;
   currency?: string;
   ai: { left: number } | null;
   devices?: { appleHealth: string | null; healthConnect: string | null };

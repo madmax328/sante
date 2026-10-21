@@ -2,7 +2,7 @@ import { LanguageSwitch } from "@/components/language-switch";
 import { Check } from "lucide-react";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { BodyForm, DangerZone, FoodPrefsForm, SubscriptionButtons } from "@/components/settings-client";
-import { Badge, Card, Notice, PageHeader } from "@/components/ui";
+import { Badge, Card, LinkButton, Notice, PageHeader } from "@/components/ui";
 import { requireAppUser } from "@/lib/app-user";
 import { features } from "@/lib/env";
 import { hasStorePremium, isPremium } from "@/lib/premium";
@@ -10,6 +10,8 @@ import { getHealth } from "@/lib/repo";
 import { dislikeOptions } from "@/lib/dislikes";
 import { ContactForm } from "@/components/contact-form";
 import { MarketPicker } from "@/components/market-picker";
+import { ReferralCodeForm } from "@/components/affiliate-client";
+import { codeStillAccepted } from "@/lib/affiliates";
 import { HouseholdEditor } from "@/components/household-client";
 import { ageFrom, todayIn } from "@/lib/dates";
 import { paceOf } from "@/lib/planning";
@@ -27,6 +29,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
   const t = await getTranslations("account");
   const p = await getTranslations("pricing");
   const c = await getTranslations("contact");
+  const a = await getTranslations("affiliate");
   const format = await getFormatter();
   const premium = isPremium(user.profile);
   const sub = user.profile.subscription;
@@ -117,6 +120,26 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
             }))}
           />
         )}
+      </Card>
+
+      {(user.profile.referral || codeStillAccepted(user.profile)) && (
+        <Card className="grid gap-2">
+          <h2 className="text-xl font-bold">{a("refTitle")}</h2>
+          {user.profile.referral ? (
+            <p className="text-sm text-muted">{a("refDone", { code: user.profile.referral.code })}</p>
+          ) : (
+            <>
+              <p className="text-sm text-muted">{a("refText")}</p>
+              <ReferralCodeForm />
+            </>
+          )}
+        </Card>
+      )}
+
+      <Card className="grid gap-2">
+        <h2 className="text-xl font-bold">{a("accountTitle")}</h2>
+        <p className="text-sm text-muted">{a("accountText")}</p>
+        <LinkButton href="/app/affiliate" variant="secondary" size="sm" className="justify-self-start">{a("accountLink")}</LinkButton>
       </Card>
 
       <Card id="contact" className="grid scroll-mt-24 gap-4">

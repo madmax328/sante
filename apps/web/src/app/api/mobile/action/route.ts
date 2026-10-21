@@ -2,6 +2,7 @@ import { DELETE_WORDS } from "@/lib/locale";
 import { z } from "zod";
 import * as app from "@/app/[locale]/app/actions";
 import * as account from "@/app/[locale]/app/account/actions";
+import * as affiliate from "@/app/[locale]/app/affiliate/actions";
 import * as coach from "@/app/[locale]/app/coach/actions";
 import * as journal from "@/app/[locale]/app/journal/actions";
 import * as pantry from "@/app/[locale]/app/pantry/actions";
@@ -38,6 +39,7 @@ const ACTIONS: Record<string, Handler> = {
   addWater: (i) => app.addWaterAction(i),
   setBudget: (i) => app.setBudgetAction(i),
   setMarket: (i) => app.setMarketAction(i),
+  referralCode: (i) => affiliate.referralCodeAction(i),
   rateRecipe: (i) => app.rateRecipeAction(i),
 
   interpret: (i) => coach.interpretAction(i),

@@ -1,4 +1,5 @@
 import { aiMessagesLeft } from "@/lib/ai-quota";
+import { codeStillAccepted } from "@/lib/affiliates";
 import { auth } from "@/lib/auth";
 import { features } from "@/lib/env";
 import { mobileRoute } from "@/lib/mobile";
@@ -34,6 +35,8 @@ export const GET = mobileRoute(async (req, userId) => {
     budget: profile.budget,
     market: profile.market,
     currency: currencyOf(profile.market),
+    referral: profile.referral?.code ?? null,
+    referralOpen: codeStillAccepted(profile),
     prefs: profile.prefs,
     ai: features.ai() ? { left: aiMessagesLeft(profile) } : null,
     devices: { appleHealth: profile.devices?.apple_health?.lastSync ?? null, healthConnect: profile.devices?.health_connect?.lastSync ?? null },

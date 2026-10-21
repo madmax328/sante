@@ -1,7 +1,8 @@
 import { isLocale } from "./locale";
 import "server-only";
 import { getLocale } from "next-intl/server";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { attachReferral, LATE_CODE_DAYS, REF_COOKIE } from "./affiliates";
 import { marketFromHeaders } from "./market";
 import { redirect } from "@/i18n/navigation";
 import { loadUserContext, type UserContext } from "./planning";
@@ -31,6 +32,13 @@ export async function requireAppUser(): Promise<AppUser> {
     const exists = await db.collection("user").countDocuments({ _id: (ObjectId.isValid(id) ? new ObjectId(id) : id) as never }, { limit: 1 });
     if (!exists) return redirect({ href: "/login", locale });
     profile = await ensureProfile(id, isLocale(locale) ? locale : "fr", marketFromHeaders(await headers()));
+    // Arrived through an affiliate's link.
+    const ref = (await cookies()).get(REF_COOKIE)?.value;
+    if (ref && (await attachReferral(id, ref).catch(() => "invalid")) === "ok") profile = (await getProfile(id)) ?? profile;
+  } else if (!profile.referral && Date.now() - profile.createdAt.getTime() < LATE_CODE_DAYS * 86400_000) {
+    // The link was opened after the account was created (other device, signed in later…).
+    const ref = (await cookies()).get(REF_COOKIE)?.value;
+    if (ref && (await attachReferral(profile._id, ref, { late: true }).catch(() => "invalid")) === "ok") profile = (await getProfile(profile._id)) ?? profile;
   }
   return { userId: session.user.id, name: session.user.name, email: session.user.email, emailVerified: !!session.user.emailVerified, profile };
 }

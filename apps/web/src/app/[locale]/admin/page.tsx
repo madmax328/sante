@@ -55,6 +55,7 @@ export default async function AdminPage() {
     recentErrors(),
     storePriceStats(),
   ]);
+  const affiliatesWaiting = await db.collection("affiliates").countDocuments({ status: "pending" }).catch(() => 0);
   const i18n = translationCoverage();
   const plans = await profiles.find({ _id: { $in: latest.map((u) => String(u._id)) } }, { projection: { onboarded: 1, subscription: 1 } }).toArray();
   const byId = new Map(plans.map((p) => [p._id, p]));
@@ -104,7 +105,10 @@ export default async function AdminPage() {
       <Card className="grid gap-3">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-lg font-bold">Dernières inscriptions</h2>
-          <Link href="/admin/users" className="text-sm font-semibold text-basilic">Voir tous les inscrits ({total}) et supprimer →</Link>
+          <div className="flex flex-wrap gap-4">
+            <Link href="/admin/affiliates" className="text-sm font-semibold text-basilic">Affiliés{affiliatesWaiting ? ` (${affiliatesWaiting} à examiner)` : ""} →</Link>
+            <Link href="/admin/users" className="text-sm font-semibold text-basilic">Voir tous les inscrits ({total}) et supprimer →</Link>
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[40rem] text-sm">

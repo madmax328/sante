@@ -81,6 +81,8 @@ export interface Profile {
   locale: Locale;
   /** Country of the shops: prices and currency */
   market: Market;
+  /** The affiliate whose link or code brought this account */
+  referral?: Referral;
   timeZone: string;
   onboarded: boolean;
   prefs: FoodPreferences;
@@ -159,3 +161,12 @@ export interface Measurement {
 }
 
 export const CONSENT_VERSION = "2026-10";
+
+/** Link between a customer and the affiliate who brought them (see lib/affiliates.ts). */
+export interface Referral {
+  affiliateId: string;
+  code: string;
+  at: Date;
+  /** First payment: the 12 months of commission start here */
+  firstPaidAt?: Date;
+}

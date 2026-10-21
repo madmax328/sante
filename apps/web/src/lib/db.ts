@@ -42,6 +42,9 @@ export function ensureIndexes(): Promise<void> {
       db.collection("error_log").createIndex({ key: 1, at: -1 }),
       db.collection("saved_meals").createIndex({ userId: 1, at: -1 }),
       db.collection("admin_attempts").createIndex({ at: 1 }, { expireAfterSeconds: 3600 }),
+      db.collection("affiliates").createIndex({ code: 1 }, { unique: true, sparse: true }),
+      db.collection("commissions").createIndex({ affiliateId: 1, at: -1 }),
+      db.collection("profiles").createIndex({ "referral.affiliateId": 1 }, { sparse: true }),
     ]);
   })().catch((e) => {
     indexesReady = undefined;

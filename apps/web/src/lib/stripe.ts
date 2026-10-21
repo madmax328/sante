@@ -1,5 +1,6 @@
 import "server-only";
 import Stripe from "stripe";
+import { cancelCommission, netOfStripeInvoice, recordCommission } from "./affiliates";
 import { env } from "./env";
 import { findProfileByCustomer, getProfile, updateProfile } from "./repo";
 import type { Subscription } from "./types";
@@ -230,6 +231,27 @@ export async function handleStripeEvent(event: Stripe.Event): Promise<void> {
     case "customer.subscription.resumed":
       await syncSubscription(event.data.object);
       break;
+    case "invoice.paid": {
+      // Affiliate programme: the share of a payment made by a referred customer.
+      const invoice = event.data.object;
+      const customer = typeof invoice.customer === "string" ? invoice.customer : invoice.customer?.id;
+      if (!customer || !invoice.id || invoice.amount_paid <= 0) break;
+      const profile = await findProfileByCustomer(customer);
+      if (profile?.referral)
+        await recordCommission({ id: `stripe:${invoice.id}`, customerId: profile._id, source: "stripe", net: netOfStripeInvoice(invoice), currency: invoice.currency, at: new Date((invoice.status_transitions?.paid_at ?? event.created) * 1000) });
+      break;
+    }
+    case "charge.refunded": {
+      const charge = event.data.object;
+      const intent = typeof charge.payment_intent === "string" ? charge.payment_intent : charge.payment_intent?.id;
+      if (!intent) break;
+      const payments = await stripe().invoicePayments.list({ payment: { type: "payment_intent", payment_intent: intent }, limit: 5 });
+      for (const p of payments.data) {
+        const invoice = typeof p.invoice === "string" ? p.invoice : p.invoice.id;
+        if (invoice) await cancelCommission(`stripe:${invoice}`);
+      }
+      break;
+    }
     default:
       break;
   }

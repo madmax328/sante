@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Alert, Linking, Pressable, View } from "react-native";
 import { AppVersion } from "@/components/app-version";
 import { PremiumButton } from "@/components/premium-button";
+import { ReferralCard } from "@/components/referral-card";
 import { Badge, Button, Card, Field, Notice, Screen, SectionTitle, T } from "@/components/ui";
 import { api } from "@/lib/api";
 import { authClient } from "@/lib/auth";
@@ -123,6 +124,8 @@ export default function AccountScreen() {
         {me.ai && me.premium && <T variant="small">{t("Coach IA : {0} messages restants ce mois-ci.", "AI coach: {0} messages left this month.", [me.ai.left])}</T>}
       </Card>
 
+      <ReferralCard />
+
       <Card>
         <SectionTitle>{t("Aide", "Help")}</SectionTitle>
         <Pressable onPress={() => WebBrowser.openBrowserAsync(sitePage(`/contact`))} style={{ flexDirection: "row", gap: space.sm, alignItems: "center" }}>
@@ -133,6 +136,7 @@ export default function AccountScreen() {
           <Pressable onPress={() => WebBrowser.openBrowserAsync(sitePage(`/legal/privacy`))}><T variant="small" tone="basilic">{t("Confidentialité", "Privacy")}</T></Pressable>
           <Pressable onPress={() => WebBrowser.openBrowserAsync(sitePage(`/legal/terms`))}><T variant="small" tone="basilic">{t("Conditions", "Terms")}</T></Pressable>
           <Pressable onPress={() => WebBrowser.openBrowserAsync(sitePage(`/legal/notice`))}><T variant="small" tone="basilic">{t("Mentions légales", "Legal notice")}</T></Pressable>
+          <Pressable onPress={() => WebBrowser.openBrowserAsync(sitePage(`/affiliates`))}><T variant="small" tone="basilic">{t("Programme affiliés", "Affiliate programme")}</T></Pressable>
         </View>
       </Card>
 

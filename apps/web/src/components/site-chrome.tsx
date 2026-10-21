@@ -60,6 +60,7 @@ export async function SiteFooter() {
           <p className="font-bold">{t("product")}</p>
           <Link href="/pricing" className="text-muted hover:text-encre">{t("pricing")}</Link>
           <Link href="/signup" className="text-muted hover:text-encre">{t("start")}</Link>
+          <Link href="/affiliates" className="text-muted hover:text-encre">{t("affiliates")}</Link>
         </div>
         <div className="grid content-start gap-2 text-sm">
           <p className="font-bold">{t("legal")}</p>

@@ -626,5 +626,15 @@ export const es: Record<string, string> = {
   "Avec Sorloo Premium, compare le coût de ta liste dans chaque enseigne ({0}…).": "Con Sorloo Premium, compara el coste de tu lista en cada cadena ({0}…).",
   "Changement impossible": "No se pudo cambiar",
   "Pays de mes courses": "País de mi compra",
-  "Les prix des menus, le budget et la comparaison des enseignes suivent les magasins de ce pays.": "Los precios de los menús, el presupuesto y la comparación de supermercados siguen las tiendas de este país."
+  "Les prix des menus, le budget et la comparaison des enseignes suivent les magasins de ce pays.": "Los precios de los menús, el presupuesto y la comparación de supermercados siguen las tiendas de este país.",
+  "Un créateur t'a parlé de Sorloo ?": "¿Te habló de Sorloo un creador?",
+  "Merci ! Tu es arrivé·e grâce à {0}.": "¡Gracias! Llegaste gracias a {0}.",
+  "Saisis son code pour le remercier. Ça ne change rien pour toi.": "Introduce su código para darle las gracias. Para ti no cambia nada.",
+  "Code du créateur": "Código del creador",
+  "Valider": "Confirmar",
+  "Ce code n'existe pas.": "Este código no existe.",
+  "Il est trop tard pour ajouter un code à ce compte.": "Es demasiado tarde para añadir un código a esta cuenta.",
+  "Un code est déjà enregistré sur ce compte.": "Esta cuenta ya tiene un código guardado.",
+  "Tu ne peux pas utiliser ton propre code.": "No puedes usar tu propio código.",
+  "Programme affiliés": "Programa de afiliados"
 };

@@ -233,7 +233,7 @@ export async function getRecipeEvents(userId: string, sinceDays = 120) {
 
 /** Every piece of data stored about a user, decrypted, for the export. */
 export async function exportAllData(userId: string) {
-  const [profile, healthData, allPlans, pantry, allLogs, allMeasurements, allWorkouts, allEvents, coach, favorites, meals, photos] = await Promise.all([
+  const [profile, healthData, allPlans, pantry, allLogs, allMeasurements, allWorkouts, allEvents, coach, favorites, meals, photos, affiliate, earned] = await Promise.all([
     getProfile(userId),
     getHealth(userId),
     plans().find({ userId }, { projection: { _id: 0 } }).toArray(),
@@ -246,6 +246,8 @@ export async function exportAllData(userId: string) {
     db.collection("journal_favorites").findOne({ _id: userId as never }, { projection: { _id: 0 } }),
     db.collection("saved_meals").find({ userId }, { projection: { _id: 0, userId: 0 } }).toArray(),
     db.collection("progress_photos").find({ userId }, { projection: { _id: 1, date: 1, at: 1 } }).toArray(),
+    db.collection("affiliates").findOne({ _id: userId as never }),
+    db.collection("commissions").find({ affiliateId: userId }, { projection: { _id: 0, customerId: 0 } }).toArray(),
   ]);
   return {
     exportedAt: new Date().toISOString(),
@@ -262,6 +264,7 @@ export async function exportAllData(userId: string) {
     savedMeals: meals,
     // The photos themselves are too large for this file: each one can be opened from the progress page.
     progressPhotos: photos.map((p) => ({ id: p._id, date: p.date, addedAt: p.at })),
+    affiliate: affiliate ? { ...affiliate, commissions: earned } : null,
   };
 }
 
@@ -280,6 +283,7 @@ export async function deleteAllData(userId: string): Promise<void> {
     db.collection("journal_favorites").deleteOne({ _id: userId as never }),
     db.collection("saved_meals").deleteMany({ userId }),
     db.collection("progress_photos").deleteMany({ userId }),
+    import("./affiliates").then((m) => m.deleteAffiliateData(userId)),
   ]);
   // Better Auth collections store ids as ObjectId.
   const { ObjectId } = await import("mongodb");
