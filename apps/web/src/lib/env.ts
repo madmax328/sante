@@ -32,6 +32,14 @@ export const env = {
   /** Value of the Authorization header set on the RevenueCat webhook */
   revenuecatWebhookAuth: process.env.REVENUECAT_WEBHOOK_AUTH,
   revenuecatEntitlement: process.env.REVENUECAT_ENTITLEMENT ?? "premium",
+  /** The company, as printed on affiliate invoices and statements */
+  company: {
+    name: process.env.COMPANY_NAME,
+    /** Lines separated by "|" ("12 rue X|75001 Paris|France") */
+    address: process.env.COMPANY_ADDRESS,
+    siren: process.env.COMPANY_SIREN,
+    vatNumber: process.env.COMPANY_VAT_NUMBER,
+  },
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
 };

@@ -139,7 +139,7 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
       <Card className="grid gap-2">
         <h2 className="text-xl font-bold">{a("accountTitle")}</h2>
         <p className="text-sm text-muted">{a("accountText")}</p>
-        <LinkButton href="/app/affiliate" variant="secondary" size="sm" className="justify-self-start">{a("accountLink")}</LinkButton>
+        <LinkButton href="/affiliates" variant="secondary" size="sm" className="justify-self-start">{a("accountLink")}</LinkButton>
       </Card>
 
       <Card id="contact" className="grid scroll-mt-24 gap-4">

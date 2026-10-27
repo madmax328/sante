@@ -1,13 +1,15 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { ApplicationForm } from "@/components/affiliate-client";
 import { AffiliateInfo } from "@/components/affiliate-info";
-import { LinkButton } from "@/components/ui";
+import { Card, LinkButton } from "@/components/ui";
+import { Link } from "@/i18n/navigation";
 
 export async function generateMetadata() {
   const t = await getTranslations("affiliate");
   return { title: t("metaTitle"), description: t("subtitle") };
 }
 
-/** Public presentation of the affiliate programme; applying happens in the app space. */
+/** Public page of the programme: how it works, its rules and the application (no Sorloo account needed). */
 export default async function AffiliatesPage({ params }: PageProps<"/[locale]/affiliates">) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -18,12 +20,16 @@ export default async function AffiliatesPage({ params }: PageProps<"/[locale]/af
         <h1 className="text-4xl font-extrabold">{t("title")}</h1>
         <p className="text-lg text-muted">{t("subtitle")}</p>
         <div className="flex flex-wrap items-center gap-3">
-          <LinkButton href="/app/affiliate" variant="accent" size="lg">{t("cta")}</LinkButton>
-          <span className="text-sm text-muted">{t("ctaHint")}</span>
+          <LinkButton href="#apply" variant="accent" size="lg">{t("cta")}</LinkButton>
+          <Link href="/affiliates/login" className="text-sm font-semibold text-basilic">{t("loginLink")}</Link>
         </div>
       </div>
       <AffiliateInfo />
-      <LinkButton href="/app/affiliate" variant="accent" className="justify-self-start">{t("cta")}</LinkButton>
+      <Card id="apply" className="grid scroll-mt-24 gap-3 p-6">
+        <h2 className="text-2xl font-bold">{t("applyTitle")}</h2>
+        <p className="text-sm text-muted">{t("applyText")}</p>
+        <ApplicationForm />
+      </Card>
     </section>
   );
 }

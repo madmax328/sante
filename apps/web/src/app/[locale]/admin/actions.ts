@@ -6,11 +6,9 @@ import { revalidatePath } from "next/cache";
 import { adminSignIn, adminSignOut, isAdmin } from "@/lib/admin-auth";
 import { deleteUsers } from "@/lib/admin-users";
 import { getTranslations } from "next-intl/server";
-import { markPaid, reviewAffiliate } from "@/lib/affiliates";
+import { affiliateSiteBase, passwordLink } from "@/lib/affiliate-auth";
+import { cancelPayout, getAffiliate, issuePasswordToken, markPayoutPaid, reviewAffiliate, type Affiliate } from "@/lib/affiliates";
 import { sendEmail } from "@/lib/email";
-import { env } from "@/lib/env";
-import { isLocale } from "@/lib/locale";
-import { getProfile } from "@/lib/repo";
 
 const MESSAGES = {
   invalid: "E-mail ou mot de passe incorrect.",
@@ -42,35 +40,62 @@ export async function deleteUsersAction(ids: string[]): Promise<{ deleted: numbe
 
 const escape = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
-/** Approves, refuses or suspends an affiliate; the applicant is told by email in their language. */
-export async function reviewAffiliateAction(id: string, decision: "approve" | "reject" | "suspend", code?: string): Promise<{ ok: boolean; error?: string }> {
+async function mailAffiliate(a: Affiliate, subjectKey: string, paragraphs: string[], button?: { href: string; labelKey: string }): Promise<void> {
+  const t = await getTranslations({ locale: a.locale ?? "fr", namespace: "affiliate" });
+  const html =
+    `<p>${escape(t("emailHello", { name: a.name }))}</p>` +
+    paragraphs.map((p) => `<p>${escape(p)}</p>`).join("") +
+    (button ? `<p><a href="${button.href}">${escape(t(button.labelKey))}</a></p>` : "");
+  await sendEmail(a.email, t(subjectKey), html).catch((e) => console.error("Affiliate email failed", e));
+}
+
+/** Approves (random code, link to choose the password), refuses or suspends; the applicant is told by email. */
+export async function reviewAffiliateAction(id: string, decision: "approve" | "reject" | "suspend"): Promise<{ ok: boolean; error?: string }> {
   if (!(await isAdmin())) redirect("/admin/login");
   if (typeof id !== "string" || !["approve", "reject", "suspend"].includes(decision)) return { ok: false, error: "invalid" };
-  const res = await reviewAffiliate(id, decision, code);
-  if (!res.ok || !res.affiliate) return { ok: false, error: res.error === "taken" ? "Ce code est déjà pris." : "Affilié introuvable." };
+  const res = await reviewAffiliate(id, decision);
+  if (!res.ok || !res.affiliate) return { ok: false, error: "Affilié introuvable." };
   const a = res.affiliate;
-  if (decision !== "suspend") {
-    const profile = await getProfile(id);
-    const locale = profile && isLocale(profile.locale) ? profile.locale : "fr";
-    const t = await getTranslations({ locale, namespace: "affiliate" });
-    const base = `${env.appUrl}${locale === "fr" ? "" : `/${locale}`}`;
-    const dashboard = `${base}/app/affiliate`;
-    const html =
-      `<p>${escape(t("emailHello", { name: a.name }))}</p>` +
-      (decision === "approve"
-        ? `<p>${escape(t("emailApproved", { code: a.code ?? "" }))}</p><p><a href="${env.appUrl}/r/${a.code}">${env.appUrl}/r/${a.code}</a></p><p><a href="${dashboard}">${escape(t("emailDashboard"))}</a></p>`
-        : `<p>${escape(t("emailRejected"))}</p><p><a href="${dashboard}">${escape(t("emailDashboard"))}</a></p>`);
-    await sendEmail(a.email, decision === "approve" ? t("emailApprovedSubject") : t("emailRejectedSubject"), html).catch((e) => console.error("Affiliate email failed", e));
+  const t = await getTranslations({ locale: a.locale ?? "fr", namespace: "affiliate" });
+  if (decision === "approve") {
+    if (res.passwordToken) await mailAffiliate(a, "emailApprovedSubject", [t("emailApproved", { code: a.code ?? "" })], { href: passwordLink(a, res.passwordToken), labelKey: "emailChoosePassword" });
+    else await mailAffiliate(a, "emailApprovedSubject", [t("emailApprovedAgain", { code: a.code ?? "" })], { href: `${affiliateSiteBase(a.locale)}/affiliates/login`, labelKey: "emailDashboard" });
+  }
+  if (decision === "reject") await mailAffiliate(a, "emailRejectedSubject", [t("emailRejected")], { href: `${affiliateSiteBase(a.locale)}/affiliates`, labelKey: "emailApplyAgain" });
+  revalidatePath("/admin", "layout");
+  return { ok: true };
+}
+
+/** A new link to choose the password (lost email, or affiliates approved before passwords existed). */
+export async function sendPasswordLinkAction(id: string): Promise<{ ok: boolean }> {
+  if (!(await isAdmin())) redirect("/admin/login");
+  const a = typeof id === "string" ? await getAffiliate(id) : null;
+  if (!a || (a.status !== "approved" && a.status !== "suspended")) return { ok: false };
+  const token = await issuePasswordToken(a._id);
+  const t = await getTranslations({ locale: a.locale ?? "fr", namespace: "affiliate" });
+  await mailAffiliate(a, "emailPasswordSubject", [t("emailPassword")], { href: passwordLink(a, token), labelKey: "emailChoosePassword" });
+  return { ok: true };
+}
+
+/** After the bank transfer: the payout and its commissions are paid; the affiliate is told. */
+export async function markPayoutPaidAction(payoutId: string): Promise<{ ok: boolean }> {
+  if (!(await isAdmin())) redirect("/admin/login");
+  const p = typeof payoutId === "string" ? await markPayoutPaid(payoutId) : null;
+  if (!p) return { ok: false };
+  const a = await getAffiliate(p.affiliateId);
+  if (a) {
+    const t = await getTranslations({ locale: a.locale ?? "fr", namespace: "affiliate" });
+    const amount = new Intl.NumberFormat(a.locale ?? "fr", { style: "currency", currency: p.currency }).format(p.total);
+    await mailAffiliate(a, "emailPaidSubject", [t("emailPaid", { amount })], { href: `${affiliateSiteBase(a.locale)}/affiliates/dashboard`, labelKey: "emailDashboard" });
   }
   revalidatePath("/admin", "layout");
   return { ok: true };
 }
 
-/** After the bank transfer: the affiliate's available commissions are marked paid. */
-export async function markAffiliatePaidAction(id: string): Promise<{ ok: boolean; count: number }> {
+/** A request that won't be paid as is: its commissions become available again. */
+export async function cancelPayoutAction(payoutId: string): Promise<{ ok: boolean }> {
   if (!(await isAdmin())) redirect("/admin/login");
-  if (typeof id !== "string") return { ok: false, count: 0 };
-  const count = await markPaid(id);
+  const ok = typeof payoutId === "string" && (await cancelPayout(payoutId));
   revalidatePath("/admin", "layout");
-  return { ok: true, count };
+  return { ok };
 }

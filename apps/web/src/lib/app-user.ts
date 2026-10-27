@@ -34,11 +34,11 @@ export async function requireAppUser(): Promise<AppUser> {
     profile = await ensureProfile(id, isLocale(locale) ? locale : "fr", marketFromHeaders(await headers()));
     // Arrived through an affiliate's link.
     const ref = (await cookies()).get(REF_COOKIE)?.value;
-    if (ref && (await attachReferral(id, ref).catch(() => "invalid")) === "ok") profile = (await getProfile(id)) ?? profile;
+    if (ref && (await attachReferral(id, ref, { email: session.user.email }).catch(() => "invalid")) === "ok") profile = (await getProfile(id)) ?? profile;
   } else if (!profile.referral && Date.now() - profile.createdAt.getTime() < LATE_CODE_DAYS * 86400_000) {
     // The link was opened after the account was created (other device, signed in later…).
     const ref = (await cookies()).get(REF_COOKIE)?.value;
-    if (ref && (await attachReferral(profile._id, ref, { late: true }).catch(() => "invalid")) === "ok") profile = (await getProfile(profile._id)) ?? profile;
+    if (ref && (await attachReferral(profile._id, ref, { late: true, email: session.user.email }).catch(() => "invalid")) === "ok") profile = (await getProfile(profile._id)) ?? profile;
   }
   return { userId: session.user.id, name: session.user.name, email: session.user.email, emailVerified: !!session.user.emailVerified, profile };
 }

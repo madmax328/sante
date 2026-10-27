@@ -55,7 +55,11 @@ export default async function AdminPage() {
     recentErrors(),
     storePriceStats(),
   ]);
-  const affiliatesWaiting = await db.collection("affiliates").countDocuments({ status: "pending" }).catch(() => 0);
+  const [affiliatesWaiting, payoutsWaiting] = await Promise.all([
+    db.collection("affiliates").countDocuments({ status: "pending" }).catch(() => 0),
+    db.collection("affiliate_payouts").countDocuments({ status: "requested" }).catch(() => 0),
+  ]);
+  const affiliateNote = [affiliatesWaiting ? `${affiliatesWaiting} à examiner` : "", payoutsWaiting ? `${payoutsWaiting} versement(s) demandé(s)` : ""].filter(Boolean).join(", ");
   const i18n = translationCoverage();
   const plans = await profiles.find({ _id: { $in: latest.map((u) => String(u._id)) } }, { projection: { onboarded: 1, subscription: 1 } }).toArray();
   const byId = new Map(plans.map((p) => [p._id, p]));
@@ -106,7 +110,7 @@ export default async function AdminPage() {
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-lg font-bold">Dernières inscriptions</h2>
           <div className="flex flex-wrap gap-4">
-            <Link href="/admin/affiliates" className="text-sm font-semibold text-basilic">Affiliés{affiliatesWaiting ? ` (${affiliatesWaiting} à examiner)` : ""} →</Link>
+            <Link href="/admin/affiliates" className="text-sm font-semibold text-basilic">Affiliés{affiliateNote ? ` (${affiliateNote})` : ""} →</Link>
             <Link href="/admin/users" className="text-sm font-semibold text-basilic">Voir tous les inscrits ({total}) et supprimer →</Link>
           </div>
         </div>
