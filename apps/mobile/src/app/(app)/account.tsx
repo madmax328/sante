@@ -136,7 +136,6 @@ export default function AccountScreen() {
           <Pressable onPress={() => WebBrowser.openBrowserAsync(sitePage(`/legal/privacy`))}><T variant="small" tone="basilic">{t("Confidentialité", "Privacy")}</T></Pressable>
           <Pressable onPress={() => WebBrowser.openBrowserAsync(sitePage(`/legal/terms`))}><T variant="small" tone="basilic">{t("Conditions", "Terms")}</T></Pressable>
           <Pressable onPress={() => WebBrowser.openBrowserAsync(sitePage(`/legal/notice`))}><T variant="small" tone="basilic">{t("Mentions légales", "Legal notice")}</T></Pressable>
-          <Pressable onPress={() => WebBrowser.openBrowserAsync(sitePage(`/affiliates`))}><T variant="small" tone="basilic">{t("Programme affiliés", "Affiliate programme")}</T></Pressable>
         </View>
       </Card>
 

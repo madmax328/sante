@@ -61,7 +61,7 @@ export async function reviewAffiliateAction(id: string, decision: "approve" | "r
     if (res.passwordToken) await mailAffiliate(a, "emailApprovedSubject", [t("emailApproved", { code: a.code ?? "" })], { href: passwordLink(a, res.passwordToken), labelKey: "emailChoosePassword" });
     else await mailAffiliate(a, "emailApprovedSubject", [t("emailApprovedAgain", { code: a.code ?? "" })], { href: `${affiliateSiteBase(a.locale)}/affiliates/login`, labelKey: "emailDashboard" });
   }
-  if (decision === "reject") await mailAffiliate(a, "emailRejectedSubject", [t("emailRejected")], { href: `${affiliateSiteBase(a.locale)}/affiliates`, labelKey: "emailApplyAgain" });
+  if (decision === "reject") await mailAffiliate(a, "emailRejectedSubject", [t("emailRejected")], { href: `${affiliateSiteBase(a.locale)}/affiliates/signup`, labelKey: "emailApplyAgain" });
   revalidatePath("/admin", "layout");
   return { ok: true };
 }

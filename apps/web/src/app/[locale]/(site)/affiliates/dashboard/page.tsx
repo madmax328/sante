@@ -1,6 +1,6 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { CopyField, LogoutButton, PayoutProfileForm, PayoutRequestButton } from "@/components/affiliate-client";
-import { AffiliateInfo } from "@/components/affiliate-info";
+import { AffiliateRules } from "@/components/affiliate-info";
 import { Badge, Card, Notice, Progress } from "@/components/ui";
 import { redirect } from "@/i18n/navigation";
 import { currentAffiliate } from "@/lib/affiliate-auth";
@@ -152,7 +152,10 @@ export default async function AffiliateDashboardPage({ params }: PageProps<"/[lo
         )}
       </Card>
 
-      <AffiliateInfo />
+      <Card className="grid gap-2">
+        <h2 className="text-lg font-bold">{t("rulesTitle")}</h2>
+        <AffiliateRules />
+      </Card>
     </section>
   );
 }

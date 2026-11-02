@@ -10,8 +10,11 @@ avec e-mail et mot de passe, et n'apparaissent pas dans la liste des inscrits.
 
 ## Le parcours
 
-1. **Candidature** : le lien « Affiliation » en bas du site ouvre
-   **sorloo.com/affiliates** (présentation, règles, formulaire). Le créateur
+1. **Candidature** : le lien « Affiliation » en bas du site ouvre la page
+   publicitaire **sorloo.com/affiliates** (chiffres clés, simulateur de gains,
+   pour qui, étapes, questions fréquentes et règles), avec deux boutons :
+   **Je m'inscris** (`/affiliates/signup`) et **Se connecter**
+   (`/affiliates/login`). Sur le formulaire d'inscription, le créateur
    donne son nom, son e-mail, ses réseaux sociaux (lien ou @pseudo, nombre
    d'abonnés) et quelques mots. Tu reçois un e-mail (`ADMIN_EMAIL`).
 2. **Ta décision**, dans **Administration → Affiliés** (`/admin/affiliates`) :

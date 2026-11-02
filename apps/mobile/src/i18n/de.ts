@@ -635,6 +635,5 @@ export const de: Record<string, string> = {
   "Ce code n'existe pas.": "Diesen Code gibt es nicht.",
   "Il est trop tard pour ajouter un code à ce compte.": "Für dieses Konto ist es zu spät, einen Code hinzuzufügen.",
   "Un code est déjà enregistré sur ce compte.": "Für dieses Konto ist bereits ein Code gespeichert.",
-  "Tu ne peux pas utiliser ton propre code.": "Du kannst deinen eigenen Code nicht verwenden.",
-  "Programme affiliés": "Partnerprogramm"
+  "Tu ne peux pas utiliser ton propre code.": "Du kannst deinen eigenen Code nicht verwenden."
 };

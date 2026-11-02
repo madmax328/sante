@@ -2,7 +2,7 @@ import { LanguageSwitch } from "@/components/language-switch";
 import { Check } from "lucide-react";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { BodyForm, DangerZone, FoodPrefsForm, SubscriptionButtons } from "@/components/settings-client";
-import { Badge, Card, LinkButton, Notice, PageHeader } from "@/components/ui";
+import { Badge, Card, Notice, PageHeader } from "@/components/ui";
 import { requireAppUser } from "@/lib/app-user";
 import { features } from "@/lib/env";
 import { hasStorePremium, isPremium } from "@/lib/premium";
@@ -135,12 +135,6 @@ export default async function AccountPage({ searchParams }: PageProps<"/[locale]
           )}
         </Card>
       )}
-
-      <Card className="grid gap-2">
-        <h2 className="text-xl font-bold">{a("accountTitle")}</h2>
-        <p className="text-sm text-muted">{a("accountText")}</p>
-        <LinkButton href="/affiliates" variant="secondary" size="sm" className="justify-self-start">{a("accountLink")}</LinkButton>
-      </Card>
 
       <Card id="contact" className="grid scroll-mt-24 gap-4">
         <div>

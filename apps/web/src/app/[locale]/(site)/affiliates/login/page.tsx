@@ -23,7 +23,7 @@ export default async function AffiliateLoginPage({ params }: PageProps<"/[locale
       <Card className="p-6">
         <LoginForm />
       </Card>
-      <Link href="/affiliates" className="text-sm font-semibold text-basilic">{t("applyLink")}</Link>
+      <Link href="/affiliates/signup" className="text-sm font-semibold text-basilic">{t("applyLink")}</Link>
     </section>
   );
 }

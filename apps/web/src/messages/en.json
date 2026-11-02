@@ -1134,15 +1134,6 @@
     "same": "in line with other chains"
   },
   "affiliate": {
-    "metaTitle": "Affiliate programme",
-    "title": "Sorloo affiliate programme",
-    "subtitle": "Do you talk about cooking, fitness, nutrition or budgeting? Recommend Sorloo to your community and earn 25% of every payment from your subscribers.",
-    "how1Title": "25% for 12 months",
-    "how1Text": "On every payment from every subscriber you bring, during their first year of subscription, on the website and in the app.",
-    "how2Title": "A link and a code",
-    "how2Text": "Your link remembers the visitor for 60 days. In the app, they can also enter your code up to 30 days after signing up.",
-    "how3Title": "Paid every month",
-    "how3Text": "A commission becomes available 30 days after the payment (to allow for refunds). From {min} available, you ask for your payout from your space.",
     "rulesTitle": "Programme rules",
     "rule1": "You clearly disclose the partnership on every post (\"Paid partnership\" or \"Ad\"), as the law requires.",
     "rule2": "No promised health or weight results (\"lose 10 kg in a month\"…) and no medical advice.",
@@ -1151,9 +1142,6 @@
     "rule5": "The commission is based on what Sorloo actually receives: excluding VAT, and after Apple's or Google's share for in-app purchases.",
     "rule6": "To be paid, you fill in your status (individual or professional), your address and your IBAN. An individual declares these amounts in their own income.",
     "rule7": "Sorloo may turn down an application, or suspend an affiliate who doesn't follow these rules; commissions linked to fraud are cancelled.",
-    "cta": "Become an affiliate",
-    "applyTitle": "Your application",
-    "applyText": "No Sorloo account needed. List your social networks: we look at your content before approving, and you get the answer by email, usually within a few days.",
     "platform": "Network",
     "url": "Profile link or @handle",
     "followers": "Followers (roughly)",
@@ -1189,9 +1177,6 @@
     "status_available": "Available",
     "status_paid": "Paid",
     "status_cancelled": "Cancelled (refund)",
-    "accountTitle": "Affiliate programme",
-    "accountText": "Got a community? Recommend Sorloo and earn 25% of subscriptions.",
-    "accountLink": "Discover the programme",
     "refTitle": "Did a creator tell you about Sorloo?",
     "refText": "Enter their code to thank them. It changes nothing for you.",
     "refPlaceholder": "Creator's code",
@@ -1223,8 +1208,7 @@
     "sentText": "Thank you! We're looking at your networks and will reply by email within a few days. If it's accepted, you'll get a link to choose your password.",
     "errorAlready": "This address already belongs to an affiliate.",
     "errorRate": "Too many attempts. Try again in a quarter of an hour.",
-    "loginLink": "Already an affiliate? Sign in",
-    "applyLink": "Not an affiliate yet? Send my application",
+    "applyLink": "Not an affiliate yet? Sign up",
     "loginTitle": "Affiliate space",
     "loginText": "Sign in with the address of your application and your password.",
     "password": "Password",
@@ -1300,5 +1284,129 @@
     "emailReset": "You asked to change your password. This link is valid for 7 days; if you didn't ask for anything, ignore this email.",
     "emailPaidSubject": "Your Sorloo payout is on its way",
     "emailPaid": "The transfer of {amount} has just been made to your account. It usually arrives within 1 to 3 working days. The matching document is in your space."
+  },
+  "affiliateLanding": {
+    "metaTitle": "Sorloo affiliate programme: 25% on every subscriber",
+    "metaDescription": "Recommend Sorloo to your community and earn 25% of every payment from your subscribers for 12 months. Free to join, individuals welcome.",
+    "eyebrow": "Affiliate programme",
+    "title": "Recommend Sorloo. Earn 25% for 12 months.",
+    "subtitle": "Your community wants to eat better without spending every evening on it or blowing the budget. Sorloo takes care of it: weekly menus, groceries, recipes and workouts. You earn 25% of every payment from the subscribers you bring.",
+    "signup": "Sign me up",
+    "login": "Sign in",
+    "heroNote": "Free to join · Individuals welcome · Payouts from {min}",
+    "previewLabel": "Preview of the affiliate space, with example figures",
+    "figures": {
+      "rate": "of every payment from your subscribers",
+      "monthsValue": "12 months",
+      "months": "of commissions per subscriber",
+      "daysValue": "60 days",
+      "days": "of tracking after a click on your link",
+      "min": "to ask for a payout"
+    },
+    "simTitle": "How much you can earn",
+    "simText": "Move the slider: how many new subscribers do you bring each month? Each one earns you commissions for 12 months, and they add up.",
+    "simLabel": "New subscribers per month",
+    "simPerMonth": "per month after one year",
+    "simFirstYear": "over the first year",
+    "simNote": "Rough estimate: about {perSubscriber} per subscriber per month, depending on the plan (monthly or yearly) and where they buy it (website or app), if your subscribers stay subscribed.",
+    "whyTitle": "Easy to recommend",
+    "whyText": "You're not selling a promise: you're sharing a tool your followers use every week.",
+    "why": {
+      "menus": {
+        "title": "Menus for the whole week",
+        "text": "Suited to tastes, goals and the whole household, in a few seconds."
+      },
+      "budget": {
+        "title": "Groceries that stay on budget",
+        "text": "A ready-made list, supermarket prices compared, a budget kept."
+      },
+      "world": {
+        "title": "Recipes from around the world",
+        "text": "French, Italian, Japanese, Mexican food… or a mix."
+      },
+      "sport": {
+        "title": "Workouts as well",
+        "text": "A guided programme suited to everyone's level."
+      }
+    },
+    "forTitle": "Who is it for?",
+    "for": {
+      "cooking": {
+        "title": "Cooking and recipes",
+        "text": "Your followers wonder what to eat this week: Sorloo gives them the menu and the shopping list."
+      },
+      "fitness": {
+        "title": "Sport and fitness",
+        "text": "Nutrition that goes with training, without counting every calorie by hand."
+      },
+      "nutrition": {
+        "title": "Nutrition and wellbeing",
+        "text": "Balanced, varied meals suited to everyone's goal."
+      },
+      "family": {
+        "title": "Family and budget",
+        "text": "Menus for the whole household, with a grocery budget kept every week."
+      }
+    },
+    "stepsTitle": "How it works",
+    "steps": {
+      "apply": {
+        "title": "Sign up",
+        "text": "Two minutes: your name, your email and your social networks."
+      },
+      "review": {
+        "title": "We approve",
+        "text": "We look at your content and reply by email within a few days."
+      },
+      "share": {
+        "title": "Share your link",
+        "text": "Your own link and code, for your bio, stories or descriptions."
+      },
+      "earn": {
+        "title": "Get paid",
+        "text": "Your commissions add up; from {min}, you ask for your payout in one click."
+      }
+    },
+    "perksTitle": "Everything is designed for you",
+    "perks": {
+      "realtime": "Your affiliate space in real time: visits, sign-ups, subscribers and commissions.",
+      "app": "Subscriptions taken on the website and in the iPhone or Android app both count.",
+      "payout": "You enter your IBAN once; payouts are requested in one click.",
+      "invoice": "No business needed: individual or professional, the statement or invoice is made for you.",
+      "languages": "Sorloo speaks 6 languages: your community can be anywhere in Europe."
+    },
+    "faqTitle": "Frequently asked questions",
+    "faq": {
+      "siret": {
+        "q": "Do I need to be self-employed?",
+        "a": "No. Individuals can join: they get a statement of their commissions and declare them in their income. If you're a professional, Sorloo issues your invoice on your behalf."
+      },
+      "account": {
+        "q": "Do I need a Sorloo account?",
+        "a": "No. Your affiliate space is separate: you sign in with your email and password."
+      },
+      "tracking": {
+        "q": "How are my subscribers counted?",
+        "a": "When someone clicks your link, they're remembered for 60 days. In the app, they can also enter your code up to 30 days after signing up. Once linked to you, they stay linked."
+      },
+      "earn": {
+        "q": "How much do I earn per subscriber?",
+        "a": "25% of what Sorloo actually receives (excluding VAT, and after Apple's or Google's share in the app) on each of their payments, during their first 12 months of subscription."
+      },
+      "payout": {
+        "q": "When do I get paid?",
+        "a": "A commission becomes available 30 days after the payment, to allow for refunds. From {min} available, you ask for your payout; the transfer goes out within a few days."
+      },
+      "rules": {
+        "q": "Are there any rules?",
+        "a": "Yes, a few, so that everyone wins:"
+      }
+    },
+    "finalTitle": "Ready to recommend Sorloo?",
+    "finalText": "Signing up takes two minutes. Answer by email within a few days.",
+    "signupTitle": "Join the affiliate programme",
+    "signupText": "25% of every payment from your subscribers for 12 months, payouts from {min}. List your social networks: we look at your content before approving.",
+    "signupLoginLink": "Already signed up? Sign in",
+    "backToProgramme": "Discover the programme"
   }
 }

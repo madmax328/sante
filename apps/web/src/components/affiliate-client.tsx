@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Copy, Loader2, Plus, X } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { useMemo, useState, useTransition } from "react";
 import { referralCodeAction } from "@/app/[locale]/app/affiliate/actions";
 import { applyAction, forgotAction, loginAction, logoutAction, requestPayoutAction, savePayoutAction, setPasswordAction } from "@/app/[locale]/(site)/affiliates/actions";
@@ -396,6 +396,43 @@ export function PayoutRequestButton({ currency, enabled, label }: { currency: st
         {pending && <Loader2 className="size-4 animate-spin" />} {label}
       </Button>
       {message && <p role={message.ok ? "status" : "alert"} className={`text-sm ${message.ok ? "text-basilic" : "text-danger"}`}>{message.text}</p>}
+    </div>
+  );
+}
+
+/**
+ * "How much can I earn": new subscribers brought each month → commissions per
+ * month once a full year of subscribers is earning, and over the first year.
+ */
+export function AffiliateSimulator({ perSubscriber }: { perSubscriber: number }) {
+  const t = useTranslations("affiliateLanding");
+  const format = useFormatter();
+  const [count, setCount] = useState(10);
+  const money = (n: number) => format.number(n, { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+  // Each month's subscribers earn for 12 months: after a year, 12 months of them earn together.
+  const perMonth = count * 12 * perSubscriber;
+  // Over the first year: 12 + 11 + … + 1 months of commissions.
+  const firstYear = count * 78 * perSubscriber;
+  return (
+    <div className="grid gap-5 rounded-3xl border border-line bg-surface p-6 shadow-[0_30px_60px_-40px_rgba(23,32,28,0.45)]">
+      <label className="grid gap-3">
+        <span className="flex items-baseline justify-between gap-3 text-sm font-semibold">
+          {t("simLabel")}
+          <span className="font-display text-3xl font-extrabold text-basilic num">{count}</span>
+        </span>
+        <input type="range" min={1} max={100} value={count} onChange={(e) => setCount(Number(e.target.value))} className="w-full accent-[var(--basilic)]" />
+      </label>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="grid gap-1 rounded-2xl bg-basilic-soft p-4">
+          <span className="font-display text-3xl font-extrabold num">{money(perMonth)}</span>
+          <span className="text-sm text-muted">{t("simPerMonth")}</span>
+        </div>
+        <div className="grid gap-1 rounded-2xl bg-abricot-soft p-4">
+          <span className="font-display text-3xl font-extrabold num">{money(firstYear)}</span>
+          <span className="text-sm text-muted">{t("simFirstYear")}</span>
+        </div>
+      </div>
+      <p className="text-xs text-muted">{t("simNote", { perSubscriber: format.number(perSubscriber, { style: "currency", currency: "EUR" }) })}</p>
     </div>
   );
 }

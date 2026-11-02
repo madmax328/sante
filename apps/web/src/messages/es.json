@@ -1134,15 +1134,6 @@
     "same": "en la media de las demás cadenas"
   },
   "affiliate": {
-    "metaTitle": "Programa de afiliados",
-    "title": "Programa de afiliados de Sorloo",
-    "subtitle": "¿Hablas de cocina, deporte, nutrición o presupuesto? Recomienda Sorloo a tu comunidad y gana el 25 % de cada pago de tus suscriptores.",
-    "how1Title": "25 % durante 12 meses",
-    "how1Text": "Sobre cada pago de cada suscriptor que traigas, durante su primer año de suscripción, en la web y en la app.",
-    "how2Title": "Un enlace y un código",
-    "how2Text": "Tu enlace recuerda a la persona durante 60 días. En la app, también puede introducir tu código hasta 30 días después de registrarse.",
-    "how3Title": "Pagado cada mes",
-    "how3Text": "Una comisión queda disponible 30 días después del pago (por los reembolsos). A partir de {min} disponibles, pides tu pago desde tu espacio.",
     "rulesTitle": "Las reglas del programa",
     "rule1": "Indicas claramente la colaboración en cada publicación («Publicidad» o «Colaboración pagada»), como exige la ley.",
     "rule2": "Nada de promesas de resultados de salud o peso («pierde 10 kg en un mes»…) ni consejos médicos.",
@@ -1151,9 +1142,6 @@
     "rule5": "La comisión se calcula sobre lo que Sorloo recibe realmente: sin IVA y después de la parte de Apple o Google en las compras desde la app.",
     "rule6": "Para cobrar, indicas tu situación (particular o profesional), tu dirección y tu IBAN. Un particular declara él mismo estas cantidades en sus ingresos.",
     "rule7": "Sorloo puede rechazar una solicitud o suspender a un afiliado que no respete estas reglas; las comisiones ligadas a un fraude se anulan.",
-    "cta": "Hacerme afiliado",
-    "applyTitle": "Tu solicitud",
-    "applyText": "No necesitas cuenta de Sorloo. Indica tus redes sociales: revisamos tu contenido antes de aprobar y recibes la respuesta por correo, normalmente en pocos días.",
     "platform": "Red",
     "url": "Enlace del perfil o @usuario",
     "followers": "Seguidores (aprox.)",
@@ -1189,9 +1177,6 @@
     "status_available": "Disponible",
     "status_paid": "Pagada",
     "status_cancelled": "Anulada (reembolso)",
-    "accountTitle": "Programa de afiliados",
-    "accountText": "¿Tienes una comunidad? Recomienda Sorloo y gana el 25 % de las suscripciones.",
-    "accountLink": "Descubrir el programa",
     "refTitle": "¿Te habló de Sorloo un creador?",
     "refText": "Introduce su código para darle las gracias. Para ti no cambia nada.",
     "refPlaceholder": "Código del creador",
@@ -1223,8 +1208,7 @@
     "sentText": "¡Gracias! Revisamos tus redes y te respondemos por correo en pocos días. Si se acepta, recibirás un enlace para elegir tu contraseña.",
     "errorAlready": "Esta dirección ya pertenece a un afiliado.",
     "errorRate": "Demasiados intentos. Vuelve a intentarlo dentro de un cuarto de hora.",
-    "loginLink": "¿Ya eres afiliado? Inicia sesión",
-    "applyLink": "¿Todavía no eres afiliado? Envía tu solicitud",
+    "applyLink": "¿Todavía no eres afiliado? Regístrate",
     "loginTitle": "Espacio de afiliado",
     "loginText": "Inicia sesión con la dirección de tu solicitud y tu contraseña.",
     "password": "Contraseña",
@@ -1300,5 +1284,129 @@
     "emailReset": "Has pedido cambiar tu contraseña. Este enlace es válido 7 días; si no has pedido nada, ignora este correo.",
     "emailPaidSubject": "Tu pago de Sorloo está en camino",
     "emailPaid": "Acabamos de hacer la transferencia de {amount} a tu cuenta. Suele llegar en 1 a 3 días hábiles. El documento correspondiente está en tu espacio."
+  },
+  "affiliateLanding": {
+    "metaTitle": "Programa de afiliados de Sorloo: 25 % por cada suscriptor",
+    "metaDescription": "Recomienda Sorloo a tu comunidad y gana el 25 % de cada pago de tus suscriptores durante 12 meses. Registro gratuito, particulares bienvenidos.",
+    "eyebrow": "Programa de afiliados",
+    "title": "Recomienda Sorloo. Gana el 25 % durante 12 meses.",
+    "subtitle": "Tu comunidad quiere comer mejor sin pasar todas las tardes en ello ni disparar su presupuesto. Sorloo se encarga: menús de la semana, compra, recetas y deporte. Tú ganas el 25 % de cada pago de los suscriptores que traigas.",
+    "signup": "Quiero registrarme",
+    "login": "Iniciar sesión",
+    "heroNote": "Registro gratuito · Particulares bienvenidos · Pagos desde {min}",
+    "previewLabel": "Vista previa del espacio de afiliado, con cifras de ejemplo",
+    "figures": {
+      "rate": "de cada pago de tus suscriptores",
+      "monthsValue": "12 meses",
+      "months": "de comisiones por suscriptor",
+      "daysValue": "60 días",
+      "days": "de seguimiento tras un clic en tu enlace",
+      "min": "para pedir un pago"
+    },
+    "simTitle": "Cuánto puedes ganar",
+    "simText": "Mueve el control: ¿cuántos suscriptores nuevos traes cada mes? Cada uno te genera comisiones durante 12 meses, y se van sumando.",
+    "simLabel": "Suscriptores nuevos al mes",
+    "simPerMonth": "al mes al cabo de un año",
+    "simFirstYear": "durante el primer año",
+    "simNote": "Estimación orientativa: unos {perSubscriber} por suscriptor y mes, según el plan (mensual o anual) y dónde lo compre (web o app), si tus suscriptores siguen suscritos.",
+    "whyTitle": "Fácil de recomendar",
+    "whyText": "No vendes una promesa: compartes una herramienta que tus seguidores usan cada semana.",
+    "why": {
+      "menus": {
+        "title": "Los menús de toda la semana",
+        "text": "Adaptados a los gustos, al objetivo y a todo el hogar, en pocos segundos."
+      },
+      "budget": {
+        "title": "Una compra que respeta el presupuesto",
+        "text": "Una lista lista, los precios de los supermercados comparados, un presupuesto cumplido."
+      },
+      "world": {
+        "title": "Recetas de todo el mundo",
+        "text": "Cocina francesa, italiana, japonesa, mexicana… o una mezcla."
+      },
+      "sport": {
+        "title": "Y además, deporte",
+        "text": "Un programa guiado, adaptado al nivel de cada uno."
+      }
+    },
+    "forTitle": "¿Para quién?",
+    "for": {
+      "cooking": {
+        "title": "Cocina y recetas",
+        "text": "Tus seguidores se preguntan qué comer esta semana: Sorloo les da el menú y la lista de la compra."
+      },
+      "fitness": {
+        "title": "Deporte y fitness",
+        "text": "La alimentación que acompaña al entrenamiento, sin contar cada caloría a mano."
+      },
+      "nutrition": {
+        "title": "Nutrición y bienestar",
+        "text": "Comidas equilibradas y variadas, adaptadas al objetivo de cada uno."
+      },
+      "family": {
+        "title": "Familia y presupuesto",
+        "text": "Los menús de todo el hogar, con un presupuesto de compra cumplido cada semana."
+      }
+    },
+    "stepsTitle": "Cómo funciona",
+    "steps": {
+      "apply": {
+        "title": "Regístrate",
+        "text": "Dos minutos: tu nombre, tu correo y tus redes sociales."
+      },
+      "review": {
+        "title": "Validamos",
+        "text": "Revisamos tu contenido y te respondemos por correo en pocos días."
+      },
+      "share": {
+        "title": "Comparte tu enlace",
+        "text": "Tu enlace y tu código personales, para la bio, las stories o las descripciones."
+      },
+      "earn": {
+        "title": "Cobra",
+        "text": "Tus comisiones se acumulan; desde {min}, pides tu pago con un clic."
+      }
+    },
+    "perksTitle": "Todo está pensado para ti",
+    "perks": {
+      "realtime": "Tu espacio de afiliado en tiempo real: visitas, registros, suscriptores y comisiones.",
+      "app": "Cuentan las suscripciones de la web y de la app de iPhone o Android.",
+      "payout": "Indicas tu IBAN una vez; el pago se pide con un clic.",
+      "invoice": "No necesitas ser autónomo: particular o profesional, el extracto o la factura se hacen por ti.",
+      "languages": "Sorloo está en 6 idiomas: tu comunidad puede estar en cualquier parte de Europa."
+    },
+    "faqTitle": "Preguntas frecuentes",
+    "faq": {
+      "siret": {
+        "q": "¿Tengo que ser autónomo?",
+        "a": "No. Un particular puede registrarse: recibe un extracto de sus comisiones y las declara en sus ingresos. Si eres profesional, Sorloo emite tu factura por ti."
+      },
+      "account": {
+        "q": "¿Necesito una cuenta de Sorloo?",
+        "a": "No. Tu espacio de afiliado es independiente: entras con tu correo y tu contraseña."
+      },
+      "tracking": {
+        "q": "¿Cómo se cuentan mis suscriptores?",
+        "a": "Cuando alguien hace clic en tu enlace, se le recuerda durante 60 días. En la app también puede introducir tu código hasta 30 días después de registrarse. Una vez vinculado a ti, lo sigue estando."
+      },
+      "earn": {
+        "q": "¿Cuánto gano por suscriptor?",
+        "a": "El 25 % de lo que Sorloo recibe realmente (sin IVA y después de la parte de Apple o Google en la app) de cada uno de sus pagos, durante sus 12 primeros meses de suscripción."
+      },
+      "payout": {
+        "q": "¿Cuándo cobro?",
+        "a": "Una comisión queda disponible 30 días después del pago, por los posibles reembolsos. Desde {min} disponibles, pides tu pago; la transferencia sale en los días siguientes."
+      },
+      "rules": {
+        "q": "¿Hay reglas?",
+        "a": "Sí, unas pocas, para que todos salgan ganando:"
+      }
+    },
+    "finalTitle": "¿Listo para recomendar Sorloo?",
+    "finalText": "El registro lleva dos minutos. Respuesta por correo en pocos días.",
+    "signupTitle": "Registro en el programa de afiliados",
+    "signupText": "El 25 % de cada pago de tus suscriptores durante 12 meses, pagos desde {min}. Indica tus redes sociales: revisamos tu contenido antes de validar.",
+    "signupLoginLink": "¿Ya estás registrado? Inicia sesión",
+    "backToProgramme": "Descubrir el programa"
   }
 }

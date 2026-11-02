@@ -1134,15 +1134,6 @@
     "same": "im Schnitt der anderen Ketten"
   },
   "affiliate": {
-    "metaTitle": "Partnerprogramm",
-    "title": "Sorloo-Partnerprogramm",
-    "subtitle": "Du sprichst über Kochen, Sport, Ernährung oder Budget? Empfiehl Sorloo deiner Community und erhalte 25 % jeder Zahlung deiner Abonnenten.",
-    "how1Title": "25 % für 12 Monate",
-    "how1Text": "Auf jede Zahlung jedes Abonnenten, den du bringst, während seines ersten Abojahres – auf der Website wie in der App.",
-    "how2Title": "Ein Link und ein Code",
-    "how2Text": "Dein Link merkt sich die Person 60 Tage lang. In der App kann sie deinen Code auch bis zu 30 Tage nach der Anmeldung eingeben.",
-    "how3Title": "Monatlich ausgezahlt",
-    "how3Text": "Eine Provision wird 30 Tage nach der Zahlung verfügbar (wegen möglicher Erstattungen). Ab {min} verfügbar forderst du deine Auszahlung in deinem Bereich an.",
     "rulesTitle": "Die Regeln des Programms",
     "rule1": "Du kennzeichnest die Partnerschaft in jedem Beitrag deutlich („Werbung“ oder „Bezahlte Partnerschaft“), wie es das Gesetz verlangt.",
     "rule2": "Keine Versprechen zu Gesundheit oder Gewicht („10 kg in einem Monat abnehmen“…) und keine medizinischen Ratschläge.",
@@ -1151,9 +1142,6 @@
     "rule5": "Die Provision bezieht sich auf das, was Sorloo tatsächlich erhält: ohne Mehrwertsteuer und nach dem Anteil von Apple oder Google bei Käufen in der App.",
     "rule6": "Für die Auszahlung gibst du deinen Status (Privatperson oder Unternehmer), deine Adresse und deine IBAN an. Privatpersonen geben diese Beträge selbst in ihrer Steuererklärung an.",
     "rule7": "Sorloo kann eine Bewerbung ablehnen oder einen Partner sperren, der diese Regeln nicht einhält; Provisionen aus Betrug werden storniert.",
-    "cta": "Partner werden",
-    "applyTitle": "Deine Bewerbung",
-    "applyText": "Kein Sorloo-Konto nötig. Gib deine sozialen Netzwerke an: Wir sehen uns deine Inhalte vor der Freigabe an, und du bekommst die Antwort per E-Mail, meist innerhalb weniger Tage.",
     "platform": "Netzwerk",
     "url": "Profillink oder @Name",
     "followers": "Follower (ungefähr)",
@@ -1189,9 +1177,6 @@
     "status_available": "Verfügbar",
     "status_paid": "Ausgezahlt",
     "status_cancelled": "Storniert (Erstattung)",
-    "accountTitle": "Partnerprogramm",
-    "accountText": "Du hast eine Community? Empfiehl Sorloo und erhalte 25 % der Abos.",
-    "accountLink": "Programm entdecken",
     "refTitle": "Hat dir ein Creator von Sorloo erzählt?",
     "refText": "Gib seinen Code ein, um dich zu bedanken. Für dich ändert sich nichts.",
     "refPlaceholder": "Code des Creators",
@@ -1223,8 +1208,7 @@
     "sentText": "Danke! Wir sehen uns deine Netzwerke an und antworten innerhalb weniger Tage per E-Mail. Wenn sie angenommen wird, bekommst du einen Link, um dein Passwort zu wählen.",
     "errorAlready": "Diese Adresse gehört bereits einem Partner.",
     "errorRate": "Zu viele Versuche. Versuch es in einer Viertelstunde noch einmal.",
-    "loginLink": "Schon Partner? Anmelden",
-    "applyLink": "Noch kein Partner? Bewerbung senden",
+    "applyLink": "Noch kein Partner? Jetzt anmelden",
     "loginTitle": "Partnerbereich",
     "loginText": "Melde dich mit der Adresse deiner Bewerbung und deinem Passwort an.",
     "password": "Passwort",
@@ -1300,5 +1284,129 @@
     "emailReset": "Du hast eine Passwortänderung angefordert. Dieser Link ist 7 Tage gültig; wenn du nichts angefordert hast, ignoriere diese E-Mail.",
     "emailPaidSubject": "Deine Sorloo-Auszahlung ist unterwegs",
     "emailPaid": "Die Überweisung von {amount} wurde gerade auf dein Konto ausgeführt. Sie kommt meist innerhalb von 1 bis 3 Werktagen an. Das zugehörige Dokument findest du in deinem Bereich."
+  },
+  "affiliateLanding": {
+    "metaTitle": "Sorloo-Partnerprogramm: 25 % auf jeden Abonnenten",
+    "metaDescription": "Empfiehl Sorloo deiner Community und erhalte 12 Monate lang 25 % jeder Zahlung deiner Abonnenten. Kostenlose Anmeldung, auch für Privatpersonen.",
+    "eyebrow": "Partnerprogramm",
+    "title": "Empfiehl Sorloo. Erhalte 12 Monate lang 25 %.",
+    "subtitle": "Deine Community will besser essen, ohne jeden Abend damit zu verbringen oder das Budget zu sprengen. Sorloo kümmert sich darum: Wochenmenüs, Einkauf, Rezepte und Sport. Du erhältst 25 % jeder Zahlung der Abonnenten, die du bringst.",
+    "signup": "Jetzt anmelden",
+    "login": "Anmelden",
+    "heroNote": "Kostenlose Anmeldung · Auch für Privatpersonen · Auszahlung ab {min}",
+    "previewLabel": "Vorschau des Partnerbereichs mit Beispielzahlen",
+    "figures": {
+      "rate": "auf jede Zahlung deiner Abonnenten",
+      "monthsValue": "12 Monate",
+      "months": "Provision pro Abonnent",
+      "daysValue": "60 Tage",
+      "days": "Nachverfolgung nach einem Klick auf deinen Link",
+      "min": "für eine Auszahlung"
+    },
+    "simTitle": "Wie viel du verdienen kannst",
+    "simText": "Bewege den Regler: Wie viele neue Abonnenten bringst du pro Monat? Jeder bringt dir 12 Monate lang Provisionen, und sie summieren sich.",
+    "simLabel": "Neue Abonnenten pro Monat",
+    "simPerMonth": "pro Monat nach einem Jahr",
+    "simFirstYear": "im ersten Jahr",
+    "simNote": "Grobe Schätzung: etwa {perSubscriber} pro Abonnent und Monat, je nach Abo (monatlich oder jährlich) und Kaufort (Website oder App), wenn deine Abonnenten dabeibleiben.",
+    "whyTitle": "Leicht zu empfehlen",
+    "whyText": "Du verkaufst kein Versprechen: Du teilst ein Werkzeug, das deine Follower jede Woche nutzen.",
+    "why": {
+      "menus": {
+        "title": "Menüs für die ganze Woche",
+        "text": "Passend zu Geschmack, Ziel und Haushalt, in wenigen Sekunden."
+      },
+      "budget": {
+        "title": "Einkäufe im Budget",
+        "text": "Eine fertige Liste, Preise der Supermärkte im Vergleich, ein eingehaltenes Budget."
+      },
+      "world": {
+        "title": "Rezepte aus aller Welt",
+        "text": "Französisch, italienisch, japanisch, mexikanisch … oder gemischt."
+      },
+      "sport": {
+        "title": "Sport inklusive",
+        "text": "Ein geführtes Programm, passend zum Niveau jedes Einzelnen."
+      }
+    },
+    "forTitle": "Für wen?",
+    "for": {
+      "cooking": {
+        "title": "Kochen und Rezepte",
+        "text": "Deine Follower fragen sich, was sie diese Woche essen sollen: Sorloo gibt ihnen Menü und Einkaufsliste."
+      },
+      "fitness": {
+        "title": "Sport und Fitness",
+        "text": "Die passende Ernährung zum Training, ohne jede Kalorie von Hand zu zählen."
+      },
+      "nutrition": {
+        "title": "Ernährung und Wohlbefinden",
+        "text": "Ausgewogene, abwechslungsreiche Mahlzeiten, passend zum Ziel jedes Einzelnen."
+      },
+      "family": {
+        "title": "Familie und Budget",
+        "text": "Menüs für den ganzen Haushalt, mit einem jede Woche eingehaltenen Einkaufsbudget."
+      }
+    },
+    "stepsTitle": "So funktioniert's",
+    "steps": {
+      "apply": {
+        "title": "Melde dich an",
+        "text": "Zwei Minuten: dein Name, deine E-Mail und deine sozialen Netzwerke."
+      },
+      "review": {
+        "title": "Wir prüfen",
+        "text": "Wir sehen uns deine Inhalte an und antworten innerhalb weniger Tage per E-Mail."
+      },
+      "share": {
+        "title": "Teile deinen Link",
+        "text": "Dein eigener Link und Code, für Bio, Story oder Beschreibung."
+      },
+      "earn": {
+        "title": "Kassiere",
+        "text": "Deine Provisionen summieren sich; ab {min} forderst du deine Auszahlung mit einem Klick an."
+      }
+    },
+    "perksTitle": "Alles ist für dich gemacht",
+    "perks": {
+      "realtime": "Dein Partnerbereich in Echtzeit: Besuche, Anmeldungen, Abonnenten und Provisionen.",
+      "app": "Abos auf der Website und in der iPhone- oder Android-App zählen beide.",
+      "payout": "Du gibst deine IBAN einmal an; die Auszahlung forderst du mit einem Klick an.",
+      "invoice": "Kein Gewerbe nötig: Privatperson oder Unternehmer, Abrechnung oder Rechnung werden für dich erstellt.",
+      "languages": "Sorloo gibt es in 6 Sprachen: Deine Community kann überall in Europa sein."
+    },
+    "faqTitle": "Häufige Fragen",
+    "faq": {
+      "siret": {
+        "q": "Muss ich selbstständig sein?",
+        "a": "Nein. Auch Privatpersonen können mitmachen: Sie bekommen eine Abrechnung ihrer Provisionen und geben sie in ihrer Steuererklärung an. Als Unternehmer stellt Sorloo deine Rechnung für dich aus."
+      },
+      "account": {
+        "q": "Brauche ich ein Sorloo-Konto?",
+        "a": "Nein. Dein Partnerbereich ist getrennt: Du meldest dich mit E-Mail und Passwort an."
+      },
+      "tracking": {
+        "q": "Wie werden meine Abonnenten gezählt?",
+        "a": "Wer auf deinen Link klickt, wird 60 Tage lang gemerkt. In der App kann man deinen Code auch bis zu 30 Tage nach der Anmeldung eingeben. Einmal mit dir verknüpft, bleibt es dabei."
+      },
+      "earn": {
+        "q": "Wie viel verdiene ich pro Abonnent?",
+        "a": "25 % dessen, was Sorloo tatsächlich erhält (ohne MwSt. und nach dem Anteil von Apple oder Google in der App), auf jede seiner Zahlungen während der ersten 12 Abomonate."
+      },
+      "payout": {
+        "q": "Wann werde ich bezahlt?",
+        "a": "Eine Provision wird 30 Tage nach der Zahlung verfügbar, wegen möglicher Erstattungen. Ab {min} verfügbar forderst du deine Auszahlung an; die Überweisung erfolgt in den folgenden Tagen."
+      },
+      "rules": {
+        "q": "Gibt es Regeln?",
+        "a": "Ja, ein paar, damit alle gewinnen:"
+      }
+    },
+    "finalTitle": "Bereit, Sorloo zu empfehlen?",
+    "finalText": "Die Anmeldung dauert zwei Minuten. Antwort per E-Mail innerhalb weniger Tage.",
+    "signupTitle": "Anmeldung zum Partnerprogramm",
+    "signupText": "25 % auf jede Zahlung deiner Abonnenten für 12 Monate, Auszahlung ab {min}. Gib deine sozialen Netzwerke an: Wir sehen uns deine Inhalte vor der Freigabe an.",
+    "signupLoginLink": "Schon angemeldet? Einloggen",
+    "backToProgramme": "Das Programm entdecken"
   }
 }
